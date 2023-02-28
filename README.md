@@ -50,7 +50,7 @@ This is a technical document that includes information about the API.
 
 ### CODE
 These are response and error codes.  
-[HTTP status code](./code/nicepay-code.md#HTTP-status-code) | [Card-code](./code/nicepay-code.md#Card-code) | [Bank-code](./code/nicepay-code.md#Bank-code) | [API response code](./code/nicepay-code.md#API-response-code) |
+[HTTP status code](./code/nicepay-code.md#HTTP-status-code) | [Card-code](./code/nicepay-code.md#Card-code) | [Bank-code](./code/nicepay-code.md#Bank-code) | [API Response code](./code/nicepay-code.md#API-response-code) |
 
 <br><br>
 
@@ -114,6 +114,8 @@ curl --location --request POST 'https://pay.nicepay.co.kr/v1/checkout' \
 ```
 
 When you access the URL that was responded, the Checkout window will be displayed, and the client will be able to make a payment.
+
+<br><br>
 
 ### Payment (Approval) response example
 
