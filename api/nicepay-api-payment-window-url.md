@@ -45,13 +45,12 @@ curl --location --request POST 'https://pay.nicepay.co.kr/v1/checkout' \
 POST /v1/checkout
 HTTP/1.1    
 Host: api.nicepay.co.kr 
-Authorization: Basic <credentials>  or Bearer <token>
 Content-type: application/json;charset=utf-8
 ```
 
 | Parameter     |   Type   |  Required   |  Bytes  | Description  |
 |:--------------|:---------:|:----------:|:-------:|:--------------|
-|   clientId    | String  |  O  | 50	  | Merchant identifier, issued by NICEPAY  | 
+|   clientId    | String  |  O  | 50	  | Merchant identifier, issued by NICEPAY | 
 |    method     | String  |  O  | 20	  | Payment Method <br> card : local cards <br> bank : bank transfer <br> directCard : directly shows card authentication page without NICE hosted page <br> vbank : virtual account  <br> cellphone : carrier billing <br>naverpayCard : Naver Pay - card (excluded Point) <br> kakaopay : Kakao Pa (Card or Money) <br>kakaopayCard : Kakao Pay - Card <br>kakaopayMoney : Kakaopay -Money <br>samsungpayCard : Samsung Pay Card <br>payco : Payco <br>ssgpay : SSGPAY <br>cardAndEasyPay : Card and Wallets, for <br>cardAndEasyPay it cannot be used together with below parameters <br>- cardCode, cardQuota, shopInterest, quotaInterest | 
 |    orderId    | String  |  O  | 64	  | Your unique order id<br> cannot reuse the orderid    | 
 |    amount     | Int  	  |  O  | 12	  | Transaction amount (only numbers are allowed) | 
