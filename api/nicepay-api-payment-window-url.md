@@ -7,8 +7,8 @@
 
 ### ⚠️ Exception handling
 - Please be sure to check the amount from `signature` for tampering verification in the response message.
-- If you need to verify the amount, please refer to the [Retrieve API](./api/nicepay-api-retrieve.md).
-- If you need to cancel a payment due to a network error, please look up the transaction using [Retrieve API](./api/nicepay-api-retrieve.md) with 'orderId' and cancel it using the tid returned in the response. 
+- If you need to verify the amount, please refer to the [Retrieve API](./nicepay-api-retrieve.md).
+- If you need to cancel a payment due to a network error, please look up the transaction using [Retrieve API](./nicepay-api-retrieve.md) with 'orderId' and cancel it using the tid returned in the response. 
   
 
 <br>
