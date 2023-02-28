@@ -31,7 +31,7 @@ curl -X POST 'https://api.nicepay.co.kr/v1/subscribe/regist'
 
 <br>
 
-### Create Token Request Parameter
+### Create Token(bid) Request Parameter
 
 ```bash
 POST /v1/subscribe/regist  
