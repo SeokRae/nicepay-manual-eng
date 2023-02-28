@@ -12,9 +12,20 @@
 ### Access token API Call example
 
 ```shell
-curl -X POST "https://api.nicepay.co.kr/v1/access-token" \
--H "Content-Type: application/json" \
--H "Authorization: Basic YWYwZDExNjIzNmRm..."
+curl --location --request POST 'https://api.nicepay.co.kr/v1/access-token' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Basic UjFfNzc5ODhmMzMxYTFhNDExYjhlMjE1ZDA3ZTJkZGRmNWM6YmUwZDdlMDBiZjQzNGJhMWJiZWM3ZjgyNzY2MmFiMzA=' \
+```
+
+```shell
+{
+    "resultCode": "0000",
+    "resultMsg": "정상 처리되었습니다.",
+    "accessToken": "dc51c8b13620519b8503bef6ee18f11370e8b349",
+    "tokenType": "Bearer",
+    "expireAt": "2023-02-28T13:23:17.655+0900",
+    "now": "2023-02-28T12:53:17.657+0900"
+}
 ```
 
 <br>

@@ -19,7 +19,7 @@ This is a common guide needed before development.
   
 ### API
 This is a technical document that includes information about the API.  
-[List of API](./api/nicepay-api-uri-list.md) | [Payment](./api/nicepay-api-payment-window-url.md) | [Billing](./api/nicepay-api-billing.md) | [Access token](./api/nicepay-api-access-token.md) | [Retrieve](./api/nicepay-api-retrieve.md) | [Cancel](./api/nicepay-api-cancel.md) | [Reconciliation](./api/nicepay-api-reconciliation.md) |  [Webhook](./api/nicepay-api-webhook.md) |
+[List of API](./api/nicepay-api-uri-list.md) | [Payment](./api/nicepay-api-payment-window-url.md) | [Recurring Payment](./api/nicepay-api-billing.md) | [Access token](./api/nicepay-api-access-token.md) | [Transaction Status Inquiry](./api/nicepay-api-retrieve.md) | [Cancel](./api/nicepay-api-cancel.md) | [Reconciliation](./api/nicepay-api-reconciliation.md) |  [Webhook](./api/nicepay-api-webhook.md) |
 
 <div align="left"> 
  <a href="https://github.com/nicepayments/nicepay-node">

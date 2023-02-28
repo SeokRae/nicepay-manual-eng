@@ -1,19 +1,19 @@
 ## Checkout
 
-## Checkout (Payment-window)
+## Payment Request (Hosted Payment Page)
 
 ### Over-view
 <img src="../image/payment-url.svg" width="800px">
 
 ### ⚠️ Exception handling
 - Please be sure to check the amount from `signature` for tampering verification in the response message.
-- If you need to verify the amount, please refer to the [Retrieve API](./nicepay-api-retrieve.md).
-- If you need to cancel a payment due to a network error, please look up the transaction using [Retrieve API](./nicepay-api-retrieve.md) with 'orderId' and cancel it using the tid returned in the response. 
+- If you need to verify the amount, please refer to the [Transaction Inquiry API](./nicepay-api-retrieve.md).
+- If you need to cancel a payment due to a network error, please look up the transaction using [Transaction Inquiry API](./nicepay-api-retrieve.md) with 'orderId' and cancel it using the tid returned in the response. 
   
 
 <br>
 
-### Create a checkout example code
+### Create Hosted Payment Page Exampe Code
 
 ```bash
 curl --location --request POST 'https://pay.nicepay.co.kr/v1/checkout' \
@@ -28,7 +28,7 @@ curl --location --request POST 'https://pay.nicepay.co.kr/v1/checkout' \
 }'
 ```
 
-### Create a checkout example response
+### Create Hosted Payment Page  Response Exampe Code
 
 ```bash
 {
@@ -39,7 +39,7 @@ curl --location --request POST 'https://pay.nicepay.co.kr/v1/checkout' \
 }
 ```
 
-### Create a checkout Request Parameter <img src="https://img.shields.io/badge/-Beta version-red">
+### Hosted Payment Page Request Parameter <img src="https://img.shields.io/badge/-Beta version-red">
 
 ```bash
 POST /v1/checkout
@@ -141,12 +141,12 @@ Content-type: application/json;charset=utf-8
 
 <br><br>
 
-### Checkout Authorization <img src="https://img.shields.io/badge/-Beta version-red">
+### Payment Authorization <img src="https://img.shields.io/badge/-Beta version-red">
 
-If you access the URL received through the Create a Checkout API, the Nicepay Checkout window will be displayed.
-When the payer proceeds with card authentication in the Checkout window, Nicepay will respond with approval processing result.
+If you access the URL received through the Payment Request API, the Nicepay Hosted Payment Page will be displayed.
+When the payer proceeds with card authentication in the Hosted Payment Page, Nicepay will respond with approval processing result.
 
-The payment approval response value will be delivered to the `returnUrl` endpoint provided through the 'Create a Checkout API'
+The payment approval response value will be delivered to the `returnUrl` endpoint provided through the 'Payment Request API'
 
 
 ```bash
@@ -157,7 +157,7 @@ Host: api.nicepay.co.kr
 
 <br>
 
-### Checkout Authorization Response Parameter
+### Payment Authorization Response Parameter
 
 ```bash
 POST

@@ -2,14 +2,14 @@
 
 <br>
 
-## Create Billkey
+## Recurring Payment - Create Token
 
-You can implement periodic payments through the Billing API.  
-If you pass the card information through the `/v1/subscribe/regist` API, you can receive an encrypted key value (bid) in response.  
-After that, if you pass the encrypted key value (bid) through the `/v1/subscribe/{bid}/payments` API with payment amount, Authorization will be occurred with the registered card.  
+You can implement subscribtion payments through the Recurring Payment API.  
+If you pass the card information through the `/v1/subscribe/regist` API, you can receive an encrypted Token(bid) in response.  
+After that, if you pass the encrypted Token(bid) through the `/v1/subscribe/{bid}/payments` API with payment amount, Authorization will be occurred with the registered card.  
 
 > ⚠️ IMPORTANT  
-> Multiple Billkey can be generated with one card and All issued bid can be used until deleted.  
+> Multiple Token can be generated with one card and All issued bid can be used until deleted.  
 
 <br>
 
@@ -31,7 +31,7 @@ curl -X POST 'https://api.nicepay.co.kr/v1/subscribe/regist'
 
 <br>
 
-### Create Billkey Request Parameter
+### Create Token Request Parameter
 
 ```bash
 POST /v1/subscribe/regist  
@@ -90,7 +90,7 @@ Content-type: application/json;charset=utf-8
 
 <br>
 
-### Create Billkey Response Parameter
+### Create Token(bid) Response Parameter
 
 ```bash
 POST
@@ -103,7 +103,7 @@ Content-type: application/json
 | resultMsg  | String | O | 100 | Result message |
 | tid        | String | O |  30   | Transaction ID<br>Ex) nictest00m01011104191651325596  |
 | orderId    | String | O | 64        | Your Unique order ID *Not reusable |
-| bid        | String |   |  30   | Billkey<br>- Key value linked to card information, delivered when calling Billkey Authoriazation API<br>Ex) BIKYnictest00m1104191651325596  |
+| bid        | String |   |  30   | Token<br>- Key value linked to card information, delivered when calling Token Authoriazation API<br>Ex) BIKYnictest00m1104191651325596  |
 | authDate   | String |   |   -   | Date created<br>ISO 8601 format   |
 | cardCode   | String |   |   3   | Card company code |
 | cardName   | String |   |  20   | Card issuer name <br> ex) BC   |
@@ -111,17 +111,17 @@ Content-type: application/json
 <br>
 
 
-## Billkey authorization
-- Bilkey authorization means 💳 payment (approval) processing through the issued bid (bilkey).
-- If you call the `/v1/subscribe/{bid}/payments` API through the registered billy, 💳 payment (approval) will be processed.
-- For Billkey approval, the `Create Billkey`process is required.
+## Recurring Payment - Authorization
+- Token(bid) authorization means 💳 payment (approval) processing through the issued Token(bid).
+- If you call the `/v1/subscribe/{bid}/payments` API through the registered Token(bid), 💳 payment (approval) will be processed.
+- For Token(bid) approval, the `Create Token`process is required.
 
 <br>
 
 ### Over-view
 <img src="../image/payment-subscribe-authorization.svg" width="800px">  
 
-### Billkey authorization example
+### Token authorization example
 ```bash
 curl -X POST 'https://api.nicepay.co.kr/v1/subscribe/BIKYnicuntct2m2107272028532670/payments' 
 -H 'Content-Type: application/json' 
@@ -137,7 +137,7 @@ curl -X POST 'https://api.nicepay.co.kr/v1/subscribe/BIKYnicuntct2m2107272028532
 
 <br>
 
-### Billkey authorization Request Parameter
+### Recurring Payment - Authorization Request Parameter
 
 ```bash
 POST /v1/subscribe/{bid}/payments  
@@ -152,7 +152,7 @@ Content-type: application/json;charset=utf-8
 | orderId         |  String  |   O   |   64   | *Not reusable |
 | amount          |   Int    |   O   |   12   | Payment amount  |
 | goodsName       |  String  |   O   |   40   | Product name  |
-| cardQuota       |   Int    |   O   |   2    | Installment Month<br>0: lump sum, 2:2 months, 3:3 months … |
+| cardQuota       |   Int    |   O   |   2    | Installment Month<br>0: Pay in full amount, 2:2 months, 3:3 months … |
 | useShopInterest | Boolean  |   O   |   -    | The store pays the installment interest of the payer<br>(currently, only false is available) |
 | buyerName       |  String  |   　   |   30   | Buyer name |
 | buyerTel        |  String  |   　   |   20   | Buyer phone number<br>*Number only   |
@@ -165,7 +165,7 @@ Content-type: application/json;charset=utf-8
 
 <br>
 
-### Billkey authorization Response Parameter
+### Recurring Payment - Authorization Response Parameter
 
 ```bash
 POST
@@ -230,18 +230,18 @@ Content-type: application/json
 <br>
 
 
-## Delete billkey
+## Delete Token
 
-`Delete billkey` refers to the process of deleting the issued bid (bilkey).  
-If you pass the registered bilkey to the `/v1/subscribe/{bid}/expire` API, the bilkey will be deleted.  
-Deleted bilkey cannot be restored or approved. 
+`Delete Token` refers to the process of deleting the issued Token(bid).  
+If you pass the registered bilkey to the `/v1/subscribe/{bid}/expire` API, the Token(bid) will be deleted.  
+Deleted Token(bid) cannot be restored or approved. 
 
 <br>
 
 ### Over-view
 <img src="../image/payment-subscribe-delete.svg" width="800px">  
 
-### Delete billkey Example code
+### Delete Token(bid) Example code
 
 ``` bash
 curl -X POST 'https://api.nicepay.co.kr/v1/subscribe/BIKYnicuntct2m2107272028532670/expire' 
@@ -254,7 +254,7 @@ curl -X POST 'https://api.nicepay.co.kr/v1/subscribe/BIKYnicuntct2m2107272028532
 
 <br>
 
-### Delete billkey Request parameter
+### Delete Token(bid) Request parameter
 
 ```bash
 POST /v1/subscribe/{bid}/expire   
@@ -273,7 +273,7 @@ Content-type: application/json;charset=utf-8
 
 <br>
 
-### Delete billkey Response parameter
+### Delete Token(bid) Response parameter
 
 ```bash
 POST
@@ -286,5 +286,5 @@ Content-type: application/json
 | resultMsg | String | O | 100 | Result message |
 | tid | String | O | 30 | NICEPAY transaction ID |
 | orderId | String | O | 64 | Your Unique order ID |
-| bid        | String | O    | 30   | billkey |
+| bid        | String | O    | 30   | Token |
 | authDate   | String | 　   | -    | ISO 8601 format<br>*Returned if processing is successful. |

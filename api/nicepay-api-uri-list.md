@@ -3,17 +3,17 @@ A list of URI's for provided APIs. If you need to check the interface, please cl
 
 | API                                                               |     Method      |               Endpoint              |   Sandbox |
 |:------------------------------------------------------------------|:-------------:|:--------------------------------------|:---------:|
-| [Checkout(Payment-window)](/api/nicepay-api-payment-window-url.md) |      `POST`    |                                     |     ○     |
-| [Billing Create-billkey](/api/nicepay-api-billing.md)             |      `POST`     |     /v1/subscribe/regist            |     ○     |
-| [Billing Authorization](/api/nicepay-api-billing.md)              |      `POST`     |     /v1/subscribe/{bid}/payments    |     ○     |
-| [Billing Delete-billkey](/api/payment-subscribe.md)               |      `POST`     |     /v1/subscribe/{bid}/expire      |     ○     |
-| [Access-token](/api/nicepay-api-access-token.md)                  |      `POST`     |     /v1/access-token                |     ○     |
-| [Cancel](/api/nicepay-api-cancel.md)                              |      `POST`     |     /v1/payments/{tid}/cancel       |     △     |
-| [Retrieve check amount](/api/nicepay-api-retrieve.md#check-amount-api-request-parameter)              |       `GET`     |     /v1/payments/{tid}              |     ○     |
-| [Retrieve transaction](/api/nicepay-api-retrieve.md#retrieve-a-transaction-with-tidtransaction-id)              |       `GET`     |     /v1/payments/{tid}              |     ○     |
-| [Retrieve orderId](/api/nicepay-api-retrieve.md#retrieve-a-transaction-with-orderid)                  |       `GET`     |     /v1/payments/find/{orderId}     |     ○     |
-| [Retrieve card-event](/api/nicepay-api-retrieve.md#card-event-api)               |       `GET`     |     /v1/card/event                  |     ×     |
-| [Retrieve card-interest-free](/api/nicepay-api-retrieve.md#interest-free-installment-information-api)       |       `GET`     |     /v1/card/event                  |     ×     |
-| [Webhook Create](/api/nicepay-api-webhook.md) |      `POST`    |     /v1/webhook/regist      |     ×     |
-| [Webhook Retrieve](/api/nicepay-api-webhook.md) |      `GET`    |    /v1/webhook/get     |     ×     |
-| [Webhook Delete](/api/nicepay-api-webhook.md) |      `POST`    |      /v1/webhook/remove      |     ×     |
+| [Payment Request (Hosted Payment Page)](/api/nicepay-api-payment-window-url.md) |      `POST`    |                                     |     ○     |
+| [Recurring payment: Token Issue](/api/nicepay-api-billing.md)             |      `POST`     |     /v1/subscribe/regist            |     ○     |
+| [Recurring Payment: Token authorization](/api/nicepay-api-billing.md)              |      `POST`     |     /v1/subscribe/{bid}/payments    |     ○     |
+| [Recurring Payment: Token delete](/api/payment-subscribe.md)               |      `POST`     |     /v1/subscribe/{bid}/expire      |     ○     |
+| [AccessToken Generation](/api/nicepay-api-access-token.md)                  |      `POST`     |     /v1/access-token                |     ○     |
+| [Cancel request](/api/nicepay-api-cancel.md)                              |      `POST`     |     /v1/payments/{tid}/cancel       |     △     |
+| [Transaction Status Inquiry-Authorization amount](/api/nicepay-api-retrieve.md#check-amount-api-request-parameter)              |       `GET`     |     /v1/payments/{tid}              |     ○     |
+| [Transaction Status Inquiry-Transaction status](/api/nicepay-api-retrieve.md#retrieve-a-transaction-with-tidtransaction-id)              |       `GET`     |     /v1/payments/{tid}              |     ○     |
+| [Transaction Status Inquiry-orderId](/api/nicepay-api-retrieve.md#retrieve-a-transaction-with-orderid)                  |       `GET`     |     /v1/payments/find/{orderId}     |     ○     |
+| [Card event inquiry](/api/nicepay-api-retrieve.md#card-event-api)               |       `GET`     |     /v1/card/event                  |     ×     |
+| [Card installment inquiry](/api/nicepay-api-retrieve.md#interest-free-installment-information-api)       |       `GET`     |     /v1/card/event                  |     ×     |
+| [Webhook creation](/api/nicepay-api-webhook.md) |      `POST`    |     /v1/webhook/regist      |     ×     |
+| [Webhook Inquiry](/api/nicepay-api-webhook.md) |      `GET`    |    /v1/webhook/get     |     ×     |
+| [Webhook update](/api/nicepay-api-webhook.md) |      `POST`    |      /v1/webhook/remove      |     ×     |

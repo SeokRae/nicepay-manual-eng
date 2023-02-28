@@ -4,7 +4,7 @@
 
 ### Overview
 This is a guide to cancel and refund transactions for which payment (approval) has been completed.  
-Card payment will be canceled by send `POST` data with tid (Transaction ID) to the cancel API `v1/payments/{tid}/cancel`.  
+Card payment will be canceled by sending `POST` data with tid (Transaction ID) to the cancel API `v1/payments/{tid}/cancel`.  
 However, for cash transactions such as virtual accounts, refund account information must be passed to the cancel API.  
 
 <br>

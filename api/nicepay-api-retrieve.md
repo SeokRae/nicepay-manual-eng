@@ -1,13 +1,13 @@
-# Retrieve
+# Transaction Status Inquiry
 
-## Retrieve a transaction
+## Check Transaction Status 
 
 <img src="../image/payment-retrieve.svg" width="800px"> 
 
-Retrieve API can be used if you need to check information according to the success or failure of a 💳 payment (approval) request.
+Transaction Status Iniquiry API can be used if you need to check information according to the success or failure of a 💳 payment (approval) request.
 
-It is recommended to use the Retrieve API in the following cases.
-- If timeout of `Http-client` occurs after calling the payment (approval) API, you can search the transaction through Retrieve API with `orderId`.
+It is recommended to use the Transaction Status Iniquiry API in the following cases.
+- If timeout of `Http-client` occurs after calling the payment request API, you can search the transaction through Transaction Status Iniquiry API with `orderId`.
 - In case of suspicion of forgery and alteration of data in the payment (approval).
 - When it is necessary to check the cancellation balance of a payment (approval).
 
@@ -22,7 +22,7 @@ curl -X GET 'https://api.nicepay.co.kr/v1/payments/nicuntct1m0101210727200125A05
 ```
 
 <br>
-## Check amount API
+## Check Authorization Amount
 
 - If you need to check the payment amount after approval, use the `Check-amount` API to check the 💳 approved payment amount.
 - If the amount requested and the approval amount are different, be sure to cancel the payment.
@@ -32,7 +32,7 @@ curl -X GET 'https://api.nicepay.co.kr/v1/payments/nicuntct1m0101210727200125A05
 
 <br>
 
-## Check amount API 
+## Check Authorization Amount 
 
 ### Example code
 
@@ -47,7 +47,7 @@ curl -X POST 'https://api.nicepay.co.kr/v1/check-amount/nicuntct1m01012107272007
 
 <br>
 
-### Check amount API Request parameter
+### Check Authorization Amount Request parameter
 
 ```bash
 POST /v1/check-amount/{tid}  
@@ -66,7 +66,7 @@ Content-type: application/json;charset=utf-8
 
 <br>
 
-### Check amount API Response parameter
+### Check Authorization Amount Response parameter
 
 ```bash
 POST
@@ -84,7 +84,7 @@ Content-type: application/json
 
 <br><br>
 
-### Retrieve a transaction (with tid:transaction ID)
+### Transaction Status Inquiry (with tid:Transaction ID)
 
 ```bash
 GET /v1/payments/{tid} 
@@ -101,7 +101,7 @@ Content-type: application/json;charset=utf-8
 
 <br><br>
 
-### Retrieve a transaction (with orderId)
+### Transaction Status Inquiry (with orderId)
 
 ```bash
 GET /v1/payments/find/{orderId}  
@@ -120,7 +120,7 @@ Content-type: application/json;charset=utf-8
 
 <br>
 
-## Retrieve a transaction Response parameter
+## Response parameter (Check Authorization Amount and Transaction Status Inquiry)
 
 ```bash
 Content-type: application/json
