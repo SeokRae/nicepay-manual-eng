@@ -28,6 +28,21 @@ Webhook is a function that can implement additional business logic by receiving 
 
 <br><br>
 
+### Create a webhook example code
+```bash
+curl --location --request POST 'https://api.nicepay.co.kr/v1/webhook/regist' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Basic UjFfOTRlYjNhNGEzMDI2NGZkYmE4MmNlMGQwNWI0NjUwMTI6MTJjZGUxMjQ0OWM2NDQ5N2E4NjEwNDc1OWI4MzA2YjY=' \
+--data-raw '{"method":"card","url":"https://your-webhook.url"}'
+```
+
+```bash
+{
+    "resultCode": "0000",
+    "resultMsg": "정상 처리되었습니다."
+}
+```
+
 ### Create a webhook <img src="https://img.shields.io/badge/-Beta version-red">
 
 ```bash
@@ -56,6 +71,25 @@ Content-type: application/json;charset=utf-8
 | resultMsg | String | O | 100 | Result message |
 
 <br><br>
+
+
+### Retrieve a webhook example code
+```bash
+curl --location --request GET 'https://api.nicepay.co.kr/v1/webhook/get?method=card&returnCharSet=utf-8' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Basic UjFfOTRlYjNhNGEzMDI2NGZkYmE4MmNlMGQwNWI0NjUwMTI6MTJjZGUxMjQ0OWM2NDQ5N2E4NjEwNDc1OWI4MzA2YjY=' \
+```
+
+```bash
+{
+    "resultCode": "0000",
+    "resultMsg": "정상 처리되었습니다.",
+    "data": {
+        "method": "card",
+        "url": "https://your-webhook.url"
+    }
+}
+```
 
 ### Retrieve a webhook <img src="https://img.shields.io/badge/-Beta version-red">
 
@@ -88,34 +122,20 @@ Content-type: application/json;charset=utf-8
 
 <br><br>
 
-### Update a webhook <img src="https://img.shields.io/badge/-Beta version-red">
-
+### Delete a webhook example code
 ```bash
-POST /v1/webhook/edit
-HTTP/1.1    
-Host: api.nicepay.co.kr 
-Authorization: Basic <credentials>  or Bearer <token>
-Content-type: application/json;charset=utf-8
+curl --location --request POST 'https://api.nicepay.co.kr/v1/webhook/remove' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Basic UjFfOTRlYjNhNGEzMDI2NGZkYmE4MmNlMGQwNWI0NjUwMTI6MTJjZGUxMjQ0OWM2NDQ5N2E4NjEwNDc1OWI4MzA2YjY=' \
+--data-raw '{"method":"card","url":"https://your-webhook.url"}'
 ```
 
-### Update webhook Request Parameter
-
-| Parameter | Type | Required | Bytes | Description |
-|:--------------|:-----:|:-----:|:-----:|:----------|
-|    method     | String  |  O  | 20	  | card : local cards <br> bank : bank transfer <br> vbank : virtual account  <br> cellphone : carrier billing | 
-| url | String | O | 200 | The URL of the webhook endpoint |
-| returnCharSet | String  |     | 10	  | Return encoding <br>utf-8(Default) / euc-kr	 | 
-
-<br>
-
-### Update webhook Response Parameter
-
-| Parameter |   Type   |  Required   |  Bytes  | Description  |
-|:--------------|:----:|:-----:|:-----:|:--------|
-| resultCode | String | O | 4 | 0000 : success / other failure |
-| resultMsg | String | O | 100 | Result message |
-
-<br><br>
+```bash
+{
+    "resultCode": "0000",
+    "resultMsg": "정상 처리되었습니다."
+}
+```
 
 ### Delete a webhook <img src="https://img.shields.io/badge/-Beta version-red">
 

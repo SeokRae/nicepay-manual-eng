@@ -95,10 +95,10 @@ curl --location --request POST 'https://pay.nicepay.co.kr/v1/checkout' \
 --data-raw '{
   "clientId": "R1_94eb3a4a30264fdba82ce0d05b465012",
   "method": "card",
-  "orderId": "5a639653-3154-4e79-8d5a-d7d3b64a146e",
+  "orderId": "5a639653-3154-4e79-8d5a-d7d3b64a146e", //your-unique-orderId
   "amount": 1004,
   "goodsName": "test",
-  "returnUrl": "http://test.com"
+  "returnUrl": "https://your-return-url.com"
 }'
 ```
 
@@ -106,8 +106,8 @@ curl --location --request POST 'https://pay.nicepay.co.kr/v1/checkout' \
 
 ```bash
 {
-    "sessionId": "NICEORD_TRK2_nicuntsx1m_2302272030343389",
-    "url": "https://pay.nicepay.co.kr/v1/pay/NICEORD_TRK2_nicuntsx1m_2302272030343389",
+    "sessionId": "NICEORD_TRK1_nicuntsx1m_2302281216131990",
+    "url": "https://pay.nicepay.co.kr/v1/checkout/NICEORD_TRK1_nicuntsx1m_2302281216131990",
     "resultCode": "0000",
     "resultMsg": "success"
 }

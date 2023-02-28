@@ -16,5 +16,4 @@ A list of URI's for provided APIs. If you need to check the interface, please cl
 | [Retrieve card-interest-free](/api/nicepay-api-retrieve.md#interest-free-installment-information-api)       |       `GET`     |     /v1/card/event                  |     ×     |
 | [Webhook Create](/api/nicepay-api-webhook.md) |      `POST`    |     /v1/webhook/regist      |     ×     |
 | [Webhook Retrieve](/api/nicepay-api-webhook.md) |      `GET`    |    /v1/webhook/get     |     ×     |
-| [Webhook Update](/api/nicepay-api-webhook.md) |      `POST`    |      /v1/webhook/edit        |     ×     |
 | [Webhook Delete](/api/nicepay-api-webhook.md) |      `POST`    |      /v1/webhook/remove      |     ×     |
