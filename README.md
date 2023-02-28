@@ -82,11 +82,44 @@ After that, the customer can proceed with payment by accessing the URL that is r
 > The Sandbox and Live domains may be different.   
 > Once testing is complete, be sure to switch to the Live domain.   
 
-<br>
+<br><br>
+
+### Create a checkout example code
+
+- If the Create Checkout API call is successful, it will respond with a URL.
+- Please refer to the [link](./api/nicepay-api-payment-window-url.md) for the request parameters of the Create Checkout API.
+
+```bash
+curl --location --request POST 'https://pay.nicepay.co.kr/v1/checkout' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "clientId": "R1_94eb3a4a30264fdba82ce0d05b465012",
+  "method": "card",
+  "orderId": "5a639653-3154-4e79-8d5a-d7d3b64a146e",
+  "amount": 1004,
+  "goodsName": "test",
+  "returnUrl": "http://test.com"
+}'
+```
+
+### Create a checkout example response
+
+```bash
+{
+    "sessionId": "NICEORD_TRK2_nicuntsx1m_2302272030343389",
+    "url": "https://pay.nicepay.co.kr/v1/pay/NICEORD_TRK2_nicuntsx1m_2302272030343389",
+    "resultCode": "0000",
+    "resultMsg": "success"
+}
+```
+
+When you access the URL that was responded, the Checkout window will be displayed, and the client will be able to make a payment.
 
 ### Payment (Approval) response example
 
-Refer to the [Code](./code/nicepay-code.md) for the response and error codes. 
+- When the client completes the payment, the approval information will be sent to the endpoint of the `returnUrl`
+
+- Refer to the [Code](./code/nicepay-code.md) for the response and error codes. 
 
 ```bash
 POST
