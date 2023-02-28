@@ -3,7 +3,7 @@ A list of URI's for provided APIs. If you need to check the interface, please cl
 
 | API                                                               |     Method      |               Endpoint              |   Sandbox |
 |:------------------------------------------------------------------|:-------------:|:--------------------------------------|:---------:|
-| [Payment Request (Hosted Payment Page)](/api/nicepay-api-payment-window-url.md) |      `POST`    |                                     |     ○     |
+| [Payment Request (Hosted Payment Page)](/api/nicepay-api-payment-window-url.md) |      `POST`    |                                     |     △     |
 | [Recurring payment: Token Issue](/api/nicepay-api-billing.md)             |      `POST`     |     /v1/subscribe/regist            |     ○     |
 | [Recurring Payment: Token authorization](/api/nicepay-api-billing.md)              |      `POST`     |     /v1/subscribe/{bid}/payments    |     ○     |
 | [Recurring Payment: Token delete](/api/payment-subscribe.md)               |      `POST`     |     /v1/subscribe/{bid}/expire      |     ○     |

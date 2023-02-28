@@ -28,7 +28,7 @@ curl --location --request POST 'https://pay.nicepay.co.kr/v1/checkout' \
 }'
 ```
 
-### Create Hosted Payment Page  Response Exampe Code
+### Create Hosted Payment Page Response Exampe Code
 
 ```bash
 {
