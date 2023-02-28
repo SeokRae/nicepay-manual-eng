@@ -129,7 +129,7 @@ Content-type: application/json;charset=utf-8
 | appScheme  |  String  |       |  200   | Mobile App Scheme value (only for APP)<br>Ex) If the merchant App scheme is `nicepaysample`<br><br>appScheme=nicepaysample:// <br><br> If the payer completes authentication through the Nice Pay payment window in the App,It moves to the targer App passed as the appScheme value.|
 
 
-### Create a checkout Response Parameter
+### Hosted Payment Page Response Parameter 
 
 | Parameter |   Type   |  Required   |  Bytes  | Description  |
 |:--------------|:----:|:-----:|:-----:|:--------|
