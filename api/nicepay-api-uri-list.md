@@ -9,7 +9,7 @@ A list of URI's for provided APIs. If you need to check the interface, please cl
 | [Recurring Payment: Token delete](/api/payment-subscribe.md)               |      `POST`     |     /v1/subscribe/{bid}/expire      |     ○     |
 | [AccessToken Generation](/api/nicepay-api-access-token.md)                  |      `POST`     |     /v1/access-token                |     ○     |
 | [Cancel request](/api/nicepay-api-cancel.md)                              |      `POST`     |     /v1/payments/{tid}/cancel       |     △     |
-| [Transaction Status Inquiry-Authorization amount](/api/nicepay-api-retrieve.md#check-amount-api-request-parameter)              |       `GET`     |     /v1/payments/{tid}              |     ○     |
+| [Transaction Status Inquiry-Authorization amount](/api/nicepay-api-retrieve.md#check-amount-api-request-parameter)              |       `GET`     |     /v1/check-amount/{tid}              |     ○     |
 | [Transaction Status Inquiry-Transaction status](/api/nicepay-api-retrieve.md#retrieve-a-transaction-with-tidtransaction-id)              |       `GET`     |     /v1/payments/{tid}              |     ○     |
 | [Transaction Status Inquiry-orderId](/api/nicepay-api-retrieve.md#retrieve-a-transaction-with-orderid)                  |       `GET`     |     /v1/payments/find/{orderId}     |     ○     |
 | [Card event inquiry](/api/nicepay-api-retrieve.md#card-event-api)               |       `GET`     |     /v1/card/event                  |     ×     |
