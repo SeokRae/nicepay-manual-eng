@@ -10,7 +10,7 @@ You can use the Transaction Search API to retrieve and cross-check transaction r
 ### Transaction Search API Example code
 
 ```bash
-curl --request GET 'https://api.nicepay.co.kr/v1/transactions?startDate=2023-02-28T00:00:00&endDate=2023-02-28T00:00:00&limit=10' \
+curl --request GET 'https://api.nicepay.co.kr/v1/transactions?date=20230228&limit=10' \
 --header 'Authorization: Basic UjFfOTRlYjNhNGEzMDI2NGZkYmE4MmNlMGQwNWI0NjUwMTI6MTJjZGUxMjQ0OWM2NDQ5N2E4NjEwNDc1OWI4MzA2YjY=' \
 --header 'Content-Type: application/json'
 ```
@@ -26,50 +26,49 @@ curl --request GET 'https://api.nicepay.co.kr/v1/transactions?startDate=2023-02-
     "pagination": {
         "count": 26,
         "hasMore": true,
-        "nextSequence": 4
+        "nextSequence": 11
     },
     "transactions": [
         {
-            "sequence": "1",
-            "originalTid": "yeoshin01m01012302281243584918",
-            "tid": "yeoshin01m01012302281243584918",
-            "orderId": "503cfe59-17d1-4133-bd76-5fee53bb6d61",
+            "sequence": 1,
+            "originalTid": "yeoshin01m01012302280815095301",
+            "tid": "yeoshin01m01012302280815095301",
+            "orderId": "1233321132323323",
             "currency": "KRW",
-            "amount": "1004",
+            "amount": 1004,
             "method": "card",
-            "useEscrow": "false",
+            "useEscrow": false,
             "transactionStatus": "cancelled",
-            "cardAcquiringStatus": "false",
             "transactionAt": "2023-02-28T00:00:00"
         },
         {
-            "sequence": "2",
-            "originalTid": "yeoshin01m01012302281126204943",
-            "tid": "yeoshin01m01012302281126204943",
-            "orderId": "55113904588",
+            "sequence": 2,
+            "originalTid": "yeoshin01m01012302280834436052",
+            "tid": "yeoshin01m01012302280834436052",
+            "orderId": "12174575685",
             "currency": "KRW",
-            "amount": "4512",
+            "amount": 8377,
             "method": "card",
-            "useEscrow": "false",
+            "useEscrow": false,
             "transactionStatus": "cancelled",
-            "cardAcquiringStatus": "false",
             "transactionAt": "2023-02-28T00:00:00"
         },
         {
-            "sequence": "3",
-            "originalTid": "yeoshin01m01012302281128386877",
-            "tid": "yeoshin01m01012302281128386877",
-            "orderId": "54565357369",
+            "sequence": 3,
+            "originalTid": "yeoshin02m01162302280839111365",
+            "tid": "yeoshin02m01162302280839111365",
+            "orderId": "furyOrderId311655",
             "currency": "KRW",
-            "amount": "1183",
+            "amount": 1004,
             "method": "card",
-            "useEscrow": "false",
+            "useEscrow": false,
             "transactionStatus": "cancelled",
-            "cardAcquiringStatus": "false",
             "transactionAt": "2023-02-28T00:00:00"
         }
+
+        ...
+
     ]
-    ...
 }
 
 ```
@@ -95,8 +94,7 @@ Content-type: application/json;charset=utf-8
 
 | Parameter        | Type    | Required | Bytes | Description                                                                      |
 |:-----------------|:-------:|:--------:|:-----:|:---------------------------------------------------------------------------------|
-| startDate        | String  | O        | 19    | Start date for transaction search (yyyyMMdd)  <br> ex) 2023-02-28T00:00:00 |
-| endDate          | String  | O        | 19    | End date for transaction search (yyyyMMdd) <br> ex) 2023-02-28T00:00:00 |
+| date             | String  | O        | 19    | Start date for transaction search (yyyyMMdd)  <br> ex) 20230228 |
 | startingSequence | String  | -        |       | Starting point of the sequence. <br> The sequence is created based on the startDate.    |
 | limit            | Integer | -        | -     | default 100 <br> max 500   |
 
@@ -135,9 +133,9 @@ You can retrieve settlement records based on the specified date.
 ### Settlement API Example code
 
 ```bash
-curl --request GET 'https://api.nicepay.co.kr/v1/settlements?date=2023-03-07T00:00:00&type=transactionDate' \
+curl --request GET 'https://api.nicepay.co.kr/v1/settlements?limit=10&type=transactionDate&date=20230308' \
 --header 'Authorization: Basic UjFfOTRlYjNhNGEzMDI2NGZkYmE4MmNlMGQwNWI0NjUwMTI6MTJjZGUxMjQ0OWM2NDQ5N2E4NjEwNDc1OWI4MzA2YjY=' \
---header 'Content-Type: application/json'
+--header 'Content-Type: application/json' 
 ```
 
 <br>
@@ -149,39 +147,62 @@ curl --request GET 'https://api.nicepay.co.kr/v1/settlements?date=2023-03-07T00:
     "resultCode": "0000",
     "resultMsg": "Success",
     "pagination": {
-        "count": 13,
-        "hasMore": false,
-        "nextSequence": 0
+        "count": 19,
+        "hasMore": true,
+        "nextSequence": 11
     },
     "settlements": [
         {
-            "sequence": "1",
-            "originalTid": "yeoshin01m01012303070846212106",
-            "tid": "yeoshin01m01012303070846212106",
-            "orderId": "39397277124",
+            "sequence": 1,
+            "originalTid": "yeoshin01m01012303081045096292",
+            "tid": "yeoshin01m01012303081045096292",
+            "orderId": "32377033887",
             "currency": "KRW",
             "settlementCurrency": "USD",
             "method": "card",
-            "interestFee": "0",
-            "useEscrow": "false",
+            "interestFee": 0,
+            "useEscrow": false,
             "net": {
-                "krw": "0",
-                "usd": "0"
+                "krw": 0,
+                "usd": 0
             },
             "transactionStatus": "cancelled",
-            "cardAcquiringStatus": "false",
-            "amount": "7517",
-            "supplyAmt": "6834",
-            "fee": "0",
-            "vat": "0",
-            "exchangeRate": "1296.7",
-            "transactionAt": "2023-03-07T00:00:00",
-            "paidOutDate": "2023-03-12T00:00:00",
-            "sendDate": "2023-03-12T00:00:00"
+            "cardAcquiringStatus": false,
+            "amount": 9827,
+            "supplyAmt": 8934,
+            "fee": 0,
+            "vat": 0,
+            "exchangeRate": 1319,
+            "transactionAt": "2023-03-08T00:00:00",
+            "paidOutDate": "20230313"
         },
+        {
+            "sequence": 2,
+            "originalTid": "yeoshin01m01012303081048526992",
+            "tid": "yeoshin01m01012303081048526992",
+            "orderId": "59721917475",
+            "currency": "KRW",
+            "settlementCurrency": "USD",
+            "method": "card",
+            "interestFee": 0,
+            "useEscrow": false,
+            "net": {
+                "krw": 0,
+                "usd": 0
+            },
+            "transactionStatus": "cancelled",
+            "cardAcquiringStatus": false,
+            "amount": 4153,
+            "supplyAmt": 3775,
+            "fee": 0,
+            "vat": 0,
+            "exchangeRate": 1319,
+            "transactionAt": "2023-03-08T00:00:00",
+            "paidOutDate": "20230313"
+        }
 
         ...
-
+        
     ]
 }
 
