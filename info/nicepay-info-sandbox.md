@@ -90,9 +90,9 @@ Please refer to the link for more detailed information.
 <br>
 
 ### Test key  
-Client : S1_ce1bb1ebebc44fe1a3f7cec976c83ea7		
+Client : S1_ce1bb1ebebc44fe1a3f7cec976c83ea7  
 Secret : 13e969a77a0545799242ccc3915243d3  
-Authorization : Basic UzFfY2UxYmIxZWJlYmM0NGZlMWEzZjdjZWM5NzZjODNlYTc6MTNlOTY5YTc3YTA1NDU3OTkyNDJjY2MzOTE1MjQzZDM=   
+Authorization : Basic UzFfY2UxYmIxZWJlYmM0NGZlMWEzZjdjZWM5NzZjODNlYTc6MTNlOTY5YTc3YTA1NDU3OTkyNDJjY2MzOTE1MjQzZDM=  
 
 <br>
 
