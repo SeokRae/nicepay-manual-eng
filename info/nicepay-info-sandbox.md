@@ -191,7 +191,7 @@ http://35.228.103.98/untact-sandbox/checkout-sandbox.php
 
 ## Transaction Status Inquiry
 
-You can check it through the response tid(transaction ID) received in the Sandbox.  
+You can check `Transaction Status` through the response tid(transaction ID) received in the Sandbox.  
 
 
 Please refer to the link for more detailed information.  
