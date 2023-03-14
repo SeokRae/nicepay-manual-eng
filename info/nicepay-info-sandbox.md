@@ -206,7 +206,7 @@ Please refer to the link for more detailed information.
 ```bash
 GET /v1/payments/{tid} 
 HTTP/1.1  
-Host: api.nicepay.co.kr 
+Host: sandbox-api.nicepay.co.kr 
 Authorization: Basic <credentials>  or Bearer <token>
 Content-type: application/json;charset=utf-8
 ```
@@ -287,7 +287,7 @@ Please refer to the link for more detailed information.
 ```bash
 GET /v1/payments/find/{orderId}  
 HTTP/1.1    
-Host: api.nicepay.co.kr 
+Host: sandbox-api.nicepay.co.kr 
 Authorization: Basic <credentials>  or Bearer <token>
 Content-type: application/json;charset=utf-8
 ```
@@ -368,7 +368,7 @@ Please refer to the link for more detailed information.
 ```bash
 POST /v1/payments/{tid}/cancel  
 HTTP/1.1  
-Host: api.nicepay.co.kr 
+Host: sandbox-api.nicepay.co.kr 
 Authorization: Basic <credentials>  or Bearer <token>
 Content-type: application/json;charset=utf-8
 ```
