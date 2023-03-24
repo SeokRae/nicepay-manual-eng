@@ -13,7 +13,7 @@
 
 <br>
 
-### Create Hosted Payment Page Exampe Code
+### Create Hosted Payment Page Example Code
 
 ```bash
 curl --location 'https://api.nicepay.co.kr/v1/checkout' \
@@ -31,7 +31,7 @@ curl --location 'https://api.nicepay.co.kr/v1/checkout' \
 }'
 ```
 
-### Create Hosted Payment Page Response Exampe Code
+### Create Hosted Payment Page Response Example Code
 
 ```bash
 {
@@ -89,9 +89,11 @@ Content-type: application/json;charset=utf-8
 
 | Parameter     |   Type   |  Required   |  Bytes  | Description  |
 |:--------------|:---------:|:----------:|:-------:|:--------------|
+|   sessionId    | String  |  O  | 64	  | Merchant unique session id, issued by merchant | 
 |   clientId    | String  |  O  | 50	  | Merchant identifier, issued by NICEPAY | 
-|    method     | String  |  O  | 20	  | Payment Method <br> card : local cards <br> bank : bank transfer <br> directCard : directly shows card authentication page without NICE hosted page <br> vbank : virtual account  <br> cellphone : carrier billing <br>naverpayCard : Naver Pay - card (excluded Point) <br> kakaopay : Kakao Pa (Card or Money) <br>kakaopayCard : Kakao Pay - Card <br>kakaopayMoney : Kakaopay -Money <br>samsungpayCard : Samsung Pay Card <br>payco : Payco <br>ssgpay : SSGPAY <br>cardAndEasyPay : Card and Wallets, for <br>cardAndEasyPay it cannot be used together with below parameters <br>- cardCode, cardQuota, shopInterest, quotaInterest | 
+|    method     | String  |  O  | 20	  | Payment Method <br> all : Display all payment methods <br> card : local cards <br> bank : bank transfer <br> directCard : directly shows card authentication page without NICE hosted page <br> vbank : virtual account  <br> cellphone : carrier billing <br>naverpayCard : Naver Pay - card (excluded Point) <br> kakaopay : Kakao Pa (Card or Money) <br>kakaopayCard : Kakao Pay - Card <br>kakaopayMoney : Kakaopay -Money <br>samsungpayCard : Samsung Pay Card <br>payco : Payco <br>ssgpay : SSGPAY <br>cardAndEasyPay : Card and Wallets, for <br>cardAndEasyPay it cannot be used together with below parameters <br>- cardCode, cardQuota, shopInterest, quotaInterest |
 |    orderId    | String  |  O  | 64	  | Your unique order id<br> cannot reuse the orderid    | 
+|    expireDate    | String  |    | -	  | Expiration Date of sessionId<br><br>ISO 8601  | 
 |    amount     | Int  	  |  O  | 12	  | Transaction amount (only numbers are allowed) | 
 |   goodsName   | String  |  O  | 40	  | Product Name<br> - doubleQuota(")와 pipLine(&brvbar;) characters are converted to '-' | 
 |   returnUrl   | String  |  O  | 500	 | url for Redirect after the authentication is processed | 
@@ -173,11 +175,21 @@ Content-type: application/json;charset=utf-8
 |:--------------|:----:|:-----:|:-----:|:--------|
 | resultCode | String | O | 4 | 0000 : success / other failure |
 | resultMsg | String | O | 100 | Result message |
-| sessionId | String |  | 40 | session id |
+| sessionId | String  |  O  | 64	  | Merchant unique session id, issued by merchant | 
+| orderId | String | O | 64 | Your Unique order ID |
+| clientId | String | O | 50 | Client ID issued by NICEPAY |
+| tid | String | | 30 | Returned when authorization is successful |
+| amount | Int | O | 12 | payment amount |
 | url | String |  |   | The URL to the Checkout Session. Redirect customers to this URL to take them to Checkout. |
+| status | String | | 20 | Payment processing status<br><br>ready: ready to authenticatoin|
+| isExpire | Boolean | |  | true : Expired <br> false : Not expired |
+| expireDate | String | |  | true : Expired <br> ISO 8601 |
+| expiredAt | String | |  | Expiration requested time |
 
+And Requested Parameter's will be response
 
 <br><br>
+
 
 ### Payment Authorization <img src="https://img.shields.io/badge/-Beta version-red">
 
@@ -247,4 +259,88 @@ Content-type: application/x-www-form-urlencoded
 | bankCode | String | O | 3 | Bank code |
 | bankName | String | O | 20 | Bank name (euc-kr) |
 
+<br><br>
+
+### Retrieve Checkout session API <img src="https://img.shields.io/badge/-Beta version-red">
+
+This is an API that allows you to check the status of a generated session.
+
 <br>
+
+### Retrieve Checkout session Request Parameter
+
+```bash
+GET /v1/checkout/{sessionId}
+HTTP/1.1    
+Host: api.nicepay.co.kr
+Authorization: Basic <credentials> or Bearer <token>
+Content-type: application/json;charset=utf-8
+```
+
+| Parameter |   Type   |  Required   |  Bytes  | Description  |
+|:--------------|:----:|:-----:|:-----:|:--------|
+| sessionId | String  |  O  | 64	  | Merchant unique session id, issued by merchant | 
+
+<br><br>
+
+### Retrieve Checkout session Response Parameter
+
+| Parameter |   Type   |  Required   |  Bytes  | Description  |
+|:--------------|:----:|:-----:|:-----:|:--------|
+| resultCode | String | O | 4 | 0000 : success / other failure |
+| resultMsg | String | O | 100 | Result message |
+| sessionId | String  |  O  | 64	  | Merchant unique session id, issued by merchant | 
+| orderId | String | O | 64 | Your Unique order ID |
+| clientId | String | O | 50 | Client ID issued by NICEPAY |
+| tid | String | | 30 | Returned when authorization is successful |
+| amount | Int | O | 12 | payment amount |
+| url | String |  |   | The URL to the Checkout Session. Redirect customers to this URL to take them to Checkout. |
+| status | String | | 20 | Payment processing status<br><br>paid: payment completed, ready: ready (virtual account number), failed: payment failed, canceled: canceled, partialCanceled: partially canceled, expired: expired<br>['paid', 'ready', 'failed', 'canceled', 'partialCanceled', 'expired']|
+| isExpire | Boolean | |  | true : Expired <br> false : Not expired |
+| expireDate | String | |  | true : Expired <br> ISO 8601 |
+| expiredAt | String | |  | Expiration requested time |
+
+And Requested Parameter's will be response
+
+<br><br>
+
+### Expire Checkout session API <img src="https://img.shields.io/badge/-Beta version-red">
+
+This is an API for expiring a generated session.
+
+<br>
+
+### Expire Checkout session Request Parameter
+
+```bash
+GET /v1/checkout/{sessionId}/expire
+HTTP/1.1    
+Host: api.nicepay.co.kr
+Authorization: Basic <credentials> or Bearer <token>
+Content-type: application/json;charset=utf-8
+```
+
+| Parameter |   Type   |  Required   |  Bytes  | Description  |
+|:--------------|:----:|:-----:|:-----:|:--------|
+| sessionId | String  |  O  | 64	  | Merchant unique session id, issued by merchant | 
+
+<br><br>
+
+### Expire Checkout session Response Parameter
+
+| Parameter |   Type   |  Required   |  Bytes  | Description  |
+|:--------------|:----:|:-----:|:-----:|:--------|
+| resultCode | String | O | 4 | 0000 : success / other failure |
+| resultMsg | String | O | 100 | Result message |
+| sessionId | String  |  O  | 64	  | Merchant unique session id, issued by merchant | 
+| orderId | String | O | 64 | Your Unique order ID |
+| clientId | String | O | 50 | Client ID issued by NICEPAY |
+| tid | String | | 30 | Returned when authorization is successful |
+| amount | Int | O | 12 | payment amount |
+| url | String |  |   | The URL to the Checkout Session. Redirect customers to this URL to take them to Checkout. |
+| status | String | | 20 | Payment processing status<br><br>paid: payment completed, ready: ready (virtual account number), failed: payment failed, canceled: canceled, partialCanceled: partially canceled, expired: expired<br>['paid', 'ready', 'failed', 'canceled', 'partialCanceled', 'expired']|
+| isExpire | Boolean | |  | true : Expired <br> false : Not expired |
+| expireDate | String | |  | true : Expired <br> ISO 8601 |
+| expiredAt | String | |  | Expiration requested time |
+
+And Requested Parameter's will be response

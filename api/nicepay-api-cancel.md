@@ -43,7 +43,33 @@ curl -X POST 'https://api.nicepay.co.kr/v1/payments/nicuntct1m0101210727200125A0
 
 <br><br>
 
-### Cancel Request parameter
+### Cancel Request parameter (with sessionId)
+
+```bash
+POST /v1/payments/checkout/{sessionId}/cancel  
+HTTP/1.1  
+Host: api.nicepay.co.kr  
+Authorization: Basic <credentials>  or Bearer <token>  
+Content-type: application/json;charset=utf-8  
+```
+
+| Parameter     | Type      | required | bytes | Description |
+|:--------------|:---------:|:--------:|:------:|:-----------|
+| reason        | String    | O     | 100       | Cancellation reason |
+| orderId       | String    | O     | 64        | Your unique order ID <br>-In case of partial cancellation, orderId cannot be reusable |
+| cancelAmt     | Int       |       | 12        | Cancellation Amount<br>If the value is missing, full cancellation will be occured |
+| mallReserved  | String    |       | 500       | Spare field for store information delivery |
+| ediDate      | String    |       | -         | Full Text Creation Date<br>ISO 8601 Format |
+| signData      | String    |       | 256       | Forgery Verification Data<br>Rule: hex(sha256(tid + ediDate + SecretKey) |
+| returnCharSet | String    |       | 10        | utf-8(Default) / euc-kr |
+| taxFreeAmt    | Int       |       | 12        | Tax-free amount among cancellation amount |
+| refundAccount | String    |       | 16        | Refund account number (Only for Virtual account) |
+| refundBankCode| String    |       | 3         | Refund account code (Only for Virtual account) |
+| refundHolder  | Strin     |       | 10        | Refund account account holder name (Only for Virtual account) |
+
+<br><br>
+
+### Cancel Request parameter (with tid)
 
 ```bash
 POST /v1/payments/{tid}/cancel  
@@ -67,9 +93,10 @@ Content-type: application/json;charset=utf-8
 | refundBankCode| String    |       | 3         | Refund account code (Only for Virtual account) |
 | refundHolder  | Strin     |       | 10        | Refund account account holder name (Only for Virtual account) |
 
-<br>
+<br><br>
 
-### Response parameter
+
+### Response parameter (for tid or sessionId cancel)
 
 ```bash
 POST

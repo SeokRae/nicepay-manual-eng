@@ -104,11 +104,11 @@ Content-type: application/json;charset=utf-8
 ### Transaction Status Inquiry (with orderId)
 
 ```bash
-GET /v1/payments/find/{orderId}  
+GET /v1/payments/find/{orderId}   
 HTTP/1.1    
-Host: api.nicepay.co.kr 
-Authorization: Basic <credentials>  or Bearer <token>
-Content-type: application/json;charset=utf-8
+Host: api.nicepay.co.kr  
+Authorization: Basic <credentials>  or Bearer <token>  
+Content-type: application/json;charset=utf-8  
 ```
 
 | Parameter | Type | Required | Bytes | Description |
@@ -120,7 +120,23 @@ Content-type: application/json;charset=utf-8
 
 <br>
 
-## Response parameter (Check Authorization Amount and Transaction Status Inquiry)
+### Transaction Status Inquiry (with sessionId)
+
+```bash
+GET /v1/payments/checkout/{{sessionId}}  
+HTTP/1.1  
+Host: api.nicepay.co.kr 
+Authorization: Basic <credentials>  or Bearer <token>  
+Content-type: application/json;charset=utf-8  
+```
+
+| Parameter |   Type   |  Required   |  Bytes  | Description  |
+|:--------------|:----:|:-----:|:-----:|:--------|
+| sessionId | String  |  O  | 64	  | Merchant unique session id, issued by merchant | 
+
+<br>
+
+## Response parameter (Check Authorization Amount and Transaction Status Inquiry by tid, orderId, sessionId)
 
 ```bash
 Content-type: application/json
