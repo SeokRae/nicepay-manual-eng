@@ -9,7 +9,7 @@ However, for cash transactions such as virtual accounts, refund account informat
 
 <br>
 
-### Cancel API example
+### Cancel with session id example
 
 ```bash
 curl --location 'https://api.nicepay.co.kr/v1/payments/checkout/641d555b91ae1/cancel' \

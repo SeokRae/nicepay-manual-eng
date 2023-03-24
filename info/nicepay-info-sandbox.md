@@ -230,6 +230,10 @@ http://35.228.103.98/untact-sandbox/checkout-sandbox.php
 
 ## Retrieve a checkout page
 
+Use it if you need to check the status of the session ID.  
+
+[Retrieve a checkout parameter](/api/nicepay-api-payment-window-url.md#nicepay-api-payment-window-url.md#retrieve-checkout-session-api-) 
+
 <br>
 
 ```bash
@@ -245,7 +249,7 @@ Content-type: application/json;charset=utf-8
 ```bash
 curl --location 'https://sandbox-api.nicepay.co.kr/v1/checkout/641d555b91ae1' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Basic UzFfY2UxYmIxZWJlYmM0NGZlMWEzZjdjZWM5NzZjODNlYTc6MTNlOTY5YTc3YTA1NDU3OTkyNDJjY2MzOTE1MjQzZDM=' \
+--header 'Authorization: Basic UzFfY2UxYmIxZWJlYmM0NGZlMWEzZjdjZWM5NzZjODNlYTc6MTNlOTY5YTc3YTA1NDU3OTkyNDJjY2MzOTE1MjQzZDM=' 
 ```
 
 <br>
@@ -305,6 +309,10 @@ Response
 If no expiration time is specified for the session ID, it will be accessible for up to 24 hours.   
 If you want to expire the session before that, please call the expire API.  
 
+[Expire a checkout parameter](/api/nicepay-api-payment-window-url.md#nicepay-api-payment-window-url.md#expire-checkout-session-api-)
+
+
+
 ```bash
 GET /v1/checkout/{sessionId}/expire
 HTTP/1.1  
@@ -318,7 +326,7 @@ Content-type: application/json;charset=utf-8
 ```bash
 curl --location --request POST 'https://sandbox-api.nicepay.co.kr/v1/checkout/641d555b91ae2/expire' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Basic UzFfY2UxYmIxZWJlYmM0NGZlMWEzZjdjZWM5NzZjODNlYTc6MTNlOTY5YTc3YTA1NDU3OTkyNDJjY2MzOTE1MjQzZDM=' \
+--header 'Authorization: Basic UzFfY2UxYmIxZWJlYmM0NGZlMWEzZjdjZWM5NzZjODNlYTc6MTNlOTY5YTc3YTA1NDU3OTkyNDJjY2MzOTE1MjQzZDM=' 
 ```
 
 <br>
@@ -377,11 +385,11 @@ Response
 
 ## Transaction Status Inquiry
 
-You can check `Transaction Status` through the response tid(transaction ID) received in the Sandbox.  
+You can check `Transaction Status` through the response id(sessionId or transaction ID) received in the Sandbox.  
 
 
 Please refer to the link for more detailed information.  
-[Transaction Status Inquiry-Transaction status](/api/nicepay-api-retrieve.md#retrieve-a-transaction-with-tidtransaction-id)
+[Transaction Status Inquiry-Transaction status](/api/nicepay-api-retrieve.md#transaction-status-inquiry-with-sessionid)
 
 <br>
 
@@ -401,7 +409,7 @@ Content-type: application/json;charset=utf-8
 ```bash
 curl --location 'https://sandbox-api.nicepay.co.kr/v1/payments/checkout/641d555b91ae1' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Basic UzFfY2UxYmIxZWJlYmM0NGZlMWEzZjdjZWM5NzZjODNlYTc6MTNlOTY5YTc3YTA1NDU3OTkyNDJjY2MzOTE1MjQzZDM=' \
+--header 'Authorization: Basic UzFfY2UxYmIxZWJlYmM0NGZlMWEzZjdjZWM5NzZjODNlYTc6MTNlOTY5YTc3YTA1NDU3OTkyNDJjY2MzOTE1MjQzZDM=' 
 ```
 
 <br>
@@ -621,11 +629,11 @@ In the Sandbox, only full cancellation is possible.
 If there is no amount value, a full cancellation will be processed, and if a partial cancellation is to be made, you must pass the amount value.
 
 Please refer to the link for more detailed information.  
-[Cancel request](/api/nicepay-api-cancel.md) 
+[Cancel request](/api/nicepay-api-cancel.md#cancel-request-parameter-with-sessionid) 
 
 <br>
 
-### Cancel with sessionId exmplae
+### Cancel with sessionId example
 
 <br>
 
