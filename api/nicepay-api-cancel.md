@@ -12,10 +12,10 @@ However, for cash transactions such as virtual accounts, refund account informat
 ### Cancel API example
 
 ```bash
-curl -X POST 'https://api.nicepay.co.kr/v1/payments/nicuntct1m0101210727200125A056/cancel' 
--H 'Content-Type: application/json' 
--H 'Authorization: Basic YWYwZDExNjIzNmRmNDM3...' 
--D '{
+curl --location 'https://api.nicepay.co.kr/v1/payments/checkout/641d555b91ae1/cancel' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Basic UzFfY2UxYmIxZWJlYmM0NGZlMWEzZjdjZWM5NzZjODNlYTc6MTNlOTY5YTc3YTA1NDU3OTkyNDJjY2MzOTE1MjQzZDM=' \
+--data '{
     "reason" : "sample-code",
     "orderId" : "merchant-order-id"
 }'
