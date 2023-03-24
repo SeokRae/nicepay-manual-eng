@@ -16,15 +16,18 @@
 ### Create Hosted Payment Page Exampe Code
 
 ```bash
-curl --location --request POST 'https://pay.nicepay.co.kr/v1/checkout' \
+curl --location 'https://api.nicepay.co.kr/v1/checkout' \
 --header 'Content-Type: application/json' \
---data-raw '{
-  "clientId": "R1_94eb3a4a30264fdba82ce0d05b465012",
-  "method": "card",
-  "orderId": "5a639653-3154-4e79-8d5a-d7d3b64a146e", //your-unique-orderId
-  "amount": 1004,
-  "goodsName": "test",
-  "returnUrl": "https://your-return-url.com"
+--header 'Authorization: Basic UjFfOTRlYjN...' \
+--data '{
+    "method": "all",
+    "sessionId" : "unique-sessionId-001",
+    "clientId": "R1_94eb3a4a30264fdba82ce0d05b465012",
+    "orderId": "order-id-unique-order-001",
+    "amount": 1004,
+    "goodsName" : "test",
+    "returnUrl": "http://your-return-url.com",
+    "language" : "EN"
 }'
 ```
 
@@ -32,10 +35,46 @@ curl --location --request POST 'https://pay.nicepay.co.kr/v1/checkout' \
 
 ```bash
 {
-    "sessionId": "NICEORD_TRK1_nicuntsx1m_2302281216131990",
-    "url": "https://pay.nicepay.co.kr/v1/checkout/NICEORD_TRK1_nicuntsx1m_2302281216131990",
     "resultCode": "0000",
-    "resultMsg": "success"
+    "resultMsg": "정상 처리되었습니다.",
+    "sessionId": "unique-sessionId-001",
+    "orderId": "order-id-unique-order-001",
+    "clientId": "R1_94eb3a4a30264fdba82ce0d05b465012",
+    "tid": null,
+    "amount": 1004,
+    "goodsName": "test",
+    "returnUrl": "http://your-return-url.com",
+    "apprStatus": "ready",
+    "skinType": null,
+    "taxFreeAmt": null,
+    "isExpire": false,
+    "updateDate": null,
+    "expireDate": "2023-03-25T13:58:01.000+0900",
+    "mallReserved": null,
+    "mallUserId": null,
+    "buyerName": null,
+    "buyerTel": null,
+    "buyerEmail": null,
+    "useEscrow": false,
+    "currency": "KRW",
+    "logoImgUrl": null,
+    "language": "EN",
+    "returnCharSet": null,
+    "cardQuota": null,
+    "cardCode": null,
+    "cardShowOpt": null,
+    "vbankHolder": null,
+    "vbankValidHours": null,
+    "vbankExpDate": null,
+    "isDigital": false,
+    "directReceiptType": null,
+    "directReceiptNo": null,
+    "disableScroll": false,
+    "disableEdgeChk": false,
+    "appScheme": null,
+    "method": "all",
+    "url": "https://pay.nicepay.co.kr/v1/checkout/pay/unique-sessionId-001",
+    "zidxHigher": false
 }
 ```
 

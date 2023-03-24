@@ -90,15 +90,18 @@ After that, the customer can proceed with payment by accessing the URL that is r
 - Please refer to the [link](./api/nicepay-api-payment-window-url.md) for the request parameters of the Create Checkout API.
 
 ```bash
-curl --location --request POST 'https://pay.nicepay.co.kr/v1/checkout' \
+curl --location 'https://api.nicepay.co.kr/v1/checkout' \
 --header 'Content-Type: application/json' \
---data-raw '{
-  "clientId": "R1_94eb3a4a30264fdba82ce0d05b465012",
-  "method": "card",
-  "orderId": "5a639653-3154-4e79-8d5a-d7d3b64a146e", //your-unique-orderId
-  "amount": 1004,
-  "goodsName": "test",
-  "returnUrl": "https://your-return-url.com"
+--header 'Authorization: Basic UjFfOTRlYjN...' \
+--data '{
+    "method": "all",
+    "sessionId" : "unique-sessionId-001",
+    "clientId": "R1_94eb3a4a30264fdba82ce0d05b465012",
+    "orderId": "order-id-unique-order-001",
+    "amount": 1004,
+    "goodsName" : "test",
+    "returnUrl": "http://your-return-url.com",
+    "language" : "EN"
 }'
 ```
 
@@ -106,14 +109,56 @@ curl --location --request POST 'https://pay.nicepay.co.kr/v1/checkout' \
 
 ```bash
 {
-    "sessionId": "NICEORD_TRK1_nicuntsx1m_2302281216131990",
-    "url": "https://pay.nicepay.co.kr/v1/checkout/NICEORD_TRK1_nicuntsx1m_2302281216131990",
     "resultCode": "0000",
-    "resultMsg": "success"
+    "resultMsg": "정상 처리되었습니다.",
+    "sessionId": "unique-sessionId-001",
+    "orderId": "order-id-unique-order-001",
+    "clientId": "R1_94eb3a4a30264fdba82ce0d05b465012",
+    "tid": null,
+    "amount": 1004,
+    "goodsName": "test",
+    "returnUrl": "http://your-return-url.com",
+    "apprStatus": "ready",
+    "skinType": null,
+    "taxFreeAmt": null,
+    "isExpire": false,
+    "updateDate": null,
+    "expireDate": "2023-03-25T13:58:01.000+0900",
+    "mallReserved": null,
+    "mallUserId": null,
+    "buyerName": null,
+    "buyerTel": null,
+    "buyerEmail": null,
+    "useEscrow": false,
+    "currency": "KRW",
+    "logoImgUrl": null,
+    "language": "EN",
+    "returnCharSet": null,
+    "cardQuota": null,
+    "cardCode": null,
+    "cardShowOpt": null,
+    "vbankHolder": null,
+    "vbankValidHours": null,
+    "vbankExpDate": null,
+    "isDigital": false,
+    "directReceiptType": null,
+    "directReceiptNo": null,
+    "disableScroll": false,
+    "disableEdgeChk": false,
+    "appScheme": null,
+    "method": "all",
+    "url": "https://pay.nicepay.co.kr/v1/checkout/pay/unique-sessionId-001",
+    "zidxHigher": false
 }
 ```
 
 When you access the URL that was responded, the Checkout window will be displayed, and the client will be able to make a payment.
+
+<br><br>
+
+<img src="./image/live-checkout.png" width="800px">
+
+https://pay.nicepay.co.kr/v1/checkout/pay/unique-sessionId-001
 
 <br><br>
 
@@ -129,47 +174,50 @@ Content-type: application/json
 ```
 ```bash
 {
-  resultCode: '0000',  // Success
-  resultMsg: '정상 처리되었습니다.',
-  tid: 'UT0000113m01012111051714341073',
-  cancelledTid: null,
-  orderId: 'c74a5960-830b-4cd8-82a9-fa1ce739a18f',
-  ediDate: '2021-11-05T17:14:35.150+0900',
-  signature: '63b251b31c909eebef1a9f4fcc19e77bdcb8f64fc1066a29670f8627186865cd',
-  status: 'paid',
-  paidAt: '2021-11-05T17:14:35.000+0900',
-  failedAt: '0',
-  cancelledAt: '0',
-  payMethod: 'card',
-  amount: 1004,
-  balanceAmt: 1004,
-  goodsName: 'your-goods-name',
-  mallReserved: null,
-  useEscrow: false,
-  currency: 'KRW',
-  channel: 'pc',
-  approveNo: '000000',
-  buyerName: null,
-  buyerTel: null,
-  buyerEmail: null,
-  receiptUrl: 'https://npg.nicepay.co.kr/issue/IssueLoader.do?type=0&innerWin=Y&TID=UT0000113m01012111051714341073',
-  mallUserId: null,
-  issuedCashReceipt: false,
-  coupon: null,
-  card: {
-    cardCode: '04',
-    cardName: '삼성', // In Sandbox value is fixed (삼성:Samsung Card)
-    cardNum: '12341234****1234',
-    cardQuota: 0,
-    isInterestFree: false,
-    cardType: 'credit',
-    canPartCancel: true,
-    acquCardCode: '04',
-    acquCardName: '삼성'
-  },
-  vbank: null,
-  cancels: null,
-  cashReceipts: null
+    "resultCode": "0000",
+    "resultMsg": "정상 처리되었습니다.",
+    "tid": "yeoshin01m01012303241404031098",
+    "cancelledTid": null,
+    "orderId": "order-id-unique-order-001",
+    "ediDate": "2023-03-24T14:04:16.982+0900",
+    "signature": "59a05ad89bbbb6b5dda157dd31c48510f78eefdffc13ebec94f5afffa067fa4f",
+    "status": "paid",
+    "paidAt": "2023-03-24T14:04:03.000+0900",
+    "failedAt": "0",
+    "cancelledAt": "0",
+    "payMethod": "card",
+    "amount": 1004,
+    "balanceAmt": 1004,
+    "goodsName": "test",
+    "mallReserved": null,
+    "useEscrow": false,
+    "currency": "KRW",
+    "channel": "pc",
+    "approveNo": null,
+    "buyerName": null,
+    "buyerTel": null,
+    "buyerEmail": "test@abc.com",
+    "receiptUrl": "https://npg.nicepay.co.kr/issue/IssueLoader.do?type=0&innerWin=Y&TID=yeoshin01m01012303241404031098",
+    "mallUserId": null,
+    "issuedCashReceipt": false,
+    "coupon": null,
+    "card": {
+        "cardCode": "07",
+        "cardName": "현대",
+        "cardNum": "624368******7607",
+        "cardQuota": 0,
+        "isInterestFree": false,
+        "cardType": "credit",
+        "canPartCancel": true,
+        "acquCardCode": "07",
+        "acquCardName": "현대"
+    },
+    "vbank": null,
+    "bank": null,
+    "cellphone": null,
+    "cancels": null,
+    "cashReceipts": null,
+    "sessionId": "unique-sessionId-001"
 }
 ```
 > #### ⚠️ Important  
