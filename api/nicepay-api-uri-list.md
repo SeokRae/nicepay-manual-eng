@@ -4,9 +4,9 @@ A list of URI's for provided APIs. If you need to check the interface, please cl
 | API                                                               |     Method      |               Endpoint              |   Sandbox |
 |:------------------------------------------------------------------|:-------------:|:--------------------------------------|:---------:|
 | [Payment Request (Hosted Payment Page)](/api/nicepay-api-payment-window-url.md) |      `POST`    |              |     △     |
-| [Create checkout session](/api/nicepay-api-payment-window-url.md#hosted-payment-page-request-parameter-) |      `POST`    | v1/checkout |     ○     |
-| [Retrive checkout session](/api/nicepay-api-payment-window-url.md#retrieve-checkout-session-api-) |      `GET`    | v1/checkout/{sessionId} |     ○     |
-| [Expire checkout session](/api/nicepay-api-payment-window-url.md#expire-checkout-session-api-) |      `POST`    | v1/checkout/{sessionId}/expire |     ○     |
+| [Create checkout session](/api/nicepay-api-payment-window-url.md#hosted-payment-page-request-parameter-) |      `POST`    | /v1/checkout |     ○     |
+| [Retrive checkout session](/api/nicepay-api-payment-window-url.md#retrieve-checkout-session-api-) |      `GET`    | /v1/checkout/{sessionId} |     ○     |
+| [Expire checkout session](/api/nicepay-api-payment-window-url.md#expire-checkout-session-api-) |      `POST`    | /v1/checkout/{sessionId}/expire |     ○     |
 | [Recurring payment: Token Issue](/api/nicepay-api-billing.md)             |      `POST`     |     /v1/subscribe/regist            |     ○     |
 | [Recurring Payment: Token authorization](/api/nicepay-api-billing.md)              |      `POST`     |     /v1/subscribe/{bid}/payments    |     ○     |
 | [Recurring Payment: Token delete](/api/payment-subscribe.md)               |      `POST`     |     /v1/subscribe/{bid}/expire      |     ○     |
