@@ -27,29 +27,40 @@ Sandbox responds with TEST data, and no actual approval occurs.
 
 ### Base URL information for Sandbox and Live 
 
-| **API**                                         | **Base URL**                                                    | **Method** | **Endpoint**                               | **Sandbox**        |
-|-------------------------------------------------|-----------------------------------------------------------------|------------|--------------------------------------------|--------------------|
-| Checkout                                        |Live : pay.nicepay.co.kr <br> Sandbox : sandbox-pay.nicepay.co.kr| POST       | Live : /v1/checkout/pay/{unique-value}/{sessionId} | ○                  |
-| Create checkout session                         |Live : api.nicepay.co.kr <br> Sandbox : sandbox-api.nicepay.co.kr| POST       | /v1/checkout                               | ○                  |
-| Retrive checkout session                        |Live : api.nicepay.co.kr <br> Sandbox : sandbox-api.nicepay.co.kr| GET        | /v1/checkout/{sessionId}                   | ○                  |
-| Expire checkout session                         |Live : api.nicepay.co.kr <br> Sandbox : sandbox-api.nicepay.co.kr| POST       | /v1/checkout/{sessionId}/expire            | ○                  |
-| Recurring payment: Token Issue                  |Live : api.nicepay.co.kr <br> Sandbox : sandbox-api.nicepay.co.kr| POST       | /v1/subscribe/regist                       | ○                  |
-| Recurring Payment: Token authorization          |Live : api.nicepay.co.kr <br> Sandbox : sandbox-api.nicepay.co.kr| POST       | /v1/subscribe/{bid}/payments               | ○                  |
-| Recurring Payment: Token delete                 |Live : api.nicepay.co.kr <br> Sandbox : sandbox-api.nicepay.co.kr| POST       | /v1/subscribe/{bid}/expire                 | ○                  |
-| AccessToken Generation                          |Live : api.nicepay.co.kr <br> Sandbox : sandbox-api.nicepay.co.kr| POST       | /v1/access-token                           | ○                  |
-| Cancel request with session id                  |Live : api.nicepay.co.kr <br> Sandbox : sandbox-api.nicepay.co.kr| POST       | /v1/payments/checkout/{sessionId}/cancel   | full cancel only |
-| Cancel request with tid                         |Live : api.nicepay.co.kr <br> Sandbox : sandbox-api.nicepay.co.kr| POST       | /v1/payments/{tid}/cancel                  | full cancel only |
-| Transaction Status Inquiry-Authorization amount |Live : api.nicepay.co.kr <br> Sandbox : sandbox-api.nicepay.co.kr| GET        | /v1/check-amount/{tid}                     | ○                  |
-| Transaction Status Inquiry-Transaction status   |Live : api.nicepay.co.kr <br> Sandbox : sandbox-api.nicepay.co.kr| GET        | /v1/payments/{tid}                         | ○                  |
-| Transaction Status Inquiry-orderId              |Live : api.nicepay.co.kr <br> Sandbox : sandbox-api.nicepay.co.kr| GET        | /v1/payments/find/{orderId}                | ○                  |
-| Transaction Status Inquiry-sessionId            |Live : api.nicepay.co.kr <br> Sandbox : sandbox-api.nicepay.co.kr| GET        | /v1/payments/checkout/{sessionId}          | ○                  |
+- Sandbox : sandbox-pay.nicepay.co.kr  
+- Live : pay.nicepay.co.kr  
+
+| API      | Method | Endpoint                                   | Sandbox |
+|----------|--------|--------------------------------------------|---------|
+| Checkout | POST   | /v1/checkout/pay/{uniquevalue}/{sessionId} | ○       |
+
+<br>
+
+- Sandbox : sandbox-api.nicepay.co.kr  
+- Live : api.nicepay.co.kr  
+
+| API                                             | Method | Endpoint                                 | Sandbox            |
+|-------------------------------------------------|--------|------------------------------------------|--------------------|
+| Create checkout session                         | POST   | /v1/checkout                             | ○                  |
+| Retrive checkout session                        | GET    | /v1/checkout/{sessionId}                 | ○                  |
+| Expire checkout session                         | POST   | /v1/checkout/{sessionId}/expire          | ○                  |
+| Recurring payment: Token Issue                  | POST   | /v1/subscribe/regist                     | ○                  |
+| Recurring Payment: Token authorization          | POST   | /v1/subscribe/{bid}/payments             | ○                  |
+| Recurring Payment: Token delete                 | POST   | /v1/subscribe/{bid}/expire               | ○                  |
+| AccessToken Generation                          | POST   | /v1/access-token                         | ○                  |
+| Cancel request with session id                  | POST   | /v1/payments/checkout/{sessionId}/cancel | full   cancel only |
+| Cancel request with tid                         | POST   | /v1/payments/{tid}/cancel                | full   cancel only |
+| Transaction Status Inquiry-Authorization amount | GET    | /v1/check-amount/{tid}                   | ○                  |
+| Transaction Status Inquiry-Transaction status   | GET    | /v1/payments/{tid}                       | ○                  |
+| Transaction Status Inquiry-orderId              | GET    | /v1/payments/find/{orderId}              | ○                  |
+| Transaction Status Inquiry-sessionId            | GET    | /v1/payments/checkout/{sessionId}        | ○                  |
 
 <br>
 
 ### Test key information
 
 ```bash
-// Test key
+// Test key for basic authentication
 // sandbox-api.nicepay.co.kr
 
 Client : S1_ce1bb1ebebc44fe1a3f7cec976c83ea7		
@@ -58,30 +69,12 @@ Authorization : Basic UzFfY2UxYmIxZWJlYmM0NGZlMWEzZjdjZWM5NzZjODNlYTc6MTNlOTY5YT
 ```
 
 ```bash
-// Test key
-// pay.nicepay.co.kr/v1/checkout
+// Live Test key
+// pay.nicepay.co.kr or api.nicepay.co.kr
 
 Client : R1_94eb3a4a30264fdba82ce0d05b465012
 Secret : 12cde12449c64497a86104759b8306b6
 Authorization : Basic UjFfOTRlYjNhNGEzMDI2NGZkYmE4MmNlMGQwNWI0NjUwMTI6MTJjZGUxMjQ0OWM2NDQ5N2E4NjEwNDc1OWI4MzA2YjY=
-```
-
-```bash
-// Test key
-// api.nicepay.co.kr
-
-Client : R1_94eb3a4a30264fdba82ce0d05b465012
-Secret : 12cde12449c64497a86104759b8306b6
-Authorization : Basic UjFfOTRlYjNhNGEzMDI2NGZkYmE4MmNlMGQwNWI0NjUwMTI6MTJjZGUxMjQ0OWM2NDQ5N2E4NjEwNDc1OWI4MzA2YjY=
-```
-
-```bash
-// Test key
-// pay.nicepay.co.kr/v1/access-token
-
-Client : R1_77988f331a1a411b8e215d07e2dddf5c
-Secret : be0d7e00bf434ba1bbec7f827662ab30
-Authorization : Basic UjFfNzc5ODhmMzMxYTFhNDExYjhlMjE1ZDA3ZTJkZGRmNWM6YmUwZDdlMDBiZjQzNGJhMWJiZWM3ZjgyNzY2MmFiMzA=
 ```
 
 <br><br>
