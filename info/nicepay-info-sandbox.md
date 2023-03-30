@@ -4,11 +4,15 @@ Sandbox and Live have a difference in domain and Client ID.
 Please use it after checking whether the issued Client ID is for Sandbox or Live.   
 Sandbox responds with TEST data, and no actual approval occurs.  
 
+<br>
+
 ### Advantages of sandbox
 
 - Immediate test and development are possible.  
 - It is possible to test comfortably because actual payment does not occur.  
 - A test system that does not affect the live environment.  
+
+<br>
 
 ### Using Sandbox and Live domains
 
@@ -18,6 +22,31 @@ Sandbox responds with TEST data, and no actual approval occurs.
 | API (live)  | api.nicepay.co.kr         | 121.133.126.83/27                  | OUTBOUND |
 | API (sandbox) | sandbox-api.nicepay.co.kr | 121.133.126.84/27                  | OUTBOUND |
 | Webhook  | -  | 121.133.126.86 <br> 121.133.126.87 | INBOUND  |
+
+<br>
+
+### Base URL information for Sandbox and Live 
+
+| **API**                                         | **Base URL**                                                    | **Method** | **Endpoint**                               | **Sandbox**        |
+|-------------------------------------------------|-----------------------------------------------------------------|------------|--------------------------------------------|--------------------|
+| Checkout                                        |Live : pay.nicepay.co.kr <br> Sandbox : sandbox-pay.nicepay.co.kr| POST       | Live : /v1/checkout/pay/{unique-value}/{sessionId} | ○                  |
+| Create checkout session                         |Live : api.nicepay.co.kr <br> Sandbox : sandbox-api.nicepay.co.kr| POST       | /v1/checkout                               | ○                  |
+| Retrive checkout session                        |Live : api.nicepay.co.kr <br> Sandbox : sandbox-api.nicepay.co.kr| GET        | /v1/checkout/{sessionId}                   | ○                  |
+| Expire checkout session                         |Live : api.nicepay.co.kr <br> Sandbox : sandbox-api.nicepay.co.kr| POST       | /v1/checkout/{sessionId}/expire            | ○                  |
+| Recurring payment: Token Issue                  |Live : api.nicepay.co.kr <br> Sandbox : sandbox-api.nicepay.co.kr| POST       | /v1/subscribe/regist                       | ○                  |
+| Recurring Payment: Token authorization          |Live : api.nicepay.co.kr <br> Sandbox : sandbox-api.nicepay.co.kr| POST       | /v1/subscribe/{bid}/payments               | ○                  |
+| Recurring Payment: Token delete                 |Live : api.nicepay.co.kr <br> Sandbox : sandbox-api.nicepay.co.kr| POST       | /v1/subscribe/{bid}/expire                 | ○                  |
+| AccessToken Generation                          |Live : api.nicepay.co.kr <br> Sandbox : sandbox-api.nicepay.co.kr| POST       | /v1/access-token                           | ○                  |
+| Cancel request with session id                  |Live : api.nicepay.co.kr <br> Sandbox : sandbox-api.nicepay.co.kr| POST       | /v1/payments/checkout/{sessionId}/cancel   | full cancel only |
+| Cancel request with tid                         |Live : api.nicepay.co.kr <br> Sandbox : sandbox-api.nicepay.co.kr| POST       | /v1/payments/{tid}/cancel                  | full cancel only |
+| Transaction Status Inquiry-Authorization amount |Live : api.nicepay.co.kr <br> Sandbox : sandbox-api.nicepay.co.kr| GET        | /v1/check-amount/{tid}                     | ○                  |
+| Transaction Status Inquiry-Transaction status   |Live : api.nicepay.co.kr <br> Sandbox : sandbox-api.nicepay.co.kr| GET        | /v1/payments/{tid}                         | ○                  |
+| Transaction Status Inquiry-orderId              |Live : api.nicepay.co.kr <br> Sandbox : sandbox-api.nicepay.co.kr| GET        | /v1/payments/find/{orderId}                | ○                  |
+| Transaction Status Inquiry-sessionId            |Live : api.nicepay.co.kr <br> Sandbox : sandbox-api.nicepay.co.kr| GET        | /v1/payments/checkout/{sessionId}          | ○                  |
+
+<br>
+
+### Test key information
 
 ```bash
 // Test key
