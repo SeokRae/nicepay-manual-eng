@@ -246,7 +246,8 @@ The response data will be sent to the returnUrl set in the checkout request.
 ```
 
 Through the page below, you can easily check the flow when conducting a test  
-http://35.228.103.98/untact-sandbox/checkout-sandbox.php  
+https://nicepaytest.link/checkout/sandbox-redirect.php  
+https://nicepaytest.link/checkout/sandbox-redirect-fake.php  
 
 <br><br>
 
@@ -288,7 +289,7 @@ Response
   "tid": "UT0000104m00012303241646422011",
   "amount": 1004,
   "goodsName": "test",
-  "returnUrl": "http://35.228.103.98/untact-sandbox/response2.php",
+  "returnUrl": "https://nicepaytest.link/checkout/sandbox-response.php",
   "apprStatus": "cancelled",
   "skinType": null,
   "taxFreeAmt": null,

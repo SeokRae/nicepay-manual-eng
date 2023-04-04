@@ -22,7 +22,6 @@ curl --location 'https://api.nicepay.co.kr/v1/checkout' \
 --data '{
     "method": "all",
     "sessionId" : "unique-sessionId-001",
-    "clientId": "R1_94eb3a4a30264fdba82ce0d05b465012",
     "orderId": "order-id-unique-order-001",
     "amount": 1004,
     "goodsName" : "test",
@@ -90,7 +89,7 @@ Content-type: application/json;charset=utf-8
 | Parameter     |   Type   |  Required   |  Bytes  | Description  |
 |:--------------|:---------:|:----------:|:-------:|:--------------|
 |   sessionId    | String  |  O  | 64	  | Merchant unique session id, issued by merchant | 
-|   clientId    | String  |  O  | 50	  | Merchant identifier, issued by NICEPAY | 
+|   clientId    | String  |     | 50	  | Merchant identifier, issued by NICEPAY | 
 |    method     | String  |  O  | 20	  | Payment Method <br> all : Display all payment methods <br> card : local cards <br> bank : bank transfer <br> directCard : directly shows card authentication page without NICE hosted page <br> vbank : virtual account  <br> cellphone : carrier billing <br>naverpayCard : Naver Pay - card (excluded Point) <br> kakaopay : Kakao Pa (Card or Money) <br>kakaopayCard : Kakao Pay - Card <br>kakaopayMoney : Kakaopay -Money <br>samsungpayCard : Samsung Pay Card <br>payco : Payco <br>ssgpay : SSGPAY <br>cardAndEasyPay : Card and Wallets, for <br>cardAndEasyPay it cannot be used together with below parameters <br>- cardCode, cardQuota, shopInterest, quotaInterest |
 |    orderId    | String  |  O  | 64	  | Your unique order id<br> cannot reuse the orderid    | 
 |    expireDate    | String  |    | -	  | Expiration Date of sessionId<br><br>ISO 8601  | 
@@ -220,7 +219,7 @@ Content-type: application/x-www-form-urlencoded
 | authToken | String | O | 40 | Authentication TOKEN<br><br>Authentication transaction Unique Key<br>- Can be used for communication with nicepay when authentication failed. |
 | tid | String | | 30 | Transaction ID<br><br>Returned when authorization is successful.<br>*If authentication fails, the TID will not be returned.|
 | orderId | String | O | 64 | Your Unique order ID<br>*Not reusable|
-| clientId | String | O | 50 | Client ID issued by NICEPAY |
+| clientId | String |  | 50 | Client ID issued by NICEPAY |
 | mallReserved | String | | 500 | Spare field for store information delivery<br>It is recommended to use JSON string format.<br>However, double quotation marks (") cannot be used |
 | resultCode | String | O | 4 | Result code<br><br>0000 : success / other failure |
 | resultMsg | String | O | 100 | Result message |
@@ -291,7 +290,7 @@ Content-type: application/json;charset=utf-8
 | resultMsg | String | O | 100 | Result message |
 | sessionId | String  |  O  | 64	  | Merchant unique session id, issued by merchant | 
 | orderId | String | O | 64 | Your Unique order ID |
-| clientId | String | O | 50 | Client ID issued by NICEPAY |
+| clientId | String |  | 50 | Client ID issued by NICEPAY |
 | tid | String | | 30 | Returned when authorization is successful |
 | amount | Int | O | 12 | payment amount |
 | url | String |  |   | The URL to the Checkout Session. Redirect customers to this URL to take them to Checkout. |
@@ -334,7 +333,7 @@ Content-type: application/json;charset=utf-8
 | resultMsg | String | O | 100 | Result message |
 | sessionId | String  |  O  | 64	  | Merchant unique session id, issued by merchant | 
 | orderId | String | O | 64 | Your Unique order ID |
-| clientId | String | O | 50 | Client ID issued by NICEPAY |
+| clientId | String |  | 50 | Client ID issued by NICEPAY |
 | tid | String | | 30 | Returned when authorization is successful |
 | amount | Int | O | 12 | payment amount |
 | url | String |  |   | The URL to the Checkout Session. Redirect customers to this URL to take them to Checkout. |

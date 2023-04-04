@@ -428,5 +428,6 @@
 | V801 | 취소금액 미설정 오류입니다  | Cancellation amount is not set |
 | V802 | 취소사유 미설정 오류입니다 | Cancel reason is not set |
 | V803 | 취소패스워드 미설정 오류입니다 | Cancel password is not set |
+| P091 | 결제 요청을 취소하였습니다 | Canceled payment request |
 
 <br>
