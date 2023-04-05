@@ -30,23 +30,24 @@ Webhook is a function that can implement additional business logic by receiving 
 
 ### Create a webhook example code
 ```bash
-curl --location --request POST 'https://api.nicepay.co.kr/v1/webhook/regist' \
+curl --location --request POST 'https://api.nicepay.co.kr/v1/webhook' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Basic UjFfOTRlYjNhNGEzMDI2NGZkYmE4MmNlMGQwNWI0NjUwMTI6MTJjZGUxMjQ0OWM2NDQ5N2E4NjEwNDc1OWI4MzA2YjY=' \
---data-raw '{"method":"card","url":"https://your-webhook.url"}'
+--data-raw '{"method":"vbank","url":"https://your-webhook.url"}'
 ```
 
 ```bash
 {
     "resultCode": "0000",
     "resultMsg": "정상 처리되었습니다."
+    ...
 }
 ```
 
 ### Create a webhook <img src="https://img.shields.io/badge/-Beta version-red">
 
 ```bash
-POST /v1/webhook/regist
+POST /v1/webhook
 HTTP/1.1    
 Host: api.nicepay.co.kr 
 Authorization: Basic <credentials>  or Bearer <token>
@@ -59,6 +60,7 @@ Content-type: application/json;charset=utf-8
 |:--------------|:-----:|:-----:|:-----:|:----------|
 |    method     | String  |  O  | 20	  | card : local cards <br> bank : bank transfer <br> vbank : virtual account  <br> cellphone : carrier billing | 
 | url | String | O | 200 | The URL of the webhook endpoint |
+| managerEmail | String |  | 255 |If a webhook error occurs, an email will be automatically sent|
 | returnCharSet | String  |     | 10	  | Return encoding <br>utf-8(Default) / euc-kr	 | 
 
 <br>
@@ -69,13 +71,17 @@ Content-type: application/json;charset=utf-8
 |:--------------|:----:|:-----:|:-----:|:--------|
 | resultCode | String | O | 4 | 0000 : success / other failure |
 | resultMsg | String | O | 100 | Result message |
+| method | String |  | 100 | all: all <br> card : local cards <br> bank : bank transfer <br> vbank : virtual account  <br> cellphone : carrier billing |
+| url | String |  | 100 | The URL of the webhook endpoint |
+| managerEmail | String |  | 100 |  |
+| returnCharSet | String |  | 100 |  |
 
 <br><br>
 
 
 ### Retrieve a webhook example code
 ```bash
-curl --location --request GET 'https://api.nicepay.co.kr/v1/webhook/get?method=card&returnCharSet=utf-8' \
+curl --location --request GET 'https://api.nicepay.co.kr/v1/webhook' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Basic UjFfOTRlYjNhNGEzMDI2NGZkYmE4MmNlMGQwNWI0NjUwMTI6MTJjZGUxMjQ0OWM2NDQ5N2E4NjEwNDc1OWI4MzA2YjY=' \
 ```
@@ -84,9 +90,10 @@ curl --location --request GET 'https://api.nicepay.co.kr/v1/webhook/get?method=c
 {
     "resultCode": "0000",
     "resultMsg": "정상 처리되었습니다.",
-    "data": {
+    "urls": {
         "method": "card",
         "url": "https://your-webhook.url"
+        ...
     }
 }
 ```
@@ -94,7 +101,7 @@ curl --location --request GET 'https://api.nicepay.co.kr/v1/webhook/get?method=c
 ### Retrieve a webhook <img src="https://img.shields.io/badge/-Beta version-red">
 
 ```bash
-GET /v1/webhook/get
+GET /v1/webhook
 HTTP/1.1    
 Host: api.nicepay.co.kr 
 Authorization: Basic <credentials>  or Bearer <token>
@@ -105,7 +112,6 @@ Content-type: application/json;charset=utf-8
 
 | Parameter | Type | Required | Bytes | Description |
 |:--------------|:-----:|:-----:|:-----:|:----------|
-|    method     | String  |  O  | 20	  | card : local cards <br> bank : bank transfer <br> vbank : virtual account  <br> cellphone : carrier billing | 
 | returnCharSet | String  |     | 10	  | Return encoding <br>utf-8(Default) / euc-kr	 | 
 
 <br>
@@ -116,31 +122,34 @@ Content-type: application/json;charset=utf-8
 |:----------|:----:|:------:|:-----------:|:-------:|:-------------|
 | resultCode|      | String | O           | 4       | 0000 : success / other failure |
 | resultMsg |      | String | O           | 100     | Result message |
-| data      |      |        |             |         |              |
+| urls      |      |        |             |         |              |
 |           | method | String  |  O  | 20	  | card : local cards <br> bank : bank transfer <br> vbank : virtual account  <br> cellphone : carrier billing |
 |           | url | String | O | 200 | The URL of the webhook endpoint |
+|           | managerEmail | String |  | 255 |If a webhook error occurs, an email will be automatically sent|
+|           | returnCharSet | String  |     | 10	  | Return encoding <br>utf-8(Default) / euc-kr	 | 
+
 
 <br><br>
 
 ### Delete a webhook example code
 ```bash
-curl --location --request POST 'https://api.nicepay.co.kr/v1/webhook/remove' \
+curl --location --request POST 'https://api.nicepay.co.kr/v1/webhook/{method}/delete' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Basic UjFfOTRlYjNhNGEzMDI2NGZkYmE4MmNlMGQwNWI0NjUwMTI6MTJjZGUxMjQ0OWM2NDQ5N2E4NjEwNDc1OWI4MzA2YjY=' \
---data-raw '{"method":"card","url":"https://your-webhook.url"}'
 ```
 
 ```bash
 {
     "resultCode": "0000",
     "resultMsg": "정상 처리되었습니다."
+    ...
 }
 ```
 
 ### Delete a webhook <img src="https://img.shields.io/badge/-Beta version-red">
 
 ```bash
-POST /v1/webhook/remove
+POST /v1/webhook/{method}/delete
 HTTP/1.1    
 Host: api.nicepay.co.kr 
 Authorization: Basic <credentials>  or Bearer <token>
@@ -152,7 +161,6 @@ Content-type: application/json;charset=utf-8
 | Parameter | Type | Required | Bytes | Description |
 |:--------------|:-----:|:-----:|:-----:|:----------|
 |    method     | String  |  O  | 20	  | card : local cards <br> bank : bank transfer <br> vbank : virtual account  <br> cellphone : carrier billing | 
-| url | String | O | 200 | The URL of the webhook endpoint |
 | returnCharSet | String  |     | 10	  | Return encoding <br>utf-8(Default) / euc-kr	 | 
 
 <br>
@@ -177,6 +185,7 @@ Content-type: application/json;charset=utf-8
 |:------------------|:--------:|:-----:|:------:|:---------------------------------------------------------------------------------------------------------------------|
 | resultCode | String | O | 4 | 0000 : success / other failure |
 | resultMsg | String | O | 100 | Result message |
+|   sessionId    | String  |  O  | 64	  | Merchant unique session id, issued by merchant | 
 | tid | String | O | 30 | NICEPAY transaction ID |
 | canceledTid | String | | 30 | Cancellation transaction ID<br>- Responded only with cancellation requests<br>- Use when finding canceled transaction information in the cancels object. |
 | orderId | String | O | 64 | Unique order number |
