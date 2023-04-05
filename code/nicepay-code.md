@@ -101,6 +101,7 @@
 | 3021 | 유효기간 오류              | Expiration date error |
 | 3022 | 할부개월오류               | Installment month error |
 | 3023 | 할부개월 한도 초과         | Installment month limit exceeded |
+| 3024 | 할부 최소금액 오류(50000미만)    | Minimum installment amount error (less than 50,000).      |
 | 3031 | 무이자할부 카드 아님       | No interest-free installment card |
 | 3032 | 무이자할부 불가 개월수         |Non-allowed interest-free installment months |
 | 3033 | 무이자할부 가맹점 아님         |Not affiliated with interest-free installments|
@@ -193,6 +194,8 @@
 | A567 | 상품구분코드 설정 오류 | Product type code setting error |
 | A568 | 서비스구분코드 설정 오류   | Service code setting error |
 | 0000 | 결제성공 | Payment or transaction successful |
+| 1534 | 부분취소 불가능 거래      | Non-cancellable transaction.   |
+| 1615 | 거래금액 합계오류(공급가액,부가세,봉사료,면세금액 합계)     | Total transaction amount error (sum of supply, VAT, service charge, and tax-exempt amount).  |
 | 2000 | DB오류 | DB Error | 
 | 2011 | CINO미존재 | CINO does not exist |
 | 2012 | 주문번호없음   | No order number |
@@ -268,6 +271,7 @@
 | 2017 | 취소 불가 회원사   |  Non-cancellable partner |
 | 2018 | 신용카드 매입후 취소 불가능 가맹점 | Non-cancellable partner after card capture |
 | 2019 | 타 회원사 거래 취소 불가   | Non-Cancellable Merchants |
+| 2020 | 망상 취소 허용시간 초과   | Exceeded allowed time for canceling virtual transactions.  |
 | 2021 | 매입전취소 | Cancellation before card capture |
 | 2022 | 매입후취소 | Cancellation after card capture |
 | 2023 | 취소 한도 초과 | Cancellation Limit Exceeded |
@@ -281,6 +285,7 @@
 | 2031 | 전체금액취소 불가  | You can not cancel the total amount |
 | 2032 | 취소금액이 취소가능금액보다 큼  | Requested Cancellation amount is greater than cancelable amount |
 | 2033 | 부분취소 불가능금액 전체취소 이용바람 | Partial cancellation is not possible, total cancellation is required |
+| 2052 | 에스크로 부분취소 불가.   | Escrow partial cancellation not allowed.     |
 | A101 | SIGN DATA 검증에 실패하였습니다   | SIGN DATA verification failed |
 | A102 | "타입이 맞지않는 파라미터명 명시" + 은(는) 알 수 없는 TYPE 입니다 | Does not match the type |
 | A106 | 날짜 형식이 올바르지 않습니다 | The date format is incorrect |
@@ -428,6 +433,122 @@
 | V801 | 취소금액 미설정 오류입니다  | Cancellation amount is not set |
 | V802 | 취소사유 미설정 오류입니다 | Cancel reason is not set |
 | V803 | 취소패스워드 미설정 오류입니다 | Cancel password is not set |
-| P091 | 결제 요청을 취소하였습니다 | Canceled payment request |
+| P001 | 클라이언트 아이디가 없습니다.    | Missing Client ID       |
+| P002 | 토큰생성을 실패하였습니다.       | Failed to Generate Token       |
+| P003 | 로그추적아이디 생성을 실패하였습니다.   | Failed to Generate Log Trace ID       |
+| P004 | SID가 생성되지 않았습니다.       | SID not Generated       |
+| P005 | 해당되는 MID 정보가 없습니다.    | No MID Information Found       |
+| P006 | 해당되는 GID 정보가 없습니다.    | No GID Information Found       |
+| P007 | 필수 파라미터 {param}가 없습니다.      | Required Parameter {param} Missing    |
+| P008 | 파라미터 {}:{} 길이가 취소길이{} 보다 작은값 입니다.  | Parameter {}:{} length is less than Cancel Length {}      |
+| P009 | 파라미터 {}:{} 길이가 최대길이{} 보다 큰값 입니다.    | Parameter {}:{} length is greater than Maximum Length {}   |
+| P010 | 파라미터 {key}[{value}]가 숫자형식이 아닙니다.       | Parameter {key}[{value}] is not a numeric format    |
+| P011 | 파라미터 {key}[{value}]가 boolean형식이 아닙니다.    | Parameter {key}[{value}] is not a boolean format    |
+| P012 | 파라미터 {key}[{value}]는 {} 값만 허용 합니다.       | Parameter {key}[{value}] only allows {} value       |
+| P013 | 파라미터 {}[{}]이 공급가액, 부가세, 봉사료, 비과세급액의 합과 동일하지 않습니다. | Parameter {}[{}] does not match the sum of taxable supply, tax, service fee, and non-taxable amount |
+| P014 | Mid [{}]에 해당 하는 merchant key 정보가 없습니다.    | No merchant key information found for MID [{}]      |
+| P015 | orderid {}가 이미 존재합니다.    | Order ID {} already exists     |
+| P016 | 파라미터로 전달된 MID {}에 대한 사용이 불가 합니다.   | The use of MID {} passed as a parameter is not available   |
+| P017 | 결제금액은 0원 결제가 불가합니다.      | Payment of 0 won is not available     |
+| P018 | 인증 응답 토큰 데이터가 없습니다.      | No authentication response token data        |
+| P019 | 요청된 인증 정보가 없습니다. Token [{}].      | Authentication information requested does not exist. Token [{}].  |
+| P020 | 네이버페이 easyPayMethod 데이터 확인이 필요합니다.    | Naver Pay easyPayMethod data needs to be checked.   |
+| P021 | 지원 카드가 아닙니다.     | Unsupported card.       |
+| P022 | 카드와 할부가 동시에 설정되어야 합니다.       | The card and installment should be set at the same time.   |
+| P023 | 간편결제는 [{}]와 함께 사용이 불가합니다.     | Easy payment cannot be used with [{}].       |
+| P024 | 날짜형식(ISO8601)이 아닙니다.    | Invalid date format (ISO8601).        |
+| P025 | 트랜잭션 타입이 일치하지 않습니다.      | Transaction type does not match.      |
+| P026 | 승인서버 요청 에러        | Approval server request error.        |
+| P027 | 원격 실패(MCI)     | Remote failure (MCI).    |
+| P028 | 일시불 01 에러 (일시불은 00으로 설정)   | Installment error for single payment 01 (set to 00 for single payment).  |
+| P029 | 해당 지불수단은 카드 지정, 할부 지정이 불가 합니다.   | The payment method cannot be designated for card or installment.  |
+| P030 | 해당 지불수단은 카드 지정, 할부 지정이 필수 입니다.   | Card and installment designation is required for this payment method.    |
+| P031 | 가상계좌 유효시간 지정 오류 입니다.     | Error in specifying the virtual account validity period.   |
+| P032 | 다이렉트 및 간편결제는 에스크로 이용이 불가 합니다.   | Direct and easy payment cannot be used with escrow.       |
+| P033 | 간편결제는 다중카드 선택이 불가합니다.  | Multiple card selection is not allowed for easy payment.   |
+| P034 | 요청된 금액과 내역 금액이 일치하지 않습니다.   | The requested amount and the transaction amount do not match.     |
+| P035 | 망취소 요청 오류 입니다.  | Error in network cancellation request.       |
+| P036 | 면세금액이 결제금액을 초과할수 없습니다.      | Tax-free amount cannot exceed the payment amount.   |
+| P037 | 5만원 미만인 경우 할부 지정이 불가 합니다.     | Installment cannot be designated if the amount is less than 50,000 won.  |
+| P038 | 요청전문 검증오류 입니다.       | Request message verification error.   |
+| P039 | 세션키는 필수 값입니다.   | Session key is a required value.      |
+| P040 | 세션키에 해당하는 주문정보가 존재하지 않습니다.      | There is no order information corresponding to the session key.   |
+| P041 | 세션키 길이가 잘못되었습니다.    | Session key length is incorrect.      |
+| P042 | 이미 만료된 세션 아이디 입니다.  | The session ID has already expired.   |
+| P043 | 유효하지 않은 세션 아이디 입니다.      | Invalid session ID.     |
+| P044 | 승인 상태 수정에 실패하였습니다.       | Failed to modify approval status.     |
+| P101 | DB 트랜잭션 실패   | Database transaction failed.   |
+| P102 | auth history 데이터 추가 실패하였습니다.      | Failed to add authentication history data.   |
+| P103 | log trace 데이터 추가 실패하였습니다.   | Failed to add log trace data.         |
+| P091 | 결제 요청을 취소하였습니다.      | Payment request has been canceled.    |
+| U100 | {0} 필수입력항목이 누락되었습니다.      | {0} is a required field that is missing.     |
+| U101 | BASE64 DECODE 실패        | Failed to decode BASE64.       |
+| U102 | 사용자 인증정보가 존재하지 않습니다.    | User authentication information does not exist.     |
+| U103 | 사용자 인증타입이 맞지 않습니다.       | User authentication type is incorrect.       |
+| U104 | 사용자 인증에 실패하였습니다.    | User authentication failed.    |
+| U105 | 필드 최대길이 초과[max:{0}, realLength:{1}]    | Maximum field length exceeded [max: {0}, realLength: {1}].       |
+| U106 | 현금영수증 취소는 별도 API 이용 요망    | Cash receipt cancellation requires a separate API usage.   |
+| U107 | 거래내역이 존재 하지 않습니다.   | Transaction history does not exist.   |
+| U108 | 허가되지 않은 요청 입니다.       | Unauthorized request.    |
+| U109 | 허용되지 않은 요청 입니다.       | Request not allowed.    |
+| U110 | 지원하지 않는 지불수단 입니다.   | Unsupported payment method.    |
+| U111 | 조회내용이 없습니다.      | No query content.       |
+| U112 | 이미 사용된 OrderId 입니다.      | OrderId already used.    |
+| U113 | 빌키 승인 금액 불일치     | Inconsistent bill key approval amount.       |
+| U114 | 이미 사용된 TID 입니다.   | TID already used.       |
+| U115 | 삭제 처리된 BID 입니다.   | Deleted BID.     |
+| U116 | 사용자 정보가 존재하지 않습니다.       | User information does not exist.      |
+| U117 | 사용자 비밀번호가 일치하지 않습니다.    | User password is incorrect.    |
+| U118 | 이용 불가한 사용자 정보 입니다.  | Unusable user information.     |
+| U119 | 지원하지 않는 지불수단입니다.    | Unsupported payment method.    |
+| U120 | TID가 유효하지 않습니다.  | Invalid TID.     |
+| U121 | 인증 요청내역이 존재하지 않습니다.      | Authentication request history does not exist.      |
+| U122 | 취소 해당거래 없음        | No transaction to cancel.      |
+| U123 | 취소금액이 취소가능금액보다 큼.  | Cancel amount is greater than cancelable amount.    |
+| U124 | 필드 길이가 잘못되었습니다.      | Field length is incorrect.     |
+| U125 | 잘못된 요청 입니다.       | Invalid request.        |
+| U126 | orderId가 존재 하지 않습니다.    | OrderId does not exist.        |
+| U127 | 요청 금액이 올바르지 않습니다.   | Request amount is invalid.     |
+| U128 | 부분취소는 운영 환경에서 이용 가능(샌드박스는 부분취소 미제공)     | Partial cancellation is only available in production environment (not supported in sandbox). |
+| U129 | 잘못된 요청 기간 입니다.  | Invalid request period.        |
+| U130 | 허용된 Date형식이 아닙니다.      | Invalid Date format.    |
+| U131 | 허용된 Data형식이 아닙니다.      | Invalid Data format.    |
+| U132 | 허용된 옵션 내용이 아닙니다.[{0}]      | Invalid option content. [{0}]         |
+| U301 | ORDER_DATA 최대 길이 초과.       | Exceeded maximum length of ORDER_DATA.       |
+| U302 | 응답전문 최대 길이 초과.  | Exceeded maximum length of response message.       |
+| U303 | API 지연처리 발생.        | API delay occurred.     |
+| U304 | BASIC AUTHENTICATION 실패       | Failed to authenticate using BASIC authentication.  |
+| U305 | BEARER AUTHENTICATION 실패       | Failed to authenticate using BEARER authentication.       |
+| U306 | 전자서명 및 암호화메시지 검증 실패      | Failed to verify electronic signature and encrypted message.     |
+| U307 | 인증정보 확인중 오류가 발생하였습니다.  | An error occurred while verifying authentication information.     |
+| U308 | Method Not Allowed.       | Method Not Allowed.     |
+| U309 | 발급되지 않은 BID 입니다.       | BID not issued.         |
+| U310 | SIGN DATA 생성에 실패하였습니다.       | Failed to generate SIGN DATA.         |
+| U311 | 인증이 취소되었거나 실패하였습니다. 다시 시도하여 주십시요.  | Authentication has been canceled or failed. Please try again.     |
+| U312 | SIGN DATA 검증에 실패하였습니다.       | Failed to verify SIGN DATA.    |
+| U313 | 상점 MID가 유효하지 않습니다.    | Invalid MID for the store.     |
+| U314 | 전문 암호화 오류가 발생하였습니다.      | An error occurred during message encryption.       |
+| U315 | 허용되지 않은 IP 입니다.  | Invalid IP address.     |
+| U316 | 상점 기준정보가 유효하지 않습니다.      | Invalid merchant information.         |
+| U317 | 인증정보 확인중 오류가 발생하였습니다.  | Error occurred while verifying authentication information.       |
+| U318 | 취소 금액 불일치   | Cancellation amount mismatch.         |
+| U319 | 요청하신 면세금액이 취소가능한 면세금액을 초과 오류   | Requested tax-free amount exceeds the cancellable tax-free amount error.       |
+| U320 | 페이지를 찾을 수 없습니다.       | Page not found.         |
+| U321 | 면세금액이 결제금액 보다 큼.     | Tax-free amount is greater than payment amount.     |
+| U322 | 세션아이디 생성을 실패 하였습니다.      | Failed to generate session ID.        |
+| U323 | 세션아이디 만료 변경이 실패 하였습니다.       | Failed to change session ID expiration.      |
+| U324 | 이미 발급된 세션아이디 입니다.   | Session ID already issued.     |
+| U325 | 이미 만료된 세션아이디 입니다.   | Session ID already expired.    |
+| U501 | 대외계 전문통신 과정에서 오류가 발생하였습니다.      | Error occurred during external message communication process.     |
+| U502 | 요청 금액이 올바르지 않습니다.   | Invalid requested amount.      |
+| U503 | 망취소 요청        | Network cancellation request.         |
+| U504 | 결제에 실패하였습니다.(망취소 처리)     | Payment has failed. (Network cancellation processing)      |
+| U506 | DB 테이블 INSERT 오류발생.       | Error occurred while inserting into DB table.       |
+| U507 | DB 테이블 UPDATE 실패.    | Failed to update DB table.     |
+| U508 | 서버로 소켓 연결 중 오류가 발생하였습니다.     | Error occurred while connecting to server through socket.  |
+| U509 | 기준정보 조회 결과 2행 이상 오류       | Error occurred while retrieving reference information.     |
+| U700 | WEBHOOK 응답전문 최대 길이 초과.       | Exceeded maximum length of webhook response.       |
+
+
 
 <br>
