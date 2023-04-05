@@ -548,7 +548,27 @@
 | U508 | 서버로 소켓 연결 중 오류가 발생하였습니다.     | Error occurred while connecting to server through socket.  |
 | U509 | 기준정보 조회 결과 2행 이상 오류       | Error occurred while retrieving reference information.     |
 | U700 | WEBHOOK 응답전문 최대 길이 초과.       | Exceeded maximum length of webhook response.       |
-
+| C001 | ISP 인증이 취소되었거나 실패하였습니다 다시 시도하여 주십시요 | ISP authentication has been cancelled or failed. Please try again.        |
+| C002 | 카드사 인증 실패    | Card company authentication failed            |
+| I001 | 서버와의 통신에 실패하였습니다 네트워크 환경을 확인하세요     | Failed to communicate with the server. Please check the network environment.          |
+| I002 | 사용자가 결제를 취소하였습니다           | The user has cancelled the payment.           |
+| I003 | 인증 성공한 거래로 재요청 되었습니다 결제가 정상적으로 이루어 지지 않았을 경우 가맹점 페이지로 가서 다시 결제하여 주십시요 | The transaction has been resubmitted as the authentication was successful. If the payment was not completed successfully, please go to the merchant page and try again. |
+| I004 | 인증 실패한 거래로 재요청 되었습니다 가맹점 페이지로 가서 다시 결제하여 주십시요          | The transaction has been resubmitted as the authentication failed. Please go to the merchant page and try again.  |
+| I006 | 화면 구성 처리에 실패하였습니다 가맹점 페이지로 가서 다시 결제하여 주십시요      | Failed to process screen configuration. Please go to the merchant page and try again. |
+| I007 | 바로 호출 결제요청 정보를 확인하십시오   | Please check the payment request information that was directly called.    |
+| M001 | 계좌이체 CPID를 확인해 주세요            | Please check the transfer CPID.   |
+| M002 | CPID미설정 오류입니다        | Error: CPID not set up.  |
+| N001 | 30만원 이상 결제는 지원되지 않습니다     | Payments over 300,000 won are not supported.  |
+| N002 | 주문내역 갱신에 실패하였습니다           | Failed to update order details.   |
+| N003 | 인증기관 거래설정에 실패하였습니다 가맹점 페이지로 가서 다시 결제하여 주십시요   | Failed to set up transaction with authentication institution. Please go to the merchant page and try again.       |
+| S004 | 무이자 설정 정보 오류        | Interest-free settings information error.     |
+| S005 | 청구할인 행사 정보 오류      | Billing discount event information error.     |
+| V001 | 가맹점 아이디가 조회 되지 않습니다       | Merchant ID cannot be found.      |
+| V003 | 비정상 과다접속으로 인한 오류입니다 다시 결제 시도하시기 바랍니다    | Error due to abnormal excessive access. Please try again to make the payment.         |
+| V004 | 할부개월 설정 오류  | Installment months setting error. |
+| W000 | 정상 처리되었습니다          | Processed normally.      |
+| W001 | 주문번호가 유효하지 않습니다 | Invalid order number.    |
+| W002 | TID가 유효하지 않습니다      | Invalid transaction ID   |
 
 
 <br>
