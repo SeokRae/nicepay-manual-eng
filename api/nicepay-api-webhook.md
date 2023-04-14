@@ -13,6 +13,34 @@ Webhook is a function that can implement additional business logic by receiving 
 
 <br>
 
+The following code is an example of a response message with the "ok" status.   
+If the response message does not contain the "ok" status, the webhook registration will not be successful.   
+
+```java
+// java spring example
+@RequestMapping(value = "/hook") 
+public ResponseEntity<String> hook(@RequestBody HashMap<String, Object> hookMap) throws Exception {
+  String resultCode = hookMap.get("resultCode").toString();
+
+  if(resultCode.equalsIgnoreCase("0000")){
+    return ResponseEntity.status(HttpStatus.OK).body("ok");
+  }
+        
+return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+}
+```
+
+<br>
+
+```python
+// python flask example
+@app.route('/hook', methods=['POST'])
+def hook():
+    print(request.json)
+    return make_response("ok", 200)
+```
+<br>
+
 ### Delivery of webhook
 - When payment (approved) is made (all payment methods)
 - When a virtual account is issued (numbered)
@@ -149,7 +177,7 @@ curl --location --request POST 'https://api.nicepay.co.kr/v1/webhook/{method}/de
 ### Delete a webhook <img src="https://img.shields.io/badge/-Beta version-red">
 
 ```bash
-POST /v1/webhook/{method}/delete
+GET /v1/webhook/{method}/delete
 HTTP/1.1    
 Host: api.nicepay.co.kr 
 Authorization: Basic <credentials>  or Bearer <token>
