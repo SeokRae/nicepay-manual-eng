@@ -569,6 +569,12 @@
 | W000 | 정상 처리되었습니다          | Processed normally.      |
 | W001 | 주문번호가 유효하지 않습니다 | Invalid order number.    |
 | W002 | TID가 유효하지 않습니다      | Invalid transaction ID   |
-
+| U332 | 간편결제는 cardCode, cardQuota와 함께 사용이 불가합니다. | wallet payment cannot be used with cardCode and cardQuota | 
+| U333 | 이미 등록된 URL 정보가 있습니다. | There is already registered URL information. | 
+| U334 | 웹훅 URL 수정을 실패하였습니다. | Failed to modify the webhook URL. | 
+| U335 | 웹훅 URL 생성을 실패하였습니다. | Failed to create the webhook URL. |
+| U336 | 해당 URL 페이지 요청을 실패하였습니다. | Failed to request the URL page. |
+| U337 | HTTP 상태 코드가 정상(200)이 아닙니다. | The HTTP status code is not 200 |
+| U338 | 응답 페이지 Body 부분은 OK 문자만 허용됩니다. | Only the 'OK' string is allowed in the response body. |
 
 <br>
