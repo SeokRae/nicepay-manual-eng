@@ -68,8 +68,6 @@ curl --location 'https://api.nicepay.co.kr/v1/checkout' \
     "isDigital": false,
     "directReceiptType": null,
     "directReceiptNo": null,
-    "disableScroll": false,
-    "disableEdgeChk": false,
     "appScheme": null,
     "method": "all",
     "url": "https://pay.nicepay.co.kr/v1/checkout/pay/unique-sessionId-001",
@@ -151,15 +149,6 @@ Content-type: application/json;charset=utf-8
 |:--------------|:---------:|:----------:|:-------:|:--------------|
 | directReceiptType | String | | 20 | Cash Receipt Issuance Type<br>unPublished: Unpublished<br>individual: For personal income deduction<br>company: For business expenses proof |
 | directReceiptNo | String | Naver Pay-Point | 20 | Identification information for issue of cash receipt<br>Mobile phone number (10 or 11 digits) or business operator number (10 digits)<br>* Required if directReceiptType is individual or company<br>* Enter mobile phone number if directReceiptType is individual <br>* If directReceiptType is company, enter business number.<br> * Enter only numbers without '-' |
-
-<br>
-
-#### PC Option
-| Parameter     |   Type   |  Required   |  Bytes  | Description  |
-|:--------------|:---------:|:----------:|:-------:|:--------------|
-| disableScroll | Boolean | | - | Whether or not to use scroll in the payment window<br><br>true: Do not create a scroll (Default: true)<br>false: Create a scroll |
-| disableEdgeChk | Boolean | | - | Edge Browser Guide Alert exceptions <br><br>true: Do not expose Edge browser guide phrases<br> false: Edge browser guide phrases are exposed (Default: false) |
-| zIdxHigher | Boolean | | - | NICEPAY Layer z-index<br>true: Set the lowest z-index (11000)<br>false: Set the default z-index to 9999 (Default: false) |
 
 <br>
 
