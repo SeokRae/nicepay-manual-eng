@@ -86,7 +86,7 @@ Content-type: application/json;charset=utf-8
 
 | Parameter | Type | Required | Bytes | Description |
 |:--------------|:-----:|:-----:|:-----:|:----------|
-|    method     | String  |  O  | 20	  | card : local cards <br> bank : bank transfer <br> vbank : virtual account  <br> cellphone : carrier billing | 
+|    method     | String  |  O  | 20	  | all : all of method <br> card : local cards <br> bank : bank transfer <br> vbank : virtual account  <br> cellphone : carrier billing | 
 | url | String | O | 200 | The URL of the webhook endpoint |
 | managerEmail | String |  | 255 |If a webhook error occurs, an email will be automatically sent|
 | returnCharSet | String  |     | 10	  | Return encoding <br>utf-8(Default) / euc-kr	 | 
@@ -188,7 +188,7 @@ Content-type: application/json;charset=utf-8
 
 | Parameter | Type | Required | Bytes | Description |
 |:--------------|:-----:|:-----:|:-----:|:----------|
-|    method     | String  |  O  | 20	  | card : local cards <br> bank : bank transfer <br> vbank : virtual account  <br> cellphone : carrier billing | 
+|    method     | String  |  O  | 20	  | all : all of method <br> card : local cards <br> bank : bank transfer <br> vbank : virtual account  <br> cellphone : carrier billing | 
 | returnCharSet | String  |     | 10	  | Return encoding <br>utf-8(Default) / euc-kr	 | 
 
 <br>
