@@ -89,7 +89,7 @@ Content-type: application/json;charset=utf-8
 |:--------------|:---------:|:----------:|:-------:|:--------------|
 |   sessionId    | String  |  O  | 64	  | Merchant unique session id, issued by merchant | 
 |   clientId    | String  |     | 50	  | Merchant identifier, issued by NICEPAY | 
-|    method     | String  |  O  | 20	  | Payment Method <br> all : Display all payment methods <br> card : local cards <br> bank : bank transfer <br> directCard : directly shows card authentication page without NICE hosted page <br> vbank : virtual account  <br> cellphone : carrier billing <br>naverpayCard : Naver Pay - card (excluded Point) <br> kakaopay : Kakao Pa (Card or Money) <br>kakaopayCard : Kakao Pay - Card <br>kakaopayMoney : Kakaopay -Money <br>samsungpayCard : Samsung Pay Card <br>payco : Payco <br>ssgpay : SSGPAY <br>cardAndEasyPay : Card and Wallets, for <br>cardAndEasyPay it cannot be used together with below parameters <br>- cardCode, cardQuota, shopInterest, quotaInterest |
+|    method     | String  |  O  | 20	  | Payment Method <br> all : Display all payment methods <br> card : local cards <br> cardBill : card billing <br> bank : bank transfer <br> directCard : directly shows card authentication page without NICE hosted page <br> vbank : virtual account  <br> cellphone : carrier billing <br>naverpayCard : Naver Pay - card (excluded Point) <br> kakaopay : Kakao Pa (Card or Money) <br>kakaopayCard : Kakao Pay - Card <br>kakaopayMoney : Kakaopay -Money <br>samsungpayCard : Samsung Pay Card <br>payco : Payco <br>ssgpay : SSGPAY <br>cardAndEasyPay : Card and Wallets, for <br>cardAndEasyPay it cannot be used together with below parameters <br>- cardCode, cardQuota, shopInterest, quotaInterest |
 |    orderId    | String  |  O  | 64	  | Your unique order id<br> cannot reuse the orderid    | 
 |    expireDate    | String  |    | -	  | Expiration Date of sessionId<br><br>ISO 8601  | 
 |    amount     | Int  	  |  O  | 12	  | Transaction amount (only numbers are allowed) | 
@@ -134,6 +134,13 @@ Content-type: application/json;charset=utf-8
 | vbankHolder | String | virtual account | 40 | Virtual account (merchant name, user name) |
 | vbankValidHours | Int | | 4 | Virtual account validate time<br>- Default value D+7 days<br>Ex) If you enter 10, You can use the virtual account for 10 hours after the account is issued. |
 | vbankExpDate | Int | | | Virtual Account Deposit Expiration Date (yyyyMMdd) |
+
+<br>
+
+#### Card bill Option
+| Parameter     |   Type   |  Required   |  Bytes  | Description  |
+|:--------------|:---------:|:----------:|:-------:|:--------------|
+| bid | String | Card billing | 30 | billing key for recurring payment |
 
 <br>
 
