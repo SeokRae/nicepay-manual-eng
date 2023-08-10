@@ -53,6 +53,7 @@
 | 40  | 카카오머니        | KAKAO        |  O  | https://www.kakaopay.com/        |
 | 41  | SSG머니        | SSG          |  O  | https://www.ssgpay.com/          |
 | 42  | 네이버포인트       | NAVER        |  O  | https://www.naverfincorp.com/    |
+| 44  | 토스뱅크       | Toss Bank        |  O  | https://www.tossbank.com/    |
 
 <br>
 
@@ -86,6 +87,7 @@
 | 088 |   신한은행    | ShinhanBank                                                      |   O    | https://www.shinhan.com/             |
 | 089 |   케이뱅크    | K Bank                                                           |   O    | https://www.kbanknow.com/            |
 | 090 |   카카오뱅크   | Kakao Bank                                                       |        | https://www.kakaobank.com/           | 
+| 092 | 토스뱅크      | Toss Bank                                                        |  O      | https://www.tossbank.com/          |
 
 <br>
 
