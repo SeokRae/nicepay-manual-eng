@@ -20,7 +20,7 @@ curl --location 'https://api.nicepay.co.kr/v1/checkout' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Basic UjFfOTRlYjN...' \
 --data '{
-    "method": "all",
+    "method": "cardAndEasyPay",
     "sessionId" : "unique-sessionId-001",
     "orderId": "order-id-unique-order-001",
     "amount": 1004,
@@ -69,7 +69,7 @@ curl --location 'https://api.nicepay.co.kr/v1/checkout' \
     "directReceiptType": null,
     "directReceiptNo": null,
     "appScheme": null,
-    "method": "all",
+    "method": "cardAndEasyPay",
     "url": "https://pay.nicepay.co.kr/v1/checkout/pay/unique-sessionId-001",
     "zidxHigher": false,
     "messageSource": "nicepay"
@@ -89,7 +89,7 @@ Content-type: application/json;charset=utf-8
 |:--------------|:---------:|:----------:|:-------:|:--------------|
 |   sessionId    | String  |  O  | 64	  | Merchant unique session id, issued by merchant | 
 |   clientId    | String  |     | 50	  | Merchant identifier, issued by NICEPAY | 
-|    method     | String  |  O  | 20	  | Payment Method <br> all : Display all payment methods <br> card : local cards <br> cardBill : card billing <br> bank : bank transfer <br> directCard : directly shows card authentication page without NICE hosted page <br> vbank : virtual account  <br> cellphone : carrier billing <br>naverpayCard : Naver Pay - card (excluded Point) <br> kakaopay : Kakao Pa (Card or Money) <br>kakaopayCard : Kakao Pay - Card <br>kakaopayMoney : Kakaopay -Money <br>samsungpayCard : Samsung Pay Card <br>payco : Payco <br>ssgpay : SSGPAY <br>cardAndEasyPay : Card and Wallets, for <br>cardAndEasyPay it cannot be used together with below parameters <br>- cardCode, cardQuota, shopInterest, quotaInterest |
+|    method     | String  |  O  | 20	  | Payment Method <br> card : local cards <br> cardBill : card billing <br> bank : bank transfer <br> directCard : directly shows card authentication page without NICE hosted page <br> vbank : virtual account  <br> cellphone : carrier billing <br>naverpayCard : Naver Pay - card (excluded Point) <br> kakaopay : Kakao Pa (Card or Money) <br>kakaopayCard : Kakao Pay - Card <br>kakaopayMoney : Kakaopay -Money <br>samsungpayCard : Samsung Pay Card <br>payco : Payco <br>ssgpay : SSGPAY <br>cardAndEasyPay : Card and Wallets, for <br>cardAndEasyPay it cannot be used together with below parameters <br>- cardCode, cardQuota, shopInterest, quotaInterest |
 |    orderId    | String  |  O  | 64	  | Your unique order id<br> cannot reuse the orderid    | 
 |    expireDate    | String  |    | -	  | Expiration Date of sessionId<br><br>ISO 8601  | 
 |    amount     | Int  	  |  O  | 12	  | Transaction amount (only numbers are allowed) | 
