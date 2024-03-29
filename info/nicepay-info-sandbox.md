@@ -122,7 +122,7 @@ curl --location 'https://sandbox-api.nicepay.co.kr/v1/checkout' \
 --data '{
     "sessionId" : "641d555b91ae1",
     "orderId" : "641d555b91ae6",    
-    "method" : "all",    
+    "method" : "cardAndEasyPay",    
     "clientId" : "S1_ce1bb1ebebc44fe1a3f7cec976c83ea7",
     "amount" : 1004,
     "goodsName" : "test",
@@ -176,7 +176,7 @@ Content-type: application/json;charset=utf-8
     "disableScroll": false,
     "disableEdgeChk": false,
     "appScheme": null,
-    "method": "all",
+    "method": "cardAndEasyPay",
     "url": "https://sandbox-pay.nicepay.co.kr/v1/fake/pay/641d555b91ae1",
     "zidxHigher": false
 }
@@ -318,7 +318,7 @@ Response
   "disableScroll": false,
   "disableEdgeChk": false,
   "appScheme": null,
-  "method": "all",
+  "method": "cardAndEasyPay",
   "url": "https://sandbox-pay.nicepay.co.kr/v1/fake/pay/641d555b91ae1",
   "zidxHigher": false
 }
@@ -395,7 +395,7 @@ Response
     "disableScroll": false,
     "disableEdgeChk": false,
     "appScheme": null,
-    "method": "all",
+    "method": "cardAndEasyPay",
     "url": "https://sandbox-pay.nicepay.co.kr/v1/fake/pay/641d555b91ae2",
     "zidxHigher": false
 }
