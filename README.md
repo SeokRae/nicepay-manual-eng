@@ -94,7 +94,7 @@ curl --location 'https://api.nicepay.co.kr/v1/checkout' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Basic UjFfOTRlYjN...' \
 --data '{
-    "method": "all",
+    "method": "cardAndEasyPay",
     "sessionId" : "unique-sessionId-001",
     "clientId": "R1_94eb3a4a30264fdba82ce0d05b465012",
     "orderId": "order-id-unique-order-001",
@@ -146,7 +146,7 @@ curl --location 'https://api.nicepay.co.kr/v1/checkout' \
     "disableScroll": false,
     "disableEdgeChk": false,
     "appScheme": null,
-    "method": "all",
+    "method": "cardAndEasyPay",
     "url": "https://pay.nicepay.co.kr/v1/checkout/pay/unique-sessionId-001",
     "zidxHigher": false
 }
