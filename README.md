@@ -61,6 +61,11 @@ These are response and error codes.
 This is a ⚡ Quick guide for development.  
 By following the guide in order, it is possible to develop a Checkout TEST in about ⏱️ 10 minutes.  
 
+**Before you start**, you'll need:
+- A [Client and Secret key](./info/nicepay-info-key.md) issued from the NicePay admin console
+- An `Authorization` header built from those keys, see [Basic and Bearer authentication](./info/nicepay-info-basic-token.md)
+- We recommend testing against the [Sandbox](./info/nicepay-info-sandbox.md) first, then switching to Live once verified
+
 <br>
 
 > #### ⚠️ Important  
@@ -84,7 +89,7 @@ After that, the customer can proceed with payment by accessing the URL that is r
 
 <br><br>
 
-### Create a checkout example code
+### Step 1. Create a checkout session
 
 - If the Create Checkout API call is successful, it will respond with a URL.
 - Please refer to the [link](./api/nicepay-api-payment-window-url.md) for the request parameters of the Create Checkout API.
@@ -148,9 +153,9 @@ curl --location 'https://api.nicepay.co.kr/v1/checkout' \
 }
 ```
 
-When you access the URL that was responded, the Checkout window will be displayed, and the client will be able to make a payment.
+### Step 2. Redirect the customer to the checkout URL
 
-<br><br>
+When you access the URL that was responded, the Checkout window will be displayed, and the client will be able to make a payment.
 
 <img src="./image/live-checkout.png" width="800px">
 
@@ -158,7 +163,7 @@ https://pay.nicepay.co.kr/v1/checkout/pay/G1cKzR8pQmT3xYVn5A9Lse2f/unique-sessio
 
 <br><br>
 
-### Payment (Approval) response example
+### Step 3. Receive the payment result
 
 - When the client completes the payment, the approval information will be sent to the endpoint of the `returnUrl`
 
@@ -176,4 +181,14 @@ success=true&authToken=NICEUNTT0992E00E775A88C5DC13938447D237F0&tid=nicepay01m01
 > #### ⚠️ Important  
 > When conducting tests through the Sandbox, actual approvals will not occur.  
 > Also, arbitrary values are returned in the response.  
+
+<br><br>
+
+### Next steps
+
+- Verify the amount from `signature`, then check the transaction status anytime via [Transaction Status Inquiry](./api/nicepay-api-retrieve.md).
+- Need to cancel or refund a payment? See [Cancel](./api/nicepay-api-cancel.md).
+- Using virtual accounts or other methods with delayed settlement? Register a [Webhook](./api/nicepay-api-webhook.md) to catch async events like deposits.
+- Ready to go live? Revisit the Sandbox vs. Live domain note above and switch your keys and base URL.
+
 <br>
