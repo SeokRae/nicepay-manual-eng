@@ -202,7 +202,7 @@ Content-type: application/json
 | paidAt | String | O | - | Time of payment completed ISO 8601 format<br>If payment is not completed, return 0 |
 | failedAt | String | O | - | Time of payment failure ISO 8601 format<br>If not payment is not failed, return 0 |
 | cancelledAt | String | O | - | Payment cancellation time ISO 8601 format<br>If it is not cancellation request, return 0<br>In case of partial cancellation, the last cancellation time will be return |
-| payMethod | String | O | 10 | Payment method<br><br>card: credit card, <br>vbank: virtual account, <br>bank: account transfer, <br>cellphone: mobile phone, <br>naverpay=Naver Pay, <br>kakaopay=Kakao Pay, <br>samsungpay=Samsung Pay |
+| payMethod | String | O | 10 | Payment method<br><br>card: credit card, <br>vbank: virtual account, <br>bank: account transfer, <br>cellphone: mobile phone, <br>naverpay=Naver Pay, <br>kakaopay=Kakao Pay, <br>samsungpay=Samsung Pay, <br>tosspay=Toss Pay |
 | amount | Int | O | 12 | payment amount |
 | balanceAmt | Int | O | 12 | Remained balance for cancellation |
 | goodsName | String | O | 40 | Product name |
