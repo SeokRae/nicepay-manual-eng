@@ -148,11 +148,10 @@ Content-type: application/json;charset=utf-8
     "amount": 1004,
     "goodsName": "test",
     "returnUrl": "http://your-return-url.com",
-    "apprStatus": "ready",
+    "status": "ready",
     "skinType": null,
     "taxFreeAmt": null,
     "isExpire": false,
-    "updateDate": null,
     "expireDate": "2023-03-25T16:39:12.000+0900",
     "mallReserved": null,
     "mallUserId": null,
@@ -173,12 +172,9 @@ Content-type: application/json;charset=utf-8
     "isDigital": false,
     "directReceiptType": null,
     "directReceiptNo": null,
-    "disableScroll": false,
-    "disableEdgeChk": false,
     "appScheme": null,
     "method": "cardAndEasyPay",
-    "url": "https://sandbox-pay.nicepay.co.kr/v1/fake/pay/641d555b91ae1",
-    "zidxHigher": false
+    "url": "https://sandbox-pay.nicepay.co.kr/v1/fake/pay/641d555b91ae1"
 }
 ```
 
@@ -290,11 +286,10 @@ Response
   "amount": 1004,
   "goodsName": "test",
   "returnUrl": "https://nicepaytest.link/checkout/sandbox-response.php",
-  "apprStatus": "cancelled",
+  "status": "cancelled",
   "skinType": null,
   "taxFreeAmt": null,
   "isExpire": true,
-  "updateDate": null,
   "expireDate": "2023-03-25T16:46:36.000+0900",
   "mallReserved": null,
   "mallUserId": null,
@@ -315,12 +310,9 @@ Response
   "isDigital": false,
   "directReceiptType": null,
   "directReceiptNo": null,
-  "disableScroll": false,
-  "disableEdgeChk": false,
   "appScheme": null,
   "method": "cardAndEasyPay",
-  "url": "https://sandbox-pay.nicepay.co.kr/v1/fake/pay/641d555b91ae1",
-  "zidxHigher": false
+  "url": "https://sandbox-pay.nicepay.co.kr/v1/fake/pay/641d555b91ae1"
 }
 
 ```
@@ -367,11 +359,10 @@ Response
     "amount": 1004,
     "goodsName": "test",
     "returnUrl": "http://your-return-url.com",
-    "apprStatus": "ready",
+    "status": "ready",
     "skinType": null,
     "taxFreeAmt": null,
     "isExpire": true,
-    "updateDate": "2023-03-24T17:08:03.000+0900",
     "expireDate": "2023-03-25T17:07:53.000+0900",
     "mallReserved": null,
     "mallUserId": null,
@@ -392,12 +383,9 @@ Response
     "isDigital": false,
     "directReceiptType": null,
     "directReceiptNo": null,
-    "disableScroll": false,
-    "disableEdgeChk": false,
     "appScheme": null,
     "method": "cardAndEasyPay",
-    "url": "https://sandbox-pay.nicepay.co.kr/v1/fake/pay/641d555b91ae2",
-    "zidxHigher": false
+    "url": "https://sandbox-pay.nicepay.co.kr/v1/fake/pay/641d555b91ae2"
 }
 
 
