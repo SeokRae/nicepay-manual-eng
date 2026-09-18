@@ -43,11 +43,10 @@ curl --location 'https://api.nicepay.co.kr/v1/checkout' \
     "amount": 1004,
     "goodsName": "test",
     "returnUrl": "http://your-return-url.com",
-    "apprStatus": "ready",
+    "status": "ready",
     "skinType": null,
     "taxFreeAmt": null,
     "isExpire": false,
-    "updateDate": null,
     "expireDate": "2023-03-25T13:58:01.000+0900",
     "mallReserved": null,
     "mallUserId": null,
@@ -71,7 +70,6 @@ curl --location 'https://api.nicepay.co.kr/v1/checkout' \
     "appScheme": null,
     "method": "cardAndEasyPay",
     "url": "https://pay.nicepay.co.kr/v1/checkout/pay/G1cKzR8pQmT3xYVn5A9Lse2f/unique-sessionId-001",
-    "zidxHigher": false,
     "messageSource": "nicepay"
 }
 ```
