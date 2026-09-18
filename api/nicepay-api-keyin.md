@@ -1,0 +1,155 @@
+## Key-in Payment
+
+Key-in (Manual Entry) payment lets the merchant submit a card charge directly with card details the merchant already holds (MOTO / manually entered card), without redirecting the customer through the Hosted Payment Page. The merchant encrypts the card data client-side and calls this API directly; NicePay returns the final approval result synchronously in the response, there is no separate authorization callback.
+
+> #### ⚠️ Important
+> Key-in is only available to merchants specifically enabled for manual-entry payments. Calling this API without that permission returns `A128 Not a key-in merchant`.
+> Your merchant account is enrolled with one of several encryption/authentication levels by NicePay (see [encData Field Details](#encdata-field-details) below); it isn't something you choose per request.
+
+<br>
+
+### Example code
+
+```bash
+curl -X POST 'https://api.nicepay.co.kr/v1/key-in/payments' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Basic ZWVjOGQzNTA4Y2IwNDI1ZGI5NTViMzBiZjM5...' \
+-d '{
+    "orderId": "merchant-order-id",
+    "amount": 1004,
+    "goodsName": "test",
+    "encData": "7c4b12eb43324290bd0e522900a892343f57e0d176cdadae757132c7f3cd442f023ef5c3ffa254ed04b6d47624d4c7847e8061f3be0d67adf1b463b46a542052cf47a5206bfd23945fc1851d426468f4",
+    "isInterestFree": false,
+    "cardQuota": 0
+}'
+```
+
+> `encData` here is encrypted with AES/ECB (see [encData Field Encryption Example](#encdata-field-encryption-example) below). This is a different mode from the CBC encryption used for [Recurring Payment](./nicepay-api-billing.md#encdata-field-encryption-example-aes-128)'s `encData`, don't reuse that example's key derivation here.
+
+<br>
+
+### Key-in Payment Request Parameter
+
+```bash
+POST /v1/key-in/payments
+HTTP/1.1
+Host: api.nicepay.co.kr
+Authorization: Basic <credentials> or Bearer <token>
+Content-type: application/json;charset=utf-8
+```
+
+| Parameter | Type | required | bytes | Description |
+|:--------------|:---------:|:----------:|:-------:|:--------------|
+| orderId | String | O | 64 | Your unique order id<br> cannot reuse the orderid |
+| amount | Int | O | 12 | Transaction amount (only numbers are allowed) |
+| goodsName | String | O | 40 | Product Name |
+| encData | String | O | 512 | Card information encryption data<br>See [encData Field Details](#encdata-field-details) below |
+| isInterestFree | Boolean | O | 5 | true: the merchant pays the payer's installment interest / false: general |
+| cardQuota | Int | O | 2 | Installment period<br>0: pay in full, 2: 2 months, 3: 3 months … |
+| ediDate | String | | 40 | Required together with `signData`<br>ISO 8601 |
+| signData | String | | 256 | Forgery verification data<br>Rule: hex(sha256(orderId + ediDate + SecretKey)) |
+| buyerName | String | | 30 | Buyer name |
+| buyerEmail | String | | 60 | Buyer email |
+| buyerTel | String | | 40 | Buyer phone number (number only) |
+| taxFreeAmt | Int | | 12 | Tax-free amount within `amount`<br>Must not exceed `amount` |
+| currency | String | | 3 | KRW: Korean Won, USD: US Dollar, CNY: Chinese Yuan |
+| returnCharSet | String | | 10 | utf-8(Default) / euc-kr |
+| mallReserved | String | | 500 | Reserved field for the merchant<br>We recommend using it in JSON string format.<br>Double quotation mark (") cannot be used. |
+
+<br>
+
+#### encData Field Details
+
+Common required fields: `cardNo`, `expYear`, `expMonth`. Which additional field(s) are required depends on the encryption/authentication level your merchant account is enrolled with:
+
+| Your merchant's level | Additional field(s) | Meaning |
+|:---|:---|:---|
+| 01 | *(none)* | Card number + expiration date only |
+| 03 | `cardPw` | Card password verification |
+| 10 | `idNo` | Date of birth (individual) or business registration number (corporation) |
+| 11 | `idNo` + `cardPw` | Both |
+
+> ⚠️ Sending a field your merchant's level doesn't expect (or omitting one it requires) fails encData verification with `U341`. Contact NicePay support if you're not sure which level your account is enrolled with.
+
+| Parameter | Type | required | bytes | Description |
+|:--------------|:---------:|:----------:|:-------:|:--------------|
+| cardNo | String | O | 16 | Card number, numbers only |
+| expYear | String | O | 2 | Expiration year, format: YY |
+| expMonth | String | O | 2 | Expiration month, format: MM |
+| idNo | String | Conditional | 13 | Individual (date of birth, 6 digits): YYMMDD<br>Corporation: business registration number, 10 digits |
+| cardPw | String | Conditional | 2 | First 2 digits of the card password |
+
+<br>
+
+#### encData Field Encryption Example
+
+Unlike [Recurring Payment](./nicepay-api-billing.md#encdata-field-encryption-example-aes-128)'s `encData`, Key-in's `encData` is encrypted with **AES/ECB**, not CBC, so there is no IV.
+
+```bash
+- Encryption Algorithm : AES128
+- Encryption Details   : AES/ECB/PKCS5Padding
+- Encoding             : Hex Encoding
+- Encryption KEY       : 16 digits before SecretKey (ECB mode doesn't use an IV)
+
+- Plain-text     : cardNo=1234567890123456&expYear=25&expMonth=12&idNo=800101&cardPw=12
+- Encryption-key : 2dcc2a0d63bf4694 (16 digits before SecretKey)
+
+- Encrypted-text : `7c4b12eb43324290bd0e522900a892343f57e0d176cdadae757132c7f3cd442f023ef5c3ffa254ed04b6d47624d4c7847e8061f3be0d67adf1b463b46a542052cf47a5206bfd23945fc1851d426468f4`
+```
+
+<br>
+
+### Key-in Payment Response Parameter
+
+```bash
+POST
+Content-type: application/json
+```
+
+| Parameter | Type | required | Bytes | Description |
+|:----------|:----:|:--------:|:------:|:-----------|
+| resultCode | String | O | 4 | 0000 : success / other failure |
+| resultMsg | String | O | 100 | Result message |
+| tid | String | O | 30 | NICEPAY transaction ID |
+| orderId | String | O | 64 | Your unique order ID |
+| amount | Int | O | 12 | payment amount |
+| currency | String | | 3 | KRW: Korean Won, USD: USD, CNY: Yuan |
+| goodsName | String | | 40 | Product name |
+| status | String | O | 20 | Payment processing status<br>paid: payment completed<br>failed: payment failed<br>['paid', 'failed'] |
+| paidAt | String | O | - | Time of payment completed, ISO 8601 format<br>If payment is not completed, return 0 |
+| failedAt | String | O | - | Time of payment failure, ISO 8601 format<br>If not a payment failure, return 0 |
+| ediDate | String | O | - | Response message creation date and time, ISO 8601 format |
+| signature | String | | 256 | Forgery verification data<br>Rule: hex(sha256(tid + amount + ediDate + SecretKey)) |
+| approveNo | String | | 30 | Authorization number |
+| buyerName | String | | 30 | Buyer name |
+| buyerTel | String | | 40 | Buyer phone number |
+| buyerEmail | String | | 60 | Buyer email |
+| receiptUrl | String | | 200 | Receipt URL |
+| mallReserved | String | | 500 | Reserved field for the merchant |
+| card | Object | | | Credit card object, see [Card information](#card-information) below |
+| messageSource | String | | | nicepay: Response message generated by nicepay<br>external: Response message generated by 3rd partner |
+
+<br>
+
+#### Card information <img src="https://img.shields.io/badge/-Object-yellow">
+
+| Parameter | | Type | Required | Bytes | Description |
+|:----------|:----------|:--------:|:-----:|:-------:|:--------------|
+| card | | Object | | | Credit card object |
+| | cardCode | String | O | 3 | Card company code |
+| | cardName | String | O | 20 | Card issuer name |
+| | cardNum | String | | 20 | Card number, masked to the first 6 and last 4 digits<br>Ex) 123412******1234 |
+| | cardQuota | Int | O | 3 | Installment months<br>0: lump sum, 2: 2 months, 3: 3 months … |
+| | isInterestFree | Boolean | O | - | Whether the merchant pays the payer's installment interest |
+| | cardType | String | | 1 | 0: credit, 1: check(debit) |
+| | canPartCancel | Boolean | O | - | Whether partial cancellation is possible |
+| | acquCardCode | String | O | 3 | Acquirer code |
+| | acquCardName | String | O | 100 | Acquirer name |
+
+<br>
+
+### After a Key-in payment
+
+- Key-in doesn't have its own cancel API. Cancel or refund with the standard [Cancel request with tid](./nicepay-api-cancel.md#cancel-request-parameter-with-tid).
+- You can look up a Key-in transaction anytime via [Transaction Status Inquiry](./nicepay-api-retrieve.md#retrieve-a-transaction-with-tidtransaction-id) with the `tid`.
+- Related error codes: `A128`, `U340`, `U341`, `U342`, see [API Response code](../code/nicepay-code.md#API-response-code).
