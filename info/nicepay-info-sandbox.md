@@ -329,7 +329,7 @@ If you want to expire the session before that, please call the expire API.
 
 
 ```bash
-GET /v1/checkout/{sessionId}/expire
+POST /v1/checkout/{sessionId}/expire
 HTTP/1.1  
 Host: sandbox-api.nicepay.co.kr 
 Authorization: Basic <credentials>  or Bearer <token>  
