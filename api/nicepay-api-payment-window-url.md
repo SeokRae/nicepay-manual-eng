@@ -135,13 +135,6 @@ Content-type: application/json;charset=utf-8
 
 <br>
 
-#### Card bill Option
-| Parameter     |   Type   |  Required   |  Bytes  | Description  |
-|:--------------|:---------:|:----------:|:-------:|:--------------|
-| bid | String | Card billing | 30 | billing key for recurring payment |
-
-<br>
-
 #### Phone bill Option
 | Parameter     |   Type   |  Required   |  Bytes  | Description  |
 |:--------------|:---------:|:----------:|:-------:|:--------------|
