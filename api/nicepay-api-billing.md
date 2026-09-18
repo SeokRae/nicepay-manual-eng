@@ -18,6 +18,22 @@ After that, if you pass the encrypted Token(bid) through the `/v1/subscribe/{bid
 
 ### Example code
 
+**Default (AES-128, no `encMode`)**
+
+```bash
+curl -X POST 'https://api.nicepay.co.kr/v1/subscribe/regist' 
+-H 'Content-Type: application/json' 
+-H 'Authorization: Basic ZWVjOGQzNTA4Y2IwNDI1ZGI5NTViMzBiZjM5...' 
+-D '{
+    "encData": "2127975b6d82c36136ba8197a997a994f6c086ff75a6d35e514c54a1e686545e60b76f11bec706de1082e43dd74ae5c5f0709dc1eca6c3cd20e1c0e9e9b7a85c6505461c91c865d82072e41ba5284bd7",
+    "orderId": "merchant-order-id"
+}'
+```
+
+> `encData` here is encrypted with AES-128 (see [encData Field Encryption Example (AES-128)](#encdata-field-encryption-example-aes-128) below). No `encMode` field is sent, so the default algorithm applies.
+
+**AES-256 (`encMode=A2`)**
+
 ```bash
 curl -X POST 'https://api.nicepay.co.kr/v1/subscribe/regist' 
 -H 'Content-Type: application/json' 
