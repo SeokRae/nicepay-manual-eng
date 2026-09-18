@@ -312,7 +312,7 @@ This is an API for expiring a generated session.
 ### Expire Checkout session Request Parameter
 
 ```bash
-GET /v1/checkout/{sessionId}/expire
+POST /v1/checkout/{sessionId}/expire
 HTTP/1.1    
 Host: api.nicepay.co.kr
 Authorization: Basic <credentials> or Bearer <token>
