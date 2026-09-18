@@ -164,57 +164,14 @@ https://pay.nicepay.co.kr/v1/checkout/pay/G1cKzR8pQmT3xYVn5A9Lse2f/unique-sessio
 
 - Refer to the [Code](./code/nicepay-code.md) for the response and error codes. 
 
+- This is delivered as a `POST` with `Content-type: application/x-www-form-urlencoded`, a flat form body, not JSON. See the [Payment Authorization Response Parameter](./api/nicepay-api-payment-window-url.md#payment-authorization-response-parameter) table for the full field list.
+
 ```bash
-POST
-Content-type: application/json
+POST {returnUrl}
+Content-type: application/x-www-form-urlencoded
 ```
 ```bash
-{
-    "resultCode": "0000",
-    "resultMsg": "정상 처리되었습니다.",
-    "tid": "yeoshin01m01012303241404031098",
-    "cancelledTid": null,
-    "orderId": "order-id-unique-order-001",
-    "ediDate": "2023-03-24T14:04:16.982+0900",
-    "signature": "59a05ad89bbbb6b5dda157dd31c48510f78eefdffc13ebec94f5afffa067fa4f",
-    "status": "paid",
-    "paidAt": "2023-03-24T14:04:03.000+0900",
-    "failedAt": "0",
-    "cancelledAt": "0",
-    "payMethod": "card",
-    "amount": 1004,
-    "balanceAmt": 1004,
-    "goodsName": "test",
-    "mallReserved": null,
-    "useEscrow": false,
-    "currency": "KRW",
-    "channel": "pc",
-    "approveNo": null,
-    "buyerName": null,
-    "buyerTel": null,
-    "buyerEmail": "test@abc.com",
-    "receiptUrl": "https://npg.nicepay.co.kr/issue/IssueLoader.do?type=0&innerWin=Y&TID=yeoshin01m01012303241404031098",
-    "mallUserId": null,
-    "issuedCashReceipt": false,
-    "coupon": null,
-    "card": {
-        "cardCode": "07",
-        "cardName": "현대",
-        "cardNum": "624368******7607",
-        "cardQuota": 0,
-        "isInterestFree": false,
-        "cardType": "credit",
-        "canPartCancel": true,
-        "acquCardCode": "07",
-        "acquCardName": "현대"
-    },
-    "vbank": null,
-    "bank": null,
-    "cellphone": null,
-    "cancels": null,
-    "cashReceipts": null,
-    "sessionId": "unique-sessionId-001"
-}
+success=true&authToken=NICEUNTT0992E00E775A88C5DC13938447D237F0&tid=nicepay01m01012303241404031098&orderId=order-id-unique-order-001&clientId=R1_94eb3a4a30264fdba82ce0d05b465012&resultCode=0000&resultMsg=정상 처리되었습니다.&amount=1004&goodsName=test&channel=pc&status=paid&ediDate=2023-03-24T14:04:16.982+0900&signature=59a05ad89bbbb6b5dda157dd31c48510f78eefdffc13ebec94f5afffa067fa4f&paidAt=2023-03-24T14:04:03.000+0900&payMethod=card&buyerEmail=test@abc.com&receiptUrl=https://npg.nicepay.co.kr/issue/IssueLoader.do?type=0%26innerWin=Y%26TID=nicepay01m01012303241404031098&issuedCashReceipt=false&cardCode=07&cardName=현대&cardQuota=0&isInterestFree=false&cardType=1&canPartCancel=true&acquCardCode=07&acquCardName=현대&messageSource=nicepay
 ```
 > #### ⚠️ Important  
 > When conducting tests through the Sandbox, actual approvals will not occur.  
