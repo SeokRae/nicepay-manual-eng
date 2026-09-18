@@ -50,7 +50,7 @@ This is a technical document that includes information about the API.
 
 ### CODE
 These are response and error codes.  
-[HTTP status code](./code/nicepay-code.md#HTTP-status-code) | [Card-code](./code/nicepay-code.md#Card-code) | [Bank-code](./code/nicepay-code.md#Bank-code) | [API Response code](./code/nicepay-code.md#API-response-code) |
+[HTTP status code](./code/nicepay-code.md#http-status-code) | [Card-code](./code/nicepay-code.md#card-code) | [Bank-code](./code/nicepay-code.md#bank-code) | [API Response code](./code/nicepay-code.md#api-response-code) |
 
 <br><br>
 

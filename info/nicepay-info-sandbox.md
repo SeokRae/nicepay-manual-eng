@@ -252,7 +252,7 @@ https://nicepaytest.link/checkout/sandbox-redirect-fake.php
 
 Use it if you need to check the status of the session ID.  
 
-[Retrieve a checkout parameter](/api/nicepay-api-payment-window-url.md#nicepay-api-payment-window-url.md#retrieve-checkout-session-api-) 
+[Retrieve a checkout parameter](/api/nicepay-api-payment-window-url.md#retrieve-checkout-session-api-) 
 
 <br>
 
@@ -325,7 +325,7 @@ Response
 If no expiration time is specified for the session ID, it will be accessible for up to 24 hours.   
 If you want to expire the session before that, please call the expire API.  
 
-[Expire a checkout parameter](/api/nicepay-api-payment-window-url.md#nicepay-api-payment-window-url.md#expire-checkout-session-api-)
+[Expire a checkout parameter](/api/nicepay-api-payment-window-url.md#expire-checkout-session-api-)
 
 
 
@@ -556,7 +556,7 @@ Content-type: application/json;charset=utf-8
 If it is difficult to check the TID, you can check it through the orderId.
 
 Please refer to the link for more detailed information.  
-[Transaction Status Inquiry-orderId](/api/nicepay-api-retrieve.md#retrieve-a-transaction-with-orderid)
+[Transaction Status Inquiry-orderId](/api/nicepay-api-retrieve.md#transaction-status-inquiry-with-orderid)
 
 <br>
 
