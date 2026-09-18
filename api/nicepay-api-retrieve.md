@@ -149,14 +149,14 @@ Content-type: application/json
 | resultCode | String | O | 4 | 0000 : success / other failure |
 | resultMsg | String | O | 100 | Result message |
 | tid | String | O | 30 | NICEPAY transaction ID |
-| canceledTid | String | | 30 | Cancellation transaction ID<br>- Responded only with cancellation requests<br>- Use when finding canceled transaction information in the cancels object. |
+| cancelledTid | String | | 30 | Cancellation transaction ID<br>- Responded only with cancellation requests<br>- Use when finding canceled transaction information in the cancels object. |
 | orderId | String | O | 64 | Unique order number |
 | ediDate | String | O | - | Response message creation date and time (ISO 8601 format) |
 | signature | String | | 256 | Forgery verification data<br>- Respond only to valid transactions<br>- Creation rule: hex(sha256(tid + amount + ediDate+ SecretKey))<br>- For data validation, it is recommended to implement a comparison at business logic |
-| status | String | O | 20 | Payment processing status<br>paid: payment completed<br> ready: ready<br>failed: payment failed<br>canceled: canceled<br>partialCancelled: partially canceled<br>expired: expired<br>['paid', 'ready', 'failed', 'cancelled', 'partialCancelled', 'expired'] |
+| status | String | O | 20 | Payment processing status<br>paid: payment completed<br> ready: ready<br>failed: payment failed<br>cancelled: cancelled<br>partialCancelled: partially cancelled<br>['paid', 'ready', 'failed', 'cancelled', 'partialCancelled'] |
 | paidAt | String | O | - | Time of payment completed ISO 8601 format<br>If payment is not completed, return 0 |
 | failedAt | String | O | - | Time of payment failure ISO 8601 format<br>If not payment is not failed, return 0 |
-| canceledAt | String | O | - | Payment cancellation time ISO 8601 format<br>If it is not cancellation request, return 0<br>In case of partial cancellation, the last cancellation time will be return |
+| cancelledAt | String | O | - | Payment cancellation time ISO 8601 format<br>If it is not cancellation request, return 0<br>In case of partial cancellation, the last cancellation time will be return |
 | payMethod | String | O | 10 | Payment method<br><br>card: credit card, <br>vbank: virtual account, <br>bank: account transfer, <br>cellphone: mobile phone, <br>naverpay=Naver Pay, <br>kakaopay=Kakao Pay, <br>samsungpay=Samsung Pay |
 | amount | Int | O | 12 | payment amount |
 | balanceAmt | Int | O | 12 | Remained balance for cancellation |
@@ -249,7 +249,7 @@ Content-type: application/json
 | cancels | | Array | | | Cancellation history |
 | | tid | String | O | 30 | Cancel Transaction ID |
 | | amount | Int | O | 12 | Cancellation Amount |
-| | canceledAt | String | O | - | Canceled Time<br>ISO 8601 format |
+| | cancelledAt | String | O | - | Canceled Time<br>ISO 8601 format |
 | | reason | String | O | 100 | Cancellation reason |
 | | receiptUrl | String | O | 200 | <br>Receipt URL for user n |
 | | couponAmt | Int | | 12 | Cancellation amount of coupon <br> *Optional|

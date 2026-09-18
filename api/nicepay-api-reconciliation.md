@@ -118,7 +118,7 @@ Content-type: application/json;charset=utf-8
 |              | amount        | Integer | O        | 12    | payment amount    |
 |              | method        | String  | O        | 10    | Payment method<br><br>card: credit card, <br>vbank: virtual account, <br>bank: account transfer, <br>cellphone: mobile phone  |
 |              | useEscrow          | Boolean | O        |       | Escrow transaction status <br> true: Escrow transaction, false |
-|              | transactionStatus  | String  | O        | 20    | Payment processing status <br><br> paid: payment completed<br> canceled: canceled<br> partialCancelled: partially canceled  |
+|              | transactionStatus  | String  | O        | 20    | Payment processing status <br><br> paid: payment completed<br> cancelled: cancelled<br> partialCancelled: partially cancelled  |
 |              | transactionAt | String  | O        | 19    | Time of transaction completed <br><br> The time of the `tid`, not the time of the `originTid`. <br> ISO 8601 format (yyyy-MM-dd'T'HH:mm:ss) <br> ex) 2011-12-03T10:15:30" |
 
 
@@ -256,8 +256,8 @@ Content-type: application/json;charset=utf-8
 |            | amount             | Integer | O        | 12    | payment amount |
 |            | interestFee        | Integer | O        | 14    | Interest-free fee |
 |            | useEscrow          | Boolean | O        |       | Escrow transaction status <br> true: Escrow transaction, false |
-|            | transactionStatus  | String  | O        | 20    | Payment processing status <br><br> paid: payment completed<br> canceled: canceled<br> partialCancelled: partially canceled   |
-|            | cardAcquiringStatus  | String  | O        | 20    | Payment processing status <br><br> paid: payment completed<br> canceled: canceled<br> partialCancelled: partially canceled   |
+|            | transactionStatus  | String  | O        | 20    | Payment processing status <br><br> paid: payment completed<br> cancelled: cancelled<br> partialCancelled: partially cancelled   |
+|            | cardAcquiringStatus  | String  | O        | 20    | Payment processing status <br><br> paid: payment completed<br> cancelled: cancelled<br> partialCancelled: partially cancelled   |
 |            | method             | String  | O        | 10    | Payment method<br><br>card: credit card <br>vbank: virtual account  <br>bank: account transfer  <br>cellphone: mobile phone |
 |            | fee                | Integer | O        | 10    | fee     |
 |            | supplyAmt          | Integer | O        | 14    | Supply amount of the payment amount       |
