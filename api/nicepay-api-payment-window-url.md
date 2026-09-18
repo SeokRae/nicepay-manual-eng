@@ -196,9 +196,9 @@ The payment approval response value will be delivered to the `returnUrl` endpoin
 
 
 ```bash
-GET /v1/checkout/{sessionId}
-HTTP/1.1    
-Host: api.nicepay.co.kr 
+POST {returnUrl}
+HTTP/1.1
+Content-type: application/x-www-form-urlencoded
 ```
 
 <br>
