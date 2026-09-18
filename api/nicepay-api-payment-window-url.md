@@ -225,7 +225,7 @@ Content-type: application/x-www-form-urlencoded
 | amount | Int | O | 12 | payment amount |
 | goodsName | String | O | 40 | Product Name<br><br>Product Name (", * Special characters not allowed) |
 | channel | String | O | 10 | pc:PC payment, mobile:mobile payment |
-| status | String | | 20 | Payment processing status<br><br>paid: payment completed, ready: ready (virtual account number), failed: payment failed, canceled: canceled, partialCanceled: partially canceled, expired: expired<br>['paid', 'ready', 'failed', 'canceled', 'partialCanceled', 'expired'] |
+| status | String | | 20 | Payment processing status<br><br>paid: payment completed, ready: ready (virtual account number), failed: payment failed, cancelled: cancelled, partialCancelled: partially cancelled<br>['paid', 'ready', 'failed', 'cancelled', 'partialCancelled']<br><br>Expiration is not represented as a `status` value; check the separate `isExpire` boolean field instead. |
 | ediDate | String | | - | Creation date and time <br><br>ISO 8601 format |
 | signature | String | | 256 | Forgery verification data<br><br>- Respond only with successful transactions<br>- Rule: hex(sha256(tid + amount + ediDate+ SecretKey))|
 | paidAt | String | | - | When payment is complete<br><br>ISO 8601 format<br> If payment is not completed 0 |
@@ -294,7 +294,7 @@ Content-type: application/json;charset=utf-8
 | tid | String | | 30 | Returned when authorization is successful |
 | amount | Int | O | 12 | payment amount |
 | url | String |  |   | The URL to the Checkout Session. Redirect customers to this URL to take them to Checkout. |
-| status | String | | 20 | Payment processing status<br><br>paid: payment completed, ready: ready (virtual account number), failed: payment failed, canceled: canceled, partialCanceled: partially canceled, expired: expired<br>['paid', 'ready', 'failed', 'canceled', 'partialCanceled', 'expired']|
+| status | String | | 20 | Payment processing status<br><br>paid: payment completed, ready: ready (virtual account number), failed: payment failed, cancelled: cancelled, partialCancelled: partially cancelled<br>['paid', 'ready', 'failed', 'cancelled', 'partialCancelled']<br><br>Expiration is not represented as a `status` value; check the separate `isExpire` boolean field instead.|
 | isExpire | Boolean | |  | true : Expired <br> false : Not expired |
 | expireDate | String | |  | true : Expired <br> ISO 8601 |
 | expiredAt | String | |  | Expiration requested time |
@@ -339,7 +339,7 @@ Content-type: application/json;charset=utf-8
 | tid | String | | 30 | Returned when authorization is successful |
 | amount | Int | O | 12 | payment amount |
 | url | String |  |   | The URL to the Checkout Session. Redirect customers to this URL to take them to Checkout. |
-| status | String | | 20 | Payment processing status<br><br>paid: payment completed, ready: ready (virtual account number), failed: payment failed, canceled: canceled, partialCanceled: partially canceled, expired: expired<br>['paid', 'ready', 'failed', 'canceled', 'partialCanceled', 'expired']|
+| status | String | | 20 | Payment processing status<br><br>paid: payment completed, ready: ready (virtual account number), failed: payment failed, cancelled: cancelled, partialCancelled: partially cancelled<br>['paid', 'ready', 'failed', 'cancelled', 'partialCancelled']<br><br>Expiration is not represented as a `status` value; check the separate `isExpire` boolean field instead.|
 | isExpire | Boolean | |  | true : Expired <br> false : Not expired |
 | expireDate | String | |  | true : Expired <br> ISO 8601 |
 | expiredAt | String | |  | Expiration requested time |
