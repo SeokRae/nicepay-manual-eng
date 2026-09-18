@@ -579,5 +579,8 @@
 | U336 | 해당 URL 페이지 요청을 실패하였습니다. | Failed to request the URL page. |
 | U337 | HTTP 상태 코드가 정상(200)이 아닙니다. | The HTTP status code is not 200 |
 | U338 | 응답 페이지 Body 부분은 OK 문자만 허용됩니다. | Only the 'OK' string is allowed in the response body. |
+| U340 | KeyIn 결제정보 암호화 데이터 복호화오류 | Failed to decrypt the Key-in payment encryption data. |
+| U341 | KeyIn 결제정보 암호화 데이터 검증 오류 | Key-in payment encryption data verification error. |
+| U342 | KeyIn 결제가 가능한 MID가 아닙니다. | This MID is not enabled for Key-in payment. |
 
 <br>
