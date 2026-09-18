@@ -136,6 +136,7 @@ Content-type: application/json;charset=utf-8
 <br>
 
 #### Phone bill Option
+
 | Parameter     |   Type   |  Required   |  Bytes  | Description  |
 |:--------------|:---------:|:----------:|:-------:|:--------------|
 | isDigital | Int | Phone bill payment | 1 | 0: content, 1: physical |
@@ -143,6 +144,7 @@ Content-type: application/json;charset=utf-8
 <br>
 
 #### Direct Option
+
 | Parameter     |   Type   |  Required   |  Bytes  | Description  |
 |:--------------|:---------:|:----------:|:-------:|:--------------|
 | directReceiptType | String | | 20 | Cash Receipt Issuance Type<br>unPublished: Unpublished<br>individual: For personal income deduction<br>company: For business expenses proof |
@@ -151,6 +153,7 @@ Content-type: application/json;charset=utf-8
 <br>
 
 #### Only Mobile App option
+
 | Parameter     |   Type   |  Required   |  Bytes  | Description  |
 |:--------------|:---------:|:----------:|:-------:|:--------------|
 | appScheme  |  String  |       |  200   | Mobile App Scheme value (only for APP)<br>Ex) If the merchant App scheme is `nicepaysample`<br><br>appScheme=nicepaysample:// <br><br> If the payer completes authentication through the Nice Pay payment window in the App,It moves to the targer App passed as the appScheme value.|
