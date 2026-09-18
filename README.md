@@ -147,7 +147,7 @@ curl --location 'https://api.nicepay.co.kr/v1/checkout' \
     "disableEdgeChk": false,
     "appScheme": null,
     "method": "cardAndEasyPay",
-    "url": "https://pay.nicepay.co.kr/v1/checkout/pay/unique-sessionId-001",
+    "url": "https://pay.nicepay.co.kr/v1/checkout/pay/G1cKzR8pQmT3xYVn5A9Lse2f/unique-sessionId-001",
     "zidxHigher": false
 }
 ```
@@ -158,7 +158,7 @@ When you access the URL that was responded, the Checkout window will be displaye
 
 <img src="./image/live-checkout.png" width="800px">
 
-https://pay.nicepay.co.kr/v1/checkout/pay/unique-sessionId-001
+https://pay.nicepay.co.kr/v1/checkout/pay/G1cKzR8pQmT3xYVn5A9Lse2f/unique-sessionId-001
 
 <br><br>
 

@@ -70,7 +70,7 @@ curl --location 'https://api.nicepay.co.kr/v1/checkout' \
     "directReceiptNo": null,
     "appScheme": null,
     "method": "cardAndEasyPay",
-    "url": "https://pay.nicepay.co.kr/v1/checkout/pay/unique-sessionId-001",
+    "url": "https://pay.nicepay.co.kr/v1/checkout/pay/G1cKzR8pQmT3xYVn5A9Lse2f/unique-sessionId-001",
     "zidxHigher": false,
     "messageSource": "nicepay"
 }
