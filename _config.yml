@@ -1,0 +1,8 @@
+title: NicePay Untact Manual (EN)
+description: English-language integration guide for NicePay's Untact payment service, for overseas merchants.
+theme: minima
+
+header_pages:
+  - api/nicepay-api-uri-list.md
+  - info/nicepay-info-sandbox.md
+  - code/nicepay-code.md
