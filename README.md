@@ -15,7 +15,9 @@
 
 ## ⚡ Quick guide
 
-New to NicePay Untact? Start here: **[⚡ Quick Start Guide](./QUICKSTART.md)** — create your first Checkout session and receive a test payment result in about 10 minutes.
+New to NicePay Untact? NicePay offers three ways to charge a card, not sure which fits your service? See **[Which Integration Should I Use?](./INTEGRATION-PATHS.md)**.
+
+Already know you want a standard hosted checkout? Start here: **[⚡ Quick Start Guide](./QUICKSTART.md)** — create your first Checkout session and receive a test payment result in about 10 minutes.
 
 <br><br>
 
