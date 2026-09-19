@@ -8,6 +8,13 @@ Key-in (Manual Entry) payment lets the merchant submit a card charge directly wi
 
 <br>
 
+**Before you start**, you'll need:
+- A [Client and Secret key](../info/nicepay-info-key.md) issued from the NicePay admin console
+- An `Authorization` header built from those keys, see [Basic and Bearer authentication](../info/nicepay-info-basic-token.md)
+- We recommend testing against the [Sandbox](../info/nicepay-info-sandbox.md) first, then switching to Live once verified
+
+<br>
+
 ### Example code
 
 ```bash
