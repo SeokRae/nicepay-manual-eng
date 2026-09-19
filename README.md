@@ -13,6 +13,12 @@
 <br>
 
 
+## ⚡ Quick guide
+
+New to NicePay Untact? Start here: **[⚡ Quick Start Guide](./QUICKSTART.md)** — create your first Checkout session and receive a test payment result in about 10 minutes.
+
+<br><br>
+
 ## Information 
 This is a common guide needed before development.  
 [Client and Secret key](./info/nicepay-info-key.md) | [Firewall and Timeout](./info/nicepay-info-firewall-timeout.md) | [Basic and Bearer authentication](./info/nicepay-info-basic-token.md) | [Support environment](./info/nicepay-info-general.md) | [Sandbox](./info/nicepay-info-sandbox.md) | 
@@ -51,11 +57,5 @@ This is a technical document that includes information about the API.
 ## CODE
 These are response and error codes.  
 [HTTP status code](./code/nicepay-code.md#http-status-code) | [Card-code](./code/nicepay-code.md#card-code) | [Bank-code](./code/nicepay-code.md#bank-code) | [API Response code](./code/nicepay-code.md#api-response-code) |
-
-<br><br>
-
-## ⚡ Quick guide
-
-New to NicePay Untact? Start here: **[⚡ Quick Start Guide](./QUICKSTART.md)** — create your first Checkout session and receive a test payment result in about 10 minutes.
 
 <br>
