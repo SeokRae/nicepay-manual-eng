@@ -5,6 +5,7 @@ theme: minima
 nav:
   - title: Getting Started
     pages:
+      - INTEGRATION-PATHS.md
       - QUICKSTART.md
   - title: Information
     pages:
