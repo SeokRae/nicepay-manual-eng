@@ -2,6 +2,15 @@
 
 ## Payment Request (Hosted Payment Page)
 
+New to Checkout? The [Quick Start Guide](../QUICKSTART.md) walks through this end to end. If you just need the reference:
+
+**Before you start**, you'll need:
+- A [Client and Secret key](../info/nicepay-info-key.md) issued from the NicePay admin console
+- An `Authorization` header built from those keys, see [Basic and Bearer authentication](../info/nicepay-info-basic-token.md)
+- We recommend testing against the [Sandbox](../info/nicepay-info-sandbox.md) first, then switching to Live once verified
+
+<br>
+
 ### Over-view
 <img src="../image/payment-url.svg" width="800px">
 
