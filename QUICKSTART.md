@@ -1,5 +1,7 @@
 ## ⚡ Quick Start Guide
 
+This guide walks through **Checkout**, the standard hosted-payment-page integration. If you need the customer's card details to stay off your own server, this is almost always the right path — if you're not sure, see [Which Integration Should I Use?](./INTEGRATION-PATHS.md) first.
+
 By following the guide in order, it is possible to develop a Checkout TEST in about ⏱️ 10 minutes.
 
 **Before you start**, you'll need:
