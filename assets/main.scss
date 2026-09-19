@@ -14,3 +14,11 @@ table {
   display: block;
   overflow-x: auto;
 }
+
+pre {
+  overflow-x: auto;
+}
+
+code {
+  overflow-wrap: break-word;
+}
