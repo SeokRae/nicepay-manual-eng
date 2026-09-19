@@ -3,12 +3,126 @@
 
 @import "minima";
 
+// ---------------------------------------------------------------------------
+// Sidebar layout (replaces minima's default top header nav, header.html is
+// no longer included by _layouts/default.html)
+// ---------------------------------------------------------------------------
+
+$sidebar-width: 260px;
+
+.site-shell {
+  display: flex;
+  align-items: flex-start;
+}
+
+.sidebar {
+  flex: 0 0 $sidebar-width;
+  width: $sidebar-width;
+  box-sizing: border-box;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  overflow-y: auto;
+  padding: $spacing-unit ($spacing-unit / 2);
+  border-right: 1px solid $grey-color-light;
+  background-color: $background-color;
+}
+
+.sidebar-title {
+  display: block;
+  font-size: 18px;
+  font-weight: 600;
+  color: $text-color;
+  text-decoration: none;
+  margin-bottom: $spacing-unit;
+  padding: 0 ($spacing-unit / 2);
+
+  &:hover {
+    color: $brand-color;
+  }
+}
+
+.sidebar-group {
+  margin-bottom: $spacing-unit / 1.5;
+}
+
+.sidebar-group-title {
+  font-size: $small-font-size;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: $grey-color;
+  padding: 0 ($spacing-unit / 2);
+  margin-bottom: 6px;
+}
+
+.sidebar-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sidebar-link {
+  display: block;
+  padding: 6px ($spacing-unit / 2);
+  color: $text-color;
+  text-decoration: none;
+  font-size: $small-font-size;
+  border-left: 3px solid transparent;
+  border-radius: 0 4px 4px 0;
+
+  &:hover {
+    background-color: $grey-color-light;
+    text-decoration: none;
+  }
+
+  &.active {
+    color: $brand-color;
+    border-left-color: $brand-color;
+    background-color: rgba($brand-color, 0.08);
+    font-weight: 600;
+  }
+}
+
+.page-content {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
 .wrapper {
-  max-width: 1600px;
-  width: 80%;
+  max-width: 900px;
+  width: 90%;
   margin-left: auto;
   margin-right: auto;
+  padding-top: $spacing-unit;
+  padding-bottom: $spacing-unit;
 }
+
+@include media-query($on-laptop) {
+  .site-shell {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    position: static;
+    height: auto;
+    width: 100%;
+    flex-basis: auto;
+    border-right: none;
+    border-bottom: 1px solid $grey-color-light;
+    padding: ($spacing-unit / 2);
+  }
+
+  .wrapper {
+    width: 100%;
+    padding-left: $spacing-unit / 2;
+    padding-right: $spacing-unit / 2;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Content overflow safety nets
+// ---------------------------------------------------------------------------
 
 table {
   display: block;

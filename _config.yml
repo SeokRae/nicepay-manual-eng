@@ -2,20 +2,28 @@ title: NicePay Untact Manual (EN)
 description: English-language integration guide for NicePay's Untact payment service, for overseas merchants.
 theme: minima
 
-header_pages:
-  - QUICKSTART.md
-  - info/nicepay-info-key.md
-  - info/nicepay-info-basic-token.md
-  - info/nicepay-info-firewall-timeout.md
-  - info/nicepay-info-general.md
-  - info/nicepay-info-sandbox.md
-  - api/nicepay-api-uri-list.md
-  - api/nicepay-api-payment-window-url.md
-  - api/nicepay-api-billing.md
-  - api/nicepay-api-keyin.md
-  - api/nicepay-api-access-token.md
-  - api/nicepay-api-retrieve.md
-  - api/nicepay-api-cancel.md
-  - api/nicepay-api-reconciliation.md
-  - api/nicepay-api-webhook.md
-  - code/nicepay-code.md
+nav:
+  - title: Getting Started
+    pages:
+      - QUICKSTART.md
+  - title: Information
+    pages:
+      - info/nicepay-info-key.md
+      - info/nicepay-info-basic-token.md
+      - info/nicepay-info-firewall-timeout.md
+      - info/nicepay-info-general.md
+      - info/nicepay-info-sandbox.md
+  - title: API
+    pages:
+      - api/nicepay-api-uri-list.md
+      - api/nicepay-api-payment-window-url.md
+      - api/nicepay-api-billing.md
+      - api/nicepay-api-keyin.md
+      - api/nicepay-api-access-token.md
+      - api/nicepay-api-retrieve.md
+      - api/nicepay-api-cancel.md
+      - api/nicepay-api-reconciliation.md
+      - api/nicepay-api-webhook.md
+  - title: Code
+    pages:
+      - code/nicepay-code.md

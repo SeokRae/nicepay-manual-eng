@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: "en" }}">
+
+  {%- include head.html -%}
+
+  <body>
+
+    <div class="site-shell">
+      <nav class="sidebar" aria-label="Site navigation">
+        <a class="sidebar-title" href="{{ "/" | relative_url }}">{{ site.title | escape }}</a>
+
+        {%- for group in site.nav -%}
+          <div class="sidebar-group">
+            <div class="sidebar-group-title">{{ group.title }}</div>
+            <ul class="sidebar-links">
+              {%- for path in group.pages -%}
+                {%- assign nav_page = site.pages | where: "path", path | first -%}
+                {%- if nav_page -%}
+                  <li>
+                    <a class="sidebar-link{% if page.url == nav_page.url %} active{% endif %}" href="{{ nav_page.url | relative_url }}">{{ nav_page.title | escape }}</a>
+                  </li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endfor -%}
+      </nav>
+
+      <main class="page-content" aria-label="Content">
+        <div class="wrapper">
+          {{ content }}
+        </div>
+      </main>
+    </div>
+
+  </body>
+
+</html>
