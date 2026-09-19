@@ -5,6 +5,8 @@
 
   <body>
 
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
     <div class="site-shell">
       <nav class="sidebar" aria-label="Site navigation">
         <a class="sidebar-title" href="{{ "/" | relative_url }}">{{ site.title | escape }}</a>
@@ -16,8 +18,10 @@
               {%- for path in group.pages -%}
                 {%- assign nav_page = site.pages | where: "path", path | first -%}
                 {%- if nav_page -%}
+                  {%- assign is_current = false -%}
+                  {%- if page.url == nav_page.url -%}{%- assign is_current = true -%}{%- endif -%}
                   <li>
-                    <a class="sidebar-link{% if page.url == nav_page.url %} active{% endif %}" href="{{ nav_page.url | relative_url }}">{{ nav_page.title | escape }}</a>
+                    <a class="sidebar-link{% if is_current %} active{% endif %}" href="{{ nav_page.url | relative_url }}"{% if is_current %} aria-current="page"{% endif %}>{{ nav_page.title | escape }}</a>
                   </li>
                 {%- endif -%}
               {%- endfor -%}
@@ -26,7 +30,7 @@
         {%- endfor -%}
       </nav>
 
-      <main class="page-content" aria-label="Content">
+      <main id="main-content" class="page-content" aria-label="Content">
         <div class="wrapper">
           {{ content }}
         </div>

@@ -16,7 +16,7 @@ By following the guide in order, it is possible to develop a Checkout TEST in ab
 <br>
 
 ### Over-view
-<img src="./image/payment-url.svg" width="800px">
+<img alt="Sequence diagram: the client sends an order to the merchant server, which calls the NicePay Create Checkout API and receives a return URL, then redirects the customer to that URL to complete payment on the NicePay Checkout page" src="./image/payment-url.svg" width="800px">
   
 
 If a customer send an order, please call the Checkout creation API first.   
@@ -98,7 +98,7 @@ curl --location 'https://api.nicepay.co.kr/v1/checkout' \
 
 When you access the URL that was responded, the Checkout window will be displayed, and the client will be able to make a payment.
 
-<img src="./image/live-checkout.png" width="800px">
+<img alt="Screenshot of the NicePay hosted Checkout payment page" src="./image/live-checkout.png" width="800px">
 
 https://pay.nicepay.co.kr/v1/checkout/pay/G1cKzR8pQmT3xYVn5A9Lse2f/unique-sessionId-001
 
