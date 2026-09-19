@@ -3,6 +3,19 @@ description: English-language integration guide for NicePay's Untact payment ser
 theme: minima
 
 header_pages:
-  - api/nicepay-api-uri-list.md
+  - QUICKSTART.md
+  - info/nicepay-info-key.md
+  - info/nicepay-info-basic-token.md
+  - info/nicepay-info-firewall-timeout.md
+  - info/nicepay-info-general.md
   - info/nicepay-info-sandbox.md
+  - api/nicepay-api-uri-list.md
+  - api/nicepay-api-payment-window-url.md
+  - api/nicepay-api-billing.md
+  - api/nicepay-api-keyin.md
+  - api/nicepay-api-access-token.md
+  - api/nicepay-api-retrieve.md
+  - api/nicepay-api-cancel.md
+  - api/nicepay-api-reconciliation.md
+  - api/nicepay-api-webhook.md
   - code/nicepay-code.md
