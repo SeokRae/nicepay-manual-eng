@@ -10,6 +10,21 @@
 
 $sidebar-width: 260px;
 
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: $brand-color;
+  color: white;
+  padding: 8px 16px;
+  z-index: 100;
+  transition: top 0.1s ease-in-out;
+
+  &:focus {
+    top: 0;
+  }
+}
+
 .site-shell {
   display: flex;
   align-items: flex-start;
@@ -51,7 +66,9 @@ $sidebar-width: 260px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: $grey-color;
+  // $grey-color on $background-color is ~4.2:1, just under the 4.5:1 AA
+  // minimum for normal-size text; $grey-color-dark clears it comfortably.
+  color: $grey-color-dark;
   padding: 0 ($spacing-unit / 2);
   margin-bottom: 6px;
 }
@@ -81,6 +98,11 @@ $sidebar-width: 260px;
     border-left-color: $brand-color;
     background-color: rgba($brand-color, 0.08);
     font-weight: 600;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $brand-color;
+    outline-offset: -2px;
   }
 }
 

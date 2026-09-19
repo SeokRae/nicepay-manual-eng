@@ -1,0 +1,5 @@
+# Jekyll build artifacts (from local `jekyll build` verification runs)
+_site/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata
