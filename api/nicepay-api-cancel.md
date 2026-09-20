@@ -30,11 +30,13 @@ curl --location 'https://api.nicepay.co.kr/v1/payments/checkout/641d555b91ae1/ca
 | Credit card payment   | O          | O                    |             |                | within 1 year       |
 | Virtual account (after issuance) | O |                    |             |          | Before deposit expiration |
 | Virtual account (after deposit) |  |                      | O           | O              | 180 days            |
-| Cash receipt          | O          | O                    |             |                | 1 year after issued |
+| Cash receipt          | not via this API | not via this API |             |                | 1 year after issued |
 | Escrow (before registration for shipping) | O |           |             |                | -                   |
 | Escrow (after boarding registration) | O |                |             |                | -                   |
 | Escrow (after purchasing decision) | not allowed | not allowed | not allowed  | not allowed | -                |
 | Escrow (after purchase rejection) | O  |                  | O           |                | -                   |
+
+> Cancelling a cash-receipt payment through `/v1/payments/{tid}/cancel` or `/v1/payments/checkout/{sessionId}/cancel` fails with [`U106`](../code/nicepay-code.md#api-response-code) ("cash receipt cancellation requires a separate API"). That separate cash-receipt cancellation API isn't part of the Untact v1 API this manual documents, contact NicePay support if you need it.  
 
 <br>
 
@@ -110,6 +112,7 @@ Content-type: application/json
 | tid | String | O | 30 | NICEPAY transaction ID |
 | cancelledTid | String | | 30 | Cancellation transaction ID<br>- Responded only with cancellation requests<br>- Use when finding canceled transaction information in the cancels object. |
 | orderId | String | O | 64 | Unique order number |
+| sessionId | String | | - | Checkout session ID associated with this transaction, when available |
 | ediDate | String | O | - | Response message creation date and time (ISO 8601 format) |
 | signature | String | | 256 | Forgery verification data<br>- Respond only to valid transactions<br>- Creation rule: hex(sha256(tid + amount + ediDate+ SecretKey))<br>- For data validation, it is recommended to implement a comparison at business logic |
 | status | String | O | 20 | Payment processing status<br>paid: payment completed<br> ready: ready<br>failed: payment failed<br>cancelled: cancelled<br>partialCancelled: partially cancelled<br>['paid', 'ready', 'failed', 'cancelled', 'partialCancelled'] |
@@ -124,7 +127,7 @@ Content-type: application/json
 | useEscrow | Boolean | O | - | Escrow transaction status<br> true: Escrow transaction |
 | currency | String | O | 3 | Approved currency<br>KRW: Korean Won, USD: USD, CNY: Yuan |
 | channel | String | | 10 | pc:PC payment, mobile:mobile payment<br>['pc', 'mobile', 'null'] |
-| approveNo | String | | 30 | Authorization Number<br>Credit Card, Bank Transfer, Mobile Phone |
+| approveNo | String | | 30 | Authorization Number<br>Credit Card, Bank Transfer, Mobile Phone<br>Only populated when cancelling with `tid`; always `null` when cancelling with `sessionId` |
 | buyerName | String | | 30 | Buyer name |
 | buyerTel | String | | 40 | Buyer phone number |
 | buyerEmail | String | | 60 | Buyer Email |
@@ -155,7 +158,7 @@ Content-type: application/json
 | | cardQuota | Int | O | 3 | Installment Month<br>0: lump sum, 2:2 months, 3:3 months … |
 | | isInterestFree | Boolean | O | - | The store pays the payer's installment interest<br>true:yes, false:no |
 | | cardType | String | | 1 | Card type<br>credit:credit card, check:debit |
-| | canPartCancel | Boolean | O | - | Whether partial cancellation is possible<br>true: Possible, false: Impossible |
+| | canPartCancel | Boolean | | - | Whether partial cancellation is possible<br>true: Possible, false: Impossible, null: not reported by the acquirer for this card |
 | | acquCardCode | String | O | 3 | Acquirer code |
 | | acquCardName | String | O | 100 | Acquirer Name |
 
