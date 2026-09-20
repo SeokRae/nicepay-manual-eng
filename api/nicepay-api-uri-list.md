@@ -18,8 +18,8 @@ A list of URI's for provided APIs. If you need to check the interface, please cl
 | [Transaction Status Inquiry-Transaction status](./nicepay-api-retrieve.md#transaction-status-inquiry-with-tidtransaction-id)  |       `GET`     |     /v1/payments/{tid}  |     ○     |
 | [Transaction Status Inquiry-orderId](./nicepay-api-retrieve.md#transaction-status-inquiry-with-orderid)                  |       `GET`     |     /v1/payments/find/{orderId}     |     ○     |
 | [Transaction Status Inquiry-sessionId](./nicepay-api-retrieve.md#transaction-status-inquiry-with-sessionid)   |  `GET`     |     /v1/payments/checkout/{sessionId}     |     ○     |
-| [Card event inquiry](./nicepay-api-retrieve.md#card-event-api)               |       `GET`     |     /v1/card/event                  |     ×     |
-| [Card installment inquiry](./nicepay-api-retrieve.md#interest-free-installment-information-api)       |       `GET`     |     /v1/card/interest-free                  |     ×     |
+| [Card event inquiry](./nicepay-api-retrieve.md#card-event-api)               |       `GET`     |     /v1/card/event                  |     dummy data     |
+| [Card installment inquiry](./nicepay-api-retrieve.md#interest-free-installment-information-api)       |       `GET`     |     /v1/card/interest-free                  |     dummy data     |
 | [Webhook creation](./nicepay-api-webhook.md) |      `POST`    |     /v1/webhook      |     ×     |
 | [Webhook Inquiry](./nicepay-api-webhook.md) |      `GET`    |    /v1/webhook     |     ×     |
 | [Webhook delete](./nicepay-api-webhook.md) |      `POST`    |      /v1/webhook/{method}/delete      |     ×     |
