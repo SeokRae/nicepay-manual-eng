@@ -23,5 +23,6 @@ A list of URI's for provided APIs. If you need to check the interface, please cl
 | [Webhook creation](/api/nicepay-api-webhook.md) |      `POST`    |     /v1/webhook/regist      |     ×     |
 | [Webhook Inquiry](/api/nicepay-api-webhook.md) |      `GET`    |    /v1/webhook/get     |     ×     |
 | [Webhook delete](/api/nicepay-api-webhook.md) |      `POST`    |      /v1/webhook/remove      |     ×     |
+| [Webhook update](/api/nicepay-api-webhook.md) |      `POST`    |      /v1/webhook/{method}/update      |     ×     |
 | [Transactions](/api/nicepay-api-reconciliation.md) |      `POST`    |      /v1/transactions      |     ×     |
 | [Settlement](/api/nicepay-api-reconciliation.md) |      `POST`    |      /v1/settlements     |     ×     |
