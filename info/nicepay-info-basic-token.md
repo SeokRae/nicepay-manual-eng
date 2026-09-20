@@ -69,10 +69,10 @@ curl -X POST "https://api.nicepay.co.kr/v1/access-token" \
 {
   "resultCode": "0000",
   "resultMsg": "정상 처리되었습니다.",
-  "accessToken": "6d0a7caa1b7358c8aa06ef3706e01bb1feb2c65dacc7147b258dfdd6191b5279",
+  "accessToken": "dc51c8b13620519b8503bef6ee18f11370e8b349",
   "tokenType": "Bearer",
-  "expireAt": "2021-07-31T00:58:02.000+0900",
-  "now": "2021-07-20T15:28:26.882+0900"
+  "expireAt": "2023-02-28T13:23:17.655+0900",
+  "now": "2023-02-28T12:53:17.657+0900"
 }
 ```
 
@@ -81,7 +81,7 @@ curl -X POST "https://api.nicepay.co.kr/v1/access-token" \
 #### HTTP header Bearer token setting
 
 ```bash
-Authorization: Bearer 6d0a7caa1b7358c8aa06ef3706e01bb1feb2c65dacc7147b258dfdd6191b5279
+Authorization: Bearer dc51c8b13620519b8503bef6ee18f11370e8b349
 ```
 > The issued token is valid for 30 minutes and renewal of the issued token is not supported.  
 > When a token expires, a new token needs to be generated.  
