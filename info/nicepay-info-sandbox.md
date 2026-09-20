@@ -197,50 +197,51 @@ https://sandbox-pay.nicepay.co.kr/v1/fake/pay/641d555b91ae1
 
 <br><br>
 
-## Return a checkout
+## Payment result (returnUrl callback)
 ```bash
-Content-type: application/json;charset=utf-8  
+POST {returnUrl}
+Content-type: application/x-www-form-urlencoded
+```
 
-The response data will be sent to the returnUrl set in the checkout request.  
+The response data will be sent to the returnUrl set in the checkout request, as a flat `&`-joined query string. Shown one field per line below for readability:
 
-{
-  "success": "true",
-  "sessionId": "641d555b91ae1"
-  "orderId": "641d555b91ae6",
-  "authToken": "NICEUNTT0992E00E775A88C5DC13938447D237F0",
-  "tid": "UT0000104m00012303241646422011",
-  "clientId": "S1_ce1bb1ebebc44fe1a3f7cec976c83ea7",
-  "mallReserved": "",
-  "resultCode": "0000",
-  "resultMsg": "정상 처리되었습니다.",
-  "amount": "1004",
-  "goodsName": "test",
-  "channel": "pc",
-  "status": "paid",
-  "ediDate": "2023-03-24T16:46:42.484+0900",
-  "signature": "6cd4cc86f52f15c7532f95f9be162e4f7be89292836ed02fddf6bdecb7357535",
-  "paidAt": "2023-03-24T16:46:42.000+0900",
-  "failedAt": "0",
-  "payMethod": "card",
-  "useEscrow": "false",
-  "currency": "KRW",
-  "approveNo": "000000",
-  "couponAmt": "",
-  "buyerName": "null",
-  "buyerTel": "null",
-  "buyerEmail": "null",
-  "issuedCashReceipt": "false",
-  "receiptUrl": "https://npg.nicepay.co.kr/issue/IssueLoader.do?type=0&innerWin=Y&TID=UT0000104m00012303241646422011",
-  "mallUserId": "null",
-  "cardCode": "04",
-  "cardName": "삼성",
-  "cardQuota": "0",
-  "isInterestFree": "false",
-  "cardType": "credit",
-  "canPartCancel": "true",
-  "acquCardCode": "04",
-  "acquCardName": "삼성"
-}
+```bash
+success=true
+sessionId=641d555b91ae1
+orderId=641d555b91ae6
+authToken=NICEUNTT0992E00E775A88C5DC13938447D237F0
+tid=UT0000104m00012303241646422011
+clientId=S1_ce1bb1ebebc44fe1a3f7cec976c83ea7
+mallReserved=
+resultCode=0000
+resultMsg=정상 처리되었습니다.
+amount=1004
+goodsName=test
+channel=pc
+status=paid
+ediDate=2023-03-24T16:46:42.484+0900
+signature=6cd4cc86f52f15c7532f95f9be162e4f7be89292836ed02fddf6bdecb7357535
+paidAt=2023-03-24T16:46:42.000+0900
+failedAt=0
+payMethod=card
+useEscrow=false
+currency=KRW
+approveNo=000000
+couponAmt=
+buyerName=null
+buyerTel=null
+buyerEmail=null
+issuedCashReceipt=false
+receiptUrl=https://npg.nicepay.co.kr/issue/IssueLoader.do?type=0%26innerWin=Y%26TID=UT0000104m00012303241646422011
+mallUserId=null
+cardCode=04
+cardName=삼성
+cardQuota=0
+isInterestFree=false
+cardType=credit
+canPartCancel=true
+acquCardCode=04
+acquCardName=삼성
 ```
 
 Through the page below, you can easily check the flow when conducting a test  
