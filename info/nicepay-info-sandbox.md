@@ -34,7 +34,7 @@ Sandbox responds with TEST data, and no actual approval occurs.
 | Create checkout session                         | POST   | /v1/checkout                             | ○                  |
 | Retrive checkout session                        | GET    | /v1/checkout/{sessionId}                 | ○                  |
 | Expire checkout session                         | POST   | /v1/checkout/{sessionId}/expire          | ○                  |
-| Key-in Payment                                  | POST   | /v1/key-in/payments                      | ○                  |
+| Key-in Payment                                  | POST   | /v1/key-in/payments                      | ○ *                |
 | Recurring payment: Token Issue                  | POST   | /v1/subscribe/regist                     | ○                  |
 | Recurring Payment: Token authorization          | POST   | /v1/subscribe/{bid}/payments             | ○                  |
 | Recurring Payment: Token delete                 | POST   | /v1/subscribe/{bid}/expire               | ○                  |
@@ -45,6 +45,8 @@ Sandbox responds with TEST data, and no actual approval occurs.
 | Transaction Status Inquiry-Transaction status   | GET    | /v1/payments/{tid}                       | ○                  |
 | Transaction Status Inquiry-orderId              | GET    | /v1/payments/find/{orderId}              | ○                  |
 | Transaction Status Inquiry-sessionId            | GET    | /v1/payments/checkout/{sessionId}        | ○                  |
+
+* Key-in being reachable in Sandbox doesn't guarantee the shared test credentials below are enrolled for Key-in, or which `encData` level (01/03/10/11) they use. Contact NicePay support to confirm before testing Key-in, see [Key-in Payment](../api/nicepay-api-keyin.md#encdata-field-details).
 
 <br>
 
