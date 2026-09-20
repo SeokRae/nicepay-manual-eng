@@ -148,7 +148,7 @@ Content-type: application/json
 | | cardNum | String | | 20 | Card number, masked to the first 6 and last 4 digits<br>Ex) 123412******1234 |
 | | cardQuota | Int | O | 3 | Installment months<br>0: lump sum, 2: 2 months, 3: 3 months … |
 | | isInterestFree | Boolean | O | - | Whether the merchant pays the payer's installment interest |
-| | cardType | String | | 1 | 0: credit, 1: check(debit) |
+| | cardType | String | | 1 | Card type<br>credit:credit card, check:debit |
 | | canPartCancel | Boolean | O | - | Whether partial cancellation is possible |
 | | acquCardCode | String | O | 3 | Acquirer code |
 | | acquCardName | String | O | 100 | Acquirer name |
