@@ -24,6 +24,8 @@ By following the guide in order, it is possible to develop a Checkout TEST in ab
 If a customer send an order, please call the Checkout creation API first.   
 After that, the customer can proceed with payment by accessing the URL that is returned in the response.  
 
+For the success/failure branches of a card or easy-pay checkout, see [Card and Easy Pay checkout flow](./api/nicepay-api-payment-window-url.md#card-and-easy-pay-checkout-flow).
+
 <br>  
 
 > #### ⚠️ Important  
