@@ -86,23 +86,24 @@ Content-type: application/json;charset=utf-8
 
 | Parameter | Type | Required | Bytes | Description |
 |:--------------|:-----:|:-----:|:-----:|:----------|
-|    method     | String  |  O  | 20	  |  card : local cards <br> bank : bank transfer <br> vbank : virtual account  <br> cellphone : carrier billing | 
+|    method     | String  |  O  | 20	  |  all : all payment methods <br> card : local cards <br> bank : bank transfer <br> vbank : virtual account  <br> cellphone : carrier billing | 
 | url | String | O | 200 | The URL of the webhook endpoint |
 | managerEmail | String |  | 255 |If a webhook error occurs, an email will be automatically sent|
-| returnCharSet | String  |     | 10	  | Return encoding <br>utf-8(Default) / euc-kr	 | 
 
 <br>
 
 ### Create webhook Response Parameter
 
-| Parameter |   Type   |  Required   |  Bytes  | Description  |
-|:--------------|:----:|:-----:|:-----:|:--------|
-| resultCode | String | O | 4 | 0000 : success / other failure |
-| resultMsg | String | O | 100 | Result message |
-| method | String |  | 100 | all: all <br> card : local cards <br> bank : bank transfer <br> vbank : virtual account  <br> cellphone : carrier billing |
-| url | String |  | 100 | The URL of the webhook endpoint |
-| managerEmail | String |  | 100 |  |
-| returnCharSet | String |  | 100 |  |
+| Parameter |      | Type   |  Required   |  Bytes  | Description  |
+|:----------|:----:|:------:|:-----------:|:-------:|:-------------|
+| resultCode|      | String | O           | 4       | 0000 : success / other failure |
+| resultMsg |      | String | O           | 100     | Result message |
+| urls      |      |        |             |         |              |
+|           | method | String |  | 100 | all: all <br> card : local cards <br> bank : bank transfer <br> vbank : virtual account  <br> cellphone : carrier billing |
+|           | url | String |  | 100 | The URL of the webhook endpoint |
+|           | managerEmail | String |  | 100 |  |
+
+Related error codes: `U100`, `U111`, `U133`, `U333`, `U334`, `U335`, `U336`, `U337`, `U338`, see [API Response code](../code/nicepay-code.md#api-response-code).
 
 <br><br>
 
@@ -138,9 +139,7 @@ Content-type: application/json;charset=utf-8
 
 ### Retrieve webhook Request Parameter
 
-| Parameter | Type | Required | Bytes | Description |
-|:--------------|:-----:|:-----:|:-----:|:----------|
-| returnCharSet | String  |     | 10	  | Return encoding <br>utf-8(Default) / euc-kr	 | 
+This endpoint takes no request parameters beyond the `Authorization` header.
 
 <br>
 
@@ -154,7 +153,8 @@ Content-type: application/json;charset=utf-8
 |           | method | String  |  O  | 20	  | card : local cards <br> bank : bank transfer <br> vbank : virtual account  <br> cellphone : carrier billing |
 |           | url | String | O | 200 | The URL of the webhook endpoint |
 |           | managerEmail | String |  | 255 |If a webhook error occurs, an email will be automatically sent|
-|           | returnCharSet | String  |     | 10	  | Return encoding <br>utf-8(Default) / euc-kr	 | 
+
+Related error codes: `U100`, `U111`, `U133`, `U333`, `U334`, `U335`, `U336`, `U337`, `U338`, see [API Response code](../code/nicepay-code.md#api-response-code).
 
 
 <br><br>
@@ -188,17 +188,22 @@ Content-type: application/json;charset=utf-8
 
 | Parameter | Type | Required | Bytes | Description |
 |:--------------|:-----:|:-----:|:-----:|:----------|
-|    method     | String  |  O  | 20	  |  card : local cards <br> bank : bank transfer <br> vbank : virtual account  <br> cellphone : carrier billing | 
-| returnCharSet | String  |     | 10	  | Return encoding <br>utf-8(Default) / euc-kr	 | 
+|    method     | String  |  O  | 20	  |  all : all payment methods <br> card : local cards <br> bank : bank transfer <br> vbank : virtual account  <br> cellphone : carrier billing | 
 
 <br>
 
 ### Delete webhook Response Parameter
 
-| Parameter |   Type   |  Required   |  Bytes  | Description  |
-|:--------------|:----:|:-----:|:-----:|:--------|
-| resultCode | String | O | 4 | 0000 : success / other failure |
-| resultMsg | String | O | 100 | Result message |
+| Parameter |      | Type   |  Required   |  Bytes  | Description  |
+|:----------|:----:|:------:|:-----------:|:-------:|:-------------|
+| resultCode|      | String | O           | 4       | 0000 : success / other failure |
+| resultMsg |      | String | O           | 100     | Result message |
+| urls      |      |        |             |         |              |
+|           | method | String |  | 100 | all: all <br> card : local cards <br> bank : bank transfer <br> vbank : virtual account  <br> cellphone : carrier billing |
+|           | url | String |  | 100 | The URL of the webhook endpoint |
+|           | managerEmail | String |  | 100 |  |
+
+Related error codes: `U100`, `U111`, `U133`, `U333`, `U334`, `U335`, `U336`, `U337`, `U338`, see [API Response code](../code/nicepay-code.md#api-response-code).
 
 <br><br>
 
@@ -232,19 +237,24 @@ Content-type: application/json;charset=utf-8
 
 | Parameter | Type | Required | Bytes | Description |
 |:--------------|:-----:|:-----:|:-----:|:----------|
-|    method     | String  |  O  | 20	  |  card : local cards <br> bank : bank transfer <br> vbank : virtual account  <br> cellphone : carrier billing | 
+|    method     | String  |  O  | 20	  |  all : all payment methods <br> card : local cards <br> bank : bank transfer <br> vbank : virtual account  <br> cellphone : carrier billing | 
 | url | String | O | 200 | The URL of the webhook endpoint |
 | managerEmail | String |  | 255 |If a webhook error occurs, an email will be automatically sent|
-| returnCharSet | String  |     | 10	  | Return encoding <br>utf-8(Default) / euc-kr	 | 
 
 <br>
 
 ### Update webhook Response Parameter
 
-| Parameter |   Type   |  Required   |  Bytes  | Description  |
-|:--------------|:----:|:-----:|:-----:|:--------|
-| resultCode | String | O | 4 | 0000 : success / other failure |
-| resultMsg | String | O | 100 | Result message |
+| Parameter |      | Type   |  Required   |  Bytes  | Description  |
+|:----------|:----:|:------:|:-----------:|:-------:|:-------------|
+| resultCode|      | String | O           | 4       | 0000 : success / other failure |
+| resultMsg |      | String | O           | 100     | Result message |
+| urls      |      |        |             |         |              |
+|           | method | String |  | 100 | all: all <br> card : local cards <br> bank : bank transfer <br> vbank : virtual account  <br> cellphone : carrier billing |
+|           | url | String |  | 100 | The URL of the webhook endpoint |
+|           | managerEmail | String |  | 100 |  |
+
+Related error codes: `U100`, `U111`, `U133`, `U333`, `U334`, `U335`, `U336`, `U337`, `U338`, see [API Response code](../code/nicepay-code.md#api-response-code).
 
 <br><br>
 
