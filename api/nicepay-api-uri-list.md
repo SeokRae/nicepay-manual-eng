@@ -7,7 +7,7 @@ A list of URI's for provided APIs. If you need to check the interface, please cl
 | [Create checkout session](./nicepay-api-payment-window-url.md#hosted-payment-page-request-parameter-) |      `POST`    | /v1/checkout |     ○     |
 | [Retrive checkout session](./nicepay-api-payment-window-url.md#retrieve-checkout-session-api-) |      `GET`    | /v1/checkout/{sessionId} |     ○     |
 | [Expire checkout session](./nicepay-api-payment-window-url.md#expire-checkout-session-api-) |      `POST`    | /v1/checkout/{sessionId}/expire |     ○     |
-| [Key-in Payment](./nicepay-api-keyin.md)             |      `POST`     |     /v1/key-in/payments            |     ○     |
+| [Key-in Payment](./nicepay-api-keyin.md)             |      `POST`     |     /v1/key-in/payments            |     ×     |
 | [Recurring payment: Token Issue](./nicepay-api-billing.md)             |      `POST`     |     /v1/subscribe/regist            |     ○     |
 | [Recurring Payment: Token authorization](./nicepay-api-billing.md)              |      `POST`     |     /v1/subscribe/{bid}/payments    |     ○     |
 | [Recurring Payment: Token delete](./nicepay-api-billing.md#delete-token) |      `POST`     |     /v1/subscribe/{bid}/expire      |     ○     |

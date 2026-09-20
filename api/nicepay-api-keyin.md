@@ -5,13 +5,14 @@ Key-in (Manual Entry) payment lets the merchant submit a card charge directly wi
 > #### ⚠️ Important
 > Key-in is only available to merchants specifically enabled for manual-entry payments. Calling this API without that permission returns `A128 Not a key-in merchant`.
 > Your merchant account is enrolled with one of several encryption/authentication levels by NicePay (see [encData Field Details](#encdata-field-details) below); it isn't something you choose per request.
+> Key-in Payment is not provided in [Sandbox](../info/nicepay-info-sandbox.md#base-url-information-for-sandbox-and-live); you can only test it against Live once your merchant account is enabled for manual-entry payments.
 
 <br>
 
 **Before you start**, you'll need:
 - A [Client and Secret key](../info/nicepay-info-key.md) issued from the NicePay admin console
 - An `Authorization` header built from those keys, see [Basic and Bearer authentication](../info/nicepay-info-basic-token.md)
-- We recommend testing against the [Sandbox](../info/nicepay-info-sandbox.md) first, then switching to Live once verified
+- This API has no Sandbox, see the note above; test against Live directly
 
 <br>
 
