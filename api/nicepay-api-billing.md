@@ -21,7 +21,7 @@ After that, if you pass the encrypted Token(bid) through the `/v1/subscribe/{bid
 <br>
 
 ### Over-view
-<img src="../image/payment-subscribe.svg" width="800px"> 
+<img alt="Recurring payment token registration flow diagram: the customer inputs card information, the merchant server requests a token (bid) from NicePay, and the token is returned for use in repetitive approval requests without re-entering card details" src="../image/payment-subscribe.svg" width="800px"> 
 
 ### Example code
 
@@ -143,7 +143,7 @@ Content-type: application/json
 <br>
 
 ### Over-view
-<img src="../image/payment-subscribe-authorization.svg" width="800px">  
+<img alt="Token authorization flow diagram: the merchant server requests authorization using the customer's previously registered token (bid) and receives the approval response, without the customer re-entering card details" src="../image/payment-subscribe-authorization.svg" width="800px">  
 
 ### Token authorization example
 ```bash
@@ -229,7 +229,7 @@ Content-type: application/json
 
 <br>
 
-#### Coupon information <img src="https://img.shields.io/badge/-Object-yellow"> <img src="https://img.shields.io/badge/-nullable-lightgrey">
+#### Coupon information <img alt="Object type" src="https://img.shields.io/badge/-Object-yellow"> <img alt="Nullable" src="https://img.shields.io/badge/-nullable-lightgrey">
 
 | Parameter |           |   Type   |  Required   |  Bytes  |    Description     |
 |:----------|:----------|:--------:|:-----:|:-------:|:--------------|
@@ -238,7 +238,7 @@ Content-type: application/json
 
 <br>
 
-#### Card information <img src="https://img.shields.io/badge/-Object-yellow"> <img src="https://img.shields.io/badge/-nullable-lightgrey">
+#### Card information <img alt="Object type" src="https://img.shields.io/badge/-Object-yellow"> <img alt="Nullable" src="https://img.shields.io/badge/-nullable-lightgrey">
 
 | Parameter |                |   Type   |  Required   |  Bytes  | Description   |
 |:----------|:---------------|:--------:|:-----:|:-------:|:------------------|
@@ -273,7 +273,7 @@ Deleted Token(bid) cannot be restored or approved.
 <br>
 
 ### Over-view
-<img src="../image/payment-subscribe-delete.svg" width="800px">  
+<img alt="Token deletion flow diagram: the merchant server requests deletion of the customer's registered token (bid) from NicePay and receives confirmation that card registration was cancelled" src="../image/payment-subscribe-delete.svg" width="800px">  
 
 ### Delete Token(bid) Example code
 

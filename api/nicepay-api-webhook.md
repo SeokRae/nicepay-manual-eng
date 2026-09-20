@@ -72,7 +72,7 @@ curl --location --request POST 'https://api.nicepay.co.kr/v1/webhook' \
 }
 ```
 
-### Create a webhook <img src="https://img.shields.io/badge/-Beta version-red">
+### Create a webhook <img alt="Beta version" src="https://img.shields.io/badge/-Beta version-red">
 
 ```bash
 POST /v1/webhook
@@ -126,7 +126,7 @@ curl --location --request GET 'https://api.nicepay.co.kr/v1/webhook' \
 }
 ```
 
-### Retrieve a webhook <img src="https://img.shields.io/badge/-Beta version-red">
+### Retrieve a webhook <img alt="Beta version" src="https://img.shields.io/badge/-Beta version-red">
 
 ```bash
 GET /v1/webhook
@@ -174,7 +174,7 @@ curl --location --request POST 'https://api.nicepay.co.kr/v1/webhook/{method}/de
 }
 ```
 
-### Delete a webhook <img src="https://img.shields.io/badge/-Beta version-red">
+### Delete a webhook <img alt="Beta version" src="https://img.shields.io/badge/-Beta version-red">
 
 ```bash
 GET /v1/webhook/{method}/delete
@@ -242,7 +242,7 @@ Content-type: application/json;charset=utf-8
 
 <br>
 
-#### Coupon information <img src="https://img.shields.io/badge/-Object-yellow"> <img src="https://img.shields.io/badge/-nullable-lightgrey">
+#### Coupon information <img alt="Object type" src="https://img.shields.io/badge/-Object-yellow"> <img alt="Nullable" src="https://img.shields.io/badge/-nullable-lightgrey">
 
 | Parameter |           |   Type   |  Required   |  Bytes  |    Description     |
 |:----------|:----------|:--------:|:-----:|:-------:|:--------------|
@@ -251,7 +251,7 @@ Content-type: application/json;charset=utf-8
 
 <br>
 
-#### Card information <img src="https://img.shields.io/badge/-Object-yellow"> <img src="https://img.shields.io/badge/-nullable-lightgrey">
+#### Card information <img alt="Object type" src="https://img.shields.io/badge/-Object-yellow"> <img alt="Nullable" src="https://img.shields.io/badge/-nullable-lightgrey">
 
 | Parameter |                |   Type   |  Required   |  Bytes  | Description   |
 |:----------|:---------------|:--------:|:-----:|:-------:|:------------------|
@@ -269,7 +269,7 @@ Content-type: application/json;charset=utf-8
 
 <br>
 
-#### Cash receipts information <img src="https://img.shields.io/badge/-Array-blueviolet"> <img src="https://img.shields.io/badge/-nullable-lightgrey">
+#### Cash receipts information <img alt="Array type" src="https://img.shields.io/badge/-Array-blueviolet"> <img alt="Nullable" src="https://img.shields.io/badge/-nullable-lightgrey">
 
 | Parameter     |              |   Type   |   Required   |  Bytes  | Description |
 |:--------------|:-------------|:--------:|:------:|:------:|:-------------------|
@@ -285,7 +285,7 @@ Content-type: application/json;charset=utf-8
 
 <br>
 
-#### Bank transfer information <img src="https://img.shields.io/badge/-Object-yellow"> <img src="https://img.shields.io/badge/-nullable-lightgrey">
+#### Bank transfer information <img alt="Object type" src="https://img.shields.io/badge/-Object-yellow"> <img alt="Nullable" src="https://img.shields.io/badge/-nullable-lightgrey">
 
 | Parameter  |           |   Type   |  Required   |  Bytes  | Description  |
 |:-----------|:----------|:--------:|:-----:|:------:|:------------------|
@@ -295,7 +295,7 @@ Content-type: application/json;charset=utf-8
 
 <br>
 
-#### Virtual Account information <img src="https://img.shields.io/badge/-Object-yellow"> <img src="https://img.shields.io/badge/-nullable-lightgrey">
+#### Virtual Account information <img alt="Object type" src="https://img.shields.io/badge/-Object-yellow"> <img alt="Nullable" src="https://img.shields.io/badge/-nullable-lightgrey">
 
 | Parameter |              |  Type   |  Required   |  Bytes  | Description  |
 |:----------|:-------------|:-------:|:-----:|:------:|:-------------------------|
@@ -308,7 +308,7 @@ Content-type: application/json;charset=utf-8
 
 <br>
 
-#### Cancel information <img src="https://img.shields.io/badge/-Array-blueviolet"> <img src="https://img.shields.io/badge/-nullable-lightgrey">
+#### Cancel information <img alt="Array type" src="https://img.shields.io/badge/-Array-blueviolet"> <img alt="Nullable" src="https://img.shields.io/badge/-nullable-lightgrey">
 
 | Parameter |             |  Type   |  Required   |  Bytes  | Description  |
 |:----------|:------------|:-------:|:-----:|:-------:|:-----------------------|
