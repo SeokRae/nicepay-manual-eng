@@ -85,7 +85,7 @@ Authorization : Basic UjFfOTRlYjNhNGEzMDI2NGZkYmE4MmNlMGQwNWI0NjUwMTI6MTJjZGUxMj
 
 ## Using Sandbox API's
 
-<img alt="Sequence diagram: the client sends an order to the merchant server, which calls the NicePay Create Checkout API and receives a return URL, then redirects the customer to that URL to complete payment on the NicePay Checkout page" src="../image/payment-url.svg" width="800px">
+<img alt="Sequence diagram: the client sends an order to the merchant server, which calls the NicePay Create Checkout API and receives a return URL, then redirects the customer to that URL to complete payment on the NicePay Checkout page" src="../image/payment-overview.svg" width="800px">
 
 This is an explanation of how to generate a checkout sessionId and call a checkout page through the Sandbox.
 
