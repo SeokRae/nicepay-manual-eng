@@ -4,6 +4,9 @@ Webhook is a function that can implement additional business logic by receiving 
 
 - If you use a payment method such as virtual account that causes a time difference between virtual account creation and deposit time, webhook implementation is absolutely necessary.
 
+> #### ⚠️ Important  
+> Webhook registration/inquiry/delete/update is not available in [Sandbox](../info/nicepay-info-sandbox.md); test against Live once your integration is ready.  
+
 <br>
 
 ### Webhook dispatch flow
@@ -49,7 +52,7 @@ def hook():
 
 <br>
 
-> ⚠️ IMPORTANT  
+> #### ⚠️ Important  
 > If there is no "OK" string in the `HTTP Response body`, it is treated as a failure, so be careful.  
 > Check the firewall policy to allow webhook `Inbound IP`.  
 > Be sure to check the `signature` value and amount before processing business logic through webhook.  
@@ -373,5 +376,5 @@ Content-type: application/json;charset=utf-8
 | | amount | Int | O | 12 | Cancellation Amount |
 | | cancelledAt | String | O | - | Canceled Time<br>ISO 8601 format |
 | | reason | String | O | 100 | Cancellation reason |
-| | receiptUrl | String | O | 200 | <br>Receipt URL for user n |
+| | receiptUrl | String | O | 200 | <br>Receipt URL for user |
 | | couponAmt | Int | | 12 | Cancellation amount of coupon <br> *Optional|
