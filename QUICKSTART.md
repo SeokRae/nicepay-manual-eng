@@ -38,20 +38,23 @@ After that, the customer can proceed with payment by accessing the URL that is r
 - Please refer to the [link](./api/nicepay-api-payment-window-url.md) for the request parameters of the Create Checkout API.
 
 ```bash
-curl --location 'https://api.nicepay.co.kr/v1/checkout' \
+curl --location 'https://sandbox-api.nicepay.co.kr/v1/checkout' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Basic UjFfOTRlYjN...' \
+--header 'Authorization: Basic UzFfY2UxYmIxZWJlYmM0NGZlMWEzZjdjZWM5NzZjODNlYTc6MTNlOTY5YTc3YTA1NDU3OTkyNDJjY2MzOTE1MjQzZDM=' \
 --data '{
     "method": "cardAndEasyPay",
     "sessionId" : "unique-sessionId-001",
-    "clientId": "R1_94eb3a4a30264fdba82ce0d05b465012",
+    "clientId": "S1_ce1bb1ebebc44fe1a3f7cec976c83ea7",
     "orderId": "order-id-unique-order-001",
     "amount": 1004,
     "goodsName" : "test",
     "returnUrl": "http://your-return-url.com",
-    "language" : "EN"
+    "language" : "EN",
+    "fakeAuth": "true"
 }'
 ```
+
+> The `clientId`/`Authorization` above are the Sandbox test key from [Sandbox](./info/nicepay-info-sandbox.md#test-key-information); `fakeAuth: "true"` skips real card company authentication so you get an immediate test result. Once you switch to Live, drop `fakeAuth` and use your Live key instead.
 
 ### Create a checkout example response
 
@@ -61,7 +64,7 @@ curl --location 'https://api.nicepay.co.kr/v1/checkout' \
     "resultMsg": "정상 처리되었습니다.",
     "sessionId": "unique-sessionId-001",
     "orderId": "order-id-unique-order-001",
-    "clientId": "R1_94eb3a4a30264fdba82ce0d05b465012",
+    "clientId": "S1_ce1bb1ebebc44fe1a3f7cec976c83ea7",
     "tid": null,
     "amount": 1004,
     "goodsName": "test",
@@ -92,7 +95,7 @@ curl --location 'https://api.nicepay.co.kr/v1/checkout' \
     "directReceiptNo": null,
     "appScheme": null,
     "method": "cardAndEasyPay",
-    "url": "https://pay.nicepay.co.kr/v1/checkout/pay/G1cKzR8pQmT3xYVn5A9Lse2f/unique-sessionId-001"
+    "url": "https://sandbox-pay.nicepay.co.kr/v1/fake/pay/unique-sessionId-001"
 }
 ```
 
@@ -100,9 +103,11 @@ curl --location 'https://api.nicepay.co.kr/v1/checkout' \
 
 When you access the URL that was responded, the Checkout window will be displayed, and the client will be able to make a payment.
 
-<img alt="Screenshot of the NicePay hosted Checkout payment page" src="./image/live-checkout.png" width="800px">
+Since Step 1 used `fakeAuth: "true"`, this is a dummy Sandbox page without real card company authentication: pressing Next returns a success result, and Cancel returns a random failure result.
 
-https://pay.nicepay.co.kr/v1/checkout/pay/G1cKzR8pQmT3xYVn5A9Lse2f/unique-sessionId-001
+<img alt="Screenshot of the Sandbox checkout page, a dummy version without real card company authentication" src="./image/sandbox-checkout.png" width="800px">
+
+https://sandbox-pay.nicepay.co.kr/v1/fake/pay/unique-sessionId-001
 
 <br><br>
 
@@ -126,7 +131,7 @@ success=true
 authToken=NICEUNTT0992E00E775A88C5DC13938447D237F0
 tid=nicepay01m01012303241404031098
 orderId=order-id-unique-order-001
-clientId=R1_94eb3a4a30264fdba82ce0d05b465012
+clientId=S1_ce1bb1ebebc44fe1a3f7cec976c83ea7
 resultCode=0000
 resultMsg=정상 처리되었습니다.
 amount=1004
