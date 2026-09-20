@@ -1,11 +1,11 @@
 ## Key-in Payment
 
-Key-in (Manual Entry) payment lets the merchant submit a card charge directly with card details the merchant already holds (MOTO / manually entered card), without redirecting the customer through the Hosted Payment Page. The merchant encrypts the card data client-side and calls this API directly; NicePay returns the final approval result synchronously in the response, there is no separate authorization callback.
+Key-in (Manual Entry) payment lets the merchant submit a card charge directly with card details the merchant already holds (MOTO / manually entered card), without redirecting the customer through the Hosted Payment Page. The merchant encrypts the card data server-side (the encryption key is derived from your SecretKey, which must never leave your server) and calls this API directly; NicePay returns the final approval result synchronously in the response, there is no separate authorization callback.
 
-> #### ⚠️ Important
-> Key-in is only available to merchants specifically enabled for manual-entry payments. Calling this API without that permission returns `A128 Not a key-in merchant`.
-> Your merchant account is enrolled with one of several encryption/authentication levels by NicePay (see [encData Field Details](#encdata-field-details) below); it isn't something you choose per request.
-> Key-in Payment is not provided in [Sandbox](../info/nicepay-info-sandbox.md#base-url-information-for-sandbox-and-live); you can only test it against Live once your merchant account is enabled for manual-entry payments.
+> #### ⚠️ Important  
+> Key-in is only available to merchants specifically enabled for manual-entry payments. Calling this API without that permission returns `A128 Not a key-in merchant`.  
+> Your merchant account is enrolled with one of several encryption/authentication levels by NicePay (see [encData Field Details](#encdata-field-details) below); it isn't something you choose per request.  
+> Key-in Payment is not provided in [Sandbox](../info/nicepay-info-sandbox.md#base-url-information-for-sandbox-and-live); you can only test it against Live once your merchant account is enabled for manual-entry payments.  
 
 <br>
 
@@ -66,7 +66,7 @@ Content-type: application/json;charset=utf-8
 
 <br>
 
-#### encData Field Details
+### encData Field Details
 
 Common required fields: `cardNo`, `expYear`, `expMonth`. Which additional field(s) are required depends on the encryption/authentication level your merchant account is enrolled with:
 
@@ -89,7 +89,7 @@ Common required fields: `cardNo`, `expYear`, `expMonth`. Which additional field(
 
 <br>
 
-#### encData Field Encryption Example
+### encData Field Encryption Example
 
 Unlike [Recurring Payment](./nicepay-api-billing.md#encdata-field-encryption-example-aes-128)'s `encData`, Key-in's `encData` is encrypted with **AES/ECB**, not CBC, so there is no IV.
 
@@ -121,7 +121,7 @@ Content-type: application/json
 | tid | String | O | 30 | NICEPAY transaction ID |
 | orderId | String | O | 64 | Your unique order ID |
 | amount | Int | O | 12 | payment amount |
-| currency | String | | 3 | KRW: Korean Won, USD: USD, CNY: Yuan |
+| currency | String | | 3 | KRW: Korean Won, USD: US Dollar, CNY: Chinese Yuan |
 | goodsName | String | | 40 | Product name |
 | status | String | O | 20 | Payment processing status<br>paid: payment completed<br>failed: payment failed<br>['paid', 'failed'] |
 | paidAt | String | O | - | Time of payment completed, ISO 8601 format<br>If payment is not completed, return 0 |
@@ -139,7 +139,7 @@ Content-type: application/json
 
 <br>
 
-#### Card information <img alt="Object type" src="https://img.shields.io/badge/-Object-yellow">
+#### Card information <img alt="Object type" src="https://img.shields.io/badge/-Object-yellow"> <img alt="Nullable" src="https://img.shields.io/badge/-nullable-lightgrey">
 
 | Parameter | | Type | Required | Bytes | Description |
 |:----------|:----------|:--------:|:-----:|:-------:|:--------------|
