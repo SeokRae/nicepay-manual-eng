@@ -15,6 +15,13 @@ However, for cash transactions such as virtual accounts, refund account informat
 
 <br>
 
+**Before you start**, you'll need:
+- A [Client and Secret key](../info/nicepay-info-key.md) issued from the NicePay admin console
+- An `Authorization` header built from those keys, see [Basic and Bearer authentication](../info/nicepay-info-basic-token.md)
+- We recommend testing against the [Sandbox](../info/nicepay-info-sandbox.md) first, then switching to Live once verified — the example below uses the Live domain (`api.nicepay.co.kr`), swap it for `sandbox-api.nicepay.co.kr` to test in Sandbox
+
+<br>
+
 ### Cancel with session id example
 
 ```bash
@@ -46,7 +53,7 @@ curl --location 'https://api.nicepay.co.kr/v1/payments/checkout/641d555b91ae1/ca
 
 <br>
 
-> #### ⚠️ IMPORTANT
+> #### ⚠️ Important  
 > If the virtual account refund request is successful, It will be refunded as of D+1 ⏱️ 17:00 on the business day.
 
 <br><br>
@@ -61,19 +68,19 @@ Authorization: Basic <credentials>  or Bearer <token>
 Content-type: application/json;charset=utf-8  
 ```
 
-| Parameter     | Type      | required | bytes | Description |
+| Parameter     | Type      | Required | Bytes | Description |
 |:--------------|:---------:|:--------:|:------:|:-----------|
 | reason        | String    | O     | 100       | Cancellation reason |
 | orderId       | String    | O     | 64        | Your unique order ID <br>-In case of partial cancellation, orderId cannot be reusable |
 | cancelAmt     | Int       |       | 12        | Cancellation Amount<br>If the value is missing, full cancellation will be occured |
 | mallReserved  | String    |       | 500       | Spare field for store information delivery |
 | ediDate      | String    |       | -         | Full Text Creation Date<br>ISO 8601 Format |
-| signData      | String    |       | 256       | Forgery Verification Data<br>Rule: hex(sha256(tid + ediDate + SecretKey) |
+| signData      | String    |       | 256       | Forgery Verification Data<br>Rule: hex(sha256(tid + ediDate + SecretKey)) |
 | returnCharSet | String    |       | 10        | utf-8(Default) / euc-kr |
 | taxFreeAmt    | Int       |       | 12        | Tax-free amount among cancellation amount |
 | refundAccount | String    |       | 16        | Refund account number (Only for Virtual account) |
 | refundBankCode| String    |       | 3         | Refund account code (Only for Virtual account) |
-| refundHolder  | Strin     |       | 10        | Refund account account holder name (Only for Virtual account) |
+| refundHolder  | String    |       | 10        | Refund account holder name (Only for Virtual account) |
 
 <br><br>
 
@@ -87,19 +94,19 @@ Authorization: Basic <credentials>  or Bearer <token>
 Content-type: application/json;charset=utf-8
 ```
 
-| Parameter     | Type      | required | bytes | Description |
+| Parameter     | Type      | Required | Bytes | Description |
 |:--------------|:---------:|:--------:|:------:|:-----------|
 | reason        | String    | O     | 100       | Cancellation reason |
 | orderId       | String    | O     | 64        | Your unique order ID <br>-In case of partial cancellation, orderId cannot be reusable |
 | cancelAmt     | Int       |       | 12        | Cancellation Amount<br>If the value is missing, full cancellation will be occured |
 | mallReserved  | String    |       | 500       | Spare field for store information delivery |
 | ediDate      | String    |       | -         | Full Text Creation Date<br>ISO 8601 Format |
-| signData      | String    |       | 256       | Forgery Verification Data<br>Rule: hex(sha256(tid + ediDate + SecretKey) |
+| signData      | String    |       | 256       | Forgery Verification Data<br>Rule: hex(sha256(tid + ediDate + SecretKey)) |
 | returnCharSet | String    |       | 10        | utf-8(Default) / euc-kr |
 | taxFreeAmt    | Int       |       | 12        | Tax-free amount among cancellation amount |
 | refundAccount | String    |       | 16        | Refund account number (Only for Virtual account) |
 | refundBankCode| String    |       | 3         | Refund account code (Only for Virtual account) |
-| refundHolder  | Strin     |       | 10        | Refund account account holder name (Only for Virtual account) |
+| refundHolder  | String    |       | 10        | Refund account holder name (Only for Virtual account) |
 
 <br><br>
 
@@ -111,7 +118,7 @@ POST
 Content-type: application/json
 ```
 
-| Parameter | Type | required | Bytes | Description |
+| Parameter | Type | Required | Bytes | Description |
 |:----------|:----:|:--------:|:------:|:-----------|
 | resultCode | String | O | 4 | 0000 : success / other failure |
 | resultMsg | String | O | 100 | Result message |
@@ -125,7 +132,7 @@ Content-type: application/json
 | paidAt | String | O | - | Time of payment completed ISO 8601 format<br>If payment is not completed, return 0 |
 | failedAt | String | O | - | Time of payment failure ISO 8601 format<br>If not payment is not failed, return 0 |
 | cancelledAt | String | O | - | Payment cancellation time ISO 8601 format<br>If it is not cancellation request, return 0<br>In case of partial cancellation, the last cancellation time will be return |
-| payMethod | String | O | 10 | Payment method<br><br>card: credit card, <br>vbank: virtual account, <br>bank: account transfer, <br>cellphone: mobile phone, <br>naverpay=Naver Pay, <br>kakaopay=Kakao Pay, <br>samsungpay=Samsung Pay |
+| payMethod | String | O | 10 | Payment method<br><br>card: credit card, <br>vbank: virtual account, <br>bank: account transfer, <br>cellphone: mobile phone, <br>naverpay=Naver Pay, <br>kakaopay=Kakao Pay, <br>samsungpay=Samsung Pay, <br>payco=Payco, <br>ssgpay=SSG Pay, <br>tosspay=Toss Pay |
 | amount | Int | O | 12 | payment amount |
 | balanceAmt | Int | O | 12 | Remained balance for cancellation |
 | goodsName | String | O | 40 | Product name |
