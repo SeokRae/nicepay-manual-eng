@@ -260,6 +260,7 @@ Content-type: application/json
 - A charge made with `/v1/subscribe/{bid}/payments` doesn't have its own cancel API. Cancel or refund it with the standard [Cancel request with tid](./nicepay-api-cancel.md#cancel-request-parameter-with-tid), using the `tid` from the Authorization Response above.
 - You can look up a charge anytime via [Transaction Status Inquiry](./nicepay-api-retrieve.md#transaction-status-inquiry-with-tidtransaction-id) with the `tid`.
 - Done with a token (`bid`)? See [Delete Token](#delete-token) below, it isn't deleted automatically and stays usable until you remove it.
+- Related error codes: `U309`, `A126`, `A253`, `A255`, `U113`, `F110`, `F115`, `F116`, see [API Response code](../code/nicepay-code.md#api-response-code).
 
 <br>
 
