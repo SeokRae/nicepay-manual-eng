@@ -107,7 +107,7 @@ When you access the URL that was responded, the Checkout window will be displaye
 
 Since Step 1 used `fakeAuth: "true"`, this is a dummy Sandbox page without real card company authentication: pressing Next returns a success result, and Cancel returns a random failure result.
 
-<img alt="Screenshot of the Sandbox checkout page, a dummy version without real card company authentication" src="./image/sandbox-checkout.png" width="800px">
+<img alt="Sequence diagram in two scenarios for a cardAndEasyPay checkout: normal completion (create checkout, redirect, Checkout page, Payment Authorization callback with success: true), and authentication or payment failure (same flow, callback with success: false)" src="./image/payment-checkout-card-easypay.svg" width="800px">
 
 https://sandbox-pay.nicepay.co.kr/v1/fake/pay/unique-sessionId-001
 
