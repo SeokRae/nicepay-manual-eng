@@ -50,6 +50,7 @@ Content-type: application/json;charset=utf-8
 ```bash
 Content-type: application/json
 ```
+
 |  Parameter  |  type  | required  | byte | Description  |
 |:-----------:|:------:|:---------:|:----:|:-------------|
 | resultCode  | String |  O  |  4   | Response code<br>0000:success, other failures  |
