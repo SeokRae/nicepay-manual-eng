@@ -18,7 +18,7 @@ By following the guide in order, it is possible to develop a Checkout TEST in ab
 <br>
 
 ### Over-view
-<img alt="Sequence diagram: the client sends an order to the merchant server, which calls the NicePay Create Checkout API and receives a return URL, then redirects the customer to that URL to complete payment on the NicePay Checkout page" src="./image/payment-url.svg" width="800px">
+<img alt="Sequence diagram: the client sends an order to the merchant server, which calls the NicePay Create Checkout API and receives a return URL, then redirects the customer to that URL to complete payment on the NicePay Checkout page" src="./image/payment-overview.svg" width="800px">
   
 
 If a customer send an order, please call the Checkout creation API first.   
