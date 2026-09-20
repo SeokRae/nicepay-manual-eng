@@ -73,7 +73,7 @@ Content-type: application/json;charset=utf-8
 | buyerTel      |  String  |   　   |   20   | Buyer phone number<br> *Number only|
 | encMode       |  String  |   　   |   10   | Encryption Mode<br>`encData` Field Encryption Algorithm Definition<br><br> A2 : AES256<br>Encryption Algorithm : AES256<br> Encryption Detail : AES/CBC/PKCS5padding <br> Encryption Result Encoding : Hex Encoding <br> *Encryption KEY: SecretKey (32byte)<br>•IV: 16 digits before the SecretKey |
 | ediDate       |  String  |   　   |   -    | Response message creation date and time (ISO 8601 format) |
-| signData      |   Int    |   　   |  256   | Forgery Verification Data<br> Rule : hex(sha256(orderId + ediDate +   SecretKey)) |
+| signData      |   String    |   　   |  256   | Forgery Verification Data<br> Rule : hex(sha256(orderId + ediDate +   SecretKey)) |
 | returnCharSet | String    |       | 10        | utf-8(Default) / euc-kr |
 
 <br>
