@@ -138,7 +138,7 @@ Content-type: application/json
 
 <br>
 
-#### Card information <img src="https://img.shields.io/badge/-Object-yellow">
+#### Card information <img alt="Object type" src="https://img.shields.io/badge/-Object-yellow">
 
 | Parameter | | Type | Required | Bytes | Description |
 |:----------|:----------|:--------:|:-----:|:-------:|:--------------|

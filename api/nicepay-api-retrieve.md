@@ -2,7 +2,7 @@
 
 ## Check Transaction Status 
 
-<img src="../image/payment-retrieve.svg" width="800px"> 
+<img alt="Diagram showing the transaction status inquiry flow: the merchant server calls the Transaction Status Inquiry API with one of three lookup options (tid, orderId, or sessionId) and receives the payment status in response" src="../image/payment-retrieve.svg" width="800px"> 
 
 Transaction Status Iniquiry API can be used if you need to check information according to the success or failure of a 💳 payment (approval) request.
 
@@ -139,7 +139,7 @@ Content-type: application/json;charset=utf-8
 
 <br>
 
-## Response parameter (Check Authorization Amount and Transaction Status Inquiry by tid, orderId, sessionId)
+### Response parameter (Check Authorization Amount and Transaction Status Inquiry by tid, orderId, sessionId)
 
 ```bash
 Content-type: application/json
@@ -178,7 +178,7 @@ Content-type: application/json
 
 <br>
 
-#### Coupon information <img src="https://img.shields.io/badge/-Object-yellow"> <img src="https://img.shields.io/badge/-nullable-lightgrey">
+#### Coupon information <img alt="Object type" src="https://img.shields.io/badge/-Object-yellow"> <img alt="Nullable" src="https://img.shields.io/badge/-nullable-lightgrey">
 
 | Parameter |           |   Type   |  Required   |  Bytes  |    Description     |
 |:----------|:----------|:--------:|:-----:|:-------:|:--------------|
@@ -187,7 +187,7 @@ Content-type: application/json
 
 <br>
 
-#### Card information <img src="https://img.shields.io/badge/-Object-yellow"> <img src="https://img.shields.io/badge/-nullable-lightgrey">
+#### Card information <img alt="Object type" src="https://img.shields.io/badge/-Object-yellow"> <img alt="Nullable" src="https://img.shields.io/badge/-nullable-lightgrey">
 
 | Parameter |                |   Type   |  Required   |  Bytes  | Description   |
 |:----------|:---------------|:--------:|:-----:|:-------:|:------------------|
@@ -204,7 +204,7 @@ Content-type: application/json
 
 <br>
 
-#### Cash receipts information <img src="https://img.shields.io/badge/-Array-blueviolet"> <img src="https://img.shields.io/badge/-nullable-lightgrey">
+#### Cash receipts information <img alt="Array type" src="https://img.shields.io/badge/-Array-blueviolet"> <img alt="Nullable" src="https://img.shields.io/badge/-nullable-lightgrey">
 
 | Parameter     |              |   Type   |   Required   |  Bytes  | Description |
 |:--------------|:-------------|:--------:|:------:|:------:|:-------------------|
@@ -220,7 +220,7 @@ Content-type: application/json
 
 <br>
 
-#### Bank transfer information <img src="https://img.shields.io/badge/-Object-yellow"> <img src="https://img.shields.io/badge/-nullable-lightgrey">
+#### Bank transfer information <img alt="Object type" src="https://img.shields.io/badge/-Object-yellow"> <img alt="Nullable" src="https://img.shields.io/badge/-nullable-lightgrey">
 
 | Parameter  |           |   Type   |  Required   |  Bytes  | Description  |
 |:-----------|:----------|:--------:|:-----:|:------:|:------------------|
@@ -230,7 +230,7 @@ Content-type: application/json
 
 <br>
 
-#### Virtual Account information <img src="https://img.shields.io/badge/-Object-yellow"> <img src="https://img.shields.io/badge/-nullable-lightgrey">
+#### Virtual Account information <img alt="Object type" src="https://img.shields.io/badge/-Object-yellow"> <img alt="Nullable" src="https://img.shields.io/badge/-nullable-lightgrey">
 
 | Parameter |              |  Type   |  Required   |  Bytes  | Description  |
 |:----------|:-------------|:-------:|:-----:|:------:|:-------------------------|
@@ -243,7 +243,7 @@ Content-type: application/json
 
 <br>
 
-#### Cancel information <img src="https://img.shields.io/badge/-Array-blueviolet"> <img src="https://img.shields.io/badge/-nullable-lightgrey">
+#### Cancel information <img alt="Array type" src="https://img.shields.io/badge/-Array-blueviolet"> <img alt="Nullable" src="https://img.shields.io/badge/-nullable-lightgrey">
 
 | Parameter |             |  Type   |  Required   |  Bytes  | Description  |
 |:----------|:------------|:-------:|:-----:|:-------:|:-----------------------|
@@ -313,7 +313,7 @@ Content-type: application/json
 | cardPoint  | String  |   　   |   　    | Cards that support point payment<br>-List card codes with a colon (:) as separator<br>-Card company points provide usable card company information regardless of the amount<br>ex) 01:02:04:07<br>- Description: Card company points can be used for BC, Kookmin, Samsung, and Hyundai cards|
 
 
-### Interest-free installment information <img src="https://img.shields.io/badge/-Array-blueviolet">
+### Interest-free installment information <img alt="Array type" src="https://img.shields.io/badge/-Array-blueviolet">
 
 | Parameter     |                 |   Type   |  Required   |  Bytes  | Description  |
 |:--------------|:----------------|:--------:|:-----:|:------:|:---------|
@@ -377,7 +377,7 @@ Content-type: application/json
 
 
 
-#### Interest-free installment information <img src="https://img.shields.io/badge/-Array-blueviolet">
+#### Interest-free installment information <img alt="Array type" src="https://img.shields.io/badge/-Array-blueviolet">
 
 | Parameter    |                 |              |   Type   |  Required   |  Bytes  | Description  |
 |:-------------|:----------------|:-------------|:--------:|:-----:|:------:|:-------------------|
