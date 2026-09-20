@@ -31,7 +31,7 @@ After that, if you pass the encrypted Token(bid) through the `/v1/subscribe/{bid
 curl -X POST 'https://api.nicepay.co.kr/v1/subscribe/regist' 
 -H 'Content-Type: application/json' 
 -H 'Authorization: Basic ZWVjOGQzNTA4Y2IwNDI1ZGI5NTViMzBiZjM5...' 
--D '{
+--data '{
     "encData": "2127975b6d82c36136ba8197a997a994f6c086ff75a6d35e514c54a1e686545e60b76f11bec706de1082e43dd74ae5c5f0709dc1eca6c3cd20e1c0e9e9b7a85c6505461c91c865d82072e41ba5284bd7",
     "orderId": "merchant-order-id"
 }'
@@ -45,7 +45,7 @@ curl -X POST 'https://api.nicepay.co.kr/v1/subscribe/regist'
 curl -X POST 'https://api.nicepay.co.kr/v1/subscribe/regist' 
 -H 'Content-Type: application/json' 
 -H 'Authorization: Basic ZWVjOGQzNTA4Y2IwNDI1ZGI5NTViMzBiZjM5...' 
--D '{
+--data '{
     "encData": "C41346B71984...",
     "orderId": "merchant-order-id",
     "encMode" : "A2"
@@ -73,7 +73,7 @@ Content-type: application/json;charset=utf-8
 | buyerTel      |  String  |   　   |   20   | Buyer phone number<br> *Number only|
 | encMode       |  String  |   　   |   10   | Encryption Mode<br>`encData` Field Encryption Algorithm Definition<br><br> A2 : AES256<br>Encryption Algorithm : AES256<br> Encryption Detail : AES/CBC/PKCS5padding <br> Encryption Result Encoding : Hex Encoding <br> *Encryption KEY: SecretKey (32byte)<br>•IV: 16 digits before the SecretKey |
 | ediDate       |  String  |   　   |   -    | Response message creation date and time (ISO 8601 format) |
-| signData      |   Int    |   　   |  256   | Forgery Verification Data<br> Rule : hex(sha256(orderId + ediDate +   SecretKey)) |
+| signData      |   String    |   　   |  256   | Forgery Verification Data<br> Rule : hex(sha256(orderId + ediDate +   SecretKey)) |
 | returnCharSet | String    |       | 10        | utf-8(Default) / euc-kr |
 
 <br>
@@ -150,7 +150,7 @@ Content-type: application/json
 curl -X POST 'https://api.nicepay.co.kr/v1/subscribe/BIKYnicuntct2m2107272028532670/payments' 
 -H 'Content-Type: application/json' 
 -H 'Authorization: Basic ZWVjOGQzNTA4Y2IwNDI1ZGI5NTViMzBi...' 
--D '{
+--data '{
     "orderId": "merchant-order-id",
     "amount": 1004,
     "goodsName": "your-goods-name",
@@ -249,7 +249,7 @@ Content-type: application/json
 | | cardQuota | Int | O | 3 | Installment Month<br>0: lump sum, 2:2 months, 3:3 months … |
 | | isInterestFree | Boolean | O | - | The store pays the payer's installment interest<br>true:yes, false:no |
 | | cardType | String | | 1 | Card type<br>credit:credit card, check:debit |
-| | canPartCancel | String | O | - | Whether partial cancellation is possible<br>true: Possible, false: Impossible |
+| | canPartCancel | Boolean | O | - | Whether partial cancellation is possible<br>true: Possible, false: Impossible |
 | | acquCardCode | String | O | 3 | Acquirer code |
 | | acquCardName | String | O | 100 | Acquirer Name |
 
@@ -260,6 +260,7 @@ Content-type: application/json
 - A charge made with `/v1/subscribe/{bid}/payments` doesn't have its own cancel API. Cancel or refund it with the standard [Cancel request with tid](./nicepay-api-cancel.md#cancel-request-parameter-with-tid), using the `tid` from the Authorization Response above.
 - You can look up a charge anytime via [Transaction Status Inquiry](./nicepay-api-retrieve.md#transaction-status-inquiry-with-tidtransaction-id) with the `tid`.
 - Done with a token (`bid`)? See [Delete Token](#delete-token) below, it isn't deleted automatically and stays usable until you remove it.
+- Related error codes: `U309`, `A126`, `A253`, `A255`, `U113`, `F110`, `F115`, `F116`, see [API Response code](../code/nicepay-code.md#api-response-code).
 
 <br>
 
@@ -281,7 +282,7 @@ Deleted Token(bid) cannot be restored or approved.
 curl -X POST 'https://api.nicepay.co.kr/v1/subscribe/BIKYnicuntct2m2107272028532670/expire' 
 -H 'Content-Type: application/json' 
 -H 'Authorization: Basic ZWVjOGQzNTA4Y2IwNDI1ZGI5NTViMzBiZjM...' 
--D '{
+--data '{
     "orderId": "your-order-id"
 }'
 ```

@@ -22,7 +22,7 @@ NicePay Untact offers three ways to charge a card. They're distinguished by **wh
 
 - **Building a normal storefront where the customer checks out themselves?** Use **Checkout**. It's the default path this guide's [Quick Start Guide](./QUICKSTART.md) walks through, and it keeps raw card data off your server entirely.
 - **Charging a card your support team already has on file (phone order, invoice payment)?** Use **Key-in**.
-- **Billing the same customer repeatedly (subscription, membership)?** Use **Recurring Payment** to register a token once and charge it on schedule.
+- **Billing the same customer repeatedly (subscription, membership)?** Use **Recurring Payment** to register a token once, then call the Payments API yourself each time a charge is due (there's no automatic billing scheduler on NicePay's side).
 - **Not mutually exclusive** — a merchant can use Checkout for one-time purchases and Recurring for subscriptions in the same integration.
 
 <br>
