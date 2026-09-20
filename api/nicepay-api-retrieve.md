@@ -95,6 +95,7 @@ Host: api.nicepay.co.kr
 Authorization: Basic <credentials>  or Bearer <token>
 Content-type: application/json;charset=utf-8
 ```
+
 | Parameter | Type | Required | Bytes | Description |
 |:--------------|:-----:|:-----:|:-----:|:----------|
 | ediDate | String | O | - | Response message creation date and time (ISO 8601 format) |
@@ -357,6 +358,7 @@ Content-type: application/json;charset=utf-8
 | mid           |  String   |   　   |  10   | [Optional] Merchant ID separately contracted with Nice Payments |
 | signData      | String    |       | 256       | Forgery Verification Data<br>Generation rule: hex(sha256(ediDate + SecretKey) |
 | returnCharSet | String    |       | 10        | utf-8(Default) / euc-kr |
+
 <br>
 
 ### Interest-free installment information Response parameter
