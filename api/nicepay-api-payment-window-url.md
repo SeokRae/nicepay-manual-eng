@@ -239,7 +239,7 @@ Content-type: application/x-www-form-urlencoded
 | approveNo | String | | 30 | Authorization Number<br>Credit Card, Bank Transfer, Mobile Phone |
 | couponAmt | Int | | 12 | Amount of instant discount applied |
 | buyerName | String | | 30 | Buyer name |
-| BuyerTel | String | | 40 | Buyer phone number |
+| buyerTel | String | | 40 | Buyer phone number |
 | buyerEmail | String | | 60 | Buyer Email |
 | issuedCashReceipt | Boolean | | - | Issuance of cash receipts<br><br>true: issued / false: not issued |
 | receiptUrl | String | | 200 | Receipt URL |
