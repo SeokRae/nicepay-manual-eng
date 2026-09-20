@@ -34,7 +34,7 @@
 | 16  | 하나           | HANA SK      |  O  | https://www.hanacard.co.kr/      |
 | 21  | 광주           | KWANGJU      |  O  | https://pib.kjbank.com/          |
 | 22  | 전북           | JEONBUK      |  O  | https://www.jbbank.co.kr/        |
-| 23  | 제주           | JEJU         |  O  | http://tamna.jeju.go.kr/         |
+| 23  | 제주           | JEJU         |  O  | https://www.jejubank.co.kr/      |
 | 24  | 산은캐피탈        | KDB Capital  |  O  | https://www.kdbc.co.kr/cardhome  |
 | 25  | 해외비자         | VISA         |  O  | https://www.visakorea.com/       |
 | 26  | 해외마스터        | MASTER       |  O  | https://www.mastercard.us/       |
@@ -77,7 +77,7 @@
 | 031 |   대구은행    | Daegu Bank                                                       |   O    | https://www.dgb.co.kr/               |
 | 032 |   부산은행    | Busan Bank                                                       |   O    | https://www.busanbank.co.kr/         |
 | 034 |   광주은행    | KwangjuBank                                                      |   O    | https://pib.kjbank.com/              |
-| 035 |   제주은행    | Jeju Bank                                                        |        | https://www.e-jejubank.com/          | 
+| 035 |   제주은행    | Jeju Bank                                                        |        | https://www.jejubank.co.kr/          | 
 | 037 |   전북은행    | JeonBuk Bank                                                     |        | https://www.jbbank.co.kr/            |                                      
 | 039 |   경남은행    | Kyongnam Bank                                                    |        | https://www.knbank.co.kr/            |                                      
 | 045 | 새마을금고연합회  | KFCC Federation                                                  |        | https://www.kfcc.co.kr/              |                                      
