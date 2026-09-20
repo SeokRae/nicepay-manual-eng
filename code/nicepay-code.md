@@ -118,7 +118,7 @@
 | 3056 | 국내카드 달러승인불가      | Dollar Authorization for Domestic card is not accepted |
 | 3057 | 인증 불가카드      | Unauthorized Card |
 | 3061 | 국민카드 인터넷안전결제 적용 가맹점        | Kookmin Card internet safe payment affiliates |
-| 3062 | 신용카드 승인번호 오류     | Credit card number error |
+| 3062 | 신용카드 승인번호 오류     | Credit card approval number error |
 | 3071 | 매입요청 가맹점 아님       | Capture is not allowed |
 | 3072 | 매입요청 TID 정보 불일치   |  Transaction ID information inconsistency |
 | 3073 | 기매입 거래    | Transaction is captured already |
@@ -200,9 +200,9 @@
 | 1534 | 부분취소 불가능 거래      | Non-cancellable transaction.   |
 | 1615 | 거래금액 합계오류(공급가액,부가세,봉사료,면세금액 합계)     | Total transaction amount error (sum of supply, VAT, service charge, and tax-exempt amount).  |
 | 2000 | DB오류 | DB Error | 
-| 2011 | CINO미존재 | CINO does not exist |
-| 2012 | 주문번호없음   | No order number |
-| 2032 | 가맹점주문번호길이이상 | Order number size is over |
+| 2011 | CINO미존재 | CINO does not exist (general/DB error) |
+| 2012 | 주문번호없음   | No order number (general/DB error) |
+| 2032 | 가맹점주문번호길이이상 | Order number size is over (general/DB error) |
 | 2151 | 거래정지 가맹점 | Transaction suspended merchant |
 | 2152 | 미등록가맹점  | Unregistered Merchants |
 | 2154 | 제휴사상태미확인   | Payment partner status is not founded |
@@ -233,7 +233,7 @@
 | F200 | 빌링 요청승인이 정상적으로 이루어졌습니다 | The billing request has been approved successfully |
 | F201 | 이미 등록된 카드 입니다(빌키발급실패)   | This card has been registered already (failed to issue bill key) |
 | C000 | 에스크로배송등록 성공  | Escrow delivery registration successful |
-| C002 | 에스크로 가맹점 아님   | Not an Escrow Merchant |
+| C002 | 에스크로 가맹점 아님   | Not an Escrow Merchant (escrow delivery registration) |
 | C003 | 에스크로 거래만 배송등록 가능  | Shipping register can be possible only for escrow transactions |
 | C004 | 에스크로결제 신청내역 미존재   | Escrow payment history does not exist |
 | C005 | 에스크로배송등록 불가상태  | Unable to Register Escrow Shipping |
@@ -265,8 +265,8 @@
 | 2211 | 환불 성공 (2001과 함께 취소 성공 처리할 것) | Refund successful (Handling Cancellation Success with 2001) |
 | 2003 | 취소 실패  | Cancellation Failed |
 | 2010 | 취소 요청금액 0원 이하 | Cancellation request amount less than KRW 0 |
-| 2011 | 취소 금액 불일치   | Cancellation amount discrepancy |
-| 2012 | 취소 해당거래 없음 | No applicable transaction |
+| 2011 | 취소 금액 불일치   | Cancellation amount discrepancy (cancel) |
+| 2012 | 취소 해당거래 없음 | No applicable transaction (cancel) |
 | 2013 | 취소 완료 거래 | Canceled Transactions |
 | 2014 | 취소 불가능 거래   | Non-cancellable transaction |
 | 2015 | 기 취소 요청 | Already canceled transaction |
@@ -286,7 +286,7 @@
 | 2029 | 부분취소 불가능 결제수단   | Partial cancellation is not allowed for this payment method |
 | 2030 | 해당결제수단 부분취소 불가  | Partial cancellation is not allowed for this payment method |
 | 2031 | 전체금액취소 불가  | You can not cancel the total amount |
-| 2032 | 취소금액이 취소가능금액보다 큼  | Requested Cancellation amount is greater than cancelable amount |
+| 2032 | 취소금액이 취소가능금액보다 큼  | Requested Cancellation amount is greater than cancelable amount (cancel) |
 | 2033 | 부분취소 불가능금액 전체취소 이용바람 | Partial cancellation is not possible, total cancellation is required |
 | 2052 | 에스크로 부분취소 불가.   | Escrow partial cancellation not allowed.     |
 | A101 | SIGN DATA 검증에 실패하였습니다   | SIGN DATA verification failed |
@@ -517,6 +517,7 @@
 | U130 | 허용된 Date형식이 아닙니다.      | Invalid Date format.    |
 | U131 | 허용된 Data형식이 아닙니다.      | Invalid Data format.    |
 | U132 | 허용된 옵션 내용이 아닙니다.[{0}]      | Invalid option content. [{0}]         |
+| U133 | 요청 파라미터의 형식이 잘못되었습니다.[{0}]      | Invalid request parameter format. [{0}]         |
 | U301 | ORDER_DATA 최대 길이 초과.       | Exceeded maximum length of ORDER_DATA.       |
 | U302 | 응답전문 최대 길이 초과.  | Exceeded maximum length of response message.       |
 | U303 | API 지연처리 발생.        | API delay occurred.     |
@@ -552,7 +553,7 @@
 | U509 | 기준정보 조회 결과 2행 이상 오류       | Error occurred while retrieving reference information.     |
 | U700 | WEBHOOK 응답전문 최대 길이 초과.       | Exceeded maximum length of webhook response.       |
 | C001 | ISP 인증이 취소되었거나 실패하였습니다 다시 시도하여 주십시요 | ISP authentication has been cancelled or failed. Please try again.        |
-| C002 | 카드사 인증 실패    | Card company authentication failed            |
+| C002 | 카드사 인증 실패    | Card company authentication failed (card authentication)            |
 | I001 | 서버와의 통신에 실패하였습니다 네트워크 환경을 확인하세요     | Failed to communicate with the server. Please check the network environment.          |
 | I002 | 사용자가 결제를 취소하였습니다           | The user has cancelled the payment.           |
 | I003 | 인증 성공한 거래로 재요청 되었습니다 결제가 정상적으로 이루어 지지 않았을 경우 가맹점 페이지로 가서 다시 결제하여 주십시요 | The transaction has been resubmitted as the authentication was successful. If the payment was not completed successfully, please go to the merchant page and try again. |
