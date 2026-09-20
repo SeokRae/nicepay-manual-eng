@@ -1,7 +1,7 @@
 # Reconciliation
 
 
-## Transaction Search API <img src="https://img.shields.io/badge/-Beta version-red">
+## Transaction Search API <img alt="Beta version" src="https://img.shields.io/badge/-Beta version-red">
 
 You can use the Transaction Search API to retrieve and cross-check transaction records for the desired period.
 
@@ -99,7 +99,7 @@ Content-type: application/json;charset=utf-8
 | limit            | Integer | -        | -     | default 100 <br> max 500   |
 
 
-### Transaction Search API Response parameter <img src="https://img.shields.io/badge/-Object-yellow"> <img src="https://img.shields.io/badge/-nullable-lightgrey">
+### Transaction Search API Response parameter <img alt="Object type" src="https://img.shields.io/badge/-Object-yellow"> <img alt="Nullable" src="https://img.shields.io/badge/-nullable-lightgrey">
 
 | Parameter    |               | Type    | Required | Bytes | Description                                                                          |
 |:-------------|:--------------|:-------:|:--------:|:-----:|:-------------------------------------------------------------------------------------|
@@ -124,7 +124,7 @@ Content-type: application/json;charset=utf-8
 
 <br><br>
 
-## Settlement API <img src="https://img.shields.io/badge/-Beta version-red">
+## Settlement API <img alt="Beta version" src="https://img.shields.io/badge/-Beta version-red">
 
 You can retrieve settlement records based on the specified date.
 

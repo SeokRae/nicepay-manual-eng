@@ -12,7 +12,7 @@ New to Checkout? The [Quick Start Guide](../QUICKSTART.md) walks through this en
 <br>
 
 ### Over-view
-<img src="../image/payment-url.svg" width="800px">
+<img alt="Sequence diagram: the client sends an order to the merchant server, which calls the NicePay Create Checkout API and receives a return URL, then redirects the customer to that URL to complete payment on the NicePay Checkout page" src="../image/payment-url.svg" width="800px">
 
 ### ⚠️ Exception handling
 - Please be sure to check the amount from `signature` for tampering verification in the response message.
@@ -83,7 +83,7 @@ curl --location 'https://api.nicepay.co.kr/v1/checkout' \
 }
 ```
 
-### Hosted Payment Page Request Parameter <img src="https://img.shields.io/badge/-Beta version-red">
+### Hosted Payment Page Request Parameter <img alt="Beta version" src="https://img.shields.io/badge/-Beta version-red">
 
 ```bash
 POST /v1/checkout
@@ -192,7 +192,7 @@ And Requested Parameter's will be response
 <br><br>
 
 
-### Payment Authorization <img src="https://img.shields.io/badge/-Beta version-red">
+### Payment Authorization <img alt="Beta version" src="https://img.shields.io/badge/-Beta version-red">
 
 If you access the URL received through the Payment Request API, the Nicepay Hosted Payment Page will be displayed.
 When the payer proceeds with card authentication in the Hosted Payment Page, Nicepay will respond with approval processing result.
@@ -263,7 +263,7 @@ Content-type: application/x-www-form-urlencoded
 
 <br><br>
 
-### Retrieve Checkout session API <img src="https://img.shields.io/badge/-Beta version-red">
+### Retrieve Checkout session API <img alt="Beta version" src="https://img.shields.io/badge/-Beta version-red">
 
 This is an API that allows you to check the status of a generated session.
 
@@ -308,7 +308,7 @@ And Requested Parameter's will be response
 
 <br><br>
 
-### Expire Checkout session API <img src="https://img.shields.io/badge/-Beta version-red">
+### Expire Checkout session API <img alt="Beta version" src="https://img.shields.io/badge/-Beta version-red">
 
 This is an API for expiring a generated session.
 
