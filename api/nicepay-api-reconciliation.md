@@ -106,19 +106,19 @@ Content-type: application/json;charset=utf-8
 | resultCode   |               | String  | O        | 4     | 0000 : success / other failure  |
 | resultMsg    |               | String  | O        | 100   | Result message  |
 | pagination   |               | Object  |          |       |                 |
-|              | count         | Integer | O        |       | The number of transactions objects responded |
+|              | count         | Integer | O        |       | Total number of matching transactions for the requested date, independent of `limit`/`startingSequence` |
 |              | nextSequence  | Integer | O        |       | Next sequence  |
 |              | hasMore       | Boolean | O        |       | true:There is data on the next page <br> false:This is last page|
 | transactions |               | Array   | O        |       |                                                                                      |
 |              | sequence      | Integer | O        |       | The index of the retrieved transaction  |
-|              | originlTid    | String  | O        | 30    | The original transaction key that succeeded in the initial approval. |
+|              | originalTid   | String  | O        | 30    | The original transaction key that succeeded in the initial approval. |
 |              | tid           | String  | O        | 30    | NICEPAY transaction ID    |
 |              | orderId       | String  | O        | 64    | Unique order number   |
 |              | currency      | String  | O        | 3     | Approved currency<br>KRW: Korean Won, USD: USD, CNY: Yuan  |
 |              | amount        | Integer | O        | 12    | payment amount    |
 |              | method        | String  | O        | 10    | Payment method<br><br>card: credit card, <br>vbank: virtual account, <br>bank: account transfer, <br>cellphone: mobile phone  |
 |              | useEscrow          | Boolean | O        |       | Escrow transaction status <br> true: Escrow transaction, false |
-|              | transactionStatus  | String  | O        | 20    | Payment processing status <br><br> paid: payment completed<br> cancelled: cancelled<br> partialCancelled: partially cancelled  |
+|              | transactionStatus  | String  | O        | 20    | Payment processing status <br><br> paid: payment completed<br> cancelled: cancelled<br> partialCancelled: partially cancelled<br> vbankCreate: virtual account issued<br> vbankCancelled: virtual account cancelled  |
 |              | transactionAt | String  | O        | 19    | Time of transaction completed <br><br> The time of the `tid`, not the time of the `originTid`. <br> ISO 8601 format (yyyy-MM-dd'T'HH:mm:ss) <br> ex) 2011-12-03T10:15:30" |
 
 
@@ -230,8 +230,8 @@ Content-type: application/json;charset=utf-8
 | Parameter        | Type    | Required | Bytes | Description                                                                      |
 |:-----------------|:-------:|:--------:|:-----:|:---------------------------------------------------------------------------------|
 | date             | String  | O        | 19    | Start date for transaction search <br> (yyyyMMdd)  <br> ex) 20230201 |
-| type             | String  | O        | 30    | Starting point of the sequence. <br> The sequence is created based on the startDate.    |
-| startingSequence | Integer | -        | 30    | Starting point of the sequence. <br> The sequence is created based on the startDate.    |
+| type             | String  |          | 30    | Not currently read or validated by the server, has no effect on the request |
+| startingSequence | String  | -        | 30    | Starting point of the sequence. <br> The sequence is created based on the startDate.    |
 | limit            | Integer | -        | -     | default 100 <br> max 500   |
 
 <br>
@@ -243,12 +243,12 @@ Content-type: application/json;charset=utf-8
 | resultCode |                    | String  | O        | 4     | 0000 : success / other failure |
 | resultMsg  |                    | String  | O        | 100   | Result message  |
 | pagination |                    | Object  |          |       |                 |
-|            | count              | Integer | O        |       | The number of transactions objects responded |
+|            | count              | Integer | O        |       | Total number of matching settlements for the requested date, independent of `limit`/`startingSequence` |
 |            | nextSequence       | Integer | O        |       | Next sequence  |
 |            | hasMore            | Boolean | O        |       | true:There is data on the next page <br> false:This is last page|
 |settlements |                    | Array   | O        |       |                |
 |            | sequence           | Integer | O        |       | The index of the retrieved transaction |
-|            | originlTid         | String  | O        | 30    | NICEPAY original transaction ID               |
+|            | originalTid        | String  | O        | 30    | NICEPAY original transaction ID               |
 |            | tid                | String  | O        | 30    | NICEPAY transaction ID |
 |            | orderId            | String  | O        | 64    | Unique order number  |
 |            | currency           | String  | O        | 3     | Approved currency<br>KRW: Korean Won, USD: USD, CNY: Yuan  |
@@ -256,16 +256,15 @@ Content-type: application/json;charset=utf-8
 |            | amount             | Integer | O        | 12    | payment amount |
 |            | interestFee        | Integer | O        | 14    | Interest-free fee |
 |            | useEscrow          | Boolean | O        |       | Escrow transaction status <br> true: Escrow transaction, false |
-|            | transactionStatus  | String  | O        | 20    | Payment processing status <br><br> paid: payment completed<br> cancelled: cancelled<br> partialCancelled: partially cancelled   |
-|            | cardAcquiringStatus  | String  | O        | 20    | Payment processing status <br><br> paid: payment completed<br> cancelled: cancelled<br> partialCancelled: partially cancelled   |
+|            | transactionStatus  | String  | O        | 20    | Payment processing status <br><br> paid: payment completed<br> cancelled: cancelled<br> partialCancelled: partially cancelled<br> vbankCreate: virtual account issued<br> vbankCancelled: virtual account cancelled   |
+|            | cardAcquiringStatus  | Boolean  | O        |     | Whether the acquirer has recorded an acquiring date for this transaction<br>true: acquired, false: not yet acquired   |
 |            | method             | String  | O        | 10    | Payment method<br><br>card: credit card <br>vbank: virtual account  <br>bank: account transfer  <br>cellphone: mobile phone |
 |            | fee                | Integer | O        | 10    | fee     |
 |            | supplyAmt          | Integer | O        | 14    | Supply amount of the payment amount       |
 |            | vat                | Integer | O        | 14    | VAT of the payment amount     |
 |            | exchangeRate       | Integer | O        | 14    | Exchange rate (European trems) <br><br> ex) US dollar to Korean won exchange rate  |
-|            | net                | Array   | O        |       | net = amount - fee <br> The amount indicated in the settlement currency will actually be deposited |
+|            | net                | Object  | O        |       | net = amount - fee <br> The amount indicated in the settlement currency will actually be deposited |
 |            | net.krw            | Integer | O        | 14    | Expected settlement amount in Korean won |
 |            | net.usd            | Integer | O        | 14    | Expected settlement amount in dollars |
 |            | transactionAt      | String  | O        | 19    | When transaction is complete |
 |            | paidOutDate        | String  | O        | 19    | Scheduled settlement date based on Korea time |
-|            | sendDate           | String  | O        | 19    | Scheduled settlement send date based on Korea time |
