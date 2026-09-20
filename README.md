@@ -25,26 +25,26 @@ Already know you want a standard hosted checkout? Start here: **[⚡ Quick Start
 This is a common guide needed before development.
 
 <div class="resource-grid">
-  <a class="resource-card" href="./info/nicepay-info-key.md">Client and Secret key</a>
-  <a class="resource-card" href="./info/nicepay-info-firewall-timeout.md">Firewall and Timeout</a>
-  <a class="resource-card" href="./info/nicepay-info-basic-token.md">Basic and Bearer authentication</a>
-  <a class="resource-card" href="./info/nicepay-info-general.md">Support environment</a>
-  <a class="resource-card" href="./info/nicepay-info-sandbox.md">Sandbox</a>
+  <a class="resource-card" href="./info/nicepay-info-key.html">Client and Secret key</a>
+  <a class="resource-card" href="./info/nicepay-info-firewall-timeout.html">Firewall and Timeout</a>
+  <a class="resource-card" href="./info/nicepay-info-basic-token.html">Basic and Bearer authentication</a>
+  <a class="resource-card" href="./info/nicepay-info-general.html">Support environment</a>
+  <a class="resource-card" href="./info/nicepay-info-sandbox.html">Sandbox</a>
 </div>
 
 ## API
 This is a technical document that includes information about the API.
 
 <div class="resource-grid">
-  <a class="resource-card" href="./api/nicepay-api-uri-list.md">List of API</a>
-  <a class="resource-card" href="./api/nicepay-api-payment-window-url.md">Payment</a>
-  <a class="resource-card" href="./api/nicepay-api-billing.md">Recurring Payment</a>
-  <a class="resource-card" href="./api/nicepay-api-keyin.md">Key-in Payment</a>
-  <a class="resource-card" href="./api/nicepay-api-access-token.md">Access token</a>
-  <a class="resource-card" href="./api/nicepay-api-retrieve.md">Transaction Status Inquiry</a>
-  <a class="resource-card" href="./api/nicepay-api-cancel.md">Cancel</a>
-  <a class="resource-card" href="./api/nicepay-api-reconciliation.md">Reconciliation</a>
-  <a class="resource-card" href="./api/nicepay-api-webhook.md">Webhook</a>
+  <a class="resource-card" href="./api/nicepay-api-uri-list.html">List of API</a>
+  <a class="resource-card" href="./api/nicepay-api-payment-window-url.html">Payment</a>
+  <a class="resource-card" href="./api/nicepay-api-billing.html">Recurring Payment</a>
+  <a class="resource-card" href="./api/nicepay-api-keyin.html">Key-in Payment</a>
+  <a class="resource-card" href="./api/nicepay-api-access-token.html">Access token</a>
+  <a class="resource-card" href="./api/nicepay-api-retrieve.html">Transaction Status Inquiry</a>
+  <a class="resource-card" href="./api/nicepay-api-cancel.html">Cancel</a>
+  <a class="resource-card" href="./api/nicepay-api-reconciliation.html">Reconciliation</a>
+  <a class="resource-card" href="./api/nicepay-api-webhook.html">Webhook</a>
 </div>
 
 <div align="left"> 
@@ -78,10 +78,10 @@ This is a technical document that includes information about the API.
 These are response and error codes.
 
 <div class="resource-grid">
-  <a class="resource-card" href="./code/nicepay-code.md#http-status-code">HTTP status code</a>
-  <a class="resource-card" href="./code/nicepay-code.md#card-code">Card-code</a>
-  <a class="resource-card" href="./code/nicepay-code.md#bank-code">Bank-code</a>
-  <a class="resource-card" href="./code/nicepay-code.md#api-response-code">API Response code</a>
+  <a class="resource-card" href="./code/nicepay-code.html#http-status-code">HTTP status code</a>
+  <a class="resource-card" href="./code/nicepay-code.html#card-code">Card-code</a>
+  <a class="resource-card" href="./code/nicepay-code.html#bank-code">Bank-code</a>
+  <a class="resource-card" href="./code/nicepay-code.html#api-response-code">API Response code</a>
 </div>
 
 <br>
