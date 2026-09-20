@@ -143,6 +143,40 @@ $sidebar-width: 260px;
 }
 
 // ---------------------------------------------------------------------------
+// Resource card grid (README Information / API / CODE link lists)
+// ---------------------------------------------------------------------------
+
+.resource-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+  margin: $spacing-unit / 2 0;
+}
+
+.resource-card {
+  display: block;
+  padding: 12px 14px;
+  border: 1px solid $grey-color-light;
+  border-radius: 6px;
+  color: $text-color;
+  text-decoration: none;
+  font-size: $small-font-size;
+  line-height: $base-line-height;
+  transition: border-color 0.1s ease-in-out, background-color 0.1s ease-in-out;
+
+  &:hover {
+    border-color: $brand-color;
+    background-color: rgba($brand-color, 0.05);
+    text-decoration: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $brand-color;
+    outline-offset: 2px;
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Content overflow safety nets
 // ---------------------------------------------------------------------------
 
