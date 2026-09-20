@@ -4,12 +4,14 @@
 
 <img alt="Diagram showing the transaction status inquiry flow: the merchant server calls the Transaction Status Inquiry API with one of three lookup options (tid, orderId, or sessionId) and receives the payment status in response" src="../image/payment-retrieve.svg" width="800px"> 
 
-Transaction Status Iniquiry API can be used if you need to check information according to the success or failure of a 💳 payment (approval) request.
+Transaction Status Inquiry API can be used if you need to check information according to the success or failure of a 💳 payment (approval) request.
 
-It is recommended to use the Transaction Status Iniquiry API in the following cases.
-- If timeout of `Http-client` occurs after calling the payment request API, you can search the transaction through Transaction Status Iniquiry API with `orderId`.
+It is recommended to use the Transaction Status Inquiry API in the following cases.
+- If timeout of `Http-client` occurs after calling the payment request API, you can search the transaction through Transaction Status Inquiry API with `orderId`.
 - In case of suspicion of forgery and alteration of data in the payment (approval).
 - When it is necessary to check the cancellation balance of a payment (approval).
+
+We recommend testing against the [Sandbox](../info/nicepay-info-sandbox.md) first, then switching to Live once verified — the examples below use the Live domain (`api.nicepay.co.kr`), swap it for `sandbox-api.nicepay.co.kr` to test in Sandbox.
 
 <br>
 
@@ -22,17 +24,16 @@ curl -X GET 'https://api.nicepay.co.kr/v1/payments/nicuntct1m0101210727200125A05
 ```
 
 <br>
+
 ## Check Authorization Amount
 
 - If you need to check the payment amount after approval, use the `Check-amount` API to check the 💳 approved payment amount.
 - If the amount requested and the approval amount are different, be sure to cancel the payment.
 
-> ⚠️ IMPORTANT
+> #### ⚠️ Important  
 > 💳 Merchants are responsible for problems caused by not checking the approved (payment) amount.
 
 <br>
-
-## Check Authorization Amount 
 
 ### Example code
 
@@ -79,8 +80,8 @@ Content-type: application/json
 | resultMsg | String | O | 100 | Result message |
 | ediDate | String | O | - | Message creation date and time (ISO 8601 format) |
 | signature  |  String  |   O   |  256   | Forgery Verification Data<br>Rule: hex(sha256(tid + ediDate + SecretKey)) |
-| isValid    |   B   |   O   |   -    | Whether the amount transferred to the check-amount API matches the actual approved amount.<br>true : match / false : mismatch |
-| tid        |   S   |   O   |   30   | Requested transaction ID |
+| isValid    |   Boolean   |   O   |   -    | Whether the amount transferred to the check-amount API matches the actual approved amount.<br>true : match / false : mismatch |
+| tid        |   String   |   O   |   30   | Requested transaction ID |
 
 
 <br><br>
@@ -196,7 +197,7 @@ Content-type: application/json
 | | cardQuota | Int | O | 3 | Installment Month<br>0: lump sum, 2:2 months, 3:3 months … |
 | | isInterestFree | Boolean | O | - | The store pays the payer's installment interest<br>true:yes, false:no |
 | | cardType | String | | 1 | Card type<br>credit:credit card, check:debit |
-| | canPartCancel | Boolean | O | - | Whether partial cancellation is possible<br>true: Possible, false: Impossible |
+| | canPartCancel | Boolean | | - | Whether partial cancellation is possible<br>true: Possible, false: Impossible, null: not reported by the acquirer for this card |
 | | acquCardCode | String | O | 3 | Acquirer code |
 | | acquCardName | String | O | 100 | Acquirer Name |
 
@@ -291,7 +292,7 @@ Content-type: application/json;charset=utf-8
 | useAuth       |  Boolean   |   O   |   -   | true : checkout or payment window <br> false : billing or key-in  |
 | ediDate      | String    |  O | -         | Full Text Creation Date<br>ISO 8601 Format |
 | mid           |  String   |   　   |  10   | [Optional] Merchant ID separately contracted with Nice Payments |
-| signData      | String    |       | 256       | Forgery Verification Data<br>Generation rule: hex(sha256(ediDate + SecretKey) |
+| signData      | String    |       | 256       | Forgery Verification Data<br>Generation rule: hex(sha256(ediDate + SecretKey)) |
 | returnCharSet | String    |       | 10        | utf-8(Default) / euc-kr |
 
 <br>
@@ -308,7 +309,7 @@ Content-type: application/json
 | resultCode | String | O | 4 | 0000 : success / other failure |
 | resultMsg | String | O | 100 | Result message |
 | ediDate  | String    |   | -         | Full Text Creation Date<br>ISO 8601 Format |
-| signature  | String  |   　   |  256   | Forgery Verification Data<br>Generation rule: hex(sha256(ediDate + SecretKey)  |
+| signature  | String  |   　   |  256   | Forgery Verification Data<br>Generation rule: hex(sha256(ediDate + SecretKey))  |
 | cardPoint  | String  |   　   |   　    | Cards that support point payment<br>-List card codes with a colon (:) as separator<br>-Card company points provide usable card company information regardless of the amount<br>ex) 01:02:04:07<br>- Description: Card company points can be used for BC, Kookmin, Samsung, and Hyundai cards|
 
 
@@ -357,7 +358,7 @@ Content-type: application/json;charset=utf-8
 | useAuth       |  Boolean   |   O   |   -   | true : checkout or payment window <br> false : billing or key-in  |
 | ediDate  | String    |   | -         | Full Text Creation Date<br>ISO 8601 Format |
 | mid           |  String   |   　   |  10   | [Optional] Merchant ID separately contracted with Nice Payments |
-| signData      | String    |       | 256       | Forgery Verification Data<br>Generation rule: hex(sha256(ediDate + SecretKey) |
+| signData      | String    |       | 256       | Forgery Verification Data<br>Generation rule: hex(sha256(ediDate + SecretKey)) |
 | returnCharSet | String    |       | 10        | utf-8(Default) / euc-kr |
 
 <br>
@@ -373,7 +374,7 @@ Content-type: application/json
 | resultCode | String | O | 4 | 0000 : success / other failure |
 | resultMsg | String | O | 100 | Result message |
 | ediDate  | String    |   | -         | Full Text Creation Date<br>ISO 8601 Format |
-| signature  | String  |   　   |  256   | Forgery Verification Data<br>Generation rule: hex(sha256(ediDate + SecretKey)  |
+| signature  | String  |   　   |  256   | Forgery Verification Data<br>Generation rule: hex(sha256(ediDate + SecretKey))  |
 
 
 
