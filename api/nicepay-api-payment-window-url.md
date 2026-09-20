@@ -19,7 +19,7 @@ New to Checkout? The [Quick Start Guide](../QUICKSTART.md) walks through this en
 ### Card and Easy Pay checkout flow
 <img alt="Sequence diagram in two scenarios for a cardAndEasyPay checkout: normal completion (create checkout, redirect, Checkout page, Payment Authorization callback with success: true), and authentication or payment failure (same flow, callback with success: false)" src="../image/payment-checkout-card-easypay.svg" width="800px">
 
-This is the same flow shown in [Over-view](#over-view) above, detailed for `method: cardAndEasyPay` (credit card and easy-pay wallets). After the customer selects a card or a wallet on the Checkout page, the field set returned in the `returnUrl` callback varies by `payMethod` — see [Payment Authorization Response Parameter](#payment-authorization-response-parameter).
+This is the same flow shown in [Over-view](#over-view) above, detailed for `method: cardAndEasyPay` (credit card and easy-pay wallets). After the customer selects a card or a wallet on the Checkout page, the field set returned in the `returnUrl` callback varies by `payMethod` — see [Payment Authorization Response Parameter](#payment-authorization-response-parameter). Once payment has completed, see [Cancel](./nicepay-api-cancel.md) for the next step in the cycle.
 
 > #### ⚠️ Important  
 > In Sandbox with `fakeAuth: "true"`, pressing Next on the Checkout page always returns a success result and Cancel returns a random failure result — this is a Sandbox-only shortcut, not real Live authentication/failure behavior.  

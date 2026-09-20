@@ -9,6 +9,12 @@ However, for cash transactions such as virtual accounts, refund account informat
 
 <br>
 
+<img alt="Sequence diagram in two scenarios for a credit card / easy-pay cancellation: full or partial cancellation (merchant server calls the Cancel API, NicePay responds resultCode 0000), and a failing cancellation (resultCode other than 0000). This is the step after the checkout flow in api/nicepay-api-payment-window-url.md's Card and Easy Pay checkout flow diagram" src="../image/payment-cancel-card-easypay.svg" width="600px">
+
+This is a server-to-server call the merchant makes after a card or easy-pay checkout has already completed (see [Card and Easy Pay checkout flow](./nicepay-api-payment-window-url.md#card-and-easy-pay-checkout-flow)) — there's no customer/browser step here. `refundAccount`/`refundBankCode`/`refundHolder` only apply to virtual account refunds and are omitted above; see the parameter tables below for the full field list.
+
+<br>
+
 ### Cancel with session id example
 
 ```bash
