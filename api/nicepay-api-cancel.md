@@ -155,7 +155,7 @@ Content-type: application/json
 | | cardQuota | Int | O | 3 | Installment Month<br>0: lump sum, 2:2 months, 3:3 months … |
 | | isInterestFree | Boolean | O | - | The store pays the payer's installment interest<br>true:yes, false:no |
 | | cardType | String | | 1 | Card type<br>credit:credit card, check:debit |
-| | canPartCancel | String | O | - | Whether partial cancellation is possible<br>true: Possible, false: Impossible |
+| | canPartCancel | Boolean | O | - | Whether partial cancellation is possible<br>true: Possible, false: Impossible |
 | | acquCardCode | String | O | 3 | Acquirer code |
 | | acquCardName | String | O | 100 | Acquirer Name |
 
