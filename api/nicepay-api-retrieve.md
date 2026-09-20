@@ -40,7 +40,7 @@ curl -X GET 'https://api.nicepay.co.kr/v1/payments/nicuntct1m0101210727200125A05
 curl -X POST 'https://api.nicepay.co.kr/v1/check-amount/nicuntct1m0101210727200708A058' 
 -H 'Content-Type: application/json' 
 -H 'Authorization: Basic YWYwZDExNjIzNmRmNDM3Zjgz...' 
--D '{
+--data '{
     "amount" : 1004
 }' 
 ```
