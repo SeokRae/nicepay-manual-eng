@@ -100,7 +100,7 @@ Call the Checkout URL.
 
 
 Please refer to the link for more detailed information.  
-[Payment Request (Hosted Payment Page)](/api/nicepay-api-payment-window-url.md) 
+[Payment Request (Hosted Payment Page)](../api/nicepay-api-payment-window-url.md) 
 
 <br>
 
@@ -254,7 +254,7 @@ https://nicepaytest.link/checkout/sandbox-redirect-fake.php
 
 Use it if you need to check the status of the session ID.  
 
-[Retrieve a checkout parameter](/api/nicepay-api-payment-window-url.md#retrieve-checkout-session-api-) 
+[Retrieve a checkout parameter](../api/nicepay-api-payment-window-url.md#retrieve-checkout-session-api-) 
 
 <br>
 
@@ -327,7 +327,7 @@ Response
 If no expiration time is specified for the session ID, it will be accessible for up to 24 hours.   
 If you want to expire the session before that, please call the expire API.  
 
-[Expire a checkout parameter](/api/nicepay-api-payment-window-url.md#expire-checkout-session-api-)
+[Expire a checkout parameter](../api/nicepay-api-payment-window-url.md#expire-checkout-session-api-)
 
 
 
@@ -403,7 +403,7 @@ You can check `Transaction Status` through the response id(sessionId or transact
 
 
 Please refer to the link for more detailed information.  
-[Transaction Status Inquiry-Transaction status](/api/nicepay-api-retrieve.md#transaction-status-inquiry-with-sessionid)
+[Transaction Status Inquiry-Transaction status](../api/nicepay-api-retrieve.md#transaction-status-inquiry-with-sessionid)
 
 <br>
 
@@ -558,7 +558,7 @@ Content-type: application/json;charset=utf-8
 If it is difficult to check the TID, you can check it through the orderId.
 
 Please refer to the link for more detailed information.  
-[Transaction Status Inquiry-orderId](/api/nicepay-api-retrieve.md#transaction-status-inquiry-with-orderid)
+[Transaction Status Inquiry-orderId](../api/nicepay-api-retrieve.md#transaction-status-inquiry-with-orderid)
 
 <br>
 
@@ -643,7 +643,7 @@ In the Sandbox, only full cancellation is possible.
 If there is no amount value, a full cancellation will be processed, and if a partial cancellation is to be made, you must pass the amount value.
 
 Please refer to the link for more detailed information.  
-[Cancel request](/api/nicepay-api-cancel.md#cancel-request-parameter-with-sessionid) 
+[Cancel request](../api/nicepay-api-cancel.md#cancel-request-parameter-with-sessionid) 
 
 <br>
 
