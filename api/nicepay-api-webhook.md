@@ -177,7 +177,7 @@ curl --location --request POST 'https://api.nicepay.co.kr/v1/webhook/{method}/de
 ### Delete a webhook <img alt="Beta version" src="https://img.shields.io/badge/-Beta version-red">
 
 ```bash
-GET /v1/webhook/{method}/delete
+POST /v1/webhook/{method}/delete
 HTTP/1.1    
 Host: api.nicepay.co.kr 
 Authorization: Basic <credentials>  or Bearer <token>
@@ -194,6 +194,52 @@ Content-type: application/json;charset=utf-8
 <br>
 
 ### Delete webhook Response Parameter
+
+| Parameter |   Type   |  Required   |  Bytes  | Description  |
+|:--------------|:----:|:-----:|:-----:|:--------|
+| resultCode | String | O | 4 | 0000 : success / other failure |
+| resultMsg | String | O | 100 | Result message |
+
+<br><br>
+
+### Update a webhook example code
+```bash
+curl --location --request POST 'https://api.nicepay.co.kr/v1/webhook/{method}/update' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Basic UjFfOTRlYjNhNGEzMDI2NGZkYmE4MmNlMGQwNWI0NjUwMTI6MTJjZGUxMjQ0OWM2NDQ5N2E4NjEwNDc1OWI4MzA2YjY=' \
+--data '{"url":"https://your-new-webhook.url"}'
+```
+
+```bash
+{
+    "resultCode": "0000",
+    "resultMsg": "정상 처리되었습니다."
+    ...
+}
+```
+
+### Update a webhook <img alt="Beta version" src="https://img.shields.io/badge/-Beta version-red">
+
+```bash
+POST /v1/webhook/{method}/update
+HTTP/1.1    
+Host: api.nicepay.co.kr 
+Authorization: Basic <credentials>  or Bearer <token>
+Content-type: application/json;charset=utf-8
+```
+
+### Update webhook Request Parameter
+
+| Parameter | Type | Required | Bytes | Description |
+|:--------------|:-----:|:-----:|:-----:|:----------|
+|    method     | String  |  O  | 20	  |  card : local cards <br> bank : bank transfer <br> vbank : virtual account  <br> cellphone : carrier billing | 
+| url | String | O | 200 | The URL of the webhook endpoint |
+| managerEmail | String |  | 255 |If a webhook error occurs, an email will be automatically sent|
+| returnCharSet | String  |     | 10	  | Return encoding <br>utf-8(Default) / euc-kr	 | 
+
+<br>
+
+### Update webhook Response Parameter
 
 | Parameter |   Type   |  Required   |  Bytes  | Description  |
 |:--------------|:----:|:-----:|:-----:|:--------|
