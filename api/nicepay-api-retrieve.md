@@ -15,7 +15,7 @@ We recommend testing against the [Sandbox](../info/nicepay-info-sandbox.md) firs
 
 <br>
 
-### Example code
+### Check Transaction Status Example code
 
 ```bash
 curl -X GET 'https://api.nicepay.co.kr/v1/payments/nicuntct1m0101210727200125A056' \
@@ -35,7 +35,7 @@ curl -X GET 'https://api.nicepay.co.kr/v1/payments/nicuntct1m0101210727200125A05
 
 <br>
 
-### Example code
+### Check Authorization Amount Example code
 
 ```bash
 curl -X POST 'https://api.nicepay.co.kr/v1/check-amount/nicuntct1m0101210727200708A058' \
@@ -258,7 +258,7 @@ Content-type: application/json
 
 ## Card event API
 
-### Over-view
+### Card event API Over-view
 The card event API responds with event information for each card company corresponding to the requested amount.
 You can conveniently provide information to user for selecting a credit card company.
 
@@ -267,7 +267,7 @@ You can conveniently provide information to user for selecting a credit card com
 
 <br>
 
-### Example code
+### Card event API Example code
 
 ```bash
 curl -X GET 'https://api.nicepay.co.kr/v1/card/event?amount={your-amount}&useAuth=false&ediDate={ISO 8601}&...' \
@@ -326,14 +326,14 @@ Content-type: application/json
 
 ## Interest-free installment information API
 
-### Over-view
+### Interest-free installment information API Over-view
 Interest-free installment information API can check interest-free about card companies and amount range.
 
 > In Sandbox, this API always returns the same fixed dummy interest-free data; it does not simulate real card company data.
 
 <br>
 
-### Example code
+### Interest-free installment information API Example code
 
 ```bash
 curl -X GET 'https://api.nicepay.co.kr/v1/card/interest-free?useAuth=true&ediDate={ISO 8601 format date}' \
