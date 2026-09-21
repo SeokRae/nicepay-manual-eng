@@ -100,7 +100,7 @@
 A handful of codes are reused with unrelated meanings depending on which API returned them (for example `2011`, `2012`, `2032`, `C002`); where that happens, the domain is called out in parentheses in the English message below, e.g. "(cancel)" vs "(general/DB error)" — match that to the API you called.
 
 > #### ⚠️ Important  
-> If you receive a `resultCode` that isn't in this table, it's likely a corePG-side code not yet catalogued here. Contact NicePay support with the `tid`/`orderId` and the exact `resultCode` for identification.  
+> If you receive a `resultCode` that isn't in this table, it's likely a corePG-side code not yet catalogued here. [Open an issue on this manual's repository](https://github.com/SeokRae/nicepay-manual-eng/issues) with the `tid`/`orderId` and the exact `resultCode` for identification.  
 
 <br>
 
