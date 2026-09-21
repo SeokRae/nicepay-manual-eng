@@ -95,7 +95,7 @@ curl --location 'https://api.nicepay.co.kr/v1/checkout' \
 }
 ```
 
-### Hosted Payment Page Request Parameter <img alt="Beta version" src="https://img.shields.io/badge/-Beta version-red">
+### Hosted Payment Page Request Parameter
 
 ```bash
 POST /v1/checkout
@@ -203,7 +203,7 @@ Parameters you requested are also echoed back in the response.
 <br><br>
 
 
-### Payment Authorization <img alt="Beta version" src="https://img.shields.io/badge/-Beta version-red">
+### Payment Authorization
 
 If you access the URL received through the Payment Request API, the NicePay Hosted Payment Page will be displayed.
 When the customer proceeds with card authentication in the Hosted Payment Page, NicePay will respond with approval processing result.
@@ -274,7 +274,7 @@ Content-type: application/x-www-form-urlencoded
 
 <br><br>
 
-### Retrieve Checkout session API <img alt="Beta version" src="https://img.shields.io/badge/-Beta version-red">
+### Retrieve Checkout session API
 
 This is an API that allows you to check the status of a generated session.
 
@@ -318,7 +318,7 @@ Parameters you requested are also echoed back in the response.
 
 <br><br>
 
-### Expire Checkout session API <img alt="Beta version" src="https://img.shields.io/badge/-Beta version-red">
+### Expire Checkout session API
 
 This is an API for expiring a generated session.
 
