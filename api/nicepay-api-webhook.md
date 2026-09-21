@@ -12,12 +12,13 @@ You can use Webhook to implement additional business logic by receiving API even
 ### Webhook dispatch flow
 - When an event occurs, data is delivered to the registered webhook `endpoint`.  
 - Process business logic after checking the delivered webhook data
-- After processing business logic, print “OK” string in `HTTP Response body` and respond with `HTTP Status 200`.
+- After processing business logic, print an `OK` string (case-insensitive, e.g. `OK` or `ok` both work) in `HTTP Response body` and respond with `HTTP Status 200`.
+- If delivery fails (network error, a non-`200` response, or a response body other than `OK`), NicePay automatically retries on a schedule configured for your account; contact NicePay support if you need the exact retry count/interval. Because the same event can be redelivered, process it idempotently (for example, key your handling on `tid`/`orderId` and skip events you've already applied). Once the retry limit is reached, NicePay emails your account's registered admin address and stops retrying that event.
 
 <br>
 
 The following code is an example of a response message with the "ok" status.   
-If the response message does not contain the "ok" status, the event delivery is treated as a failure.   
+If the response message does not contain the "ok" status (case-insensitive), the event delivery is treated as a failure.   
 
 ```java
 // java spring example
@@ -53,7 +54,7 @@ def hook():
 <br>
 
 > #### ⚠️ Important  
-> If there is no "OK" string in the `HTTP Response body`, it is treated as a failure.  
+> If there is no `OK` string (case-insensitive) in the `HTTP Response body`, it is treated as a failure.  
 > Check the firewall policy to allow webhook `Inbound IP`.  
 > Be sure to check the `signature` value and amount before processing business logic through webhook.  
 
@@ -91,7 +92,7 @@ Content-type: application/json;charset=utf-8
 |:--------------|:-----:|:-----:|:-----:|:----------|
 |    method     | String  |  O  | 20	  |  all : all payment methods <br> card : local cards <br> bank : bank transfer <br> vbank : virtual account  <br> cellphone : carrier billing | 
 | url | String | O | 200 | The URL of the webhook endpoint |
-| managerEmail | String |  | 255 |If a webhook error occurs, an email will be automatically sent|
+| managerEmail | String |  | 255 |Stored and echoed back on lookup, but NOT the address NicePay emails on delivery failure — that notification goes to your merchant account's registered admin email instead|
 
 <br>
 
@@ -106,7 +107,7 @@ Content-type: application/json;charset=utf-8
 |           | url | String |  | 200 | The URL of the webhook endpoint |
 |           | managerEmail | String |  | 255 |  |
 
-Related error codes: `U100`, `U111`, `U133`, `U333`, `U334`, `U335`, `U336`, `U337`, `U338`, see [API Response code](../code/nicepay-code.md#api-response-code).
+Related error codes: `U100`, `U111`, `U133`, `U333`, `U334`, `U335`, `U336`, `U337`, `U338`, `U700`, `U701`, see [API Response code](../code/nicepay-code.md#api-response-code).
 
 <br><br>
 
@@ -155,9 +156,9 @@ This endpoint takes no request parameters beyond the `Authorization` header.
 | urls      |      |        |             |         |              |
 |           | method | String  |  O  | 20	  | all: all <br> card : local cards <br> bank : bank transfer <br> vbank : virtual account  <br> cellphone : carrier billing |
 |           | url | String | O | 200 | The URL of the webhook endpoint |
-|           | managerEmail | String |  | 255 |If a webhook error occurs, an email will be automatically sent|
+|           | managerEmail | String |  | 255 |Stored and echoed back on lookup, but NOT the address NicePay emails on delivery failure — that notification goes to your merchant account's registered admin email instead|
 
-Related error codes: `U100`, `U111`, `U133`, `U333`, `U334`, `U335`, `U336`, `U337`, `U338`, see [API Response code](../code/nicepay-code.md#api-response-code).
+Related error codes: `U100`, `U111`, `U133`, `U333`, `U334`, `U335`, `U336`, `U337`, `U338`, `U700`, `U701`, see [API Response code](../code/nicepay-code.md#api-response-code).
 
 
 <br><br>
@@ -206,7 +207,7 @@ Content-type: application/json;charset=utf-8
 |           | url | String |  | 200 | The URL of the webhook endpoint |
 |           | managerEmail | String |  | 255 |  |
 
-Related error codes: `U100`, `U111`, `U133`, `U333`, `U334`, `U335`, `U336`, `U337`, `U338`, see [API Response code](../code/nicepay-code.md#api-response-code).
+Related error codes: `U100`, `U111`, `U133`, `U333`, `U334`, `U335`, `U336`, `U337`, `U338`, `U700`, `U701`, see [API Response code](../code/nicepay-code.md#api-response-code).
 
 <br><br>
 
@@ -242,7 +243,7 @@ Content-type: application/json;charset=utf-8
 |:--------------|:-----:|:-----:|:-----:|:----------|
 |    method     | String  |  O  | 20	  |  all : all payment methods <br> card : local cards <br> bank : bank transfer <br> vbank : virtual account  <br> cellphone : carrier billing | 
 | url | String | O | 200 | The URL of the webhook endpoint |
-| managerEmail | String |  | 255 |If a webhook error occurs, an email will be automatically sent|
+| managerEmail | String |  | 255 |Stored and echoed back on lookup, but NOT the address NicePay emails on delivery failure — that notification goes to your merchant account's registered admin email instead|
 
 <br>
 
@@ -257,7 +258,7 @@ Content-type: application/json;charset=utf-8
 |           | url | String |  | 200 | The URL of the webhook endpoint |
 |           | managerEmail | String |  | 255 |  |
 
-Related error codes: `U100`, `U111`, `U133`, `U333`, `U334`, `U335`, `U336`, `U337`, `U338`, see [API Response code](../code/nicepay-code.md#api-response-code).
+Related error codes: `U100`, `U111`, `U133`, `U333`, `U334`, `U335`, `U336`, `U337`, `U338`, `U700`, `U701`, see [API Response code](../code/nicepay-code.md#api-response-code).
 
 <br><br>
 
