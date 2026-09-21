@@ -54,6 +54,7 @@
 | 41  | SSG머니        | SSG          |  O  | https://www.ssgpay.com/          |
 | 42  | 네이버포인트       | NAVER        |  O  | https://www.naverfincorp.com/    |
 | 44  | 토스뱅크       | Toss Bank        |  O  | https://www.tossbank.com/    |
+| 46  | 토스머니       | Toss Money       |  O  |                               |
 
 <br>
 
@@ -202,7 +203,6 @@
 | 2000 | DB오류 | DB Error | 
 | 2011 | CINO미존재 | CINO does not exist (general/DB error) |
 | 2012 | 주문번호없음   | No order number (general/DB error) |
-| 2032 | 가맹점주문번호길이이상 | Order number size is over (general/DB error) |
 | 2151 | 거래정지 가맹점 | Transaction suspended merchant |
 | 2152 | 미등록가맹점  | Unregistered Merchants |
 | 2154 | 제휴사상태미확인   | Payment partner status is not founded |
@@ -288,6 +288,7 @@
 | 2031 | 전체금액취소 불가  | You can not cancel the total amount |
 | 2032 | 취소금액이 취소가능금액보다 큼  | Requested Cancellation amount is greater than cancelable amount (cancel) |
 | 2033 | 부분취소 불가능금액 전체취소 이용바람 | Partial cancellation is not possible, total cancellation is required |
+| 2045 | 채번취소 처리시 부분취소 불가능 | Partial cancellation is not allowed when cancelling a bulk virtual-account issuance |
 | 2052 | 에스크로 부분취소 불가.   | Escrow partial cancellation not allowed.     |
 | A101 | SIGN DATA 검증에 실패하였습니다   | SIGN DATA verification failed |
 | A102 | "타입이 맞지않는 파라미터명 명시" + 은(는) 알 수 없는 TYPE 입니다 | Does not match the type |
@@ -518,6 +519,27 @@
 | U131 | 허용된 Data형식이 아닙니다.      | Invalid Data format.    |
 | U132 | 허용된 옵션 내용이 아닙니다.[{0}]      | Invalid option content. [{0}]         |
 | U133 | 요청 파라미터의 형식이 잘못되었습니다.[{0}]      | Invalid request parameter format. [{0}]         |
+| U134 | [{0}]만원 미만인 경우 할부 지정이 불가 합니다.      | Installment is not allowed for amounts under [{0}] (in units of 10,000 KRW).         |
+| U135 | 해당 지불수단은 카드 지정, 할부 지정이 필수 입니다.      | For this payment method, specifying a card company and installment month is required.         |
+| U136 | 간편결제는 다중카드 선택이 불가합니다.      | Easy Pay does not support selecting multiple cards.         |
+| U137 | 망취소 테스트      | Network cancellation test.         |
+| U138 | 간편결제수단에서 cardQuota 사용시, cardCode 필수 입니다.      | When using cardQuota with an Easy Pay method, cardCode is required.         |
+| U139 | 페이결제는 카드사 선택이 불가합니다.      | This Easy Pay method does not support selecting a card company.         |
+| U140 | 페이결제는 할부개월 수 지정이 불가합니다.      | This Easy Pay method does not support specifying an installment month.         |
+| U141 | 해당 결제수단은 할부개월 수 복수설정이 불가합니다.      | This payment method does not support setting multiple installment months.         |
+| U142 | [{0}] 필드는 0이하의 값은 허용하지 않습니다.      | The [{0}] field does not allow a value of 0 or less.         |
+| U143 | [{0}] 결제수단에서는 [{1}] 필드 사용이 불가합니다.      | The [{1}] field cannot be used with the [{0}] payment method.         |
+| U144 | 할부 개월 수는 최대 [{0}] 개월 입니다.      | The maximum installment period is [{0}] months.         |
+| U145 | [{0}] 결제수단에서는 해당 카드사 번호 사용이 불가합니다.      | This card company code cannot be used with the [{0}] payment method.         |
+| U146 | 휴대폰 결제는 에스크로 이용이 불가 합니다.      | Escrow is not available for mobile phone payments.         |
+| U147 | 허용되지 않은 트랜젝션 타입입니다.      | This transaction type is not allowed.         |
+| U148 | directReceiptType 선택 시, directReceiptNo는 필수 입니다.      | directReceiptNo is required when directReceiptType is selected.         |
+| U149 | 유효하지 않은 카드사 번호입니다.      | Invalid card company code.         |
+| U150 | 해당 결제수단에서 허용되지 않은 결제타입 입니다.      | This billing type is not allowed for this payment method.         |
+| U151 | 가상계좌 만료일자(vbankExpDate)는 ISO 8601 형식이어야 합니다. 예: 2025-12-31 또는 2025-12-31T23:59:59      | The virtual account expiration date (vbankExpDate) must be in ISO 8601 format. Ex) 2025-12-31 or 2025-12-31T23:59:59         |
+| U152 | 가상계좌 만료일자(vbankExpDate)는 현재 시간보다 미래여야 합니다.      | The virtual account expiration date (vbankExpDate) must be later than the current time.         |
+| U153 | 가상계좌 만료일자(vbankExpDate) 형식이 올바르지 않습니다: [{0}]      | The virtual account expiration date (vbankExpDate) format is invalid: [{0}]         |
+| U154 | [{0}]에 공백 문자가 포함되어 있습니다. 공백 없이 입력해주세요.      | [{0}] contains a whitespace character. Please enter it without spaces.         |
 | U301 | ORDER_DATA 최대 길이 초과.       | Exceeded maximum length of ORDER_DATA.       |
 | U302 | 응답전문 최대 길이 초과.  | Exceeded maximum length of response message.       |
 | U303 | API 지연처리 발생.        | API delay occurred.     |
@@ -543,6 +565,12 @@
 | U323 | 세션아이디 만료 변경이 실패 하였습니다.       | Failed to change session ID expiration.      |
 | U324 | 이미 발급된 세션아이디 입니다.   | Session ID already issued.     |
 | U325 | 이미 만료된 세션아이디 입니다.   | Session ID already expired.    |
+| U326 | 금액은 0이 아닌 값만 허용합니다.   | Only non-zero amounts are allowed.    |
+| U327 | 면세금액이 결제금액을 초과할수 없습니다.   | The tax-free amount cannot exceed the payment amount.    |
+| U328 | 파라미터 공급가액, 부가세, 봉사료, 비과세급액의 합과 동일하지 않습니다.   | The sum of the supply amount, VAT, service charge, and tax-free amount does not match the payment amount.    |
+| U329 | 파라미터가 숫자형식이 아닙니다.   | The parameter is not in numeric format.    |
+| U330 | 날짜형식(ISO8601)이 아닙니다.   | The date is not in ISO 8601 format.    |
+| U331 | 다이렉트 및 간편결제는 에스크로 이용이 불가 합니다.   | Escrow is not available for direct payment or Easy Pay.    |
 | U501 | 대외계 전문통신 과정에서 오류가 발생하였습니다.      | Error occurred during external message communication process.     |
 | U502 | 요청 금액이 올바르지 않습니다.   | Invalid requested amount.      |
 | U503 | 망취소 요청        | Network cancellation request.         |
@@ -551,7 +579,9 @@
 | U507 | DB 테이블 UPDATE 실패.    | Failed to update DB table.     |
 | U508 | 서버로 소켓 연결 중 오류가 발생하였습니다.     | Error occurred while connecting to server through socket.  |
 | U509 | 기준정보 조회 결과 2행 이상 오류       | Error occurred while retrieving reference information.     |
+| U510 | 빌키 삭제(정리) 처리에 실패하였습니다.       | Failed to delete (clean up) the bill key.     |
 | U700 | WEBHOOK 응답전문 최대 길이 초과.       | Exceeded maximum length of webhook response.       |
+| U701 | WEBHOOK 적재 실패. 거래는 정상 처리됨.       | Failed to log the webhook. The transaction itself was still processed successfully.     |
 | C001 | ISP 인증이 취소되었거나 실패하였습니다 다시 시도하여 주십시요 | ISP authentication has been cancelled or failed. Please try again.        |
 | C002 | 카드사 인증 실패    | Card company authentication failed (card authentication)            |
 | I001 | 서버와의 통신에 실패하였습니다 네트워크 환경을 확인하세요     | Failed to communicate with the server. Please check the network environment.          |
@@ -580,8 +610,12 @@
 | U336 | 해당 URL 페이지 요청을 실패하였습니다. | Failed to request the URL page. |
 | U337 | HTTP 상태 코드가 정상(200)이 아닙니다. | The HTTP status code is not 200 |
 | U338 | 응답 페이지 Body 부분은 OK 문자만 허용됩니다. | Only the 'OK' string is allowed in the response body. |
+| U339 | [{0}] 필드는 0이하의 값은 허용하지 않습니다. | The [{0}] field does not allow a value of 0 or less. |
 | U340 | KeyIn 결제정보 암호화 데이터 복호화오류 | Failed to decrypt the Key-in payment encryption data. |
 | U341 | KeyIn 결제정보 암호화 데이터 검증 오류 | Key-in payment encryption data verification error. |
 | U342 | KeyIn 결제가 가능한 MID가 아닙니다. | This MID is not enabled for Key-in payment. |
+| U343 | 가맹점 옵션값 조회 실패. | Failed to retrieve the merchant option value. |
+| U344 | 해당 결제 수단 OpenType : Redirect 불가 | Redirect is not available as the OpenType for this payment method. |
+| U345 | BID가 유효하지 않습니다. | The BID is not valid. |
 
 <br>
