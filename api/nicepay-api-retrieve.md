@@ -258,7 +258,7 @@ Content-type: application/json
 
 ## Card event API
 
-### Overview
+### Over-view
 The card event API responds with event information for each card company corresponding to the requested amount.
 You can conveniently provide information to user for selecting a credit card company.
 
