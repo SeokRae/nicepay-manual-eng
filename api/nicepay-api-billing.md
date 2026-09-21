@@ -283,6 +283,9 @@ Deleted Token(bid) cannot be restored or approved.
 ### Delete Token Over-view
 <img alt="Token deletion flow diagram: the merchant server requests deletion of the customer's registered token (bid) from NicePay and receives confirmation that card registration was cancelled" src="../image/payment-subscribe-delete.svg" width="800px">  
 
+> #### ⚠️ Important  
+> This request is fully synchronous end-to-end: the client should keep waiting (e.g. a loading indicator) from the moment cancellation is requested until the `/v1/subscribe/{bid}/expire` response comes back through the merchant server. There is no webhook or async callback for this flow, see [Timeout Information](../info/nicepay-info-firewall-timeout.md#timeout-information) for the underlying request timeout values.  
+
 ### Delete Token(bid) Example code
 
 ``` bash
