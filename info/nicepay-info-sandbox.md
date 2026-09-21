@@ -249,7 +249,7 @@ https://nicepaytest.link/checkout/sandbox-redirect-fake.php
 
 Use it if you need to check the status of the session ID.  
 
-[Retrieve a checkout parameter](../api/nicepay-api-payment-window-url.md#retrieve-checkout-session-api-) 
+[Retrieve a checkout parameter](../api/nicepay-api-payment-window-url.md#retrieve-checkout-session-api) 
 
 <br>
 
@@ -322,7 +322,7 @@ Response
 If no expiration time is specified for the session ID, it will be accessible for up to 24 hours.   
 If you want to expire the session before that, please call the expire API.  
 
-[Expire a checkout parameter](../api/nicepay-api-payment-window-url.md#expire-checkout-session-api-)
+[Expire a checkout parameter](../api/nicepay-api-payment-window-url.md#expire-checkout-session-api)
 
 
 
