@@ -313,7 +313,7 @@ Content-type: application/json
 | cardPoint  | String  |   　   |   　    | Cards that support point payment<br>-List card codes with a colon (:) as separator<br>-Card company points provide usable card company information regardless of the amount<br>ex) 01:02:04:07<br>- Description: Card company points can be used for BC, Kookmin, Samsung, and Hyundai cards|
 
 
-### Interest-free installment information <img alt="Array type" src="https://img.shields.io/badge/-Array-blueviolet">
+#### Card event API Interest-free installment information <img alt="Array type" src="https://img.shields.io/badge/-Array-blueviolet">
 
 | Parameter     |                 |   Type   |  Required   |  Bytes  | Description  |
 |:--------------|:----------------|:--------:|:-----:|:------:|:---------|
