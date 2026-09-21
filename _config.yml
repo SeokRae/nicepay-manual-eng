@@ -14,6 +14,7 @@ nav:
       - info/nicepay-info-firewall-timeout.md
       - info/nicepay-info-general.md
       - info/nicepay-info-sandbox.md
+      - info/nicepay-info-pci-dss.md
   - title: API
     pages:
       - api/nicepay-api-uri-list.md
