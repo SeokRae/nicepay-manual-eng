@@ -16,11 +16,7 @@ Sandbox responds with TEST data, and no actual approval occurs.
 
 ### Using Sandbox and Live domains
 
-| Service              | Domain                    | IP Address                      | Direction       |
-|--------------------|---------------------------|------------------------------------|----------|
-| API (live)  | api.nicepay.co.kr         | 121.133.126.83/27                  | OUTBOUND |
-| API (sandbox) | sandbox-api.nicepay.co.kr | 121.133.126.84/27                  | OUTBOUND |
-| Webhook  | -  | 121.133.126.86 <br> 121.133.126.87 | INBOUND  |
+Sandbox and Live use different domains and IP ranges for each service (API, payment window, webhook) — see the [Firewall Policy](./nicepay-info-firewall-timeout.md#firewall-policy) table for the full, authoritative list instead of a partial copy here.
 
 <br>
 
@@ -106,10 +102,7 @@ Please refer to the link for more detailed information.
 
 <br>
 
-### Test key  
-Client : S1_ce1bb1ebebc44fe1a3f7cec976c83ea7  
-Secret : 13e969a77a0545799242ccc3915243d3  
-Authorization : Basic UzFfY2UxYmIxZWJlYmM0NGZlMWEzZjdjZWM5NzZjODNlYTc6MTNlOTY5YTc3YTA1NDU3OTkyNDJjY2MzOTE1MjQzZDM=  
+Use the same Sandbox test key shown in [Test key information](#test-key-information) above.
 
 <br>
 
