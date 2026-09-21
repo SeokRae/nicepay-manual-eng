@@ -3,9 +3,8 @@ A list of URI's for provided APIs. If you need to check the interface, please cl
 
 | API                                                               |     Method      |               Endpoint              |   Sandbox |
 |:------------------------------------------------------------------|:-------------:|:--------------------------------------|:---------:|
-| [Payment Request (Hosted Payment Page)](./nicepay-api-payment-window-url.md) |      `POST`    |              |     △     |
 | [Create checkout session](./nicepay-api-payment-window-url.md#hosted-payment-page-request-parameter-) |      `POST`    | /v1/checkout |     ○     |
-| [Retrive checkout session](./nicepay-api-payment-window-url.md#retrieve-checkout-session-api-) |      `GET`    | /v1/checkout/{sessionId} |     ○     |
+| [Retrieve checkout session](./nicepay-api-payment-window-url.md#retrieve-checkout-session-api-) |      `GET`    | /v1/checkout/{sessionId} |     ○     |
 | [Expire checkout session](./nicepay-api-payment-window-url.md#expire-checkout-session-api-) |      `POST`    | /v1/checkout/{sessionId}/expire |     ○     |
 | [Key-in Payment](./nicepay-api-keyin.md)             |      `POST`     |     /v1/key-in/payments            |     ×     |
 | [Recurring payment: Token Issue](./nicepay-api-billing.md)             |      `POST`     |     /v1/subscribe/regist            |     ○     |
