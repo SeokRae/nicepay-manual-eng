@@ -12,7 +12,7 @@ New to Checkout? The [Quick Start Guide](../QUICKSTART.md) walks through this en
 <br>
 
 ### Over-view
-<img alt="Sequence diagram: the client sends an order to the merchant server, which calls the NicePay Create Checkout API and receives a return URL, then redirects the customer to that URL to complete payment on the NicePay Checkout page" src="../image/payment-overview.svg" width="800px">
+<img alt="Sequence diagram: the customer places an order with the merchant server, which calls the NicePay Create Checkout API and receives a return URL, then redirects the customer to that URL to complete payment on the NicePay Checkout page" src="../image/payment-overview.svg" width="800px">
 
 <br>
 
@@ -27,7 +27,7 @@ New to Checkout? The [Quick Start Guide](../QUICKSTART.md) walks through this en
 <br>
 
 ### ⚠️ Exception handling
-- Please be sure to check the amount from `signature` for tampering verification in the response message.
+- You must check the amount from `signature` for tampering verification in the response message.
 - If you need to verify the amount, please refer to the [Transaction Inquiry API](./nicepay-api-retrieve.md).
 - If you need to cancel a payment due to a network error, please look up the transaction using [Transaction Inquiry API](./nicepay-api-retrieve.md) with 'orderId' and cancel it using the tid returned in the response. 
   
@@ -108,7 +108,7 @@ Content-type: application/json;charset=utf-8
 |:--------------|:---------:|:----------:|:-------:|:--------------|
 |   sessionId    | String  |  O  | 64	  | Merchant unique session id, issued by merchant | 
 |   clientId    | String  |     | 50	  | Merchant identifier, issued by NICEPAY | 
-|    method     | String  |  O  | 20	  | Payment Method <br> card : local cards <br> cardBill : card billing <br> bank : bank transfer <br> directCard : directly shows card authentication page without NICE hosted page <br> vbank : virtual account  <br> cellphone : carrier billing <br>naverpayCard : Naver Pay - card (excluded Point) <br>naverpayPoint : Naver Pay - point <br>naverCardBill : Naver Pay recurring payment - card (billing key) <br>naverPointBill : Naver Pay recurring payment - point (billing key) <br> kakaopay : Kakao Pay (Card or Money) <br>kakaopayCard : Kakao Pay - Card <br>kakaopayMoney : Kakao Pay - Money <br>kakaoBill : Kakao Pay recurring payment (billing key) <br>samsungpayCard : Samsung Pay Card <br>tosspay : Toss Pay (Card or Money) <br>tosspayCard : Toss Pay - Card <br>tosspayMoney : Toss Pay - Money <br>tosspayBill : Toss Pay recurring payment (billing key) <br>payco : Payco <br>ssgpay : SSGPAY <br>cardAndEasyPay : Card and Wallets, for <br>cardAndEasyPay it cannot be used together with below parameters <br>- cardCode, cardQuota, shopInterest, quotaInterest |
+|    method     | String  |  O  | 20	  | Payment Method <br> card : local cards <br> cardBill : card billing <br> bank : bank transfer <br> directCard : directly shows card authentication page without the Hosted Payment Page <br> vbank : virtual account  <br> cellphone : carrier billing <br>naverpayCard : Naver Pay - card (excluded Point) <br>naverpayPoint : Naver Pay - point <br>naverCardBill : Naver Pay recurring payment - card (billing key) <br>naverPointBill : Naver Pay recurring payment - point (billing key) <br> kakaopay : Kakao Pay (Card or Money) <br>kakaopayCard : Kakao Pay - Card <br>kakaopayMoney : Kakao Pay - Money <br>kakaoBill : Kakao Pay recurring payment (billing key) <br>samsungpayCard : Samsung Pay Card <br>tosspay : Toss Pay (Card or Money) <br>tosspayCard : Toss Pay - Card <br>tosspayMoney : Toss Pay - Money <br>tosspayBill : Toss Pay recurring payment (billing key) <br>payco : Payco <br>ssgpay : SSGPAY <br>cardAndEasyPay : Card and Wallets, for <br>cardAndEasyPay it cannot be used together with below parameters <br>- cardCode, cardQuota, shopInterest, quotaInterest |
 |    orderId    | String  |  O  | 64	  | Your unique order id<br> cannot reuse the orderid    | 
 |    expireDate    | String  |    | -	  | Expiration Date of sessionId<br><br>ISO 8601  | 
 |    amount     | Int  	  |  O  | 12	  | Transaction amount (only numbers are allowed) | 
@@ -177,7 +177,7 @@ Content-type: application/json;charset=utf-8
 
 | Parameter     |   Type   |  Required   |  Bytes  | Description  |
 |:--------------|:---------:|:----------:|:-------:|:--------------|
-| appScheme  |  String  |       |  200   | Mobile App Scheme value (only for APP)<br>Ex) If the merchant App scheme is `nicepaysample`<br><br>appScheme=nicepaysample:// <br><br> If the payer completes authentication through the Nice Pay payment window in the App,It moves to the targer App passed as the appScheme value.|
+| appScheme  |  String  |       |  200   | Mobile App Scheme value (only for APP)<br>Ex) If the merchant App scheme is `nicepaysample`<br><br>appScheme=nicepaysample:// <br><br> If the customer completes authentication through the Hosted Payment Page in the App,It moves to the targer App passed as the appScheme value.|
 
 
 ### Hosted Payment Page Response Parameter 
@@ -206,10 +206,10 @@ Parameters you requested are also echoed back in the response.
 
 ### Payment Authorization <img alt="Beta version" src="https://img.shields.io/badge/-Beta version-red">
 
-If you access the URL received through the Payment Request API, the Nicepay Hosted Payment Page will be displayed.
-When the payer proceeds with card authentication in the Hosted Payment Page, Nicepay will respond with approval processing result.
+If you access the URL received through the Payment Request API, the NicePay Hosted Payment Page will be displayed.
+When the customer proceeds with card authentication in the Hosted Payment Page, NicePay will respond with approval processing result.
 
-The payment approval response value will be delivered to the `returnUrl` endpoint provided through the 'Payment Request API'
+The payment approval response value will be delivered to the `returnUrl` callback provided through the 'Payment Request API'
 
 
 ```bash
@@ -259,7 +259,7 @@ Content-type: application/x-www-form-urlencoded
 | cardCode | String | | 3 | Payment card issuer code |
 | cardName | String | | 20 | Payment card issuer name |
 | cardQuota | Int | | 3 | Installment Months<br><br>0: lump sum, 2:2 months, 3:3 months … |
-| isInterestFree | Boolean | | - | Whether the merchant pays the payer's installment interest |
+| isInterestFree | Boolean | | - | Whether the merchant pays the customer's installment interest |
 | cardType | String | | 1 | Card type<br>credit:credit card, check:debit |
 | canPartCancel | Boolean | | - | Whether partial cancellation is possible<br>true: Possible, false: Impossible |
 | acquCardCode | String | | 3 | Acquirer code |

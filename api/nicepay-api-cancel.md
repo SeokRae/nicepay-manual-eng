@@ -3,7 +3,7 @@
 ## Cancel / Refund
 
 ### Over-view
-This is a guide to cancel and refund transactions for which payment (approval) has been completed.  
+You can use this API to cancel and refund transactions for which payment (approval) has been completed.  
 Card payment will be canceled by sending `POST` data with tid (Transaction ID) to the cancel API `v1/payments/{tid}/cancel`.  
 However, for cash transactions such as virtual accounts, refund account information must be passed to the cancel API.  
 
@@ -18,7 +18,7 @@ However, for cash transactions such as virtual accounts, refund account informat
 **Before you start**, you'll need:
 - A [Client and Secret key](../info/nicepay-info-key.md) issued from the NicePay admin console
 - An `Authorization` header built from those keys, see [Basic and Bearer authentication](../info/nicepay-info-basic-token.md)
-- We recommend testing against the [Sandbox](../info/nicepay-info-sandbox.md) first, then switching to Live once verified — the example below uses the Live domain (`api.nicepay.co.kr`), swap it for `sandbox-api.nicepay.co.kr` to test in Sandbox
+- We recommend testing against the [Sandbox](../info/nicepay-info-sandbox.md) first, then switching to Live once verified — the example below uses the Live domain (`api.nicepay.co.kr`), swap it for `sandbox-api.nicepay.co.kr` to test in Sandbox.
 
 <br>
 
@@ -49,12 +49,12 @@ curl --location 'https://api.nicepay.co.kr/v1/payments/checkout/641d555b91ae1/ca
 | Escrow (after purchasing decision) | not allowed | not allowed | not allowed  | not allowed | -                |
 | Escrow (after purchase rejection) | O  |                  | O           |                | -                   |
 
-> Cancelling a cash-receipt payment through `/v1/payments/{tid}/cancel` or `/v1/payments/checkout/{sessionId}/cancel` fails with [`U106`](../code/nicepay-code.md#api-response-code) ("cash receipt cancellation requires a separate API"). That separate cash-receipt cancellation API isn't part of the Untact v1 API this manual documents, contact NicePay support if you need it.  
+> Cancelling a cash-receipt payment through `/v1/payments/{tid}/cancel` or `/v1/payments/checkout/{sessionId}/cancel` fails with [`U106`](../code/nicepay-code.md#api-response-code) ("cash receipt cancellation requires a separate API"). That separate cash-receipt cancellation API is not part of the Untact v1 API this manual documents; contact NicePay support if you need it.  
 
 <br>
 
 > #### ⚠️ Important  
-> If the virtual account refund request is successful, It will be refunded as of D+1 ⏱️ 17:00 on the business day.
+> If the virtual account refund request is successful, it will be refunded as of D+1 17:00 on the business day.
 
 <br><br>
 
@@ -169,7 +169,7 @@ Content-type: application/json
 | | cardName | String | O | 20 | Card issuer name <br> ex) BC |
 | | cardNum | String | | 20 | Card number<br>3rd range masked<br>Ex) 53611234****1234*<br>- Kakao Money/Naver Point/Payco Point used for payment 'null' will be return. |
 | | cardQuota | Int | O | 3 | Installment Month<br>0: lump sum, 2:2 months, 3:3 months … |
-| | isInterestFree | Boolean | O | - | The store pays the payer's installment interest<br>true:yes, false:no |
+| | isInterestFree | Boolean | O | - | The store pays the customer's installment interest<br>true:yes, false:no |
 | | cardType | String | | 1 | Card type<br>credit:credit card, check:debit |
 | | canPartCancel | Boolean | | - | Whether partial cancellation is possible<br>true: Possible, false: Impossible, null: not reported by the acquirer for this card |
 | | acquCardCode | String | O | 3 | Acquirer code |
@@ -181,7 +181,7 @@ Content-type: application/json
 
 | Parameter     |              |   Type   |   Required   |  Bytes  | Description |
 |:--------------|:-------------|:--------:|:------:|:------:|:-------------------|
-| cashReceipts | | Array | | | Cash Receipt Issuance Information<br>-When payer used Naverpay Points and Virtual Account, this value will be return.<br>-In case of partial cancellation, array will be more than 2 |
+| cashReceipts | | Array | | | Cash Receipt Issuance Information<br>-When the customer used Naverpay Points and Virtual Account, this value will be return.<br>-In case of partial cancellation, array will be more than 2 |
 | | receiptTid | String | O | 30 | Cash Receipt TID |
 | | orgTid | String | O | 30 | Related original approval/cancel transaction ID.<br>In case of partial cancellation, it is mapped with the original TID. |
 | | status | String | O | 20 | issueRequested : Issuance Requested <br>issueReqCancelled : Issuance Request cancelled<br>issued: Issuance completed by the National Tax Service <br>issueFailed: Issuance failed<br>cancelRequested: Cancellation requested <br>cancelReqCancelled: issuance Cancelled by the National Tax Service<br>cancelled: Cancellation completed <br>cancelFailed: Cancellation failed |

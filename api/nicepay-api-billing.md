@@ -135,15 +135,15 @@ Content-type: application/json
 | status     | String | O |   6   | issued: bid was created successfully<br>failed: `regist` call failed, see `resultCode` |
 
 > #### ⚠️ Important  
-> Even though NicePay allows multiple tokens per card, a `regist` call can still fail with [`F201`](../code/nicepay-code.md#api-response-code) ("card already registered", bill key issuance failed), returned as-is in `resultCode` with `status: failed`, no `bid`, and `messageSource: external`. That check happens on the card issuer/payment network side, not NicePay's, so the exact conditions that trigger it aren't documented here, contact NicePay support if you hit it unexpectedly.  
-> `F201` is specific to card-based bill-key issuance (this API, and Checkout's `cardBill` method, see [Hosted Payment Page Request Parameter](./nicepay-api-payment-window-url.md#hosted-payment-page-request-parameter-)); Recurring Payment enrolled through Naver Pay/Kakao Pay/Toss Pay checkout (`naverCardBill`/`naverPointBill`/`kakaoBill`/`tosspayBill`) goes through a separate corePG code family and isn't affected by it.  
+> Even though NicePay allows multiple tokens per card, a `regist` call can still fail with [`F201`](../code/nicepay-code.md#api-response-code) ("card already registered", bill key issuance failed), returned as-is in `resultCode` with `status: failed`, no `bid`, and `messageSource: external`. That check happens on the card issuer/payment network side, not NicePay's, so the exact conditions that trigger it are not documented here; contact NicePay support if you hit it unexpectedly.  
+> `F201` is specific to card-based bill-key issuance (this API, and Checkout's `cardBill` method, see [Hosted Payment Page Request Parameter](./nicepay-api-payment-window-url.md#hosted-payment-page-request-parameter-)); Recurring Payment enrolled through Naver Pay/Kakao Pay/Toss Pay checkout (`naverCardBill`/`naverPointBill`/`kakaoBill`/`tosspayBill`) goes through a separate corePG code family and is not affected by it.  
 
 <br>
 
 
 ## Recurring Payment - Authorization
-- Token(bid) authorization means 💳 payment (approval) processing through the issued Token(bid).
-- If you call the `/v1/subscribe/{bid}/payments` API through the registered Token(bid), 💳 payment (approval) will be processed.
+- Token(bid) authorization means payment (approval) processing through the issued Token(bid).
+- If you call the `/v1/subscribe/{bid}/payments` API through the registered Token(bid), payment (approval) will be processed.
 - For Token(bid) approval, the `Create Token`process is required.
 
 <br>
@@ -183,7 +183,7 @@ Content-type: application/json;charset=utf-8
 | amount          |   Int    |   O   |   12   | Payment amount  |
 | goodsName       |  String  |   O   |   40   | Product name  |
 | cardQuota       |   Int    |   O   |   2    | Installment Month<br>0: Pay in full amount, 2:2 months, 3:3 months … |
-| useShopInterest | Boolean  |   O   |   -    | The store pays the installment interest of the payer<br>(currently, only false is available) |
+| useShopInterest | Boolean  |   O   |   -    | The store pays the installment interest of the customer<br>(currently, only false is available) |
 | buyerName       |  String  |   　   |   30   | Buyer name |
 | buyerTel        |  String  |   　   |   20   | Buyer phone number<br>*Number only   |
 | buyerEmail      |  String  |   　   |   60   | Buyer Email |
@@ -253,7 +253,7 @@ Content-type: application/json
 | | cardName | String | O | 20 | Card issuer name <br> ex) BC |
 | | cardNum | String | | 20 | Card number<br>3rd range masked<br>Ex) 53611234****1234*<br>- Kakao Money/Naver Point/Payco Point used for payment 'null' will be return. |
 | | cardQuota | Int | O | 3 | Installment Month<br>0: lump sum, 2:2 months, 3:3 months … |
-| | isInterestFree | Boolean | O | - | The store pays the payer's installment interest<br>true:yes, false:no |
+| | isInterestFree | Boolean | O | - | The store pays the customer's installment interest<br>true:yes, false:no |
 | | cardType | String | | 1 | Card type<br>credit:credit card, check:debit |
 | | canPartCancel | Boolean | O | - | Whether partial cancellation is possible<br>true: Possible, false: Impossible |
 | | acquCardCode | String | O | 3 | Acquirer code |
@@ -263,9 +263,9 @@ Content-type: application/json
 
 ### After a Recurring Payment charge
 
-- A charge made with `/v1/subscribe/{bid}/payments` doesn't have its own cancel API. Cancel or refund it with the standard [Cancel request with tid](./nicepay-api-cancel.md#cancel-request-parameter-with-tid), using the `tid` from the Authorization Response above.
+- A charge made with `/v1/subscribe/{bid}/payments` does not have its own cancel API. Cancel or refund it with the standard [Cancel request with tid](./nicepay-api-cancel.md#cancel-request-parameter-with-tid), using the `tid` from the Authorization Response above.
 - You can look up a charge anytime via [Transaction Status Inquiry](./nicepay-api-retrieve.md#transaction-status-inquiry-with-tidtransaction-id) with the `tid`.
-- Done with a token (`bid`)? See [Delete Token](#delete-token) below, it isn't deleted automatically and stays usable until you remove it.
+- A token (`bid`) is not deleted automatically and stays usable until you remove it — see [Delete Token](#delete-token) below.
 - Related error codes: `U309`, `A126`, `A253`, `A255`, `U113`, `F110`, `F115`, `F116`, see [API Response code](../code/nicepay-code.md#api-response-code).
 
 <br>

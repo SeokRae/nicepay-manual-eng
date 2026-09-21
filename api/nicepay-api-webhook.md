@@ -1,6 +1,6 @@
 ## Webhook
 
-Webhook is a function that can implement additional business logic by receiving API events as server-side responses.
+You can use Webhook to implement additional business logic by receiving API events as server-side responses.
 
 - If you use a payment method such as virtual account that causes a time difference between virtual account creation and deposit time, webhook implementation is absolutely necessary.
 
@@ -10,14 +10,14 @@ Webhook is a function that can implement additional business logic by receiving 
 <br>
 
 ### Webhook dispatch flow
-- When an event occurs, data is delivered to the registered webhook `End-point`.  
+- When an event occurs, data is delivered to the registered webhook `endpoint`.  
 - Process business logic after checking the delivered webhook data
 - After processing business logic, print “OK” string in `HTTP Response body` and respond with `HTTP Status 200`.
 
 <br>
 
 The following code is an example of a response message with the "ok" status.   
-If the response message does not contain the "ok" status, the webhook registration will not be successful.   
+If the response message does not contain the "ok" status, the event delivery is treated as a failure.   
 
 ```java
 // java spring example
@@ -53,7 +53,7 @@ def hook():
 <br>
 
 > #### ⚠️ Important  
-> If there is no "OK" string in the `HTTP Response body`, it is treated as a failure, so be careful.  
+> If there is no "OK" string in the `HTTP Response body`, it is treated as a failure.  
 > Check the firewall policy to allow webhook `Inbound IP`.  
 > Be sure to check the `signature` value and amount before processing business logic through webhook.  
 
@@ -319,7 +319,7 @@ Content-type: application/json;charset=utf-8
 | | cardName | String | O | 20 | Card issuer name <br> ex) BC |
 | | cardNum | String | | 20 | Card number<br>3rd range masked<br>Ex) 53611234****1234*<br>- Kakao Money/Naver Point/Payco Point used for payment 'null' will be return. |
 | | cardQuota | Int | O | 3 | Installment Month<br>0: lump sum, 2:2 months, 3:3 months … |
-| | isInterestFree | Boolean | O | - | The store pays the payer's installment interest<br>true:yes, false:no |
+| | isInterestFree | Boolean | O | - | The store pays the customer's installment interest<br>true:yes, false:no |
 | | cardType | String | | 1 | Card type<br>credit:credit card, check:debit |
 | | canPartCancel | String | O | - | Whether partial cancellation is possible<br>true: Possible, false: Impossible |
 | | acquCardCode | String | O | 3 | Acquirer code |
@@ -332,7 +332,7 @@ Content-type: application/json;charset=utf-8
 
 | Parameter     |              |   Type   |   Required   |  Bytes  | Description |
 |:--------------|:-------------|:--------:|:------:|:------:|:-------------------|
-| cashReceipts | | Array | | | Cash Receipt Issuance Information<br>-When payer used Naverpay Points and Virtual Account, this value will be return.<br>-In case of partial cancellation, array will be more than 2 |
+| cashReceipts | | Array | | | Cash Receipt Issuance Information<br>-When the customer used Naverpay Points and Virtual Account, this value will be return.<br>-In case of partial cancellation, array will be more than 2 |
 | | receiptTid | String | O | 30 | Cash Receipt TID |
 | | orgTid | String | O | 30 | Related original approval/cancel transaction ID.<br>In case of partial cancellation, it is mapped with the original TID. |
 | | status | String | O | 20 | issueRequested : Issuance Requested <br>issueReqCancelled : Issuance Request cancelled<br>issued: Issuance completed by the National Tax Service <br>issueFailed: Issuance failed<br>cancelRequested: Cancellation requested <br>cancelReqCancelled: issuance Cancelled by the National Tax Service<br>cancelled: Cancellation completed <br>cancelFailed: Cancellation failed |

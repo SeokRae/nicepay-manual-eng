@@ -14,7 +14,7 @@ NicePay's API supports over `TLS 1.2`, and provides various options and test env
 
 # Browser support
 
-NicePay's payment window was developed to be used in 'HTML5' based PC/Mobile browsers.
+NicePay's Hosted Payment Page was developed to be used in 'HTML5' based PC/Mobile browsers.
 
 <br>
 
