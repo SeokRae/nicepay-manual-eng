@@ -17,7 +17,7 @@ Depending on the method of calling the payment window, the client key can be iss
 ### Secret key
 The generated secret key is used to create an API authentication key.
 
-### ⚠️ IMPORTANT
+> #### ⚠️ Important  
 > The sandbox and the live `secret key` are may different.  
 > If you want to convert sandbox to live, must change live mode `secret key`.  
 > Be careful not to expose the secret key.  
