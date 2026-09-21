@@ -9,7 +9,7 @@ NicePay Untact offers three ways to charge a card. They're distinguished by **wh
 | **Flow shape** | Asynchronous: redirect the customer, then receive a `returnUrl` callback | Synchronous: one request, one response | Synchronous: register once, charge many times |
 | **Typical use case** | Standard online checkout, customer is present | Phone/mail orders, support-agent-assisted charges | Subscriptions, memberships, installment billing |
 | **Sandbox available** | ○ | × * | ○ |
-| **PCI scope for the merchant** | Minimal — your server never touches raw card numbers | Full — your server receives and encrypts raw card data | Full at registration, minimal afterward (only the token) |
+| **PCI scope for the merchant** | Minimal — your server never touches raw card numbers | [Full](./info/nicepay-info-pci-dss.md) — your server receives and encrypts raw card data | Full at registration, minimal afterward (only the token) |
 | **Guide** | [Quick Start Guide](./QUICKSTART.md) | [Key-in Payment](./api/nicepay-api-keyin.md) | [Recurring Payment](./api/nicepay-api-billing.md) |
 
 \* Key-in Payment is not provided in Sandbox; see [Sandbox](./info/nicepay-info-sandbox.md#base-url-information-for-sandbox-and-live) for the full per-API availability table.
