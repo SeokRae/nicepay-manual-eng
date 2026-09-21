@@ -32,6 +32,7 @@ This is a common guide needed before development.
   <a class="resource-card" href="./info/nicepay-info-basic-token.html">Basic and Bearer authentication</a>
   <a class="resource-card" href="./info/nicepay-info-general.html">Support environment</a>
   <a class="resource-card" href="./info/nicepay-info-sandbox.html">Sandbox</a>
+  <a class="resource-card" href="./info/nicepay-info-pci-dss.html">PCI-DSS Overview</a>
 </div>
 
 ## API
