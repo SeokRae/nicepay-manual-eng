@@ -4,7 +4,7 @@ NicePay Untact offers three ways to charge a card. They're distinguished by **wh
 
 | | Checkout | Key-in Payment | Recurring Payment |
 |:---|:---|:---|:---|
-| **Card details held by** | The customer, entered on NicePay's own hosted page | The merchant (MOTO / manually entered) | The merchant, once, to register a reusable token |
+| **Card details held by** | The customer, entered on NicePay's Hosted Payment Page | The merchant (MOTO / manually entered) | The merchant, once, to register a reusable token |
 | **Entry point** | `POST /v1/checkout` | `POST /v1/key-in/payments` | `POST /v1/subscribe/regist` then `POST /v1/subscribe/{bid}/payments` |
 | **Flow shape** | Asynchronous: redirect the customer, then receive a `returnUrl` callback | Synchronous: one request, one response | Synchronous: register once, charge many times |
 | **Typical use case** | Standard online checkout, customer is present | Phone/mail orders, support-agent-assisted charges | Subscriptions, memberships, installment billing |

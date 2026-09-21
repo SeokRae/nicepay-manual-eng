@@ -1,10 +1,10 @@
 ## Key-in Payment
 
-Key-in (Manual Entry) payment lets the merchant submit a card charge directly with card details the merchant already holds (MOTO / manually entered card), without redirecting the customer through the Hosted Payment Page. The merchant encrypts the card data server-side (the encryption key is derived from your SecretKey, which must never leave your server) and calls this API directly; NicePay returns the final approval result synchronously in the response, there is no separate authorization callback.
+Key-in (Manual Entry) payment lets you submit a card charge directly with card details you already hold (MOTO / manually entered card), without redirecting the customer through the Hosted Payment Page. You encrypt the card data server-side (the encryption key is derived from your SecretKey, which must never leave your server) and call this API directly; NicePay returns the final approval result synchronously in the response; there is no separate authorization callback.
 
 > #### ⚠️ Important  
 > Key-in is only available to merchants specifically enabled for manual-entry payments. Calling this API without that permission returns `A128 Not a key-in merchant`.  
-> Your merchant account is enrolled with one of several encryption/authentication levels by NicePay (see [encData Field Details](#encdata-field-details) below); it isn't something you choose per request.  
+> Your merchant account is enrolled with one of several encryption/authentication levels by NicePay (see [encData Field Details](#encdata-field-details) below); it is not something you choose per request.  
 > Key-in Payment is not provided in [Sandbox](../info/nicepay-info-sandbox.md#base-url-information-for-sandbox-and-live); you can only test it against Live once your merchant account is enabled for manual-entry payments.  
 
 <br>
@@ -32,7 +32,7 @@ curl -X POST 'https://api.nicepay.co.kr/v1/key-in/payments' \
 }'
 ```
 
-> `encData` here is encrypted with AES/ECB (see [encData Field Encryption Example](#encdata-field-encryption-example) below). This is a different mode from the CBC encryption used for [Recurring Payment](./nicepay-api-billing.md#encdata-field-encryption-example-aes-128)'s `encData`, don't reuse that example's key derivation here.
+> `encData` here is encrypted with AES/ECB (see [encData Field Encryption Example](#encdata-field-encryption-example) below). This is a different mode from the CBC encryption used for [Recurring Payment](./nicepay-api-billing.md#encdata-field-encryption-example-aes-128)'s `encData`, do not reuse that example's key derivation here.
 
 <br>
 
@@ -52,7 +52,7 @@ Content-type: application/json;charset=utf-8
 | amount | Int | O | 12 | Transaction amount (only numbers are allowed) |
 | goodsName | String | O | 40 | Product Name |
 | encData | String | O | 512 | Card information encryption data<br>See [encData Field Details](#encdata-field-details) below |
-| isInterestFree | Boolean | O | 5 | true: the merchant pays the payer's installment interest / false: general |
+| isInterestFree | Boolean | O | 5 | true: the merchant pays the customer's installment interest / false: general |
 | cardQuota | Int | O | 2 | Installment period<br>0: pay in full, 2: 2 months, 3: 3 months … |
 | ediDate | String | | 40 | Required together with `signData`<br>ISO 8601 |
 | signData | String | | 256 | Forgery verification data<br>Rule: hex(sha256(orderId + ediDate + SecretKey)) |
@@ -77,7 +77,7 @@ Common required fields: `cardNo`, `expYear`, `expMonth`. Which additional field(
 | 10 | `idNo` | Date of birth (individual) or business registration number (corporation) |
 | 11 | `idNo` + `cardPw` | Both |
 
-> ⚠️ Sending a field your merchant's level doesn't expect (or omitting one it requires) fails encData verification with `U341`. Contact NicePay support if you're not sure which level your account is enrolled with.
+> ⚠️ Sending a field your merchant's level does not expect (or omitting one it requires) fails encData verification with `U341`. Contact NicePay support if you are not sure which level your account is enrolled with.
 
 | Parameter | Type | required | bytes | Description |
 |:--------------|:---------:|:----------:|:-------:|:--------------|
@@ -97,7 +97,7 @@ Unlike [Recurring Payment](./nicepay-api-billing.md#encdata-field-encryption-exa
 - Encryption Algorithm : AES128
 - Encryption Details   : AES/ECB/PKCS5Padding
 - Encoding             : Hex Encoding
-- Encryption KEY       : 16 digits before SecretKey (ECB mode doesn't use an IV)
+- Encryption KEY       : 16 digits before SecretKey (ECB mode does not use an IV)
 
 - Plain-text     : cardNo=1234567890123456&expYear=25&expMonth=12&idNo=800101&cardPw=12
 - Encryption-key : 2dcc2a0d63bf4694 (16 digits before SecretKey)
@@ -148,7 +148,7 @@ Content-type: application/json
 | | cardName | String | O | 20 | Card issuer name |
 | | cardNum | String | | 20 | Card number, masked to the first 6 and last 4 digits<br>Ex) 123412******1234 |
 | | cardQuota | Int | O | 3 | Installment months<br>0: lump sum, 2: 2 months, 3: 3 months … |
-| | isInterestFree | Boolean | O | - | Whether the merchant pays the payer's installment interest |
+| | isInterestFree | Boolean | O | - | Whether the merchant pays the customer's installment interest |
 | | cardType | String | | 1 | Card type<br>credit:credit card, check:debit |
 | | canPartCancel | Boolean | O | - | Whether partial cancellation is possible |
 | | acquCardCode | String | O | 3 | Acquirer code |
@@ -158,6 +158,6 @@ Content-type: application/json
 
 ### After a Key-in payment
 
-- Key-in doesn't have its own cancel API. Cancel or refund with the standard [Cancel request with tid](./nicepay-api-cancel.md#cancel-request-parameter-with-tid).
+- Key-in does not have its own cancel API. Cancel or refund with the standard [Cancel request with tid](./nicepay-api-cancel.md#cancel-request-parameter-with-tid).
 - You can look up a Key-in transaction anytime via [Transaction Status Inquiry](./nicepay-api-retrieve.md#transaction-status-inquiry-with-tidtransaction-id) with the `tid`.
 - Related error codes: `A128`, `U340`, `U341`, `U342`, see [API Response code](../code/nicepay-code.md#api-response-code).

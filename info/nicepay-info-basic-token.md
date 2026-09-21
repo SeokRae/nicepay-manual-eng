@@ -44,7 +44,7 @@ Authorization: Basic YWYwZDExNjIzNmRmNDM3ZjgzMTQ4M2VlOWM1MDBiYzQ6NDMzYTg0MjFiZTc
 
 ### Bearer token
 This method uses the `OAuth` based `Bearer` authentication scheme for API access control.   
-To access Token, `Token API` must be called.  
+To access Token, the `Access token API` must be called.  
 
 <br>
 
@@ -53,7 +53,7 @@ To access Token, `Token API` must be called.
 Authorization: Bearer <token>
 ```
 
-#### Bearer Token API call example
+#### Access token API call example
 - Call `Access token` API and then use for authentication.
 
 ```shell

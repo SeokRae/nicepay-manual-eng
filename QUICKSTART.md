@@ -18,7 +18,7 @@ By following the guide in order, it is possible to develop a Checkout TEST in ab
 <br>
 
 ### Over-view
-<img alt="Sequence diagram: the client sends an order to the merchant server, which calls the NicePay Create Checkout API and receives a return URL, then redirects the customer to that URL to complete payment on the NicePay Checkout page" src="./image/payment-overview.svg" width="800px">
+<img alt="Sequence diagram: the customer places an order with the merchant server, which calls the NicePay Create Checkout API and receives a return URL, then redirects the customer to that URL to complete payment on the NicePay Checkout page" src="./image/payment-overview.svg" width="800px">
   
 
 If a customer send an order, please call the Checkout creation API first.   
@@ -103,7 +103,7 @@ curl --location 'https://sandbox-api.nicepay.co.kr/v1/checkout' \
 
 ### Step 2. Redirect the customer to the checkout URL
 
-When you access the URL that was responded, the Checkout page will be displayed, and the client will be able to make a payment.
+When you access the URL that was responded, the Checkout page will be displayed, and the customer will be able to make a payment.
 
 Since Step 1 used `fakeAuth: "true"`, this is a dummy Sandbox page without real card company authentication: pressing Next returns a success result, and Cancel returns a random failure result.
 
@@ -113,7 +113,7 @@ Since Step 1 used `fakeAuth: "true"`, this is a dummy Sandbox page without real 
 
 ### Step 3. Receive the payment result
 
-- When the client completes the payment, the approval information will be sent to the endpoint of the `returnUrl`
+- When the customer completes the payment, the approval information will be sent to the endpoint of the `returnUrl`
 
 - Refer to the [Code](./code/nicepay-code.md) for the response and error codes. 
 

@@ -4,7 +4,7 @@
 
 <img alt="Diagram showing the transaction status inquiry flow: the merchant server calls the Transaction Status Inquiry API with one of three lookup options (tid, orderId, or sessionId) and receives the payment status in response" src="../image/payment-retrieve.svg" width="800px"> 
 
-Transaction Status Inquiry API can be used if you need to check information according to the success or failure of a 💳 payment (approval) request.
+You can use the Transaction Status Inquiry API to check information about the success or failure of a payment (approval) request.
 
 It is recommended to use the Transaction Status Inquiry API in the following cases.
 - If timeout of `Http-client` occurs after calling the payment request API, you can search the transaction through Transaction Status Inquiry API with `orderId`.
@@ -27,11 +27,11 @@ curl -X GET 'https://api.nicepay.co.kr/v1/payments/nicuntct1m0101210727200125A05
 
 ## Check Authorization Amount
 
-- If you need to check the payment amount after approval, use the `Check-amount` API to check the 💳 approved payment amount.
+- If you need to check the payment amount after approval, use the `Check-amount` API to check the approved payment amount.
 - If the amount requested and the approval amount are different, be sure to cancel the payment.
 
 > #### ⚠️ Important  
-> 💳 Merchants are responsible for problems caused by not checking the approved (payment) amount.
+> You are responsible for problems caused by not checking the approved (payment) amount.
 
 <br>
 
@@ -195,7 +195,7 @@ Content-type: application/json
 | | cardName | String | O | 20 | Card issuer name <br> ex) BC |
 | | cardNum | String | | 20 | Card number<br>3rd range masked<br>Ex) 53611234****1234*<br>- Kakao Money/Naver Point/Payco Point used for payment 'null' will be return. |
 | | cardQuota | Int | O | 3 | Installment Month<br>0: lump sum, 2:2 months, 3:3 months … |
-| | isInterestFree | Boolean | O | - | The store pays the payer's installment interest<br>true:yes, false:no |
+| | isInterestFree | Boolean | O | - | The store pays the customer's installment interest<br>true:yes, false:no |
 | | cardType | String | | 1 | Card type<br>credit:credit card, check:debit |
 | | canPartCancel | Boolean | | - | Whether partial cancellation is possible<br>true: Possible, false: Impossible, null: not reported by the acquirer for this card |
 | | acquCardCode | String | O | 3 | Acquirer code |
@@ -207,7 +207,7 @@ Content-type: application/json
 
 | Parameter     |              |   Type   |   Required   |  Bytes  | Description |
 |:--------------|:-------------|:--------:|:------:|:------:|:-------------------|
-| cashReceipts | | Array | | | Cash Receipt Issuance Information<br>-When payer used Naverpay Points and Virtual Account, this value will be return.<br>-In case of partial cancellation, array will be more than 2 |
+| cashReceipts | | Array | | | Cash Receipt Issuance Information<br>-When the customer used Naverpay Points and Virtual Account, this value will be return.<br>-In case of partial cancellation, array will be more than 2 |
 | | receiptTid | String | O | 30 | Cash Receipt TID |
 | | orgTid | String | O | 30 | Related original approval/cancel transaction ID.<br>In case of partial cancellation, it is mapped with the original TID. |
 | | status | String | O | 20 | issueRequested : Issuance Requested <br>issueReqCancelled : Issuance Request cancelled<br>issued: Issuance completed by the National Tax Service <br>issueFailed: Issuance failed<br>cancelRequested: Cancellation requested <br>cancelReqCancelled: issuance Cancelled by the National Tax Service<br>cancelled: Cancellation completed <br>cancelFailed: Cancellation failed |
@@ -263,7 +263,7 @@ The card event API responds with event information for each card company corresp
 You can conveniently provide information to user for selecting a credit card company.
 
 > If the amount is less than KRW 50,000, No interest will be return.
-> In Sandbox, this API always returns the same fixed dummy card-event data regardless of the amount you send, it doesn't simulate real card company data.
+> In Sandbox, this API always returns the same fixed dummy card-event data regardless of the amount you send; it does not simulate real card company data.
 
 <br>
 
@@ -329,7 +329,7 @@ Content-type: application/json
 ### Over-view
 Interest-free installment information API can check interest-free about card companies and amount range.
 
-> In Sandbox, this API always returns the same fixed dummy interest-free data, it doesn't simulate real card company data.
+> In Sandbox, this API always returns the same fixed dummy interest-free data; it does not simulate real card company data.
 
 <br>
 
