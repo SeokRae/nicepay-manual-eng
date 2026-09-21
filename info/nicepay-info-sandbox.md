@@ -634,8 +634,7 @@ Content-type: application/json;charset=utf-8
 
 ## Cancel
 
-In the Sandbox, only full cancellation is possible.  
-If there is no amount value, a full cancellation will be processed, and if a partial cancellation is to be made, you must pass the amount value.
+In the Sandbox, only full cancellation is possible; passing an `amount` smaller than the full payment fails with [`U128`](../code/nicepay-code.md#api-response-code). Omit `amount` (or pass the full amount) to cancel. Partial cancellation only works once you switch to Live.
 
 Please refer to the link for more detailed information.  
 [Cancel request](../api/nicepay-api-cancel.md#cancel-request-parameter-with-sessionid) 
