@@ -77,7 +77,7 @@ Common required fields: `cardNo`, `expYear`, `expMonth`. Which additional field(
 | 10 | `idNo` | Date of birth (individual) or business registration number (corporation) |
 | 11 | `idNo` + `cardPw` | Both |
 
-> ⚠️ Sending a field your merchant's level does not expect (or omitting one it requires) fails encData verification with `U341`. Contact NicePay support if you are not sure which level your account is enrolled with.
+> ⚠️ Sending a field your merchant's level does not expect (or omitting one it requires) fails encData verification with `U341`. [Open an issue on this manual's repository](https://github.com/SeokRae/nicepay-manual-eng/issues) if you are not sure which level your account is enrolled with.
 
 | Parameter | Type | required | bytes | Description |
 |:--------------|:---------:|:----------:|:-------:|:--------------|

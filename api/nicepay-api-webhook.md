@@ -13,7 +13,7 @@ You can use Webhook to implement additional business logic by receiving API even
 - When an event occurs, data is delivered to the registered webhook `endpoint`.  
 - Process business logic after checking the delivered webhook data
 - After processing business logic, print an `OK` string (case-insensitive, e.g. `OK` or `ok` both work) in `HTTP Response body` and respond with `HTTP Status 200`.
-- If delivery fails (network error, a non-`200` response, or a response body other than `OK`), NicePay automatically retries on a schedule configured for your account; contact NicePay support if you need the exact retry count/interval. Because the same event can be redelivered, process it idempotently (for example, key your handling on `tid`/`orderId` and skip events you've already applied). Once the retry limit is reached, NicePay emails your account's registered admin address and stops retrying that event.
+- If delivery fails (network error, a non-`200` response, or a response body other than `OK`), NicePay automatically retries on a schedule configured for your account; [open an issue on this manual's repository](https://github.com/SeokRae/nicepay-manual-eng/issues) if you need the exact retry count/interval. Because the same event can be redelivered, process it idempotently (for example, key your handling on `tid`/`orderId` and skip events you've already applied). Once the retry limit is reached, NicePay emails your account's registered admin address and stops retrying that event.
 
 <br>
 

@@ -49,7 +49,7 @@ curl --location 'https://api.nicepay.co.kr/v1/payments/checkout/641d555b91ae1/ca
 | Escrow (after purchasing decision) | not allowed | not allowed | not allowed  | not allowed | -                |
 | Escrow (after purchase rejection) | O  |                  | O           |                | -                   |
 
-> Cancelling a cash-receipt payment through `/v1/payments/{tid}/cancel` or `/v1/payments/checkout/{sessionId}/cancel` fails with [`U106`](../code/nicepay-code.md#api-response-code) ("cash receipt cancellation requires a separate API"). That separate cash-receipt cancellation API is not part of the Untact v1 API this manual documents; contact NicePay support if you need it.  
+> Cancelling a cash-receipt payment through `/v1/payments/{tid}/cancel` or `/v1/payments/checkout/{sessionId}/cancel` fails with [`U106`](../code/nicepay-code.md#api-response-code) ("cash receipt cancellation requires a separate API"). That separate cash-receipt cancellation API is not part of the Untact v1 API this manual documents; [open an issue on this manual's repository](https://github.com/SeokRae/nicepay-manual-eng/issues) if you need it.  
 
 <br>
 
