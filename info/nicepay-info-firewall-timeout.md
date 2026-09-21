@@ -1,6 +1,6 @@
 ## Firewall Policy
 Please check if the server's HTTP client supports `TLS 1.2` for safety.  
-Allow the IP below in your firewall to call the `Nice-payments` API on the server.  
+Allow the IP below in your firewall to call the `NicePay` API on the server.  
 
 | Service              | Domain                    | IP Address                      | Direction       |
 |--------------------|---------------------------|------------------------------------|----------|
