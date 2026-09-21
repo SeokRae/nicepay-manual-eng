@@ -28,7 +28,7 @@ Sandbox and Live use different domains and IP ranges for each service (API, paym
 | API                                             | Method | Endpoint                                 | Sandbox            |
 |-------------------------------------------------|--------|------------------------------------------|--------------------|
 | Create checkout session                         | POST   | /v1/checkout                             | ○                  |
-| Retrive checkout session                        | GET    | /v1/checkout/{sessionId}                 | ○                  |
+| Retrieve checkout session                       | GET    | /v1/checkout/{sessionId}                 | ○                  |
 | Expire checkout session                         | POST   | /v1/checkout/{sessionId}/expire          | ○                  |
 | Key-in Payment                                  | POST   | /v1/key-in/payments                      | × *                |
 | Recurring payment: Token Issue                  | POST   | /v1/subscribe/regist                     | ○                  |
