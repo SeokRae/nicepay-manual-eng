@@ -3,6 +3,13 @@
 > #### ⚠️ Important  
 > The Transaction Search and Settlement APIs are not available in [Sandbox](../info/nicepay-info-sandbox.md); test against Live.  
 
+<br>
+
+### Over-view
+<img alt="Sequence diagram of the Reconciliation flow: the merchant server queries NicePay's Transaction Search API (GET /v1/transactions) and Settlement API (GET /v1/settlements) by date, and NicePay returns the matching transaction or settlement list with pagination info in the response" src="../image/payment-reconciliation.svg" width="800px">
+
+<br>
+
 ## Transaction Search API <img alt="Beta version" src="https://img.shields.io/badge/-Beta version-red">
 
 You can use the Transaction Search API to retrieve and cross-check transaction records for the desired period.
