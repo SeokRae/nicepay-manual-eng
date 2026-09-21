@@ -85,7 +85,7 @@ Content-type: application/json;charset=utf-8
 |:--------------|:--------:|:-----:|:------:|:---------------|
 | cardNo     |  String  |     O      |   16   | Card Number<br>Numbers only     |
 | expYear    |  String  |     O      |   2    | expiration year<br>format : YY  |
-| expMonth   |  String  |     O      |   2    | expiration month<br>포멧 : MM  |
+| expMonth   |  String  |     O      |   2    | expiration month<br>format : MM  |
 | idNo       |  String  |  Optional  |   13   | Individual(Date of birth, 6 digits) : YYMMDD <br/> Corporation: business number of korea, 10 digits  |
 | cardPw     |  String  |  Optional  |   2    | First 2 digits of the card password |
 
@@ -127,7 +127,7 @@ Content-type: application/json
 | resultMsg  | String | O | 100 | Result message |
 | tid        | String | O |  30   | Transaction ID<br>Ex) nictest00m01011104191651325596  |
 | orderId    | String | O | 64        | Your Unique order ID *Not reusable |
-| bid        | String |   |  30   | Token<br>- Key value linked to card information, delivered when calling Token Authoriazation API<br>Ex) BIKYnictest00m1104191651325596  |
+| bid        | String |   |  30   | Token<br>- Key value linked to card information, delivered when calling Token Authorization API<br>Ex) BIKYnictest00m1104191651325596  |
 | authDate   | String |   |   -   | Date created<br>ISO 8601 format   |
 | cardCode   | String |   |   3   | Card company code |
 | cardName   | String |   |  20   | Card issuer name <br> ex) BC   |
@@ -274,7 +274,7 @@ Content-type: application/json
 ## Delete Token
 
 `Delete Token` refers to the process of deleting the issued Token(bid).  
-If you pass the registered bilkey to the `/v1/subscribe/{bid}/expire` API, the Token(bid) will be deleted.  
+If you pass the registered billkey to the `/v1/subscribe/{bid}/expire` API, the Token(bid) will be deleted.  
 Deleted Token(bid) cannot be restored or approved. 
 
 <br>

@@ -96,7 +96,7 @@ Content-type: application/json;charset=utf-8
 
 | Parameter        | Type    | Required | Bytes | Description                                                                      |
 |:-----------------|:-------:|:--------:|:-----:|:---------------------------------------------------------------------------------|
-| date             | String  | O        | 19    | Start date for transaction search (yyyyMMdd)  <br> ex) 20230228 |
+| date             | String  | O        | 8     | Start date for transaction search (yyyyMMdd)  <br> ex) 20230228 |
 | startingSequence | String  | -        |       | Starting point of the sequence. <br> The sequence is created based on the startDate.    |
 | limit            | Integer | -        | -     | default 100 <br> max 500   |
 
@@ -231,7 +231,7 @@ Content-type: application/json;charset=utf-8
 
 | Parameter        | Type    | Required | Bytes | Description                                                                      |
 |:-----------------|:-------:|:--------:|:-----:|:---------------------------------------------------------------------------------|
-| date             | String  | O        | 19    | Start date for transaction search <br> (yyyyMMdd)  <br> ex) 20230201 |
+| date             | String  | O        | 8     | Start date for settlement search <br> (yyyyMMdd)  <br> ex) 20230201 |
 | type             | String  |          | 30    | Not currently read or validated by the server, has no effect on the request |
 | startingSequence | String  | -        | 30    | Starting point of the sequence. <br> The sequence is created based on the startDate.    |
 | limit            | Integer | -        | -     | default 100 <br> max 500   |
@@ -269,4 +269,4 @@ Content-type: application/json;charset=utf-8
 |            | net.krw            | Integer | O        | 14    | Expected settlement amount in Korean won |
 |            | net.usd            | Integer | O        | 14    | Expected settlement amount in dollars |
 |            | transactionAt      | String  | O        | 19    | When transaction is complete |
-|            | paidOutDate        | String  | O        | 19    | Scheduled settlement date based on Korea time |
+|            | paidOutDate        | String  | O        | 8     | Scheduled settlement date based on Korea time |
