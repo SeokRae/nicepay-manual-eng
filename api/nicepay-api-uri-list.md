@@ -10,6 +10,7 @@ A list of URI's for provided APIs. If you need to check the interface, please cl
 | [Recurring payment: Token Issue](./nicepay-api-billing.md)             |      `POST`     |     /v1/subscribe/regist            |     ○     |
 | [Recurring Payment: Token authorization](./nicepay-api-billing.md)              |      `POST`     |     /v1/subscribe/{bid}/payments    |     ○     |
 | [Recurring Payment: Token delete](./nicepay-api-billing.md#delete-token) |      `POST`     |     /v1/subscribe/{bid}/expire      |     ○     |
+| [Recurring Payment: Bid status inquiry](./nicepay-api-billing.md#bid-status-inquiry) |      `POST`     |     /v1/subscribe/{bid}/status      |     ○     |
 | [AccessToken Generation](./nicepay-api-access-token.md)                  |      `POST`     |     /v1/access-token                |     ○     |
 | [Cancel request with session id](./nicepay-api-cancel.md#cancel-request-parameter-with-sessionid)  |      `POST`     |     /v1/payments/checkout/{sessionId}/cancel | full cancel only |
 | [Cancel request with tid](./nicepay-api-cancel.md#cancel-request-parameter-with-tid)  |      `POST`     |     /v1/payments/{tid}/cancel       | full cancel only |
