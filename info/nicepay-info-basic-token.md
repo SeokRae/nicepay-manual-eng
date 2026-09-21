@@ -21,7 +21,7 @@ Base64(`client-key:secret-key`)
 
 First step
 ```bash
-clientKey = 'af0d116236df437f831483ee9c500bc4'
+clientId = 'af0d116236df437f831483ee9c500bc4'
 secretKey = '433a8421be754b34989048cf148a5ffc'
 >> `af0d116236df437f831483ee9c500bc4:433a8421be754b34989048cf148a5ffc`
 ```
