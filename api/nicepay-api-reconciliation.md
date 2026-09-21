@@ -1,5 +1,7 @@
 # Reconciliation
 
+> #### ⚠️ Important  
+> The Transaction Search and Settlement APIs are not available in [Sandbox](../info/nicepay-info-sandbox.md); test against Live.  
 
 ## Transaction Search API <img alt="Beta version" src="https://img.shields.io/badge/-Beta version-red">
 
@@ -133,7 +135,7 @@ You can retrieve settlement records based on the specified date.
 ### Settlement API Example code
 
 ```bash
-curl --request GET 'https://api.nicepay.co.kr/v1/settlements?limit=10&type=transactionDate&date=20230308' \
+curl --request GET 'https://api.nicepay.co.kr/v1/settlements?limit=10&date=20230308' \
 --header 'Authorization: Basic UjFfOTRlYjNhNGEzMDI2NGZkYmE4MmNlMGQwNWI0NjUwMTI6MTJjZGUxMjQ0OWM2NDQ5N2E4NjEwNDc1OWI4MzA2YjY=' \
 --header 'Content-Type: application/json' 
 ```
