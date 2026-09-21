@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project purpose
 
-This repository is the **English-language integration guide** for NicePay's "Untact" payment service, written for **overseas (non-Korean) merchants** integrating with NicePay's API. There is no application code here — every file is either a Markdown manual page or a supporting image. There is no build, lint, or test tooling (no `package.json`, no CI config); "development" in this repo means editing and reviewing Markdown.
+This repository is the **English-language integration guide** for NicePay's "For Startups" payment service (the merchant-facing brand at [start.nicepay.co.kr](https://start.nicepay.co.kr/); "Untact" is the underlying API gateway's technical name, not the public brand — see `code/nicepay-code.md`'s `U`-prefixed response codes and `api/nicepay-api-cancel.md` for that usage), written for **overseas (non-Korean) merchants** integrating with NicePay's API. There is no application code here — every file is either a Markdown manual page or a supporting image. There is no build, lint, or test tooling (no `package.json`, no CI config); "development" in this repo means editing and reviewing Markdown.
 
 ## Repository structure
 

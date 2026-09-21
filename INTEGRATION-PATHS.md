@@ -1,6 +1,6 @@
 ## Which Integration Should I Use?
 
-NicePay Untact offers three ways to charge a card. They're distinguished by **who holds the card details**, and that single question decides which one fits your use case.
+NicePay For Startups offers three ways to charge a card. They're distinguished by **who holds the card details**, and that single question decides which one fits your use case.
 
 | | Checkout | Key-in Payment | Recurring Payment |
 |:---|:---|:---|:---|
