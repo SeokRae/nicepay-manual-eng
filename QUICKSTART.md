@@ -103,13 +103,11 @@ curl --location 'https://sandbox-api.nicepay.co.kr/v1/checkout' \
 
 ### Step 2. Redirect the customer to the checkout URL
 
-When you access the URL that was responded, the Checkout window will be displayed, and the client will be able to make a payment.
+When you access the URL that was responded, the Checkout page will be displayed, and the client will be able to make a payment.
 
 Since Step 1 used `fakeAuth: "true"`, this is a dummy Sandbox page without real card company authentication: pressing Next returns a success result, and Cancel returns a random failure result.
 
 <img alt="Sequence diagram of the full card/easy-pay payment cycle, from order to cancellation. Steps 1-7 (checkout: create checkout, redirect, Checkout page, Payment Authorization callback) are this step; steps 8-9 (cancellation, shown in orange) are covered in api/nicepay-api-cancel.md" src="./image/payment-checkout-cancel-cycle.svg" width="800px">
-
-https://sandbox-pay.nicepay.co.kr/v1/fake/pay/unique-sessionId-001
 
 <br><br>
 
