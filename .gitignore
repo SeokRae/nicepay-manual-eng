@@ -3,3 +3,6 @@ _site/
 .sass-cache/
 .jekyll-cache/
 .jekyll-metadata
+
+# Claude Code session state (local working notes, not for the public manual)
+.claude/
