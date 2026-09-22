@@ -15,7 +15,7 @@ Allow the IP below in your firewall to call the `NicePay` API on the server.
 ## Timeout Information
 
 Information for handling timeout exceptions when configuring HTTP clients.  
-If `Read-timeout` occurs, make a cancel request to prevent inconsistency in payment.  
+If `Read-timeout` occurs, make a cancel request to prevent inconsistency in payment. Send it as a net cancel, with `isNetCancel` set to `true`: see [Cancel Request parameter (with sessionId)](../api/nicepay-api-cancel.md#cancel-request-parameter-with-sessionid) for how that differs from an ordinary cancellation.  
 
 - Connection timeout : `5s`
 - Receive(Read) timeout : `30s`

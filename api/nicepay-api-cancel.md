@@ -70,17 +70,23 @@ Content-type: application/json;charset=utf-8
 
 | Parameter     | Type      | Required | Bytes | Description |
 |:--------------|:---------:|:--------:|:------:|:-----------|
-| reason        | String    | O     | 100       | Cancellation reason |
-| orderId       | String    | O     | 64        | Your unique order ID <br>-In case of partial cancellation, orderId cannot be reusable |
+| reason        | String    | O*    | 100       | Cancellation reason<br>*Not required when `isNetCancel` is `true` |
+| orderId       | String    | O*    | 64        | Your unique order ID <br>-In case of partial cancellation, orderId cannot be reusable<br>*Not required when `isNetCancel` is `true` |
 | cancelAmt     | Int       |       | 12        | Cancellation Amount<br>If the value is missing, full cancellation will be occured |
 | mallReserved  | String    |       | 500       | Spare field for store information delivery |
 | ediDate      | String    |       | -         | Full Text Creation Date<br>ISO 8601 Format |
 | signData      | String    |       | 256       | Forgery Verification Data<br>Rule: hex(sha256(tid + ediDate + SecretKey)) |
 | returnCharSet | String    |       | 10        | utf-8(Default) / euc-kr |
+| isNetCancel   | Boolean   |       | 5         | `true` sends this as a net cancel, the reversal to use when your server never received the authorization result. See the callout below. Default `false` |
 | taxFreeAmt    | Int       |       | 12        | Tax-free amount among cancellation amount |
 | refundAccount | String    |       | 16        | Refund account number (Only for Virtual account) |
 | refundBankCode| String    |       | 3         | Refund account code (Only for Virtual account) |
 | refundHolder  | String    |       | 10        | Refund account holder name (Only for Virtual account) |
+
+> #### ⚠️ Important  
+> Use `isNetCancel: true` only for a **net cancel**: your server sent an authorization request and never got a usable answer back, for example a read timeout, so you do not know whether the payment went through. See [Timeout Information](../info/nicepay-info-firewall-timeout.md#timeout-information) for the timeouts that lead here.  
+> A net cancel takes a different path from an ordinary cancellation. `reason` and `orderId` are not required, because after a timeout you have no confirmed transaction to describe, and `cancelAmt` is ignored: a net cancel always reverses the whole authorization. NicePay looks the authorization up by `tid`, so if none was ever recorded you get [`U122`](../code/nicepay-code.md#api-response-code) ("No transaction to cancel") rather than a silent success.  
+> For a cancellation you are choosing to make on a payment you know succeeded, leave `isNetCancel` out and send `reason` and `orderId` as usual.  
 
 <br><br>
 
@@ -96,13 +102,14 @@ Content-type: application/json;charset=utf-8
 
 | Parameter     | Type      | Required | Bytes | Description |
 |:--------------|:---------:|:--------:|:------:|:-----------|
-| reason        | String    | O     | 100       | Cancellation reason |
-| orderId       | String    | O     | 64        | Your unique order ID <br>-In case of partial cancellation, orderId cannot be reusable |
+| reason        | String    | O*    | 100       | Cancellation reason<br>*Not required when `isNetCancel` is `true` |
+| orderId       | String    | O*    | 64        | Your unique order ID <br>-In case of partial cancellation, orderId cannot be reusable<br>*Not required when `isNetCancel` is `true` |
 | cancelAmt     | Int       |       | 12        | Cancellation Amount<br>If the value is missing, full cancellation will be occured |
 | mallReserved  | String    |       | 500       | Spare field for store information delivery |
 | ediDate      | String    |       | -         | Full Text Creation Date<br>ISO 8601 Format |
 | signData      | String    |       | 256       | Forgery Verification Data<br>Rule: hex(sha256(tid + ediDate + SecretKey)) |
 | returnCharSet | String    |       | 10        | utf-8(Default) / euc-kr |
+| isNetCancel   | Boolean   |       | 5         | `true` sends this as a net cancel, the reversal to use when your server never received the authorization result. See the callout below. Default `false` |
 | taxFreeAmt    | Int       |       | 12        | Tax-free amount among cancellation amount |
 | refundAccount | String    |       | 16        | Refund account number (Only for Virtual account) |
 | refundBankCode| String    |       | 3         | Refund account code (Only for Virtual account) |
