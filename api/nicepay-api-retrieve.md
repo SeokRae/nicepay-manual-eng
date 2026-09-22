@@ -11,7 +11,7 @@ It is recommended to use the Transaction Status Inquiry API in the following cas
 - In case of suspicion of forgery and alteration of data in the payment (approval).
 - When it is necessary to check the cancellation balance of a payment (approval).
 
-We recommend testing against the [Sandbox](../info/nicepay-info-sandbox.md) first, then switching to Live once verified — the examples below use the Live domain (`api.nicepay.co.kr`), swap it for `sandbox-api.nicepay.co.kr` to test in Sandbox.
+We recommend testing against the [Sandbox](../info/nicepay-info-sandbox.md) first, then switching to Live once verified. The examples below use the Live domain (`api.nicepay.co.kr`); swap it for `sandbox-api.nicepay.co.kr` to test in Sandbox.
 
 <br>
 
@@ -260,7 +260,7 @@ Content-type: application/json
 
 ### Card event API Over-view
 The card event API responds with event information for each card company corresponding to the requested amount.
-You can conveniently provide information to user for selecting a credit card company.
+Use it to show customers which card company to choose.
 
 > If the amount is less than KRW 50,000, No interest will be return.
 > In Sandbox, this API always returns the same fixed dummy card-event data regardless of the amount you send; it does not simulate real card company data.

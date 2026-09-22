@@ -1,6 +1,6 @@
 # Support environment
 
-NicePay's API supports over `TLS 1.2`, and provides various options and test environments for the convenience of developers.
+NicePay's API supports over `TLS 1.2`, and provides various options and test environments for developers.
 
 - Support various development languages
 - node.js, python, ruby, jsp, php, classic asp, .net

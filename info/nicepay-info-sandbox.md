@@ -16,7 +16,7 @@ Sandbox responds with TEST data, and no actual approval occurs.
 
 ### Using Sandbox and Live domains
 
-Sandbox and Live use different domains and IP ranges for each service (API, payment window, webhook) — see the [Firewall Policy](./nicepay-info-firewall-timeout.md#firewall-policy) table for the full, authoritative list instead of a partial copy here.
+Sandbox and Live use different domains and IP ranges for each service (API, payment window, webhook). See the [Firewall Policy](./nicepay-info-firewall-timeout.md#firewall-policy) table for the full, authoritative list instead of a partial copy here.
 
 <br>
 
@@ -83,7 +83,7 @@ Authorization : Basic UjFfOTRlYjNhNGEzMDI2NGZkYmE4MmNlMGQwNWI0NjUwMTI6MTJjZGUxMj
 
 <img alt="Sequence diagram: the customer places an order with the merchant server, which calls the NicePay Create Checkout API and receives a return URL, then redirects the customer to that URL to complete payment on the NicePay Checkout page" src="../image/payment-overview.svg" width="800px">
 
-This is an explanation of how to generate a checkout sessionId and call a checkout page through the Sandbox.
+The following steps generate a checkout sessionId and call the checkout page through the Sandbox.
 
 Call the Checkout API to generate a sessionId.
 - Call the Checkout API with the necessary parameters.  

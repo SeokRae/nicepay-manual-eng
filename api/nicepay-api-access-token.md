@@ -9,7 +9,7 @@
 - The token is valid for 30 minutes.   
 - Therefore, after the initial token is generated, the same token will be returned for 30 minutes, and if a new token is requested after 30 minutes, a newly generated token will be issued.  
 
-We recommend testing against the [Sandbox](../info/nicepay-info-sandbox.md) first, then switching to Live once verified — the example below uses the Live domain (`api.nicepay.co.kr`), swap it for `sandbox-api.nicepay.co.kr` to test in Sandbox.
+We recommend testing against the [Sandbox](../info/nicepay-info-sandbox.md) first, then switching to Live once verified. The example below uses the Live domain (`api.nicepay.co.kr`); swap it for `sandbox-api.nicepay.co.kr` to test in Sandbox.
 
 <br>
 
