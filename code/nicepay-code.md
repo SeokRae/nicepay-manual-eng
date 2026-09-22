@@ -580,7 +580,7 @@ Some messages carry Korean payment-industry terms straight into the English colu
 | U321 | 면세금액이 결제금액 보다 큼.     | Tax-free amount is greater than payment amount.     |
 | U322 | 세션아이디 생성을 실패 하였습니다.      | Failed to generate session ID.        |
 | U323 | 세션아이디 만료 변경이 실패 하였습니다.       | Failed to change session ID expiration.      |
-| U324 | 이미 발급된 세션아이디 입니다.   | Session ID already issued.     |
+| U324 | 이미 사용된 세션아이디 입니다.   | Session ID already used.     |
 | U325 | 이미 만료된 세션아이디 입니다.   | Session ID already expired.    |
 | U326 | 금액은 0이 아닌 값만 허용합니다.   | Only non-zero amounts are allowed.    |
 | U327 | 면세금액이 결제금액을 초과할수 없습니다.   | The tax-free amount cannot exceed the payment amount.    |
@@ -620,7 +620,7 @@ Some messages carry Korean payment-industry terms straight into the English colu
 | W000 | 정상 처리되었습니다          | Processed normally.      |
 | W001 | 주문번호가 유효하지 않습니다 | Invalid order number.    |
 | W002 | TID가 유효하지 않습니다      | Invalid transaction ID   |
-| U332 | 간편결제는 cardCode, cardQuota와 함께 사용이 불가합니다. | wallet payment cannot be used with cardCode and cardQuota | 
+| U332 | CardEasyPay는 cardCode(카드지정), cardQuota(할부지정)이 불가 합니다. | cardCode and cardQuota cannot be used with the cardAndEasyPay method; other Easy Pay methods do accept them, see U136, U138 and U141 | 
 | U333 | 이미 등록된 URL 정보가 있습니다. | There is already registered URL information. | 
 | U334 | 웹훅 URL 수정을 실패하였습니다. | Failed to modify the webhook URL. | 
 | U335 | 웹훅 URL 생성을 실패하였습니다. | Failed to create the webhook URL. |
