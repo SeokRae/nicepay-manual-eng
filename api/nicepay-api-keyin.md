@@ -13,7 +13,7 @@ Key-in (Manual Entry) payment lets you submit a card charge directly with card d
 - A [Client and Secret key](../info/nicepay-info-key.md) issued from the NicePay admin console
 - An `Authorization` header built from those keys, see [Basic and Bearer authentication](../info/nicepay-info-basic-token.md)
 - This API has no Sandbox, see the note above; test against Live directly
-- Your server will handle raw card numbers directly — see [PCI-DSS Overview](../info/nicepay-info-pci-dss.md) for what that generally implies, and confirm the specific requirements for your account with NicePay
+- Your server will handle raw card numbers directly. See [PCI-DSS Overview](../info/nicepay-info-pci-dss.md) for what that generally implies, and confirm the specific requirements for your account with NicePay
 
 <br>
 

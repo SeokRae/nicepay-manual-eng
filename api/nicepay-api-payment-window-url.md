@@ -19,10 +19,10 @@ New to Checkout? The [Quick Start Guide](../QUICKSTART.md) walks through this en
 ### Card and Easy Pay checkout flow
 <img alt="Sequence diagram of the full card/easy-pay payment cycle for a cardAndEasyPay checkout, from order to cancellation. Steps 1-7 (checkout: create checkout, redirect, Checkout page, Payment Authorization callback) are the focus here; steps 8-9 (cancellation) are shown in orange and detailed in api/nicepay-api-cancel.md" src="../image/payment-checkout-cancel-cycle.svg" width="800px">
 
-**Steps 1-7 above** are the same flow shown in [Over-view](#over-view), detailed for `method: cardAndEasyPay` (credit card and easy-pay wallets). After the customer selects a card or a wallet on the Checkout page, the field set returned in the `returnUrl` callback varies by `payMethod` — see [Payment Authorization Response Parameter](#payment-authorization-response-parameter). Steps 8-9 (shown in orange) are the cancellation that can follow — see [Cancel](./nicepay-api-cancel.md) for that part of the cycle.
+**Steps 1-7 above** are the same flow shown in [Over-view](#over-view), detailed for `method: cardAndEasyPay` (credit card and easy-pay wallets). After the customer selects a card or a wallet on the Checkout page, the field set returned in the `returnUrl` callback varies by `payMethod`; see [Payment Authorization Response Parameter](#payment-authorization-response-parameter). Steps 8-9 (shown in orange) are the cancellation that can follow; see [Cancel](./nicepay-api-cancel.md) for that part of the cycle.
 
 > #### ⚠️ Important  
-> In Sandbox with `fakeAuth: "true"`, pressing Next on the Checkout page always returns a success result and Cancel returns a random failure result — this is a Sandbox-only shortcut, not real Live authentication/failure behavior.  
+> In Sandbox with `fakeAuth: "true"`, pressing Next on the Checkout page always returns a success result and Cancel returns a random failure result: this is a Sandbox-only shortcut, not real Live authentication/failure behavior.  
 
 <br>
 

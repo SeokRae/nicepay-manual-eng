@@ -9,7 +9,7 @@ NicePay For Startups offers three ways to charge a card. They're distinguished b
 | **Flow shape** | Asynchronous: redirect the customer, then receive a `returnUrl` callback | Synchronous: one request, one response | Synchronous: register once, charge many times |
 | **Typical use case** | Standard online checkout, customer is present | Phone/mail orders, support-agent-assisted charges | Subscriptions, memberships, installment billing |
 | **Sandbox available** | ○ | × * | ○ |
-| **PCI scope for the merchant** | Minimal — your server never touches raw card numbers | [Full](./info/nicepay-info-pci-dss.md) — your server receives and encrypts raw card data | Full at registration, minimal afterward (only the token) |
+| **PCI scope for the merchant** | Minimal: your server never touches raw card numbers | [Full](./info/nicepay-info-pci-dss.md): your server receives and encrypts raw card data | Full at registration, minimal afterward (only the token) |
 | **Guide** | [Quick Start Guide](./QUICKSTART.md) | [Key-in Payment](./api/nicepay-api-keyin.md) | [Recurring Payment](./api/nicepay-api-billing.md) |
 
 \* Key-in Payment is not provided in Sandbox; see [Sandbox](./info/nicepay-info-sandbox.md#base-url-information-for-sandbox-and-live) for the full per-API availability table.
@@ -17,7 +17,7 @@ NicePay For Startups offers three ways to charge a card. They're distinguished b
 <br>
 
 > #### ⚠️ Important  
-> Key-in requires your merchant account to be specifically enabled for manual-entry payments by NicePay, and it can't be tried out in Sandbox first — you can only test it against Live once that's enabled. See the [Key-in Payment](./api/nicepay-api-keyin.md) doc's Important note before planning around it.
+> Key-in requires your merchant account to be specifically enabled for manual-entry payments by NicePay, and it can't be tried out in Sandbox first. You can only test it against Live once that's enabled. See the [Key-in Payment](./api/nicepay-api-keyin.md) doc's Important note before planning around it.
 
 <br>
 
@@ -26,7 +26,7 @@ NicePay For Startups offers three ways to charge a card. They're distinguished b
 - **Building a normal storefront where the customer checks out themselves?** Use **Checkout**. It's the default path this guide's [Quick Start Guide](./QUICKSTART.md) walks through, and it keeps raw card data off your server entirely.
 - **Charging a card your support team already has on file (phone order, invoice payment)?** Use **Key-in**.
 - **Billing the same customer repeatedly (subscription, membership)?** Use **Recurring Payment** to register a token once, then call the Payments API yourself each time a charge is due (there's no automatic billing scheduler on NicePay's side).
-- **Not mutually exclusive** — a merchant can use Checkout for one-time purchases and Recurring for subscriptions in the same integration.
+- **Not mutually exclusive**: a merchant can use Checkout for one-time purchases and Recurring for subscriptions in the same integration.
 
 <br>
 

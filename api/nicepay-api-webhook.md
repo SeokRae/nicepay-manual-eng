@@ -97,7 +97,7 @@ Content-type: application/json;charset=utf-8
 |:--------------|:-----:|:-----:|:-----:|:----------|
 |    method     | String  |  O  | 20	  |  all : all payment methods <br> card : local cards <br> bank : bank transfer <br> vbank : virtual account  <br> cellphone : carrier billing | 
 | url | String | O | 200 | The URL of the webhook endpoint |
-| managerEmail | String |  | 255 |Stored and echoed back on lookup, but NOT the address NicePay emails on delivery failure — that notification goes to your merchant account's registered admin email instead|
+| managerEmail | String |  | 255 |Stored and echoed back on lookup, but NOT the address NicePay emails on delivery failure; that notification goes to your merchant account's registered admin email instead|
 
 <br>
 
@@ -161,7 +161,7 @@ This endpoint takes no request parameters beyond the `Authorization` header.
 | urls      |      |        |             |         |              |
 |           | method | String  |  O  | 20	  | all: all <br> card : local cards <br> bank : bank transfer <br> vbank : virtual account  <br> cellphone : carrier billing |
 |           | url | String | O | 200 | The URL of the webhook endpoint |
-|           | managerEmail | String |  | 255 |Stored and echoed back on lookup, but NOT the address NicePay emails on delivery failure — that notification goes to your merchant account's registered admin email instead|
+|           | managerEmail | String |  | 255 |Stored and echoed back on lookup, but NOT the address NicePay emails on delivery failure; that notification goes to your merchant account's registered admin email instead|
 
 Related error codes: `U100`, `U111`, `U133`, `U333`, `U334`, `U335`, `U336`, `U337`, `U338`, `U700`, `U701`, see [API Response code](../code/nicepay-code.md#api-response-code).
 
@@ -248,7 +248,7 @@ Content-type: application/json;charset=utf-8
 |:--------------|:-----:|:-----:|:-----:|:----------|
 |    method     | String  |  O  | 20	  |  all : all payment methods <br> card : local cards <br> bank : bank transfer <br> vbank : virtual account  <br> cellphone : carrier billing | 
 | url | String | O | 200 | The URL of the webhook endpoint |
-| managerEmail | String |  | 255 |Stored and echoed back on lookup, but NOT the address NicePay emails on delivery failure — that notification goes to your merchant account's registered admin email instead|
+| managerEmail | String |  | 255 |Stored and echoed back on lookup, but NOT the address NicePay emails on delivery failure; that notification goes to your merchant account's registered admin email instead|
 
 <br>
 

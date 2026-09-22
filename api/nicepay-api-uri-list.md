@@ -1,5 +1,5 @@
 ## URI LIST
-A list of URI's for provided APIs. If you need to check the interface, please click the link in the list.
+All endpoints for this API, linked to their parameter reference below.
 
 | API                                                               |     Method      |               Endpoint              |   Sandbox |
 |:------------------------------------------------------------------|:-------------:|:--------------------------------------|:---------:|
