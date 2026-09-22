@@ -134,7 +134,7 @@ Content-type: application/json;charset=utf-8
 
 | Parameter |   Type   |  Required   |  Bytes  | Description  |
 |:--------------|:----:|:-----:|:-----:|:--------|
-| sessionId | String  |  O  | 64	  | Merchant unique session id, issued by merchant | 
+| sessionId | String  |  O  | 256	  | Merchant unique session id, issued by merchant | 
 
 <br>
 

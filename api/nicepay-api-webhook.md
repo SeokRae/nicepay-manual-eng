@@ -278,7 +278,7 @@ Content-type: application/json;charset=utf-8
 |:------------------|:--------:|:-----:|:------:|:---------------------------------------------------------------------------------------------------------------------|
 | resultCode | String | O | 4 | 0000 : success / other failure |
 | resultMsg | String | O | 100 | Result message |
-|   sessionId    | String  |  O  | 64	  | Merchant unique session id, issued by merchant | 
+|   sessionId    | String  |  O  | 256	  | Merchant unique session id, issued by merchant | 
 | tid | String | O | 30 | NICEPAY transaction ID |
 | cancelledTid | String | | 30 | Cancellation transaction ID<br>- Responded only with cancellation requests<br>- Use when finding canceled transaction information in the cancels object. |
 | orderId | String | O | 64 | Unique order number |

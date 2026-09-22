@@ -106,14 +106,14 @@ Content-type: application/json;charset=utf-8
 
 | Parameter     |   Type   |  Required   |  Bytes  | Description  |
 |:--------------|:---------:|:----------:|:-------:|:--------------|
-|   sessionId    | String  |  O  | 64	  | Merchant unique session id, issued by merchant | 
+|   sessionId    | String  |  O  | 256	  | Merchant unique session id, issued by merchant | 
 |   clientId    | String  |     | 50	  | Merchant identifier, issued by NICEPAY | 
 |    method     | String  |  O  | 20	  | Payment Method <br> card : local cards <br> cardBill : card billing <br> bank : bank transfer <br> directCard : directly shows card authentication page without the Hosted Payment Page <br> vbank : virtual account  <br> cellphone : carrier billing <br>naverpayCard : Naver Pay - card (excluded Point) <br>naverpayPoint : Naver Pay - point <br>naverCardBill : Naver Pay recurring payment - card (billing key) <br>naverPointBill : Naver Pay recurring payment - point (billing key) <br> kakaopay : Kakao Pay (Card or Money) <br>kakaopayCard : Kakao Pay - Card <br>kakaopayMoney : Kakao Pay - Money <br>kakaoBill : Kakao Pay recurring payment (billing key) <br>samsungpayCard : Samsung Pay Card <br>tosspay : Toss Pay (Card or Money) <br>tosspayCard : Toss Pay - Card <br>tosspayMoney : Toss Pay - Money <br>tosspayBill : Toss Pay recurring payment (billing key) <br>payco : Payco <br>ssgpay : SSGPAY <br>cardAndEasyPay : Card and Wallets, for <br>cardAndEasyPay it cannot be used together with below parameters <br>- cardCode, cardQuota |
 |    orderId    | String  |  O  | 64	  | Your unique order id<br> cannot reuse the orderid    | 
 |    expireDate    | String  |    | -	  | Expiration Date of sessionId<br><br>ISO 8601  | 
 |    amount     | Int  	  |  O  | 12	  | Transaction amount (only numbers are allowed) | 
-|   goodsName   | String  |  O  | 40	  | Product Name<br> - doubleQuota(")와 pipLine(&brvbar;) characters are converted to '-' | 
-|   returnUrl   | String  |  O  | 500	 | url for Redirect after the authentication is processed | 
+|   goodsName   | String  |  O  | 100	  | Product Name<br> - doubleQuota(")와 pipLine(&brvbar;) characters are converted to '-' | 
+|   returnUrl   | String  |  O  | 2500	 | url for Redirect after the authentication is processed | 
 | mallReserved  | String  |     | 500	 | Reserved field for the merchant<br> We recommend to use it in JSON string format.<br>double quotation mark(“) cannot be used.   | 
 |  mallUserId   | String  |     | 20	  | Buyer’s ID managed by the merchant  | 
 |   buyerName   | String  |     | 30	  | Buyer name 	| 
@@ -160,7 +160,7 @@ Content-type: application/json;charset=utf-8
 
 | Parameter     |   Type   |  Required   |  Bytes  | Description  |
 |:--------------|:---------:|:----------:|:-------:|:--------------|
-| isDigital | Int | Phone bill payment | 1 | 0: content, 1: physical |
+| isDigital | Boolean | Phone bill payment | 5 | false: content, true: physical |
 
 <br>
 
@@ -186,7 +186,7 @@ Content-type: application/json;charset=utf-8
 |:--------------|:----:|:-----:|:-----:|:--------|
 | resultCode | String | O | 4 | 0000 : success / other failure |
 | resultMsg | String | O | 100 | Result message |
-| sessionId | String  |  O  | 64	  | Merchant unique session id, issued by merchant | 
+| sessionId | String  |  O  | 256	  | Merchant unique session id, issued by merchant | 
 | orderId | String | O | 64 | Your Unique order ID |
 | clientId | String | O | 50 | Client ID issued by NICEPAY |
 | tid | String | | 30 | Returned when authorization is successful |
@@ -292,7 +292,7 @@ Content-type: application/json;charset=utf-8
 
 | Parameter |   Type   |  Required   |  Bytes  | Description  |
 |:--------------|:----:|:-----:|:-----:|:--------|
-| sessionId | String  |  O  | 64	  | Merchant unique session id, issued by merchant | 
+| sessionId | String  |  O  | 256	  | Merchant unique session id, issued by merchant | 
 
 <br><br>
 
@@ -302,7 +302,7 @@ Content-type: application/json;charset=utf-8
 |:--------------|:----:|:-----:|:-----:|:--------|
 | resultCode | String | O | 4 | 0000 : success / other failure |
 | resultMsg | String | O | 100 | Result message |
-| sessionId | String  |  O  | 64	  | Merchant unique session id, issued by merchant | 
+| sessionId | String  |  O  | 256	  | Merchant unique session id, issued by merchant | 
 | orderId | String | O | 64 | Your Unique order ID |
 | clientId | String |  | 50 | Client ID issued by NICEPAY |
 | tid | String | | 30 | Returned when authorization is successful |
@@ -336,7 +336,7 @@ Content-type: application/json;charset=utf-8
 
 | Parameter |   Type   |  Required   |  Bytes  | Description  |
 |:--------------|:----:|:-----:|:-----:|:--------|
-| sessionId | String  |  O  | 64	  | Merchant unique session id, issued by merchant | 
+| sessionId | String  |  O  | 256	  | Merchant unique session id, issued by merchant | 
 
 <br><br>
 
@@ -346,7 +346,7 @@ Content-type: application/json;charset=utf-8
 |:--------------|:----:|:-----:|:-----:|:--------|
 | resultCode | String | O | 4 | 0000 : success / other failure |
 | resultMsg | String | O | 100 | Result message |
-| sessionId | String  |  O  | 64	  | Merchant unique session id, issued by merchant | 
+| sessionId | String  |  O  | 256	  | Merchant unique session id, issued by merchant | 
 | orderId | String | O | 64 | Your Unique order ID |
 | clientId | String |  | 50 | Client ID issued by NICEPAY |
 | tid | String | | 30 | Returned when authorization is successful |
