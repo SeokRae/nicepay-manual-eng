@@ -336,6 +336,10 @@ Content-type: application/json
 | bid        | String | O    | 30   | Token |
 | authDate   | String | 　   | -    | ISO 8601 format<br>*Not returned only when the request fails local validation (e.g. missing `orderId`) before reaching NicePay; present regardless of whether the deletion itself succeeded or failed |
 
+> #### ⚠️ Important  
+> Deleting a Token(bid) that is already deleted or does not exist returns [`U115`](../code/nicepay-code.md#api-response-code) ("Deleted BID"), not `0000`. NicePay normalizes the payment-network code behind it, so you get `U115` whether the token was a card billkey or an easy-pay (NaverPay/KakaoPay/TossPay) one. Treat `U115` as "already gone" rather than as a retryable failure.  
+> A successful card-billkey deletion always returns `0000`. You will not see [`F101`](../code/nicepay-code.md#api-response-code) here even though the payment network uses it for this case internally; on this API `F101` only ever means a signature/encryption verification failure.  
+
 <br>
 
 ## Bid Status Inquiry
