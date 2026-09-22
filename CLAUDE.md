@@ -89,3 +89,5 @@ Adding or removing a badge therefore changes the anchor and silently breaks inco
 ## Editing scope note
 
 Since prose here is documentation for external merchants (not internal dev-facing text), edits should stay in English and match NicePay's existing technical-writing tone in this repo (concise, numbered/tabular parameter references, explicit Sandbox/Live callouts) rather than following any Korean prose style.
+
+**`api/nicepay-api-reconciliation.md` is out of scope for incremental fixes.** It is slated for a full rewrite, and both of its APIs (Transaction Search, Settlement) are still marked Beta. It has already absorbed four rounds of patching (#10, #105, #150, #193) and still needs one, so further piecemeal edits would be thrown away and would conflict with the rewrite. Leave it alone even when a sweep turns up the same defect there that you are fixing elsewhere: that is the one exception to fixing every source-verified mismatch you find. The exclusion lifts when the rewrite is commissioned.
