@@ -185,14 +185,21 @@ Content-type: application/json;charset=utf-8
 | method          |  String  |   　   |   20   | Payment method the token was issued under<br>Leave empty for a card-issued token (default)<br>`naverCardBill` / `naverPointBill` / `kakaoBill` / `tosspayBill` for a token issued through the corresponding Easy Pay checkout |
 | cardQuota       |   Int    |   O*  |   2    | Installment Month<br>0: Pay in full amount, 2:2 months, 3:3 months …<br>*Required unless `method` is `tosspayBill`; must be omitted when `method` is `tosspayBill` (rejected with `U143` otherwise) |
 | useShopInterest | Boolean  |   O*  |   -    | The store pays the installment interest of the customer<br>(currently, only false is available)<br>*Required unless `method` is `tosspayBill`; must be omitted when `method` is `tosspayBill` (rejected with `U143` otherwise) |
+| useCardPoint    | Boolean  |   　   |   -    | Whether the card company's points may be used for this charge<br>`false`: not used (default) / `true`: used |
 | buyerName       |  String  |   　   |   30   | Buyer name |
 | buyerTel        |  String  |   　   |   20   | Buyer phone number<br>*Number only   |
 | buyerEmail      |  String  |   　   |   60   | Buyer Email |
 | taxFreeAmt      |   Int    |   　   |   12   | Tax-free amount  |
+| supplyAmt       |   Int    |   　   |   12   | Supply amount, the pre-VAT portion of `amount`<br>See the note below on how the four amount fields relate |
+| goodsVat        |   Int    |   　   |   12   | VAT portion of `amount` |
+| serviceAmt      |   Int    |   　   |   12   | Service charge portion of `amount` |
 | mallReserved    |  String  |   　   |  500   | Spare field for store information delivery<br>It is recommended to use JSON string format.<br>However, double quotation marks (") cannot be used  |
 | ediDate         |  String  |   　   |   -    | Response message creation date and time <br>ISO 8601 format |
 | signData        |  String  |   　   |  256   | Forgery Verification Data<br> Rule : hex(sha256(orderId + bid + ediDate + SecretKey))      |
 | returnCharSet | String    |       | 10        | utf-8(Default) / euc-kr |
+
+> #### ⚠️ Important  
+> `supplyAmt`, `goodsVat`, `serviceAmt` and `taxFreeAmt` break `amount` down for tax purposes, so they have to add up to it: `amount = supplyAmt + goodsVat + serviceAmt + taxFreeAmt`. NicePay passes them to the payment network without checking the arithmetic, and the network answers a mismatch with [`1615`](../code/nicepay-code.md#api-response-code) ("Total transaction amount error"). Send all four or none of them.  
 
 <br>
 
