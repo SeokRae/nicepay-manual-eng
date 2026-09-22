@@ -1,5 +1,5 @@
 ## URI LIST
-All endpoints for this API, linked to their parameter reference below.
+All endpoints for this API. Click a link in the table below for that endpoint's parameter reference.
 
 | API                                                               |     Method      |               Endpoint              |   Sandbox |
 |:------------------------------------------------------------------|:-------------:|:--------------------------------------|:---------:|
