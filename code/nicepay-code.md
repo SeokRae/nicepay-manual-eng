@@ -99,6 +99,13 @@
 
 A handful of codes are reused with unrelated meanings depending on which API returned them (for example `2011`, `2012`, `2032`, `C002`); where that happens, the domain is called out in parentheses in the English message below, e.g. "(cancel)" vs "(general/DB error)". Match that to the API you called.
 
+Some messages carry Korean payment-industry terms straight into the English column. What they mean:
+
+- **Net cancel** (`망취소`, written as "network cancellation" in the table below): NicePay reverses an authorization when your server did not receive or acknowledge the result in time, so an approved payment is not left unmatched on your side. See [Timeout Information](../info/nicepay-info-firewall-timeout.md#timeout-information) for the timeouts that trigger it. Codes `2020`, `P035`, `U137`, `U503`, `U504`.
+- **CPID**: the identifier of the partner financial institution behind a bank transfer, virtual account, or mobile carrier payment. These codes mean your merchant account is not set up for that institution, not that your request was malformed. Codes `4126`, `4127`, `A303`, `M001`, `M002`.
+- **PKCS7**: the signed and encrypted message format used when a billkey is issued. Codes `F101`, `F103`, `F111`.
+- **OCSP**: the certificate revocation check run as part of that verification. Code `F105`.
+
 > #### ⚠️ Important  
 > If you receive a `resultCode` that isn't in this table, it's likely a corePG-side code not yet catalogued here. [Open an issue on this manual's repository](https://github.com/SeokRae/nicepay-manual-eng/issues) with the `tid`/`orderId` and the exact `resultCode` for identification.  
 
@@ -284,7 +291,7 @@ A handful of codes are reused with unrelated meanings depending on which API ret
 | 2017 | 취소 불가 회원사   |  Non-cancellable partner |
 | 2018 | 신용카드 매입후 취소 불가능 가맹점 | Non-cancellable partner after card capture |
 | 2019 | 타 회원사 거래 취소 불가   | Non-Cancellable Merchants |
-| 2020 | 망상 취소 허용시간 초과   | Exceeded allowed time for canceling virtual transactions.  |
+| 2020 | 망상 취소 허용시간 초과   | Exceeded the allowed time window for a net cancel  |
 | 2021 | 매입전취소 | Cancellation before card capture |
 | 2022 | 매입후취소 | Cancellation after card capture |
 | 2023 | 취소 한도 초과 | Cancellation Limit Exceeded |
