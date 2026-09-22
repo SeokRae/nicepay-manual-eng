@@ -112,7 +112,7 @@ Content-type: application/json;charset=utf-8
 |    orderId    | String  |  O  | 64	  | Your unique order id<br> cannot reuse the orderid    | 
 |    expireDate    | String  |    | -	  | Expiration Date of sessionId<br><br>ISO 8601  | 
 |    amount     | Int  	  |  O  | 12	  | Transaction amount (only numbers are allowed) | 
-|   goodsName   | String  |  O  | 100	  | Product Name<br> - doubleQuota(")와 pipLine(&brvbar;) characters are converted to '-' | 
+|   goodsName   | String  |  O  | 100	  | Product Name<br> - doubleQuota(")와 pipLine(&brvbar;) characters are converted to '-'<br> - For `tosspayBill` and `kakaoBill`, anything past 40 bytes is cut off before the payment network sees it, with no error. Keep the name within 40 bytes (about 13 Korean characters in UTF-8) for those two methods. | 
 |   returnUrl   | String  |  O  | 2500	 | url for Redirect after the authentication is processed | 
 | mallReserved  | String  |     | 500	 | Reserved field for the merchant<br> We recommend to use it in JSON string format.<br>double quotation mark(“) cannot be used.   | 
 |  mallUserId   | String  |     | 20	  | Buyer’s ID managed by the merchant  | 
