@@ -66,9 +66,15 @@ Content-type: application/json;charset=utf-8
 | buyerEmail | String | | 60 | Buyer email |
 | buyerTel | String | | 40 | Buyer phone number (number only) |
 | taxFreeAmt | Int | | 12 | Tax-free amount within `amount`<br>Must not exceed `amount` |
+| supplyAmt | Int | | 12 | Supply amount, the pre-VAT portion of `amount`<br>See the note below on how the four amount fields relate |
+| goodsVat | Int | | 12 | VAT portion of `amount` |
+| serviceAmt | Int | | 12 | Service charge portion of `amount` |
 | currency | String | | 3 | KRW: Korean Won, USD: US Dollar, CNY: Chinese Yuan |
 | returnCharSet | String | | 10 | utf-8(Default) / euc-kr |
 | mallReserved | String | | 500 | Reserved field for the merchant<br>We recommend using it in JSON string format.<br>Double quotation mark (") cannot be used. |
+
+> #### ⚠️ Important  
+> `supplyAmt`, `goodsVat`, `serviceAmt` and `taxFreeAmt` break `amount` down for tax purposes, so they have to add up to it: `amount = supplyAmt + goodsVat + serviceAmt + taxFreeAmt`. NicePay passes them to the payment network without checking the arithmetic, and the network answers a mismatch with [`1615`](../code/nicepay-code.md#api-response-code) ("Total transaction amount error"). Send all four or none of them.  
 
 <br>
 
