@@ -17,7 +17,8 @@ NicePay For Startups offers three ways to charge a card. They're distinguished b
 <br>
 
 > #### ⚠️ Important  
-> Key-in requires your merchant account to be specifically enabled for manual-entry payments by NicePay, and it can't be tried out in Sandbox first. You can only test it against Live once that's enabled. See the [Key-in Payment](./api/nicepay-api-keyin.md) doc's Important note before planning around it.
+> Key-in requires your merchant account to be specifically enabled for manual-entry payments by NicePay, and it can't be tried out in Sandbox first. You can only test it against Live once that's enabled.  
+> See the [Key-in Payment](./api/nicepay-api-keyin.md) doc's Important note before planning around it.
 
 <br>
 
