@@ -227,10 +227,10 @@ A handful of codes are reused with unrelated meanings depending on which API ret
 | F103 | PKCS7 전자서명 검증 실패  | PKCS7 digital signature verification failed |
 | F104 | 인증정보 확인중 오류가 발생하였습니다 | An error occurred while verifying authentication information |
 | F105 | OCSP인증 중 오류가 발생하였습니다 | An error occurred during OCSP authentication |
-| F106 | DB 처리중 오류가 발생하였습니다 (TB_TRANS_REQ)    | An error occurred during DB processing (TB_TRANS_REQ) |
-| F107 | DB 처리중 오류가 발생하였습니다 (TB_TRANS)    | An error occurred during DB processing (TB_TRANS) |
-| F108 | DB 처리중 오류가 발생하였습니다 (TB_TRANS_HISTORY)    | An error occurred during DB processing (TB_TRANS_HISTORY) |
-| F109 | DB 처리중 오류가 발생하였습니다 (TB_BILL_MASTER)  | An error occurred during DB processing (TB_BILL_MASTER) |
+| F106 | DB 처리중 오류가 발생하였습니다 | A NicePay-side error occurred while processing the request |
+| F107 | DB 처리중 오류가 발생하였습니다 | A NicePay-side error occurred while processing the request |
+| F108 | DB 처리중 오류가 발생하였습니다 | A NicePay-side error occurred while processing the request |
+| F109 | DB 처리중 오류가 발생하였습니다 | A NicePay-side error occurred while processing the request |
 | F110 | 빌키발급 처리중 오류가 발생하였습니다   | An error occurred while processing billkey issuance |
 | F111 | PKCS7 전자서명 메시지가 존재하지 않습니다   | The PKCS7 digitally signed message does not exist |
 | F112 | 유효하지않은 카드번호를 입력하셨습니다 (card_bin 없음)  | Invalid card number (no card_bin) |
@@ -279,7 +279,7 @@ A handful of codes are reused with unrelated meanings depending on which API ret
 | 2012 | 취소 해당거래 없음 | No applicable transaction (cancel) |
 | 2013 | 취소 완료 거래 | Canceled Transactions |
 | 2014 | 취소 불가능 거래   | Non-cancellable transaction |
-| 2015 | 해당거래 취소실패(기취소성공) : 전화 문의(1661-0808) | Cancellation failed because the transaction was already cancelled (cancel) |
+| 2015 | 해당거래 취소실패(기취소성공) | Cancellation failed because the transaction was already cancelled |
 | 2016 | 취소 기한 초과 | Cancellation Deadline Exceeded |
 | 2017 | 취소 불가 회원사   |  Non-cancellable partner |
 | 2018 | 신용카드 매입후 취소 불가능 가맹점 | Non-cancellable partner after card capture |
