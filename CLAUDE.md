@@ -10,9 +10,11 @@ This repository is the **English-language integration guide** for NicePay's "For
 
 The docs are published by GitHub Pages' **legacy Jekyll build** from the root of `main`, at <https://seokrae.github.io/nicepay-manual-eng/>. Three tracked files configure it:
 
-- `_config.yml`: site `title`/`description` (both merchant-facing: they render as the sidebar header and the page `<title>`), `theme: minima`, and the `nav:` tree that builds the left sidebar.
+- `_config.yml`: site `title`/`description` (both merchant-facing: they render as the sidebar header and the page `<title>`), `theme: minima`, the `nav:` tree that builds the left sidebar, and an `exclude:` list.
 - `_layouts/default.html`: a custom layout that replaces minima's top header with a left sidebar built by iterating `site.nav`.
 - `assets/main.scss`: `@import "minima"` followed by the sidebar and theme overrides.
+
+Jekyll renders **every** Markdown file at the repo root, so an internal file added there is published like any manual page. This file is kept off the site by `exclude:` in `_config.yml`; add any other contributor-facing doc to that list too. Note that declaring `exclude` replaces Jekyll's default list rather than extending it, which is why the defaults are repeated there.
 
 There is no Gemfile, `package.json`, lint, test, or `.github/` workflow. `jekyll-relative-links` (which rewrites `.md` links to `.html`) and `jekyll-titles-from-headings` (which derives a page title from its first heading, so no front matter is needed) come from the Pages build's default plugin set, not from anything declared here. The `/nicepay-manual-eng/` baseurl is injected by the Pages build too, and is intentionally absent from `_config.yml`.
 

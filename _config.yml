@@ -29,3 +29,20 @@ nav:
   - title: Code
     pages:
       - code/nicepay-code.md
+
+# Jekyll renders every Markdown file at the repo root, so CLAUDE.md (internal
+# contributor guidance, not merchant documentation) would otherwise be served
+# at /CLAUDE.html. Declaring `exclude` replaces Jekyll's default list rather
+# than adding to it, so the defaults are repeated below.
+exclude:
+  - CLAUDE.md
+  - .sass-cache/
+  - .jekyll-cache/
+  - gemfiles/
+  - Gemfile
+  - Gemfile.lock
+  - node_modules/
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
