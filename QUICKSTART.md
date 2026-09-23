@@ -17,7 +17,7 @@ Follow the guide in order to complete a Checkout test in about 10 minutes.
 <br>
 
 ### Over-view
-<img alt="Sequence diagram: the customer places an order with the merchant server, which calls the NicePay Create Checkout API and receives a return URL, then redirects the customer to that URL to complete payment on the NicePay Checkout page" src="./image/payment-overview.svg" width="800px">
+<a href="./image/payment-overview.svg"><img alt="Sequence diagram: order, create checkout, checkout returned, redirect, customer opens Checkout page, result page after approval, browser posts to returnUrl" src="./image/payment-overview.svg" width="800px"></a>
   
 
 If a customer send an order, please call the Checkout creation API first.   
@@ -107,7 +107,9 @@ Your Merchant Server redirects the customer to the `url` from the Step 1 respons
 
 Since Step 1 used `fakeAuth: "true"`, this is a dummy Sandbox page without real card company authentication: pressing Next returns a success result, and Cancel returns a random failure result.
 
-<img alt="Sequence diagram of the full card/easy-pay payment cycle, from order to cancellation. Steps 1-7 (checkout: create checkout, redirect, Checkout page, Payment Authorization callback) are this step; steps 8-9 (cancellation, shown in orange) are covered in api/nicepay-api-cancel.md" src="./image/payment-checkout-cancel-cycle.svg" width="800px">
+<a href="./image/payment-checkout-cancel-cycle.svg"><img alt="Sequence diagram: order, create checkout, redirect, pay, result page, browser posts to returnUrl, status inquiry, confirm order; Cancellation: cancel, result" src="./image/payment-checkout-cancel-cycle.svg" width="800px"></a>
+
+In the diagram, this step is steps 4-7, [Step 3](#step-3-receive-the-payment-result) below covers step 8 and the checks in steps 9-10, and steps 11-12 (Cancellation) are covered on the [Cancel](./api/nicepay-api-cancel.md) page.
 
 <br><br>
 

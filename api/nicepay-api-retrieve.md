@@ -2,7 +2,7 @@
 
 ## Check Transaction Status 
 
-<img alt="Sequence diagram of four calls from the Merchant Server to NicePay: Check Authorization Amount (POST /v1/check-amount/{tid}) and Transaction Status Inquiry by tid, orderId, or sessionId (GET), each answered by NicePay" src="../image/payment-retrieve.svg" width="800px"> 
+<a href="../image/payment-retrieve.svg"><img alt="Sequence diagram of four calls the Merchant Server can make: Check Authorization Amount, or Transaction Status Inquiry by tid, orderId, or sessionId" src="../image/payment-retrieve.svg" width="800px"></a>
 
 You can use the Transaction Status Inquiry API to check information about the success or failure of a payment (approval) request.
 

@@ -17,7 +17,7 @@ Key-in (Manual Entry) payment lets you submit a card charge directly with card d
 <br>
 
 ### Over-view
-<img alt="Sequence diagram of the Key-in payment flow: the customer provides card details directly to the merchant server (no redirect to NicePay), the merchant server encrypts the card data into encData and calls the Key-in Payment API, and NicePay returns the approval result synchronously in the same response, with no separate authorization callback" src="../image/payment-keyin.svg" width="800px">
+<a href="../image/payment-keyin.svg"><img alt="Sequence diagram of Key-in payment: the Merchant Server takes the customer's card details, encrypts them into encData, calls the Key-in API, gets the result in the same response, and notifies the customer" src="../image/payment-keyin.svg" width="800px"></a>
 
 <br>
 

@@ -80,7 +80,7 @@ Authorization : Basic UjFfOTRlYjNhNGEzMDI2NGZkYmE4MmNlMGQwNWI0NjUwMTI6MTJjZGUxMj
 
 ## Using Sandbox API's
 
-<img alt="Sequence diagram: the customer places an order with the merchant server, which calls the NicePay Create Checkout API and receives a return URL, then redirects the customer to that URL to complete payment on the NicePay Checkout page" src="../image/payment-overview.svg" width="800px">
+<a href="../image/payment-overview.svg"><img alt="Sequence diagram: order, create checkout, checkout returned, redirect, customer opens Checkout page, result page after approval, browser posts to returnUrl" src="../image/payment-overview.svg" width="800px"></a>
 
 The steps below create a checkout session and open the Hosted Payment Page in Sandbox.
 
@@ -177,7 +177,7 @@ The customer follows the link to the checkout page.
 https://sandbox-pay.nicepay.co.kr/v1/fake/pay/641d555b91ae1
 ```
 
-<img alt="Screenshot of the Sandbox checkout page, a dummy version without real card company authentication" src="../image/sandbox-checkout.png" width="800px">
+<a href="../image/sandbox-checkout.png"><img alt="Screenshot of the Sandbox checkout page, a dummy version without real card company authentication" src="../image/sandbox-checkout.png" width="715px"></a>
 
 - This is a dummy page without actual card company authentication.  
 - If you press Next, a success message will be returned in response.  
