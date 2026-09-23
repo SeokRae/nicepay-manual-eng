@@ -140,6 +140,8 @@ Required: Yes = has a non-empty value in every response whose `resultCode` is `0
 > **⚠️ Important:** Even though NicePay allows multiple tokens per card, a `regist` call can still fail with [`F201`](../code/nicepay-code.md#api-response-code) ("card already registered", bill key issuance failed), returned as-is in `resultCode` with `status: failed`, no `bid`, and `messageSource: external`. That check happens on the card issuer/payment network side, not NicePay's, so the exact conditions that trigger it are not documented here; [open an issue on this manual's repository](https://github.com/SeokRae/nicepay-manual-eng/issues) if you hit it unexpectedly.  
 > `F201` is specific to card-based bill-key issuance (this API, and Checkout's `cardBill` method, see [Hosted Payment Page Request Parameter](./nicepay-api-payment-window-url.md#hosted-payment-page-request-parameter)); Recurring Payment enrolled through Naver Pay/Kakao Pay/Toss Pay checkout (`naverCardBill`/`naverPointBill`/`kakaoBill`/`tosspayBill`) goes through a separate corePG code family and is not affected by it.  
 
+Related error codes: `A253`, `F110`, `F115`, `F116`, see [API Response code](../code/nicepay-code.md#api-response-code).
+
 <br>
 
 
@@ -181,7 +183,7 @@ Content-type: application/json;charset=utf-8
 
 | Parameter     | Type      | Required | Bytes | Description |
 |:--------------|:---------:|:--------:|:------:|:-----------|
-| `orderId`         |  String  |   Yes   |   64   | *Not reusable |
+| `orderId`         |  String  |   Yes   |   64   | Your unique order ID. It must differ from every `orderId` that your merchant account has used, including Key-in payments and partial cancellations.<br>After a declined charge (`status` `failed`), NicePay releases the `orderId`, so you can use it again |
 | `amount`          |   Int    |   Yes   |   12   | Payment amount  |
 | `goodsName`       |  String  |   Yes   |   40   | Product name  |
 | `method`          |  String  |   No   |   20   | Payment method the token was issued under<br>Leave empty for a card-issued token (default)<br>`naverCardBill` / `naverPointBill` / `kakaoBill` / `tosspayBill` for a token issued through the corresponding Easy Pay checkout |
@@ -192,15 +194,15 @@ Content-type: application/json;charset=utf-8
 | `buyerTel`        |  String  |   No   |   20   | Buyer phone number<br>*Number only   |
 | `buyerEmail`      |  String  |   No   |   60   | Buyer Email |
 | `taxFreeAmt`      |   Int    |   No   |   12   | Tax-free amount  |
-| `supplyAmt`       |   Int    |   No   |   12   | Supply amount, the pre-VAT portion of `amount`<br>See the note below on how the four amount fields relate |
-| `goodsVat`        |   Int    |   No   |   12   | VAT portion of `amount` |
-| `serviceAmt`      |   Int    |   No   |   12   | Service charge portion of `amount` |
+| `supplyAmt`       |   Int    |   No   |   12   | Supply amount, the pre-VAT portion of `amount`<br>Ignored on this API: NicePay computes it from `amount` and `taxFreeAmt`, see the note below |
+| `goodsVat`        |   Int    |   No   |   12   | VAT portion of `amount`<br>Ignored on this API, see the note below |
+| `serviceAmt`      |   Int    |   No   |   12   | Service charge portion of `amount`<br>Ignored on this API, see the note below |
 | `mallReserved`    |  String  |   No   |  500   | Spare field for store information delivery<br>It is recommended to use JSON string format.<br>However, double quotation marks (") cannot be used  |
 | `ediDate`         |  String  |   No   |   -    | Response message creation date and time <br>ISO 8601 format |
 | `signData`        |  String  |   No   |  256   | Forgery Verification Data<br> Rule : hex(sha256(orderId + bid + ediDate + SecretKey))      |
 | `returnCharSet` | String    |   No    | 10        | utf-8(Default) / euc-kr |
 
-> **⚠️ Important:** `supplyAmt`, `goodsVat`, `serviceAmt` and `taxFreeAmt` break `amount` down for tax purposes, so they have to add up to it: `amount = supplyAmt + goodsVat + serviceAmt + taxFreeAmt`. NicePay passes them to the payment network without checking the arithmetic, and the network answers a mismatch with [`1615`](../code/nicepay-code.md#api-response-code) ("Total transaction amount error"). Send all four or none of them.  
+> **⚠️ Important:** On this API, NicePay ignores the `supplyAmt`, `goodsVat` and `serviceAmt` that you send. NicePay computes them from `amount` and `taxFreeAmt` (0 when you leave it out): `supplyAmt` is (`amount` - `taxFreeAmt`) / 1.1, rounded half up to a whole number, `goodsVat` is `amount` - `taxFreeAmt` - `supplyAmt`, and `serviceAmt` is 0. The four values therefore always add up to `amount`. To change the tax split, send `taxFreeAmt`.  
 
 <br>
 
@@ -219,7 +221,7 @@ Content-type: application/json
 | `cancelledTid` | String | No | 30 | Cancellation transaction ID<br>Always `null` in this response |
 | `orderId` | String | Yes | 64 | Unique order number |
 | `ediDate` | String | Yes | - | Response message creation date and time (ISO 8601 format) |
-| `signature` | String | Yes | 256 | Forgery verification data<br>- Respond only to valid transactions<br>- Creation rule: hex(sha256(tid + amount + ediDate+ SecretKey))<br>- For data validation, it is recommended to implement a comparison at business logic |
+| `signature` | String | Yes | 256 | Forgery verification data<br>Rule: hex(sha256(tid + amount + ediDate + SecretKey)), see [Verifying the payment result](./nicepay-api-payment-window-url.md#verifying-the-payment-result)<br>Covers only `tid`, `amount` and `ediDate`. Check `resultCode` and `status` separately |
 | `status` | String | Yes | 20 | Payment processing status<br>paid: payment completed<br>failed: payment failed<br>['paid', 'failed'] |
 | `paidAt` | String | Yes | - | Time of payment completed ISO 8601 format<br>If payment is not completed, return 0 |
 | `failedAt` | String | Yes | - | Time of payment failure ISO 8601 format<br>If not payment is not failed, return 0 |
@@ -275,10 +277,27 @@ Same fields and rules as [Card information](./nicepay-api-retrieve.md#card-infor
 ### After a Recurring Payment charge
 
 - A charge made with `/v1/subscribe/{bid}/payments` does not have its own cancel API. Cancel or refund it with the standard [Cancel request with tid](./nicepay-api-cancel.md#cancel-request-parameter-with-tid), using the `tid` from the Authorization Response above.
-- You can look up a charge anytime via [Transaction Status Inquiry](./nicepay-api-retrieve.md#transaction-status-inquiry-with-tidtransaction-id) with the `tid`.
+- You can look up a charge anytime via [Transaction Status Inquiry](./nicepay-api-retrieve.md#transaction-status-inquiry-with-tidtransaction-id) with the `tid`. A declined charge can be looked up by `tid` only: a lookup by `orderId` returns [`U107`](../code/nicepay-code.md#api-response-code).
 - If the charge call times out, look the charge up by `orderId` as described in [Timeout Information](../info/nicepay-info-firewall-timeout.md#timeout-information).
+- A declined charge (`status` `failed`, `resultCode` other than `0000`) has a `tid`. NicePay releases its `orderId`, so you can send the charge again with the same `orderId`. NicePay sends no webhook for a declined charge.
 - A token (`bid`) is not deleted automatically and stays usable until you remove it. See [Delete Token](#delete-token) below.
-- Related error codes: `U309`, `A126`, `A253`, `A255`, `U113`, `F110`, `F115`, `F116`, see [API Response code](../code/nicepay-code.md#api-response-code).
+
+The table below lists the error codes of `/v1/subscribe/{bid}/payments`. See [API Response code](../code/nicepay-code.md#api-response-code) for the messages.
+
+| Code | Meaning | What to do |
+|:---|:---|:---|
+| `U100` | A required field is missing: `orderId`, `amount`, `goodsName`, or `cardQuota` or `useShopInterest` when `method` is not `tosspayBill` | Fix the request and send it again. NicePay has not used the `orderId` |
+| `U105` | `orderId` or `mallReserved` is too long | Same as `U100` |
+| `U127` | `amount` has 13 digits or more | Same as `U100` |
+| `U143` | `cardQuota` or `useShopInterest` was sent with `method` `tosspayBill` | Same as `U100` |
+| `U312` | `signData` does not match | Same as `U100` |
+| `U321` | `taxFreeAmt` is greater than `amount` | Same as `U100` |
+| `U345` | `bid` is empty or is not 30 bytes long | Same as `U100` |
+| `U309` | No token with this `bid` was issued for your `clientId` | Send the charge with the `clientId` that registered the token, or register the card again with [Create Token](#recurring-payment---create-token). NicePay has not used the `orderId` |
+| `U112` | The `orderId` is in use or was used | Do not charge again with a new `orderId`. Look the charge up by `orderId` first, see [Timeout Information](../info/nicepay-info-firewall-timeout.md#timeout-information) |
+| `U503` | NicePay's processing failed, and NicePay cancelled the charge (net cancel). The response has no `tid` | Look the charge up by `orderId` and follow the Recurring row of [Timeout Information](../info/nicepay-info-firewall-timeout.md#timeout-information) |
+| `U506` | NicePay could not record the `orderId` | Same as `U503` |
+| Other codes, with `status` `failed` | The payment network declined the charge | The response has a `tid`. You can send the charge again with the same `orderId` |
 
 <br>
 
@@ -358,6 +377,8 @@ Content-type: application/json
 
 > **⚠️ Important:** Deleting a Token(bid) that is already deleted or does not exist returns [`U115`](../code/nicepay-code.md#api-response-code) ("Deleted BID"), not `0000`. NicePay normalizes the payment-network code behind it, so you get `U115` whether the token was a card billkey or an easy-pay (NaverPay/KakaoPay/TossPay) one. Treat `U115` as "already gone" rather than as a retryable failure.  
 > A successful card-billkey deletion always returns `0000`. You will not see [`F101`](../code/nicepay-code.md#api-response-code) here even though the payment network uses it for this case internally; on this API `F101` only ever means a signature/encryption verification failure.  
+
+Related error codes: `U115`, `A255`, see [API Response code](../code/nicepay-code.md#api-response-code).
 
 <br>
 
