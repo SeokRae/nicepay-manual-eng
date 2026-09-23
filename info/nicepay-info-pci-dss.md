@@ -4,17 +4,36 @@
 
 This page is general background on the standard itself, not NicePay-specific guidance. It exists because [Key-in Payment](../api/nicepay-api-keyin.md) puts your own server in the path of raw card numbers, which is a meaningfully bigger compliance footprint than [Checkout](../api/nicepay-api-payment-window-url.md), where card data never reaches your server at all.
 
-> #### ⚠️ Important  
-> The exact PCI-DSS level, SAQ type, and validation steps required for *your* integration with NicePay are determined by your merchant contract, not by this manual. [Open an issue on this manual's repository](https://github.com/SeokRae/nicepay-manual-eng/issues) if you'd like this page to link out to NicePay-specific guidance once it exists, or discuss requirements directly with NicePay when you contract for Key-in access.  
+> **⚠️ Important:** The exact PCI-DSS level, SAQ type, and validation steps required for *your* integration with NicePay are determined by your merchant contract, not by this manual. [Open an issue on this manual's repository](https://github.com/SeokRae/nicepay-manual-eng/issues) if you'd like this page to link out to NicePay-specific guidance once it exists, or discuss requirements directly with NicePay when you contract for Key-in access.  
 
 <br>
 
 ## Why it matters by integration path
 
-| | Checkout | Key-in Payment | Recurring Payment |
-|:---|:---|:---|:---|
-| Does your server see the raw card number? | No (entered on NicePay's Hosted Payment Page) | Yes (your server receives it and builds `encData`) | Only once, at token registration |
-| Rough PCI-DSS impact | Lowest (comparable to a redirect-based SAQ A scenario) | Highest (comparable to a card-not-present SAQ D scenario) | Low after registration, higher briefly during it |
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Aspect</th>
+      <th scope="col">Checkout</th>
+      <th scope="col">Key-in Payment</th>
+      <th scope="col">Recurring Payment</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Does your server see the raw card number?</th>
+      <td>No (entered on NicePay's Hosted Payment Page)</td>
+      <td>Yes (your server receives it and builds <code>encData</code>)</td>
+      <td>Only once, at token registration</td>
+    </tr>
+    <tr>
+      <th scope="row">Rough PCI-DSS impact</th>
+      <td>Lowest (comparable to a redirect-based SAQ A scenario)</td>
+      <td>Highest (comparable to a card-not-present SAQ D scenario)</td>
+      <td>Low after registration, higher briefly during it</td>
+    </tr>
+  </tbody>
+</table>
 
 <br>
 

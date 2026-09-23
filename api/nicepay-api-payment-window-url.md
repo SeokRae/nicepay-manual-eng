@@ -21,12 +21,11 @@ New to Checkout? The [Quick Start Guide](../QUICKSTART.md) walks through this en
 
 **Steps 1-7 above** are the same flow shown in [Over-view](#over-view), detailed for `method: cardAndEasyPay` (credit card and easy-pay wallets). After the customer selects a card or a wallet on the Checkout page, the field set returned in the `returnUrl` callback varies by `payMethod`; see [Payment Authorization Response Parameter](#payment-authorization-response-parameter). Steps 8-9 (shown in orange) are the cancellation that can follow; see [Cancel](./nicepay-api-cancel.md) for that part of the cycle.
 
-> #### ⚠️ Important  
-> In Sandbox with `fakeAuth: "true"`, pressing Next on the Checkout page always returns a success result and Cancel returns a random failure result: this is a Sandbox-only shortcut, not real Live authentication/failure behavior.  
+> **⚠️ Important:** In Sandbox with `fakeAuth: "true"`, pressing Next on the Checkout page always returns a success result and Cancel returns a random failure result: this is a Sandbox-only shortcut, not real Live authentication/failure behavior.  
 
 <br>
 
-### ⚠️ Exception handling
+### Exception handling
 - You must check the amount from `signature` for tampering verification in the response message.
 - If you need to verify the amount, please refer to the [Transaction Inquiry API](./nicepay-api-retrieve.md).
 - If you need to cancel a payment due to a network error, please look up the transaction using [Transaction Inquiry API](./nicepay-api-retrieve.md) with 'orderId' and cancel it using the tid returned in the response. 
@@ -104,27 +103,29 @@ Host: api.nicepay.co.kr
 Content-type: application/json;charset=utf-8
 ```
 
+Required: Yes = always send; No = optional; Conditional = send in the case stated in Description. Bytes = maximum length in bytes.
+
 | Parameter     |   Type   |  Required   |  Bytes  | Description  |
 |:--------------|:---------:|:----------:|:-------:|:--------------|
-|   sessionId    | String  |  O  | 256	  | Merchant unique session id, issued by merchant | 
-|   clientId    | String  |     | 50	  | Merchant identifier, issued by NICEPAY | 
-|    method     | String  |  O  | 20	  | Payment Method <br> card : local cards <br> cardBill : card billing <br> bank : bank transfer <br> directCard : directly shows card authentication page without the Hosted Payment Page <br> vbank : virtual account  <br> cellphone : carrier billing <br>naverpayCard : Naver Pay - card (excluded Point) <br>naverpayPoint : Naver Pay - point <br>naverCardBill : Naver Pay recurring payment - card (billing key) <br>naverPointBill : Naver Pay recurring payment - point (billing key) <br> kakaopay : Kakao Pay (Card or Money) <br>kakaopayCard : Kakao Pay - Card <br>kakaopayMoney : Kakao Pay - Money <br>kakaoBill : Kakao Pay recurring payment (billing key) <br>samsungpayCard : Samsung Pay Card <br>tosspay : Toss Pay (Card or Money) <br>tosspayCard : Toss Pay - Card <br>tosspayMoney : Toss Pay - Money <br>tosspayBill : Toss Pay recurring payment (billing key) <br>payco : Payco <br>ssgpay : SSGPAY <br>cardAndEasyPay : Card and Wallets, for <br>cardAndEasyPay it cannot be used together with below parameters <br>- cardCode, cardQuota |
-|    orderId    | String  |  O  | 64	  | Your unique order id<br> cannot reuse the orderid    | 
-|    expireDate    | String  |    | -	  | Expiration Date of sessionId<br><br>ISO 8601  | 
-|    amount     | Int  	  |  O  | 12	  | Transaction amount (only numbers are allowed) | 
-|   goodsName   | String  |  O  | 100	  | Product Name<br> - doubleQuota(")와 pipLine(&brvbar;) characters are converted to '-'<br> - For `tosspayBill` and `kakaoBill`, anything past 40 bytes is cut off before the payment network sees it, with no error. Keep the name within 40 bytes (about 13 Korean characters in UTF-8) for those two methods. | 
-|   returnUrl   | String  |  O  | 2500	 | url for Redirect after the authentication is processed | 
-| mallReserved  | String  |     | 500	 | Reserved field for the merchant<br> We recommend to use it in JSON string format.<br>double quotation mark(“) cannot be used.   | 
-|  mallUserId   | String  |     | 20	  | Buyer’s ID managed by the merchant  | 
-|   buyerName   | String  |     | 30	  | Buyer name 	| 
-|   buyerTel    | String  |     | 40	  | Buyer phone number (number only)  | 
-|  buyerEmail   | String  |     | 60	  | Buyer email | 
-|   useEscrow   | Boolean |     |  -	  | true: Escrow transaction / false: general transaction(default) | 
-|   currency    | String  |     |  3	  | KRW: Korean Won, USD: US Dollar, CNY: Chinese Yuan | 
-|  logoImgUrl   | String  |     | 100	 | Logo Image of the merchant in full URL<br>  ex) https://youre.site.com/image/logo.jpg<br> *(pixel)*<br>- Mobile : width 50 X height 50<br>- PC : width 94 X height 25  | 
-|   language    | String  |     |  2	  | Language shown in the payment page<br> EN : English / CN : Chinese / KO : Korean (Default)| 
-| returnCharSet | String  |     | 10	  | Return encoding <br>utf-8(Default) / euc-kr	 | 
-|   skinType    | String  |     | 10	  | Skin Setting for Payment Page <br>red/green/purple/gray/dark | 
+|   `sessionId`    | String  |  Yes  | 256	  | Merchant unique session id, issued by merchant | 
+|   `clientId`    | String  | No | 50	  | Merchant identifier, issued by NICEPAY | 
+|    `method`     | String  |  Yes  | 20	  | Payment Method <br> card : local cards <br> cardBill : card billing <br> bank : bank transfer <br> directCard : directly shows card authentication page without the Hosted Payment Page <br> vbank : virtual account  <br> cellphone : carrier billing <br>naverpayCard : Naver Pay - card (excluded Point) <br>naverpayPoint : Naver Pay - point <br>naverCardBill : Naver Pay recurring payment - card (billing key) <br>naverPointBill : Naver Pay recurring payment - point (billing key) <br> kakaopay : Kakao Pay (Card or Money) <br>kakaopayCard : Kakao Pay - Card <br>kakaopayMoney : Kakao Pay - Money <br>kakaoBill : Kakao Pay recurring payment (billing key) <br>samsungpayCard : Samsung Pay Card <br>tosspay : Toss Pay (Card or Money) <br>tosspayCard : Toss Pay - Card <br>tosspayMoney : Toss Pay - Money <br>tosspayBill : Toss Pay recurring payment (billing key) <br>payco : Payco <br>ssgpay : SSGPAY <br>cardAndEasyPay : Card and Wallets, for <br>cardAndEasyPay it cannot be used together with below parameters <br>- cardCode, cardQuota |
+|    `orderId`    | String  |  Yes  | 64	  | Your unique order id<br> cannot reuse the orderid    | 
+|    `expireDate`    | String  | No | -	  | Expiration Date of sessionId<br><br>ISO 8601  | 
+|    `amount`     | Int  	  |  Yes  | 12	  | Transaction amount (only numbers are allowed) | 
+|   `goodsName`   | String  |  Yes  | 100	  | Product Name<br> - doubleQuota(") and pipLine(&brvbar;) characters are converted to '-'<br> - For `tosspayBill` and `kakaoBill`, anything past 40 bytes is cut off before the payment network sees it, with no error. Keep the name within 40 bytes (about 13 Korean characters in UTF-8) for those two methods. | 
+|   `returnUrl`   | String  |  Yes  | 2500	 | url for Redirect after the authentication is processed | 
+| `mallReserved`  | String  | No | 500	 | Reserved field for the merchant<br> We recommend to use it in JSON string format.<br>double quotation mark(“) cannot be used.   | 
+|  `mallUserId`   | String  | No | 20	  | Buyer’s ID managed by the merchant  | 
+|   `buyerName`   | String  | No | 30	  | Buyer name 	| 
+|   `buyerTel`    | String  | No | 40	  | Buyer phone number (number only)  | 
+|  `buyerEmail`   | String  | No | 60	  | Buyer email | 
+|   `useEscrow`   | Boolean | No |  -	  | true: Escrow transaction / false: general transaction(default) | 
+|   `currency`    | String  | No |  3	  | KRW: Korean Won, USD: US Dollar, CNY: Chinese Yuan | 
+|  `logoImgUrl`   | String  | No | 100	 | Logo Image of the merchant in full URL<br>  ex) https://youre.site.com/image/logo.jpg<br> *(pixel)*<br>- Mobile : width 50 X height 50<br>- PC : width 94 X height 25  | 
+|   `language`    | String  | No |  2	  | Language shown in the payment page<br> EN : English / CN : Chinese / KO : Korean (Default)| 
+| `returnCharSet` | String  | No | 10	  | Return encoding <br>utf-8(Default) / euc-kr	 | 
+|   `skinType`    | String  | No | 10	  | Skin Setting for Payment Page <br>red/green/purple/gray/dark | 
 
 <br>
 
@@ -132,7 +133,7 @@ Content-type: application/json;charset=utf-8
 
 | Parameter     |   Type   |  Required   |  Bytes  | Description  |
 |:--------------|:---------:|:----------:|:-------:|:--------------|
-| taxFreeAmt | Int  |     | 12	  | Set the tax free amount in the total transaction amount | 
+| `taxFreeAmt` | Int  | No | 12	  | Set the tax free amount in the total transaction amount | 
 
 <br>
 
@@ -140,9 +141,9 @@ Content-type: application/json;charset=utf-8
 
 | Parameter     |   Type   |  Required   |  Bytes  | Description  |
 |:--------------|:--------:|:----------:|:-------:|:--------------|
-|  cardQuota    | String   |             | 100	   | Monthly Installment period configuration<br><br>[Common]<br>Limits the installment period that the customer can choose.<br><br>[Card+PAYCO+Naver Pay]<br>- can be configured independently<br>- list installment months with a differentiater ',' <br>- for transactions paid in full, it should be set as "00" <br>- can set installment periods in 2 digits (for 3 months, it should be set as '03')<br>Ex) cardQuota=03 <br>- Explanation : only shows 3 months in installment period.<br>Minimum amount available for installment : more than 50,000KRW <br><br>[KakaoPay, Samsung Pay, SSGPAY]<br> - unavailable to set by alone. Should always be set together with cardCode.<br> - Installment period should always be one value, cannot choose 2 values.  |
-| cardCode   | String |     | 100	 | Option to set specific card company<br><br>[Common]<br>Limits the cards that are available to use (Refer to the Card Company Codes)<br>- Can be configured independently <br><br>[Cards]<br>- list up the cards using differentiater ','<br>Ex1) cardCode=02<br>-> limits to only KB card (only KB card is shown in the payment page) <br>Ex2) cardCode=02,04<br>-> limits to KB and Samsung cards <br><br>[Wallets]<br>- Cannot be configured in multiple values<br>- Kakao Pay and PAYCO can set to use only cards.<br>Kakao Pay Money cannot be used for Kakao Pay, PAYCO Point cannot be used for PAYCO <br>  ex) cardCode = 06 (cannot configure multiple values)<br><br>Cards available for Wallets <br>- Samsung Pay : BC,KB,KEB Hana,Samsung,Shinhan,Hyundai,Lotte,Citi,NH,hana <br>- Kakao Pay: BC,KB,KEB Hana,Samsung,Shinhan,Hyundai,Lotte,Citi,NH,hana<br>- PAYCO : BC,KB,KEB-Hana,Samsung,Shinhan,Hyundai,Lotte,Citi,NH,hana,Hanmi,ShinsegaeHanmi,Suhyup,Shinhyup,Woori,Kwangju,Jeonbuk,Jeju,VISA,Master,JCB,Savings,UnionPay,KDB,Kakao Bank<br>- SSGPAY : BC,KB,KEB Hana,Samsung,Shinhan,Hyundai,Lotte,Citi,NH,hana,Jeonbuk,Kbank<br>- Naver Pay : BC,KB,KEB Hana,Samsung,Shinhan,Hyundai,Lotte,Citi,NH |
-| cardShowOpt | String |     | 50	  | Authentication method for card companies <br><br>can set the method by card <br>- 1:Ansim Click, 2:Simple Pay, 3:App Card <br>- list card codes by differentiater '&brvbar;' <br>- Card code:authentication Type&brvbar;Card Code:authentication type<br>ex) CardShowOpt=08:3&brvbar;02:3<br>- available cards : 02(KB), 04(Samsung), 06(Shinhan), 07(Hyundai), 08(Lotte), 12(NH), 15(Woori) | 
+|  `cardQuota`    | String   | No | 100	   | Monthly Installment period configuration<br><br>[Common]<br>Limits the installment period that the customer can choose.<br><br>[Card+PAYCO+Naver Pay]<br>- can be configured independently<br>- list installment months with a differentiater ',' <br>- for transactions paid in full, it should be set as "00" <br>- can set installment periods in 2 digits (for 3 months, it should be set as '03')<br>Ex) cardQuota=03 <br>- Explanation : only shows 3 months in installment period.<br>Minimum amount available for installment : more than 50,000KRW <br><br>[KakaoPay, Samsung Pay, SSGPAY]<br> - unavailable to set by alone. Should always be set together with cardCode.<br> - Installment period should always be one value, cannot choose 2 values.  |
+| `cardCode`   | String | No | 100	 | Option to set specific card company<br><br>[Common]<br>Limits the cards that are available to use (Refer to the Card Company Codes)<br>- Can be configured independently <br><br>[Cards]<br>- list up the cards using differentiater ','<br>Ex1) cardCode=02<br>-> limits to only KB card (only KB card is shown in the payment page) <br>Ex2) cardCode=02,04<br>-> limits to KB and Samsung cards <br><br>[Wallets]<br>- Cannot be configured in multiple values<br>- Kakao Pay and PAYCO can set to use only cards.<br>Kakao Pay Money cannot be used for Kakao Pay, PAYCO Point cannot be used for PAYCO <br>  ex) cardCode = 06 (cannot configure multiple values)<br><br>Cards available for Wallets <br>- Samsung Pay : BC,KB,KEB Hana,Samsung,Shinhan,Hyundai,Lotte,Citi,NH,hana <br>- Kakao Pay: BC,KB,KEB Hana,Samsung,Shinhan,Hyundai,Lotte,Citi,NH,hana<br>- PAYCO : BC,KB,KEB-Hana,Samsung,Shinhan,Hyundai,Lotte,Citi,NH,hana,Hanmi,ShinsegaeHanmi,Suhyup,Shinhyup,Woori,Kwangju,Jeonbuk,Jeju,VISA,Master,JCB,Savings,UnionPay,KDB,Kakao Bank<br>- SSGPAY : BC,KB,KEB Hana,Samsung,Shinhan,Hyundai,Lotte,Citi,NH,hana,Jeonbuk,Kbank<br>- Naver Pay : BC,KB,KEB Hana,Samsung,Shinhan,Hyundai,Lotte,Citi,NH |
+| `cardShowOpt` | String | No | 50	  | Authentication method for card companies <br><br>can set the method by card <br>- 1:Ansim Click, 2:Simple Pay, 3:App Card <br>- list card codes by differentiater '&brvbar;' <br>- Card code:authentication Type&brvbar;Card Code:authentication type<br>ex) CardShowOpt=08:3&brvbar;02:3<br>- available cards : 02(KB), 04(Samsung), 06(Shinhan), 07(Hyundai), 08(Lotte), 12(NH), 15(Woori) | 
 
 <br>
 
@@ -150,9 +151,9 @@ Content-type: application/json;charset=utf-8
 
 | Parameter     |   Type   |  Required   |  Bytes  | Description  |
 |:--------------|:---------:|:----------:|:-------:|:--------------|
-| vbankHolder | String | virtual account | 40 | Virtual account (merchant name, user name) |
-| vbankValidHours | Int | | 4 | Virtual account validate time<br>- Default value D+7 days<br>Ex) If you enter 10, You can use the virtual account for 10 hours after the account is issued. |
-| vbankExpDate | String | | | Virtual Account Deposit Expiration Date<br>ISO 8601 (e.g. 2023-03-25 or 2023-03-25T23:59) |
+| `vbankHolder` | String | Conditional | 40 | Virtual account (merchant name, user name)<br>Required when `method` is `vbank` |
+| `vbankValidHours` | Int | No | 4 | Virtual account validate time<br>- Default value D+7 days<br>Ex) If you enter 10, You can use the virtual account for 10 hours after the account is issued. |
+| `vbankExpDate` | String | No | | Virtual Account Deposit Expiration Date<br>ISO 8601 (e.g. 2023-03-25 or 2023-03-25T23:59) |
 
 <br>
 
@@ -160,7 +161,7 @@ Content-type: application/json;charset=utf-8
 
 | Parameter     |   Type   |  Required   |  Bytes  | Description  |
 |:--------------|:---------:|:----------:|:-------:|:--------------|
-| isDigital | Boolean | Phone bill payment | 5 | false: content, true: physical |
+| `isDigital` | Boolean | Conditional | 5 | false: content, true: physical<br>Required when `method` is `cellphone` |
 
 <br>
 
@@ -168,8 +169,8 @@ Content-type: application/json;charset=utf-8
 
 | Parameter     |   Type   |  Required   |  Bytes  | Description  |
 |:--------------|:---------:|:----------:|:-------:|:--------------|
-| directReceiptType | String | | 20 | Cash Receipt Issuance Type<br>unPublished: Unpublished<br>individual: For personal income deduction<br>company: For business expenses proof |
-| directReceiptNo | String | Naver Pay-Point | 20 | Identification information for issue of cash receipt<br>Mobile phone number (10 or 11 digits) or business operator number (10 digits)<br>* Required if directReceiptType is individual or company<br>* Enter mobile phone number if directReceiptType is individual <br>* If directReceiptType is company, enter business number.<br> * Enter only numbers without '-' |
+| `directReceiptType` | String | No | 20 | Cash Receipt Issuance Type<br>unPublished: Unpublished<br>individual: For personal income deduction<br>company: For business expenses proof |
+| `directReceiptNo` | String | Conditional | 20 | Identification information for issue of cash receipt<br>Mobile phone number (10 or 11 digits) or business operator number (10 digits)<br>* Required when the payment method is Naver Pay point<br>* Required if directReceiptType is individual or company<br>* Enter mobile phone number if directReceiptType is individual <br>* If directReceiptType is company, enter business number.<br> * Enter only numbers without '-' |
 
 <br>
 
@@ -177,25 +178,25 @@ Content-type: application/json;charset=utf-8
 
 | Parameter     |   Type   |  Required   |  Bytes  | Description  |
 |:--------------|:---------:|:----------:|:-------:|:--------------|
-| appScheme  |  String  |       |  200   | Mobile App Scheme value (only for APP)<br>Ex) If the merchant App scheme is `nicepaysample`<br><br>appScheme=nicepaysample:// <br><br> If the customer completes authentication through the Hosted Payment Page in the App,It moves to the targer App passed as the appScheme value.|
+| `appScheme`  |  String  | No |  200   | Mobile App Scheme value (only for APP)<br>Ex) If the merchant App scheme is `nicepaysample`<br><br>appScheme=nicepaysample:// <br><br> If the customer completes authentication through the Hosted Payment Page in the App,It moves to the targer App passed as the appScheme value.|
 
 
 ### Hosted Payment Page Response Parameter 
 
 | Parameter |   Type   |  Required   |  Bytes  | Description  |
 |:--------------|:----:|:-----:|:-----:|:--------|
-| resultCode | String | O | 4 | 0000 : success / other failure |
-| resultMsg | String | O | 100 | Result message |
-| sessionId | String  |  O  | 256	  | Merchant unique session id, issued by merchant | 
-| orderId | String | O | 64 | Your Unique order ID |
-| clientId | String | O | 50 | Client ID issued by NICEPAY |
-| tid | String | | 30 | Returned when authorization is successful |
-| amount | Int | O | 12 | payment amount |
-| url | String |  |   | The URL to the Checkout Session. Redirect customers to this URL to take them to Checkout. |
-| status | String | | 20 | Payment processing status<br><br>paid: payment completed, ready: ready (virtual account number), failed: payment failed, cancelled: cancelled, partialCancelled: partially cancelled<br>['paid', 'ready', 'failed', 'cancelled', 'partialCancelled']<br><br>Expiration is not represented as a `status` value; check the separate `isExpire` boolean field instead. |
-| isExpire | Boolean | |  | true : Expired <br> false : Not expired |
-| expireDate | String | |  | ISO 8601 (session validity period) |
-| messageSource | String | |  | nicepay: Response message generated by nicepay  <br> external: Response message generated by 3rd partner|
+| `resultCode` | String | O | 4 | 0000 : success / other failure |
+| `resultMsg` | String | O | 100 | Result message |
+| `sessionId` | String  |  O  | 256	  | Merchant unique session id, issued by merchant | 
+| `orderId` | String | O | 64 | Your Unique order ID |
+| `clientId` | String | O | 50 | Client ID issued by NICEPAY |
+| `tid` | String | | 30 | Returned when authorization is successful |
+| `amount` | Int | O | 12 | payment amount |
+| `url` | String |  |   | The URL to the Checkout Session. Redirect customers to this URL to take them to Checkout. |
+| `status` | String | | 20 | Payment processing status<br><br>paid: payment completed, ready: ready (virtual account number), failed: payment failed, cancelled: cancelled, partialCancelled: partially cancelled<br>['paid', 'ready', 'failed', 'cancelled', 'partialCancelled']<br><br>Expiration is not represented as a `status` value; check the separate `isExpire` boolean field instead. |
+| `isExpire` | Boolean | |  | true : Expired <br> false : Not expired |
+| `expireDate` | String | |  | ISO 8601 (session validity period) |
+| `messageSource` | String | |  | nicepay: Response message generated by nicepay  <br> external: Response message generated by 3rd partner|
 
 
 Parameters you requested are also echoed back in the response.
@@ -228,49 +229,49 @@ Content-type: application/x-www-form-urlencoded
 
 | Parameter     |   Type   |  Required   |  Bytes  | Description  |
 |:--------------|:---------:|:----------:|:------:|:--------|
-| success | Boolean | | | Whether payment is successful<br><br>true: successful, false: Payment failure or authentication failure |
-| authToken | String | O | 40 | Authentication TOKEN<br><br>Authentication transaction Unique Key<br>- Can be used for communication with nicepay when authentication failed. |
-| tid | String | | 30 | Transaction ID<br><br>Returned when authorization is successful.<br>*If authentication fails, the TID will not be returned.|
-| orderId | String | O | 64 | Your Unique order ID<br>*Not reusable|
-| clientId | String |  | 50 | Client ID issued by NICEPAY |
-| mallReserved | String | | 500 | Spare field for store information delivery<br>It is recommended to use JSON string format.<br>However, double quotation marks (") cannot be used |
-| resultCode | String | O | 4 | Result code<br><br>0000 : success / other failure |
-| resultMsg | String | O | 100 | Result message |
-| amount | Int | O | 12 | payment amount |
-| goodsName | String | O | 40 | Product Name<br><br>Product Name (", * Special characters not allowed) |
-| channel | String | O | 10 | pc:PC payment, mobile:mobile payment |
-| status | String | | 20 | Payment processing status<br><br>paid: payment completed, ready: ready (virtual account number), failed: payment failed, cancelled: cancelled, partialCancelled: partially cancelled<br>['paid', 'ready', 'failed', 'cancelled', 'partialCancelled']<br><br>Expiration is not represented as a `status` value; check the separate `isExpire` boolean field instead. |
-| ediDate | String | | - | Creation date and time <br><br>ISO 8601 format |
-| signature | String | | 256 | Forgery verification data<br><br>- Respond only with successful transactions<br>- Rule: hex(sha256(tid + amount + ediDate+ SecretKey))|
-| paidAt | String | | - | When payment is complete<br><br>ISO 8601 format<br> If payment is not completed 0 |
-| failedAt | String | | - | Time of payment failure<br><br>ISO 8601 format<br>If not payment failure 0 |
-| payMethod | String | O | 10 | Payment method<br><br>card: credit card, vbank: virtual account, bank: account transfer, cellphone: mobile phone, <br>naverpay=Naver Pay, kakaopay=Kakao Pay, payco=Payco, ssgpay=SSGPAY, samsungpay=Samsung Pay, tosspay=Toss Pay |
-| useEscrow | Boolean | | - | Escrow transaction status<br><br>false: Normal transaction / true: Escrow transaction |
-| currency | String | | 3 | Approval currency<br><br>KRW: Korean Won, USD: USD, CNY: Yuan |
-| approveNo | String | | 30 | Authorization Number<br>Credit Card, Bank Transfer, Mobile Phone |
-| couponAmt | Int | | 12 | Amount of instant discount applied |
-| buyerName | String | | 30 | Buyer name |
-| buyerTel | String | | 40 | Buyer phone number |
-| buyerEmail | String | | 60 | Buyer Email |
-| issuedCashReceipt | Boolean | | - | Issuance of cash receipts<br><br>true: issued / false: not issued |
-| receiptUrl | String | | 200 | Receipt URL |
-| mallUserId | String | | 20 | Store User ID<br>Optional |
-| cardCode | String | | 3 | Payment card issuer code |
-| cardName | String | | 20 | Payment card issuer name |
-| cardQuota | Int | | 3 | Installment Months<br><br>0: lump sum, 2:2 months, 3:3 months … |
-| isInterestFree | Boolean | | - | Whether the merchant pays the customer's installment interest |
-| cardType | String | | 1 | Card type<br>credit:credit card, check:debit |
-| canPartCancel | Boolean | | - | Whether partial cancellation is possible<br>true: Possible, false: Impossible |
-| acquCardCode | String | | 3 | Acquirer code |
-| acquCardName | String | | 100 | Acquirer Name |
-| vbankCode | String | | 3 | Virtual account bank code to receive deposit |
-| vbankName | String | | 20 | Virtual account bank name to receive deposit |
-| vbankNumber | String | | 20 | Virtual account number to receive deposit |
-| vbankExpDate | String | | - | Virtual Account Expiration Date<br><br>ISO 8601 |
-| vbankHolder | String | | 40 | Account holder name for issued virtual account|
-| bankCode | String | O | 3 | Bank code |
-| bankName | String | O | 20 | Bank name (euc-kr) |
-| messageSource | String | |  | nicepay: Response message generated by nicepay  <br> external: Response message generated by 3rd partner|
+| `success` | Boolean | | | Whether payment is successful<br><br>true: successful, false: Payment failure or authentication failure |
+| `authToken` | String | O | 40 | Authentication TOKEN<br><br>Authentication transaction Unique Key<br>- Can be used for communication with nicepay when authentication failed. |
+| `tid` | String | | 30 | Transaction ID<br><br>Returned when authorization is successful.<br>*If authentication fails, the TID will not be returned.|
+| `orderId` | String | O | 64 | Your Unique order ID<br>*Not reusable|
+| `clientId` | String |  | 50 | Client ID issued by NICEPAY |
+| `mallReserved` | String | | 500 | Spare field for store information delivery<br>It is recommended to use JSON string format.<br>However, double quotation marks (") cannot be used |
+| `resultCode` | String | O | 4 | Result code<br><br>0000 : success / other failure |
+| `resultMsg` | String | O | 100 | Result message |
+| `amount` | Int | O | 12 | payment amount |
+| `goodsName` | String | O | 40 | Product Name<br><br>Product Name (", * Special characters not allowed) |
+| `channel` | String | O | 10 | pc:PC payment, mobile:mobile payment |
+| `status` | String | | 20 | Payment processing status<br><br>paid: payment completed, ready: ready (virtual account number), failed: payment failed, cancelled: cancelled, partialCancelled: partially cancelled<br>['paid', 'ready', 'failed', 'cancelled', 'partialCancelled']<br><br>Expiration is not represented as a `status` value; check the separate `isExpire` boolean field instead. |
+| `ediDate` | String | | - | Creation date and time <br><br>ISO 8601 format |
+| `signature` | String | | 256 | Forgery verification data<br><br>- Respond only with successful transactions<br>- Rule: hex(sha256(tid + amount + ediDate+ SecretKey))|
+| `paidAt` | String | | - | When payment is complete<br><br>ISO 8601 format<br> If payment is not completed 0 |
+| `failedAt` | String | | - | Time of payment failure<br><br>ISO 8601 format<br>If not payment failure 0 |
+| `payMethod` | String | O | 10 | Payment method<br><br>card: credit card, vbank: virtual account, bank: account transfer, cellphone: mobile phone, <br>naverpay=Naver Pay, kakaopay=Kakao Pay, payco=Payco, ssgpay=SSGPAY, samsungpay=Samsung Pay, tosspay=Toss Pay |
+| `useEscrow` | Boolean | | - | Escrow transaction status<br><br>false: Normal transaction / true: Escrow transaction |
+| `currency` | String | | 3 | Approval currency<br><br>KRW: Korean Won, USD: USD, CNY: Yuan |
+| `approveNo` | String | | 30 | Authorization Number<br>Credit Card, Bank Transfer, Mobile Phone |
+| `couponAmt` | Int | | 12 | Amount of instant discount applied |
+| `buyerName` | String | | 30 | Buyer name |
+| `buyerTel` | String | | 40 | Buyer phone number |
+| `buyerEmail` | String | | 60 | Buyer Email |
+| `issuedCashReceipt` | Boolean | | - | Issuance of cash receipts<br><br>true: issued / false: not issued |
+| `receiptUrl` | String | | 200 | Receipt URL |
+| `mallUserId` | String | | 20 | Store User ID<br>Optional |
+| `cardCode` | String | | 3 | Payment card issuer code |
+| `cardName` | String | | 20 | Payment card issuer name |
+| `cardQuota` | Int | | 3 | Installment Months<br><br>0: lump sum, 2:2 months, 3:3 months … |
+| `isInterestFree` | Boolean | | - | Whether the merchant pays the customer's installment interest |
+| `cardType` | String | | 1 | Card type<br>credit:credit card, check:debit |
+| `canPartCancel` | Boolean | | - | Whether partial cancellation is possible<br>true: Possible, false: Impossible |
+| `acquCardCode` | String | | 3 | Acquirer code |
+| `acquCardName` | String | | 100 | Acquirer Name |
+| `vbankCode` | String | | 3 | Virtual account bank code to receive deposit |
+| `vbankName` | String | | 20 | Virtual account bank name to receive deposit |
+| `vbankNumber` | String | | 20 | Virtual account number to receive deposit |
+| `vbankExpDate` | String | | - | Virtual Account Expiration Date<br><br>ISO 8601 |
+| `vbankHolder` | String | | 40 | Account holder name for issued virtual account|
+| `bankCode` | String | O | 3 | Bank code |
+| `bankName` | String | O | 20 | Bank name (euc-kr) |
+| `messageSource` | String | |  | nicepay: Response message generated by nicepay  <br> external: Response message generated by 3rd partner|
 
 <br><br>
 
@@ -292,7 +293,7 @@ Content-type: application/json;charset=utf-8
 
 | Parameter |   Type   |  Required   |  Bytes  | Description  |
 |:--------------|:----:|:-----:|:-----:|:--------|
-| sessionId | String  |  O  | 256	  | Merchant unique session id, issued by merchant | 
+| `sessionId` | String  |  Yes  | 256	  | Merchant unique session id, issued by merchant | 
 
 <br><br>
 
@@ -300,18 +301,18 @@ Content-type: application/json;charset=utf-8
 
 | Parameter |   Type   |  Required   |  Bytes  | Description  |
 |:--------------|:----:|:-----:|:-----:|:--------|
-| resultCode | String | O | 4 | 0000 : success / other failure |
-| resultMsg | String | O | 100 | Result message |
-| sessionId | String  |  O  | 256	  | Merchant unique session id, issued by merchant | 
-| orderId | String | O | 64 | Your Unique order ID |
-| clientId | String |  | 50 | Client ID issued by NICEPAY |
-| tid | String | | 30 | Returned when authorization is successful |
-| amount | Int | O | 12 | payment amount |
-| url | String |  |   | The URL to the Checkout Session. Redirect customers to this URL to take them to Checkout. |
-| status | String | | 20 | Payment processing status<br><br>paid: payment completed, ready: ready (virtual account number), failed: payment failed, cancelled: cancelled, partialCancelled: partially cancelled<br>['paid', 'ready', 'failed', 'cancelled', 'partialCancelled']<br><br>Expiration is not represented as a `status` value; check the separate `isExpire` boolean field instead.|
-| isExpire | Boolean | |  | true : Expired <br> false : Not expired |
-| expireDate | String | |  | ISO 8601 (session validity period) |
-| messageSource | String | |  | nicepay: Response message generated by nicepay  <br> external: Response message generated by 3rd partner|
+| `resultCode` | String | O | 4 | 0000 : success / other failure |
+| `resultMsg` | String | O | 100 | Result message |
+| `sessionId` | String  |  O  | 256	  | Merchant unique session id, issued by merchant | 
+| `orderId` | String | O | 64 | Your Unique order ID |
+| `clientId` | String |  | 50 | Client ID issued by NICEPAY |
+| `tid` | String | | 30 | Returned when authorization is successful |
+| `amount` | Int | O | 12 | payment amount |
+| `url` | String |  |   | The URL to the Checkout Session. Redirect customers to this URL to take them to Checkout. |
+| `status` | String | | 20 | Payment processing status<br><br>paid: payment completed, ready: ready (virtual account number), failed: payment failed, cancelled: cancelled, partialCancelled: partially cancelled<br>['paid', 'ready', 'failed', 'cancelled', 'partialCancelled']<br><br>Expiration is not represented as a `status` value; check the separate `isExpire` boolean field instead.|
+| `isExpire` | Boolean | |  | true : Expired <br> false : Not expired |
+| `expireDate` | String | |  | ISO 8601 (session validity period) |
+| `messageSource` | String | |  | nicepay: Response message generated by nicepay  <br> external: Response message generated by 3rd partner|
 
 
 Parameters you requested are also echoed back in the response.
@@ -336,7 +337,7 @@ Content-type: application/json;charset=utf-8
 
 | Parameter |   Type   |  Required   |  Bytes  | Description  |
 |:--------------|:----:|:-----:|:-----:|:--------|
-| sessionId | String  |  O  | 256	  | Merchant unique session id, issued by merchant | 
+| `sessionId` | String  |  Yes  | 256	  | Merchant unique session id, issued by merchant | 
 
 <br><br>
 
@@ -344,17 +345,17 @@ Content-type: application/json;charset=utf-8
 
 | Parameter |   Type   |  Required   |  Bytes  | Description  |
 |:--------------|:----:|:-----:|:-----:|:--------|
-| resultCode | String | O | 4 | 0000 : success / other failure |
-| resultMsg | String | O | 100 | Result message |
-| sessionId | String  |  O  | 256	  | Merchant unique session id, issued by merchant | 
-| orderId | String | O | 64 | Your Unique order ID |
-| clientId | String |  | 50 | Client ID issued by NICEPAY |
-| tid | String | | 30 | Returned when authorization is successful |
-| amount | Int | O | 12 | payment amount |
-| url | String |  |   | The URL to the Checkout Session. Redirect customers to this URL to take them to Checkout. |
-| status | String | | 20 | Payment processing status<br><br>paid: payment completed, ready: ready (virtual account number), failed: payment failed, cancelled: cancelled, partialCancelled: partially cancelled<br>['paid', 'ready', 'failed', 'cancelled', 'partialCancelled']<br><br>Expiration is not represented as a `status` value; check the separate `isExpire` boolean field instead.|
-| isExpire | Boolean | |  | true : Expired <br> false : Not expired |
-| expireDate | String | |  | ISO 8601 (session validity period) |
-| messageSource | String | |  | nicepay: Response message generated by nicepay  <br> external: Response message generated by 3rd partner|
+| `resultCode` | String | O | 4 | 0000 : success / other failure |
+| `resultMsg` | String | O | 100 | Result message |
+| `sessionId` | String  |  O  | 256	  | Merchant unique session id, issued by merchant | 
+| `orderId` | String | O | 64 | Your Unique order ID |
+| `clientId` | String |  | 50 | Client ID issued by NICEPAY |
+| `tid` | String | | 30 | Returned when authorization is successful |
+| `amount` | Int | O | 12 | payment amount |
+| `url` | String |  |   | The URL to the Checkout Session. Redirect customers to this URL to take them to Checkout. |
+| `status` | String | | 20 | Payment processing status<br><br>paid: payment completed, ready: ready (virtual account number), failed: payment failed, cancelled: cancelled, partialCancelled: partially cancelled<br>['paid', 'ready', 'failed', 'cancelled', 'partialCancelled']<br><br>Expiration is not represented as a `status` value; check the separate `isExpire` boolean field instead.|
+| `isExpire` | Boolean | |  | true : Expired <br> false : Not expired |
+| `expireDate` | String | |  | ISO 8601 (session validity period) |
+| `messageSource` | String | |  | nicepay: Response message generated by nicepay  <br> external: Response message generated by 3rd partner|
 
 Parameters you requested are also echoed back in the response.

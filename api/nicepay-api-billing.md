@@ -8,8 +8,7 @@ You can implement subscribtion payments through the Recurring Payment API.
 If you pass the card information through the `/v1/subscribe/regist` API, you can receive an encrypted Token(bid) in response.  
 After that, if you pass the encrypted Token(bid) through the `/v1/subscribe/{bid}/payments` API with payment amount, Authorization will be occurred with the registered card.  
 
-> #### ⚠️ Important  
-> Multiple Token can be generated with one card and All issued bid can be used until deleted.  
+> **⚠️ Important:** Multiple Token can be generated with one card and All issued bid can be used until deleted.  
 > This describes NicePay's own token limit only, see the `F201` note under [Create Token(bid) Response Parameter](#create-tokenbid-response-parameter) for a case where a `regist` call can still fail on an already-registered card.  
 
 <br>
@@ -65,29 +64,31 @@ Authorization: Basic <credentials> or Bearer <token>
 Content-type: application/json;charset=utf-8
 ```
 
-| Parameter     | Type      | required | bytes | Description |
+Required: Yes = always send; No = optional; Conditional = send in the case stated in Description. Bytes = maximum length in bytes.
+
+| Parameter     | Type      | Required | Bytes | Description |
 |:--------------|:--------:|:-----:|:------:|:---------------|
-| encData       |  String  |   O   |  512   | Payment Information Encryption Data<br>- Encryption Algorithm: AES128<br>- Encryption Details: AES/CBC/PKCS5padding<br>- Encoding Encryption Result: Hex Encoding<br>- Encryption KEY: 16 digits before SecretKey<br>- IV : 16 digits before SecretKey<br><br> Hex(AES(cardNo=value&expYear=YY&expMonth=MM&idNo=value&cardPw=value)) |
-| orderId       |  String  |   O   |   64   | Unique order number or payment number managed by the merchant<br>-In case of partial cancellation, orderId cannot be reusable |
-| buyerName     |  String  |   　   |   30   | Buyer name  |
-| buyerEmail    |  String  |   　   |   60   | Buyer Email |
-| buyerTel      |  String  |   　   |   20   | Buyer phone number<br> *Number only|
-| encMode       |  String  |   　   |   10   | Encryption Mode<br>`encData` Field Encryption Algorithm Definition<br><br> A2 : AES256<br>Encryption Algorithm : AES256<br> Encryption Detail : AES/CBC/PKCS5padding <br> Encryption Result Encoding : Hex Encoding <br> *Encryption KEY: SecretKey (32byte)<br>•IV: 16 digits before the SecretKey |
-| ediDate       |  String  |   　   |   -    | Response message creation date and time (ISO 8601 format) |
-| signData      |   String    |   　   |  256   | Forgery Verification Data<br> Rule : hex(sha256(orderId + ediDate +   SecretKey)) |
-| returnCharSet | String    |       | 10        | utf-8(Default) / euc-kr |
+| `encData`       |  String  |   Yes   |  512   | Payment Information Encryption Data<br>- Encryption Algorithm: AES128<br>- Encryption Details: AES/CBC/PKCS5padding<br>- Encoding Encryption Result: Hex Encoding<br>- Encryption KEY: 16 digits before SecretKey<br>- IV : 16 digits before SecretKey<br><br> Hex(AES(cardNo=value&expYear=YY&expMonth=MM&idNo=value&cardPw=value)) |
+| `orderId`       |  String  |   Yes   |   64   | Unique order number or payment number managed by the merchant<br>-In case of partial cancellation, orderId cannot be reusable |
+| `buyerName`     |  String  |   No   |   30   | Buyer name  |
+| `buyerEmail`    |  String  |   No   |   60   | Buyer Email |
+| `buyerTel`      |  String  |   No   |   20   | Buyer phone number<br> *Number only|
+| `encMode`       |  String  |   No   |   10   | Encryption Mode<br>`encData` Field Encryption Algorithm Definition<br><br> A2 : AES256<br>Encryption Algorithm : AES256<br> Encryption Detail : AES/CBC/PKCS5padding <br> Encryption Result Encoding : Hex Encoding <br> *Encryption KEY: SecretKey (32byte)<br>•IV: 16 digits before the SecretKey |
+| `ediDate`       |  String  |   No   |   -    | Response message creation date and time (ISO 8601 format) |
+| `signData`      |   String    |   No   |  256   | Forgery Verification Data<br> Rule : hex(sha256(orderId + ediDate +   SecretKey)) |
+| `returnCharSet` | String    |   No    | 10        | utf-8(Default) / euc-kr |
 
 <br>
 
 ### encData Field Details
 
-| Parameter     | Type      | required | bytes | Description |
+| Parameter     | Type      | Required | Bytes | Description |
 |:--------------|:--------:|:-----:|:------:|:---------------|
-| cardNo     |  String  |     O      |   16   | Card Number<br>Numbers only     |
-| expYear    |  String  |     O      |   2    | expiration year<br>format : YY  |
-| expMonth   |  String  |     O      |   2    | expiration month<br>format : MM  |
-| idNo       |  String  |  Optional  |   13   | Individual(Date of birth, 6 digits) : YYMMDD <br/> Corporation: business number of korea, 10 digits  |
-| cardPw     |  String  |  Optional  |   2    | First 2 digits of the card password |
+| `cardNo`     |  String  |     Yes      |   16   | Card Number<br>Numbers only     |
+| `expYear`    |  String  |     Yes      |   2    | expiration year<br>format : YY  |
+| `expMonth`   |  String  |     Yes      |   2    | expiration month<br>format : MM  |
+| `idNo`       |  String  |  No  |   13   | Individual(Date of birth, 6 digits) : YYMMDD <br/> Corporation: business number of korea, 10 digits  |
+| `cardPw`     |  String  |  No  |   2    | First 2 digits of the card password |
 
 <br>
 
@@ -123,19 +124,18 @@ Content-type: application/json
 
 | Parameter     | Type      | required | bytes | Description |
 |:--------------|:---------:|:--------:|:-----:|:------------|
-| resultCode | String | O | 4 | 0000 : success / other failure |
-| resultMsg  | String | O | 100 | Result message |
-| tid        | String | O |  30   | Transaction ID<br>Ex) nictest00m01011104191651325596  |
-| orderId    | String | O | 64        | Your Unique order ID *Not reusable |
-| bid        | String |   |  30   | Token<br>- Key value linked to card information, delivered when calling Token Authorization API<br>Ex) BIKYnictest00m1104191651325596  |
-| authDate   | String |   |   -   | Date created<br>ISO 8601 format   |
-| cardCode   | String |   |   3   | Card company code |
-| cardName   | String |   |  20   | Card issuer name <br> ex) BC   |
-| messageSource | String | |  | nicepay: Response message generated by nicepay  <br> external: Response message generated by 3rd partner|
-| status     | String | O |   6   | issued: bid was created successfully<br>failed: `regist` call failed, see `resultCode` |
+| `resultCode` | String | O | 4 | 0000 : success / other failure |
+| `resultMsg`  | String | O | 100 | Result message |
+| `tid`        | String | O |  30   | Transaction ID<br>Ex) nictest00m01011104191651325596  |
+| `orderId`    | String | O | 64        | Your Unique order ID *Not reusable |
+| `bid`        | String |   |  30   | Token<br>- Key value linked to card information, delivered when calling Token Authorization API<br>Ex) BIKYnictest00m1104191651325596  |
+| `authDate`   | String |   |   -   | Date created<br>ISO 8601 format   |
+| `cardCode`   | String |   |   3   | Card company code |
+| `cardName`   | String |   |  20   | Card issuer name <br> ex) BC   |
+| `messageSource` | String | |  | nicepay: Response message generated by nicepay  <br> external: Response message generated by 3rd partner|
+| `status`     | String | O |   6   | issued: bid was created successfully<br>failed: `regist` call failed, see `resultCode` |
 
-> #### ⚠️ Important  
-> Even though NicePay allows multiple tokens per card, a `regist` call can still fail with [`F201`](../code/nicepay-code.md#api-response-code) ("card already registered", bill key issuance failed), returned as-is in `resultCode` with `status: failed`, no `bid`, and `messageSource: external`. That check happens on the card issuer/payment network side, not NicePay's, so the exact conditions that trigger it are not documented here; [open an issue on this manual's repository](https://github.com/SeokRae/nicepay-manual-eng/issues) if you hit it unexpectedly.  
+> **⚠️ Important:** Even though NicePay allows multiple tokens per card, a `regist` call can still fail with [`F201`](../code/nicepay-code.md#api-response-code) ("card already registered", bill key issuance failed), returned as-is in `resultCode` with `status: failed`, no `bid`, and `messageSource: external`. That check happens on the card issuer/payment network side, not NicePay's, so the exact conditions that trigger it are not documented here; [open an issue on this manual's repository](https://github.com/SeokRae/nicepay-manual-eng/issues) if you hit it unexpectedly.  
 > `F201` is specific to card-based bill-key issuance (this API, and Checkout's `cardBill` method, see [Hosted Payment Page Request Parameter](./nicepay-api-payment-window-url.md#hosted-payment-page-request-parameter)); Recurring Payment enrolled through Naver Pay/Kakao Pay/Toss Pay checkout (`naverCardBill`/`naverPointBill`/`kakaoBill`/`tosspayBill`) goes through a separate corePG code family and is not affected by it.  
 
 <br>
@@ -177,29 +177,28 @@ Authorization: Basic <credentials> or Bearer <token>
 Content-type: application/json;charset=utf-8
 ```
 
-| Parameter     | Type      | required | bytes | Description |
+| Parameter     | Type      | Required | Bytes | Description |
 |:--------------|:---------:|:--------:|:------:|:-----------|
-| orderId         |  String  |   O   |   64   | *Not reusable |
-| amount          |   Int    |   O   |   12   | Payment amount  |
-| goodsName       |  String  |   O   |   40   | Product name  |
-| method          |  String  |   　   |   20   | Payment method the token was issued under<br>Leave empty for a card-issued token (default)<br>`naverCardBill` / `naverPointBill` / `kakaoBill` / `tosspayBill` for a token issued through the corresponding Easy Pay checkout |
-| cardQuota       |   Int    |   O*  |   2    | Installment Month<br>0: Pay in full amount, 2:2 months, 3:3 months …<br>*Required unless `method` is `tosspayBill`; must be omitted when `method` is `tosspayBill` (rejected with `U143` otherwise) |
-| useShopInterest | Boolean  |   O*  |   -    | The store pays the installment interest of the customer<br>(currently, only false is available)<br>*Required unless `method` is `tosspayBill`; must be omitted when `method` is `tosspayBill` (rejected with `U143` otherwise) |
-| useCardPoint    | Boolean  |   　   |   -    | Whether the card company's points may be used for this charge<br>`false`: not used (default) / `true`: used |
-| buyerName       |  String  |   　   |   30   | Buyer name |
-| buyerTel        |  String  |   　   |   20   | Buyer phone number<br>*Number only   |
-| buyerEmail      |  String  |   　   |   60   | Buyer Email |
-| taxFreeAmt      |   Int    |   　   |   12   | Tax-free amount  |
-| supplyAmt       |   Int    |   　   |   12   | Supply amount, the pre-VAT portion of `amount`<br>See the note below on how the four amount fields relate |
-| goodsVat        |   Int    |   　   |   12   | VAT portion of `amount` |
-| serviceAmt      |   Int    |   　   |   12   | Service charge portion of `amount` |
-| mallReserved    |  String  |   　   |  500   | Spare field for store information delivery<br>It is recommended to use JSON string format.<br>However, double quotation marks (") cannot be used  |
-| ediDate         |  String  |   　   |   -    | Response message creation date and time <br>ISO 8601 format |
-| signData        |  String  |   　   |  256   | Forgery Verification Data<br> Rule : hex(sha256(orderId + bid + ediDate + SecretKey))      |
-| returnCharSet | String    |       | 10        | utf-8(Default) / euc-kr |
+| `orderId`         |  String  |   Yes   |   64   | *Not reusable |
+| `amount`          |   Int    |   Yes   |   12   | Payment amount  |
+| `goodsName`       |  String  |   Yes   |   40   | Product name  |
+| `method`          |  String  |   No   |   20   | Payment method the token was issued under<br>Leave empty for a card-issued token (default)<br>`naverCardBill` / `naverPointBill` / `kakaoBill` / `tosspayBill` for a token issued through the corresponding Easy Pay checkout |
+| `cardQuota`       |   Int    |   Conditional  |   2    | Installment Month<br>0: Pay in full amount, 2:2 months, 3:3 months …<br>Required when `method` is not `tosspayBill`; must be omitted when `method` is `tosspayBill` (rejected with `U143` otherwise) |
+| `useShopInterest` | Boolean  |   Conditional  |   -    | The store pays the installment interest of the customer<br>(currently, only false is available)<br>Required when `method` is not `tosspayBill`; must be omitted when `method` is `tosspayBill` (rejected with `U143` otherwise) |
+| `useCardPoint`    | Boolean  |   No   |   -    | Whether the card company's points may be used for this charge<br>`false`: not used (default) / `true`: used |
+| `buyerName`       |  String  |   No   |   30   | Buyer name |
+| `buyerTel`        |  String  |   No   |   20   | Buyer phone number<br>*Number only   |
+| `buyerEmail`      |  String  |   No   |   60   | Buyer Email |
+| `taxFreeAmt`      |   Int    |   No   |   12   | Tax-free amount  |
+| `supplyAmt`       |   Int    |   No   |   12   | Supply amount, the pre-VAT portion of `amount`<br>See the note below on how the four amount fields relate |
+| `goodsVat`        |   Int    |   No   |   12   | VAT portion of `amount` |
+| `serviceAmt`      |   Int    |   No   |   12   | Service charge portion of `amount` |
+| `mallReserved`    |  String  |   No   |  500   | Spare field for store information delivery<br>It is recommended to use JSON string format.<br>However, double quotation marks (") cannot be used  |
+| `ediDate`         |  String  |   No   |   -    | Response message creation date and time <br>ISO 8601 format |
+| `signData`        |  String  |   No   |  256   | Forgery Verification Data<br> Rule : hex(sha256(orderId + bid + ediDate + SecretKey))      |
+| `returnCharSet` | String    |   No    | 10        | utf-8(Default) / euc-kr |
 
-> #### ⚠️ Important  
-> `supplyAmt`, `goodsVat`, `serviceAmt` and `taxFreeAmt` break `amount` down for tax purposes, so they have to add up to it: `amount = supplyAmt + goodsVat + serviceAmt + taxFreeAmt`. NicePay passes them to the payment network without checking the arithmetic, and the network answers a mismatch with [`1615`](../code/nicepay-code.md#api-response-code) ("Total transaction amount error"). Send all four or none of them.  
+> **⚠️ Important:** `supplyAmt`, `goodsVat`, `serviceAmt` and `taxFreeAmt` break `amount` down for tax purposes, so they have to add up to it: `amount = supplyAmt + goodsVat + serviceAmt + taxFreeAmt`. NicePay passes them to the payment network without checking the arithmetic, and the network answers a mismatch with [`1615`](../code/nicepay-code.md#api-response-code) ("Total transaction amount error"). Send all four or none of them.  
 
 <br>
 
@@ -212,60 +211,60 @@ Content-type: application/json
 
 | Parameter | Type | required | Bytes | Description |
 |:----------|:----:|:--------:|:------:|:-----------|
-| resultCode | String | O | 4 | 0000 : success / other failure |
-| resultMsg | String | O | 100 | Result message |
-| tid | String | O | 30 | NICEPAY transaction ID |
-| cancelledTid | String | | 30 | Cancellation transaction ID<br>- Responded only with cancellation requests<br>- Use when finding canceled transaction information in the cancels object. |
-| orderId | String | O | 64 | Unique order number |
-| ediDate | String | O | - | Response message creation date and time (ISO 8601 format) |
-| signature | String | | 256 | Forgery verification data<br>- Respond only to valid transactions<br>- Creation rule: hex(sha256(tid + amount + ediDate+ SecretKey))<br>- For data validation, it is recommended to implement a comparison at business logic |
-| status | String | O | 20 | Payment processing status<br>paid: payment completed<br> ready: ready<br>failed: payment failed<br>cancelled: cancelled<br>partialCancelled: partially cancelled<br>['paid', 'ready', 'failed', 'cancelled', 'partialCancelled'] |
-| paidAt | String | O | - | Time of payment completed ISO 8601 format<br>If payment is not completed, return 0 |
-| failedAt | String | O | - | Time of payment failure ISO 8601 format<br>If not payment is not failed, return 0 |
-| cancelledAt | String | O | - | Payment cancellation time ISO 8601 format<br>If it is not cancellation request, return 0<br>In case of partial cancellation, the last cancellation time will be return |
-| payMethod | String | O | 10 | Payment method<br><br>card: credit card, <br>vbank: virtual account, <br>bank: account transfer, <br>cellphone: mobile phone, <br>naverpay=Naver Pay, <br>kakaopay=Kakao Pay, <br>samsungpay=Samsung Pay, <br>tosspay=Toss Pay |
-| amount | Int | O | 12 | payment amount |
-| balanceAmt | Int | O | 12 | Remained balance for cancellation |
-| goodsName | String | O | 40 | Product name |
-| mallReserved | String | | 500 | Spare field for store information delivery<br>It is recommended to use JSON string format.<br>However, double quotation marks (") cannot be used |
-| useEscrow | Boolean | O | - | Escrow transaction status<br> true: Escrow transaction |
-| currency | String | O | 3 | Approved currency<br>Always `KRW` (Korean Won) for Recurring Payment |
-| channel | String | | 10 | pc:PC payment, mobile:mobile payment<br>['pc', 'mobile', 'null'] |
-| approveNo | String | | 30 | Authorization Number<br>Credit Card, Bank Transfer, Mobile Phone |
-| buyerName | String | | 30 | Buyer name |
-| buyerTel | String | | 40 | Buyer phone number |
-| buyerEmail | String | | 60 | Buyer Email |
-| issuedCashReceipt | Boolean | | - | Issuance status of cash receipts<br>true: issued / false: not issued |
-| receiptUrl | String | | 200 | URL for receipt|
-| mallUserId | String | | 20 | User ID managed by the store |
-| messageSource | String | |  | nicepay: Response message generated by nicepay  <br> external: Response message generated by 3rd partner|
+| `resultCode` | String | O | 4 | 0000 : success / other failure |
+| `resultMsg` | String | O | 100 | Result message |
+| `tid` | String | O | 30 | NICEPAY transaction ID |
+| `cancelledTid` | String | | 30 | Cancellation transaction ID<br>- Responded only with cancellation requests<br>- Use when finding canceled transaction information in the cancels object. |
+| `orderId` | String | O | 64 | Unique order number |
+| `ediDate` | String | O | - | Response message creation date and time (ISO 8601 format) |
+| `signature` | String | | 256 | Forgery verification data<br>- Respond only to valid transactions<br>- Creation rule: hex(sha256(tid + amount + ediDate+ SecretKey))<br>- For data validation, it is recommended to implement a comparison at business logic |
+| `status` | String | O | 20 | Payment processing status<br>paid: payment completed<br> ready: ready<br>failed: payment failed<br>cancelled: cancelled<br>partialCancelled: partially cancelled<br>['paid', 'ready', 'failed', 'cancelled', 'partialCancelled'] |
+| `paidAt` | String | O | - | Time of payment completed ISO 8601 format<br>If payment is not completed, return 0 |
+| `failedAt` | String | O | - | Time of payment failure ISO 8601 format<br>If not payment is not failed, return 0 |
+| `cancelledAt` | String | O | - | Payment cancellation time ISO 8601 format<br>If it is not cancellation request, return 0<br>In case of partial cancellation, the last cancellation time will be return |
+| `payMethod` | String | O | 10 | Payment method<br><br>card: credit card, <br>vbank: virtual account, <br>bank: account transfer, <br>cellphone: mobile phone, <br>naverpay=Naver Pay, <br>kakaopay=Kakao Pay, <br>samsungpay=Samsung Pay, <br>tosspay=Toss Pay |
+| `amount` | Int | O | 12 | payment amount |
+| `balanceAmt` | Int | O | 12 | Remained balance for cancellation |
+| `goodsName` | String | O | 40 | Product name |
+| `mallReserved` | String | | 500 | Spare field for store information delivery<br>It is recommended to use JSON string format.<br>However, double quotation marks (") cannot be used |
+| `useEscrow` | Boolean | O | - | Escrow transaction status<br> true: Escrow transaction |
+| `currency` | String | O | 3 | Approved currency<br>Always `KRW` (Korean Won) for Recurring Payment |
+| `channel` | String | | 10 | pc:PC payment, mobile:mobile payment<br>['pc', 'mobile', 'null'] |
+| `approveNo` | String | | 30 | Authorization Number<br>Credit Card, Bank Transfer, Mobile Phone |
+| `buyerName` | String | | 30 | Buyer name |
+| `buyerTel` | String | | 40 | Buyer phone number |
+| `buyerEmail` | String | | 60 | Buyer Email |
+| `issuedCashReceipt` | Boolean | | - | Issuance status of cash receipts<br>true: issued / false: not issued |
+| `receiptUrl` | String | | 200 | URL for receipt|
+| `mallUserId` | String | | 20 | User ID managed by the store |
+| `messageSource` | String | |  | nicepay: Response message generated by nicepay  <br> external: Response message generated by 3rd partner|
 
 
 <br>
 
-#### Coupon information <img alt="Object type" src="https://img.shields.io/badge/-Object-yellow"> <img alt="Nullable" src="https://img.shields.io/badge/-nullable-lightgrey">
+#### Coupon information <img alt="Object type" src="https://img.shields.io/badge/-Object-F7DF1E"> <img alt="Nullable" src="https://img.shields.io/badge/-nullable-555555">
 
-| Parameter |           |   Type   |  Required   |  Bytes  |    Description     |
+| Parameter | Field     |   Type   |  Required   |  Bytes  |    Description     |
 |:----------|:----------|:--------:|:-----:|:-------:|:--------------|
-| coupon    |           | Object   |       | - | Information for instant discount promotion |
-|           | couponAmt | Int      |       | 12 | Amount of instant discount applied |
+| `coupon`    |           | Object   |       | - | Information for instant discount promotion |
+|           | `couponAmt` | Int      |       | 12 | Amount of instant discount applied |
 
 <br>
 
-#### Card information <img alt="Object type" src="https://img.shields.io/badge/-Object-yellow"> <img alt="Nullable" src="https://img.shields.io/badge/-nullable-lightgrey">
+#### Card information <img alt="Object type" src="https://img.shields.io/badge/-Object-F7DF1E"> <img alt="Nullable" src="https://img.shields.io/badge/-nullable-555555">
 
-| Parameter |                |   Type   |  Required   |  Bytes  | Description   |
+| Parameter | Field          |   Type   |  Required   |  Bytes  | Description   |
 |:----------|:---------------|:--------:|:-----:|:-------:|:------------------|
-| card | | Object | | | Credit Card Object |
-| | cardCode | String | O | 3 | Card company code |
-| | cardName | String | O | 20 | Card issuer name <br> ex) BC |
-| | cardNum | String | | 20 | Card number<br>3rd range masked<br>Ex) 53611234****1234*<br>- Kakao Money/Naver Point/Payco Point used for payment 'null' will be return. |
-| | cardQuota | Int | O | 3 | Installment Month<br>0: lump sum, 2:2 months, 3:3 months … |
-| | isInterestFree | Boolean | | - | The store pays the customer's installment interest<br>true:yes, false:no<br>*null if not returned by the card network |
-| | cardType | String | | 1 | Card type<br>credit:credit card, check:debit |
-| | canPartCancel | Boolean | | - | Whether partial cancellation is possible<br>true: Possible, false: Impossible<br>*null if not returned by the card network |
-| | acquCardCode | String | O | 3 | Acquirer code |
-| | acquCardName | String | O | 100 | Acquirer Name |
+| `card` | | Object | | | Credit Card Object |
+| | `cardCode` | String | O | 3 | Card company code |
+| | `cardName` | String | O | 20 | Card issuer name <br> ex) BC |
+| | `cardNum` | String | | 20 | Card number<br>3rd range masked<br>Ex) 53611234****1234*<br>- Kakao Money/Naver Point/Payco Point used for payment 'null' will be return. |
+| | `cardQuota` | Int | O | 3 | Installment Month<br>0: lump sum, 2:2 months, 3:3 months … |
+| | `isInterestFree` | Boolean | | - | The store pays the customer's installment interest<br>true:yes, false:no<br>*null if not returned by the card network |
+| | `cardType` | String | | 1 | Card type<br>credit:credit card, check:debit |
+| | `canPartCancel` | Boolean | | - | Whether partial cancellation is possible<br>true: Possible, false: Impossible<br>*null if not returned by the card network |
+| | `acquCardCode` | String | O | 3 | Acquirer code |
+| | `acquCardName` | String | O | 100 | Acquirer Name |
 
 <br>
 
@@ -290,8 +289,7 @@ Deleted Token(bid) cannot be restored or approved.
 ### Delete Token Over-view
 <img alt="Token deletion flow diagram: the merchant server requests deletion of the customer's registered token (bid) from NicePay and receives confirmation that card registration was cancelled" src="../image/payment-subscribe-delete.svg" width="800px">  
 
-> #### ⚠️ Important  
-> This request is fully synchronous end-to-end: the client should keep waiting (e.g. a loading indicator) from the moment cancellation is requested until the `/v1/subscribe/{bid}/expire` response comes back through the merchant server. There is no webhook or async callback for this flow, see [Timeout Information](../info/nicepay-info-firewall-timeout.md#timeout-information) for the underlying request timeout values.  
+> **⚠️ Important:** This request is fully synchronous end-to-end: the client should keep waiting (e.g. a loading indicator) from the moment cancellation is requested until the `/v1/subscribe/{bid}/expire` response comes back through the merchant server. There is no webhook or async callback for this flow, see [Timeout Information](../info/nicepay-info-firewall-timeout.md#timeout-information) for the underlying request timeout values.  
 
 ### Delete Token(bid) Example code
 
@@ -316,14 +314,14 @@ Authorization: Basic <credentials> or Bearer <token>
 Content-type: application/json;charset=utf-8
 ```
 
-| Parameter     | Type   | required | Bytes | Description |
+| Parameter     | Type   | Required | Bytes | Description |
 |:--------------|:------:|:--------:|:------:|:-----------|
-| orderId       | String |  O       |  64   | Your unique order ID *Not reusable |
-| method        | String |  O*      |  20   | Payment method the token was issued under<br>*Required for `naverCardBill` / `naverPointBill` / `tosspayBill`; omit for a card-issued token |
-| reason        | String |  O*      |  100  | Reason for deletion<br>*Required when `method` is `naverCardBill` / `naverPointBill` / `tosspayBill` (rejected with `U100` otherwise) |
-| ediDate       | String |          |   -   | Creation Date<br> ISO 8601 format |
-| signData      | String |          |  256  | Forgery Verification Data<br>Rule : hex(sha256(orderId + bid +   ediDate + SecretKey))|
-| returnCharSet | String |          |  10   | utf-8(Default) / euc-kr |	
+| `orderId`       | String |  Yes       |  64   | Your unique order ID *Not reusable |
+| `method`        | String |  Conditional      |  20   | Payment method the token was issued under<br>Required when the token was issued under `naverCardBill` / `naverPointBill` / `tosspayBill`; omit for a card-issued token |
+| `reason`        | String |  Conditional      |  100  | Reason for deletion<br>Required when `method` is `naverCardBill` / `naverPointBill` / `tosspayBill` (rejected with `U100` otherwise) |
+| `ediDate`       | String |     No     |   -   | Creation Date<br> ISO 8601 format |
+| `signData`      | String |     No     |  256  | Forgery Verification Data<br>Rule : hex(sha256(orderId + bid +   ediDate + SecretKey))|
+| `returnCharSet` | String |     No     |  10   | utf-8(Default) / euc-kr |	
 
 <br>
 
@@ -336,15 +334,14 @@ Content-type: application/json
 
 | Parameter | Type | required | Bytes | Description |
 |:----------|:----:|:--------:|:------:|:-----------|
-| resultCode | String | O | 4 | 0000 : success / other failure |
-| resultMsg | String | O | 100 | Result message |
-| tid | String | O | 30 | NICEPAY transaction ID |
-| orderId | String | O | 64 | Your Unique order ID |
-| bid        | String | O    | 30   | Token |
-| authDate   | String | 　   | -    | ISO 8601 format<br>*Not returned only when the request fails local validation (e.g. missing `orderId`) before reaching NicePay; present regardless of whether the deletion itself succeeded or failed |
+| `resultCode` | String | O | 4 | 0000 : success / other failure |
+| `resultMsg` | String | O | 100 | Result message |
+| `tid` | String | O | 30 | NICEPAY transaction ID |
+| `orderId` | String | O | 64 | Your Unique order ID |
+| `bid`        | String | O    | 30   | Token |
+| `authDate`   | String |     | -    | ISO 8601 format<br>*Not returned only when the request fails local validation (e.g. missing `orderId`) before reaching NicePay; present regardless of whether the deletion itself succeeded or failed |
 
-> #### ⚠️ Important  
-> Deleting a Token(bid) that is already deleted or does not exist returns [`U115`](../code/nicepay-code.md#api-response-code) ("Deleted BID"), not `0000`. NicePay normalizes the payment-network code behind it, so you get `U115` whether the token was a card billkey or an easy-pay (NaverPay/KakaoPay/TossPay) one. Treat `U115` as "already gone" rather than as a retryable failure.  
+> **⚠️ Important:** Deleting a Token(bid) that is already deleted or does not exist returns [`U115`](../code/nicepay-code.md#api-response-code) ("Deleted BID"), not `0000`. NicePay normalizes the payment-network code behind it, so you get `U115` whether the token was a card billkey or an easy-pay (NaverPay/KakaoPay/TossPay) one. Treat `U115` as "already gone" rather than as a retryable failure.  
 > A successful card-billkey deletion always returns `0000`. You will not see [`F101`](../code/nicepay-code.md#api-response-code) here even though the payment network uses it for this case internally; on this API `F101` only ever means a signature/encryption verification failure.  
 
 <br>
@@ -354,8 +351,7 @@ Content-type: application/json
 `Bid Status Inquiry` looks up whether an issued Token(bid) is currently active or has been suspended on the payment network side.  
 If you pass the registered billkey to the `/v1/subscribe/{bid}/status` API, NicePay returns its current status.
 
-> #### ⚠️ Important  
-> This API currently supports Toss Pay-issued tokens only (`method: tosspayBill`); any other `method` value is rejected with `U119`.  
+> **⚠️ Important:** This API currently supports Toss Pay-issued tokens only (`method: tosspayBill`); any other `method` value is rejected with `U119`.  
 
 <br>
 
@@ -383,13 +379,13 @@ Authorization: Basic <credentials> or Bearer <token>
 Content-type: application/json;charset=utf-8
 ```
 
-| Parameter     | Type   | required | Bytes | Description |
+| Parameter     | Type   | Required | Bytes | Description |
 |:--------------|:------:|:--------:|:------:|:-----------|
-| orderId       | String |  O       |  64   | Your unique order ID |
-| method        | String |  O       |  20   | Payment method the token was issued under<br>Currently only `tosspayBill` is supported |
-| ediDate       | String |          |   -   | Creation Date<br> ISO 8601 format |
-| signData      | String |          |  256  | Forgery Verification Data<br>Rule : hex(sha256(orderId + bid +   ediDate + SecretKey))|
-| returnCharSet | String |          |  10   | utf-8(Default) / euc-kr |
+| `orderId`       | String |  Yes       |  64   | Your unique order ID |
+| `method`        | String |  Yes       |  20   | Payment method the token was issued under<br>Currently only `tosspayBill` is supported |
+| `ediDate`       | String |     No     |   -   | Creation Date<br> ISO 8601 format |
+| `signData`      | String |     No     |  256  | Forgery Verification Data<br>Rule : hex(sha256(orderId + bid +   ediDate + SecretKey))|
+| `returnCharSet` | String |     No     |  10   | utf-8(Default) / euc-kr |
 
 <br>
 
@@ -402,13 +398,13 @@ Content-type: application/json
 
 | Parameter | Type | required | Bytes | Description |
 |:----------|:----:|:--------:|:------:|:-----------|
-| resultCode | String | O | 4 | 0000 : success / other failure |
-| resultMsg | String | O | 100 | Result message |
-| tid | String | O | 30 | NICEPAY transaction ID |
-| orderId | String | O | 64 | Your Unique order ID |
-| bid        | String | O    | 30   | Token |
-| bidStatus  | String |      | -    | Raw status value from the card network<br>0: in use, 1: suspended, 2: other (undefined by the card network)<br>*Not returned if the card network omits it |
-| status     | String | O    | -    | Interpreted status<br>active: `bidStatus` is 0<br>inactive: `bidStatus` is 1<br>unknown: `bidStatus` is 2, or not returned |
+| `resultCode` | String | O | 4 | 0000 : success / other failure |
+| `resultMsg` | String | O | 100 | Result message |
+| `tid` | String | O | 30 | NICEPAY transaction ID |
+| `orderId` | String | O | 64 | Your Unique order ID |
+| `bid`        | String | O    | 30   | Token |
+| `bidStatus`  | String |      | -    | Raw status value from the card network<br>0: in use, 1: suspended, 2: other (undefined by the card network)<br>*Not returned if the card network omits it |
+| `status`     | String | O    | -    | Interpreted status<br>active: `bidStatus` is 0<br>inactive: `bidStatus` is 1<br>unknown: `bidStatus` is 2, or not returned |
 
 <br>
 

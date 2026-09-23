@@ -17,7 +17,6 @@ Depending on the method of calling the Hosted Payment Page, the client key can b
 ### Secret key
 The generated secret key is used to create an API authentication key.
 
-> #### ⚠️ Important  
-> The Sandbox and Live `secret key` values are different.  
+> **⚠️ Important:** The Sandbox and Live `secret key` values are different.  
 > If you convert from Sandbox to Live, you must update to the Live `secret key`.  
 > Be careful not to expose the secret key.  

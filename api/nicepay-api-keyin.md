@@ -2,8 +2,7 @@
 
 Key-in (Manual Entry) payment lets you submit a card charge directly with card details you already hold (MOTO / manually entered card), without redirecting the customer through the Hosted Payment Page. You encrypt the card data server-side (the encryption key is derived from your SecretKey, which must never leave your server) and call this API directly; NicePay returns the final approval result synchronously in the response; there is no separate authorization callback.
 
-> #### ⚠️ Important  
-> Key-in is only available to merchants specifically enabled for manual-entry payments. Calling this API without that permission returns `A128 Not a key-in merchant`.  
+> **⚠️ Important:** Key-in is only available to merchants specifically enabled for manual-entry payments. Calling this API without that permission returns `A128 Not a key-in merchant`.  
 > Your merchant account is enrolled with one of several encryption/authentication levels by NicePay (see [encData Field Details](#encdata-field-details) below); it is not something you choose per request.  
 > Key-in Payment is not provided in [Sandbox](../info/nicepay-info-sandbox.md#base-url-information-for-sandbox-and-live); you can only test it against Live once your merchant account is enabled for manual-entry payments.  
 
@@ -52,29 +51,30 @@ Authorization: Basic <credentials> or Bearer <token>
 Content-type: application/json;charset=utf-8
 ```
 
-| Parameter | Type | required | bytes | Description |
-|:--------------|:---------:|:----------:|:-------:|:--------------|
-| orderId | String | O | 64 | Your unique order id<br> cannot reuse the orderid |
-| amount | Int | O | 12 | Transaction amount (only numbers are allowed) |
-| goodsName | String | O | 40 | Product Name |
-| encData | String | O | 512 | Card information encryption data<br>See [encData Field Details](#encdata-field-details) below |
-| isInterestFree | Boolean | O | 5 | true: the merchant pays the customer's installment interest / false: general |
-| cardQuota | Int | O | 2 | Installment period<br>0: pay in full, 2: 2 months, 3: 3 months … |
-| ediDate | String | | 40 | Required together with `signData`<br>ISO 8601 |
-| signData | String | | 256 | Forgery verification data<br>Rule: hex(sha256(orderId + ediDate + SecretKey)) |
-| buyerName | String | | 30 | Buyer name |
-| buyerEmail | String | | 60 | Buyer email |
-| buyerTel | String | | 40 | Buyer phone number (number only) |
-| taxFreeAmt | Int | | 12 | Tax-free amount within `amount`<br>Must not exceed `amount` |
-| supplyAmt | Int | | 12 | Supply amount, the pre-VAT portion of `amount`<br>See the note below on how the four amount fields relate |
-| goodsVat | Int | | 12 | VAT portion of `amount` |
-| serviceAmt | Int | | 12 | Service charge portion of `amount` |
-| currency | String | | 3 | KRW: Korean Won, USD: US Dollar, CNY: Chinese Yuan |
-| returnCharSet | String | | 10 | utf-8(Default) / euc-kr |
-| mallReserved | String | | 500 | Reserved field for the merchant<br>We recommend using it in JSON string format.<br>Double quotation mark (") cannot be used. |
+Required: Yes = always send; No = optional; Conditional = send in the case stated in Description.
 
-> #### ⚠️ Important  
-> `supplyAmt`, `goodsVat`, `serviceAmt` and `taxFreeAmt` break `amount` down for tax purposes, so they have to add up to it: `amount = supplyAmt + goodsVat + serviceAmt + taxFreeAmt`. NicePay passes them to the payment network without checking the arithmetic, and the network answers a mismatch with [`1615`](../code/nicepay-code.md#api-response-code) ("Total transaction amount error"). Send all four or none of them.  
+| Parameter | Type | Required | Bytes | Description |
+|:--------------|:---------:|:----------:|:-------:|:--------------|
+| `orderId` | String | Yes | 64 | Your unique order id<br> cannot reuse the orderid |
+| `amount` | Int | Yes | 12 | Transaction amount (only numbers are allowed) |
+| `goodsName` | String | Yes | 40 | Product Name |
+| `encData` | String | Yes | 512 | Card information encryption data<br>See [encData Field Details](#encdata-field-details) below |
+| `isInterestFree` | Boolean | Yes | 5 | true: the merchant pays the customer's installment interest / false: general |
+| `cardQuota` | Int | Yes | 2 | Installment period<br>0: pay in full, 2: 2 months, 3: 3 months … |
+| `ediDate` | String | Conditional | 40 | ISO 8601<br>Required when you send `signData` |
+| `signData` | String | No | 256 | Forgery verification data<br>Rule: hex(sha256(orderId + ediDate + SecretKey)) |
+| `buyerName` | String | No | 30 | Buyer name |
+| `buyerEmail` | String | No | 60 | Buyer email |
+| `buyerTel` | String | No | 40 | Buyer phone number (number only) |
+| `taxFreeAmt` | Int | No | 12 | Tax-free amount within `amount`<br>Must not exceed `amount` |
+| `supplyAmt` | Int | No | 12 | Supply amount, the pre-VAT portion of `amount`<br>See the note below on how the four amount fields relate |
+| `goodsVat` | Int | No | 12 | VAT portion of `amount` |
+| `serviceAmt` | Int | No | 12 | Service charge portion of `amount` |
+| `currency` | String | No | 3 | KRW: Korean Won, USD: US Dollar, CNY: Chinese Yuan |
+| `returnCharSet` | String | No | 10 | utf-8(Default) / euc-kr |
+| `mallReserved` | String | No | 500 | Reserved field for the merchant<br>We recommend using it in JSON string format.<br>Double quotation mark (") cannot be used. |
+
+> **⚠️ Important:** `supplyAmt`, `goodsVat`, `serviceAmt` and `taxFreeAmt` break `amount` down for tax purposes, so they have to add up to it: `amount = supplyAmt + goodsVat + serviceAmt + taxFreeAmt`. NicePay passes them to the payment network without checking the arithmetic, and the network answers a mismatch with [`1615`](../code/nicepay-code.md#api-response-code) ("Total transaction amount error"). Send all four or none of them.  
 
 <br>
 
@@ -91,13 +91,13 @@ Common required fields: `cardNo`, `expYear`, `expMonth`. Which additional field(
 
 > ⚠️ Sending a field your merchant's level does not expect (or omitting one it requires) fails encData verification with `U341`. [Open an issue on this manual's repository](https://github.com/SeokRae/nicepay-manual-eng/issues) if you are not sure which level your account is enrolled with.
 
-| Parameter | Type | required | bytes | Description |
+| Parameter | Type | Required | Bytes | Description |
 |:--------------|:---------:|:----------:|:-------:|:--------------|
-| cardNo | String | O | 16 | Card number, numbers only |
-| expYear | String | O | 2 | Expiration year, format: YY |
-| expMonth | String | O | 2 | Expiration month, format: MM |
-| idNo | String | Conditional | 13 | Individual (date of birth, 6 digits): YYMMDD<br>Corporation: business registration number, 10 digits |
-| cardPw | String | Conditional | 2 | First 2 digits of the card password |
+| `cardNo` | String | Yes | 16 | Card number, numbers only |
+| `expYear` | String | Yes | 2 | Expiration year, format: YY |
+| `expMonth` | String | Yes | 2 | Expiration month, format: MM |
+| `idNo` | String | Conditional | 13 | Individual (date of birth, 6 digits): YYMMDD<br>Corporation: business registration number, 10 digits<br>Required when your merchant's level is 10 or 11 |
+| `cardPw` | String | Conditional | 2 | First 2 digits of the card password<br>Required when your merchant's level is 03 or 11 |
 
 <br>
 
@@ -128,43 +128,43 @@ Content-type: application/json
 
 | Parameter | Type | required | Bytes | Description |
 |:----------|:----:|:--------:|:------:|:-----------|
-| resultCode | String | O | 4 | 0000 : success / other failure |
-| resultMsg | String | O | 100 | Result message |
-| tid | String | O | 30 | NICEPAY transaction ID |
-| orderId | String | O | 64 | Your unique order ID |
-| amount | Int | O | 12 | payment amount |
-| currency | String | | 3 | KRW: Korean Won, USD: US Dollar, CNY: Chinese Yuan |
-| goodsName | String | | 40 | Product name |
-| status | String | O | 20 | Payment processing status<br>paid: payment completed<br>failed: payment failed<br>['paid', 'failed'] |
-| paidAt | String | O | - | Time of payment completed, ISO 8601 format<br>If payment is not completed, return 0 |
-| failedAt | String | O | - | Time of payment failure, ISO 8601 format<br>If not a payment failure, return 0 |
-| ediDate | String | O | - | Response message creation date and time, ISO 8601 format |
-| signature | String | | 256 | Forgery verification data<br>Rule: hex(sha256(tid + amount + ediDate + SecretKey)) |
-| approveNo | String | | 30 | Authorization number |
-| buyerName | String | | 30 | Buyer name |
-| buyerTel | String | | 40 | Buyer phone number |
-| buyerEmail | String | | 60 | Buyer email |
-| receiptUrl | String | | 200 | Receipt URL |
-| mallReserved | String | | 500 | Reserved field for the merchant |
-| card | Object | | | Credit card object, see [Card information](#card-information--) below |
-| messageSource | String | | | nicepay: Response message generated by nicepay<br>external: Response message generated by 3rd partner |
+| `resultCode` | String | O | 4 | 0000 : success / other failure |
+| `resultMsg` | String | O | 100 | Result message |
+| `tid` | String | O | 30 | NICEPAY transaction ID |
+| `orderId` | String | O | 64 | Your unique order ID |
+| `amount` | Int | O | 12 | payment amount |
+| `currency` | String | | 3 | KRW: Korean Won, USD: US Dollar, CNY: Chinese Yuan |
+| `goodsName` | String | | 40 | Product name |
+| `status` | String | O | 20 | Payment processing status<br>paid: payment completed<br>failed: payment failed<br>['paid', 'failed'] |
+| `paidAt` | String | O | - | Time of payment completed, ISO 8601 format<br>If payment is not completed, return 0 |
+| `failedAt` | String | O | - | Time of payment failure, ISO 8601 format<br>If not a payment failure, return 0 |
+| `ediDate` | String | O | - | Response message creation date and time, ISO 8601 format |
+| `signature` | String | | 256 | Forgery verification data<br>Rule: hex(sha256(tid + amount + ediDate + SecretKey)) |
+| `approveNo` | String | | 30 | Authorization number |
+| `buyerName` | String | | 30 | Buyer name |
+| `buyerTel` | String | | 40 | Buyer phone number |
+| `buyerEmail` | String | | 60 | Buyer email |
+| `receiptUrl` | String | | 200 | Receipt URL |
+| `mallReserved` | String | | 500 | Reserved field for the merchant |
+| `card` | Object | | | Credit card object, see [Card information](#card-information--) below |
+| `messageSource` | String | | | nicepay: Response message generated by nicepay<br>external: Response message generated by 3rd partner |
 
 <br>
 
-#### Card information <img alt="Object type" src="https://img.shields.io/badge/-Object-yellow"> <img alt="Nullable" src="https://img.shields.io/badge/-nullable-lightgrey">
+#### Card information <img alt="Object type" src="https://img.shields.io/badge/-Object-F7DF1E"> <img alt="Nullable" src="https://img.shields.io/badge/-nullable-555555">
 
-| Parameter | | Type | Required | Bytes | Description |
+| Parameter | Field | Type | Required | Bytes | Description |
 |:----------|:----------|:--------:|:-----:|:-------:|:--------------|
-| card | | Object | | | Credit card object |
-| | cardCode | String | O | 3 | Card company code |
-| | cardName | String | O | 20 | Card issuer name |
-| | cardNum | String | | 20 | Card number, masked to the first 6 and last 4 digits<br>Ex) 123412******1234 |
-| | cardQuota | Int | O | 3 | Installment months<br>0: lump sum, 2: 2 months, 3: 3 months … |
-| | isInterestFree | Boolean | | - | Whether the merchant pays the customer's installment interest<br>*null if not returned by the card network |
-| | cardType | String | | 1 | Card type<br>credit:credit card, check:debit |
-| | canPartCancel | Boolean | | - | Whether partial cancellation is possible<br>*null if not returned by the card network |
-| | acquCardCode | String | O | 3 | Acquirer code |
-| | acquCardName | String | O | 100 | Acquirer name |
+| `card` | | Object | | | Credit card object |
+| | `cardCode` | String | O | 3 | Card company code |
+| | `cardName` | String | O | 20 | Card issuer name |
+| | `cardNum` | String | | 20 | Card number, masked to the first 6 and last 4 digits<br>Ex) 123412******1234 |
+| | `cardQuota` | Int | O | 3 | Installment months<br>0: lump sum, 2: 2 months, 3: 3 months … |
+| | `isInterestFree` | Boolean | | - | Whether the merchant pays the customer's installment interest<br>*null if not returned by the card network |
+| | `cardType` | String | | 1 | Card type<br>credit:credit card, check:debit |
+| | `canPartCancel` | Boolean | | - | Whether partial cancellation is possible<br>*null if not returned by the card network |
+| | `acquCardCode` | String | O | 3 | Acquirer code |
+| | `acquCardName` | String | O | 100 | Acquirer name |
 
 <br>
 

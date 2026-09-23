@@ -46,9 +46,11 @@ Content-type: application/json;charset=utf-8
 
 > This endpoint only accepts `Basic` credentials, an existing Bearer token cannot be used to request a new one.
 
+Required: Yes = always send; No = optional; Conditional = send in the case stated in Description. Bytes = maximum length in bytes.
+
 |   Parameter   |  Type  | Required  | Bytes | Description  |
 |:-------------:|:------:|:---------:|:----:|:-------------|
-| returnCharSet | String |           |  10  | Response encoding <br> utf-8 or euc-kr <br> Default:utf-8 <br> Pass as a URL query parameter (e.g. `?returnCharSet=euc-kr`), not in the JSON body |
+| `returnCharSet` | String |    No     |  10  | Response encoding <br> utf-8 or euc-kr <br> Default:utf-8 <br> Pass as a URL query parameter (e.g. `?returnCharSet=euc-kr`), not in the JSON body |
 
 <br>
 
@@ -59,9 +61,9 @@ Content-type: application/json
 
 |  Parameter  |  Type  | Required  | Bytes | Description  |
 |:-----------:|:------:|:---------:|:----:|:-------------|
-| resultCode  | String |  O  |  4   | Response code<br>0000:success, other failures  |
-|  resultMsg  | String |  O  | 100  | Result message  |
-| accessToken | String |  O  |  40  | Access token  |
-|  tokenType  | String |  O  |  10  | Authentication Scheme Type <br> 'Bearer' fixed  |
-|  expireAt  | String |  O  |      | Token expiration time<br>ISO 8601 format |
-|     now     | String |  O  |      | Current time<br> ISO 8601 format |
+| `resultCode`  | String |  O  |  4   | Response code<br>0000:success, other failures  |
+|  `resultMsg`  | String |  O  | 100  | Result message  |
+| `accessToken` | String |  O  |  40  | Access token  |
+|  `tokenType`  | String |  O  |  10  | Authentication Scheme Type <br> 'Bearer' fixed  |
+|  `expireAt`  | String |  O  |      | Token expiration time<br>ISO 8601 format |
+|     `now`     | String |  O  |      | Current time<br> ISO 8601 format |

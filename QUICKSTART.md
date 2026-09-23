@@ -1,8 +1,8 @@
-## ⚡ Quick Start Guide
+## Quick Start Guide
 
 This guide walks through **Checkout**, the standard hosted-payment-page integration. If you need the customer's card details to stay off your own server, this is almost always the right path. If you're not sure, see [Which Integration Should I Use?](./INTEGRATION-PATHS.md) first.
 
-Follow the guide in order to complete a Checkout test in about ⏱️ 10 minutes.
+Follow the guide in order to complete a Checkout test in about 10 minutes.
 
 **Before you start**, you'll need:
 - A [Client and Secret key](./info/nicepay-info-key.md) issued from the NicePay admin console
@@ -11,9 +11,8 @@ Follow the guide in order to complete a Checkout test in about ⏱️ 10 minutes
 
 <br>
 
-> #### ⚠️ Important  
-> If you are conducting a test in a network environment with IP restrictions, firewall configuration may be necessary to make API calls.  
->  👉 [Firewall and Timeout](./info/nicepay-info-firewall-timeout.md)
+> **⚠️ Important:** If you are conducting a test in a network environment with IP restrictions, firewall configuration may be necessary to make API calls.  
+> See [Firewall and Timeout](./info/nicepay-info-firewall-timeout.md).
 
 <br>
 
@@ -28,8 +27,7 @@ For the success/failure branches of a card or easy-pay checkout, see [Card and E
 
 <br>  
 
-> #### ⚠️ Important  
-> The Sandbox and Live domains may be different.   
+> **⚠️ Important:** The Sandbox and Live domains may be different.   
 > Once testing is complete, be sure to switch to the Live domain.   
 
 <br><br>
@@ -155,8 +153,7 @@ acquCardCode=07
 acquCardName=현대
 messageSource=nicepay
 ```
-> #### ⚠️ Important  
-> When conducting tests through the Sandbox, actual approvals will not occur.  
+> **⚠️ Important:** When conducting tests through the Sandbox, actual approvals will not occur.  
 > Also, arbitrary values are returned in the response.  
 
 <br><br>
