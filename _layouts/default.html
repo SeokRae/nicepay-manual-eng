@@ -11,31 +11,167 @@
       <nav class="sidebar" aria-label="Site navigation">
         <a class="sidebar-title" href="{{ "/" | relative_url }}">{{ site.title | escape }}</a>
 
-        {%- for group in site.nav -%}
-          <div class="sidebar-group">
-            <div class="sidebar-group-title">{{ group.title }}</div>
-            <ul class="sidebar-links">
-              {%- for path in group.pages -%}
-                {%- assign nav_page = site.pages | where: "path", path | first -%}
-                {%- if nav_page -%}
-                  {%- assign is_current = false -%}
-                  {%- if page.url == nav_page.url -%}{%- assign is_current = true -%}{%- endif -%}
-                  <li>
-                    <a class="sidebar-link{% if is_current %} active{% endif %}" href="{{ nav_page.url | relative_url }}"{% if is_current %} aria-current="page"{% endif %}>{{ nav_page.title | escape }}</a>
-                  </li>
-                {%- endif -%}
-              {%- endfor -%}
-            </ul>
-          </div>
-        {%- endfor -%}
+        {%- comment -%}
+          Rendered open so the link list never depends on JavaScript. The
+          script right after it closes the menu on narrow screens before the
+          first paint; on wide screens the summary is hidden by CSS.
+        {%- endcomment -%}
+        <details class="sidebar-menu" open>
+          <summary class="sidebar-toggle">Menu</summary>
+
+          {%- for group in site.nav -%}
+            {%- assign group_id = group.title | slugify | prepend: "nav-group-" -%}
+            <div class="sidebar-group">
+              <div class="sidebar-group-title" id="{{ group_id }}">{{ group.title }}</div>
+              <ul class="sidebar-links" aria-labelledby="{{ group_id }}">
+                {%- for path in group.pages -%}
+                  {%- assign nav_page = site.pages | where: "path", path | first -%}
+                  {%- if nav_page -%}
+                    {%- assign is_current = false -%}
+                    {%- if page.url == nav_page.url -%}{%- assign is_current = true -%}{%- endif -%}
+                    <li>
+                      <a class="sidebar-link{% if is_current %} active{% endif %}" href="{{ nav_page.url | relative_url }}"{% if is_current %} aria-current="page"{% endif %}>{{ nav_page.title | escape }}</a>
+                    </li>
+                  {%- endif -%}
+                {%- endfor -%}
+              </ul>
+            </div>
+          {%- endfor -%}
+        </details>
+        <script>
+          (function () {
+            var menu = document.currentScript.previousElementSibling;
+            if (!menu || !window.matchMedia) return;
+            var narrow = window.matchMedia("screen and (max-width: 800px)");
+            function sync() { menu.open = !narrow.matches; }
+            sync();
+            if (narrow.addEventListener) narrow.addEventListener("change", sync);
+            else if (narrow.addListener) narrow.addListener(sync);
+          })();
+        </script>
       </nav>
 
-      <main id="main-content" class="page-content" aria-label="Content">
-        <div class="wrapper">
-          {{ content }}
-        </div>
-      </main>
+      {%- comment -%}
+        Previous/next links follow the same site.nav order as the sidebar. The
+        home page (README) comes before the first nav entry.
+      {%- endcomment -%}
+      {%- assign nav_paths = "" | split: "" -%}
+      {%- for group in site.nav -%}
+        {%- for path in group.pages -%}
+          {%- assign nav_paths = nav_paths | push: path -%}
+        {%- endfor -%}
+      {%- endfor -%}
+      {%- assign home_url = "/" -%}
+      {%- assign nav_index = nil -%}
+      {%- for path in nav_paths -%}
+        {%- if path == page.path -%}{%- assign nav_index = forloop.index0 -%}{%- endif -%}
+      {%- endfor -%}
+      {%- assign prev_page = nil -%}
+      {%- assign next_page = nil -%}
+      {%- assign prev_is_home = false -%}
+      {%- if page.url == home_url -%}
+        {%- assign next_page = site.pages | where: "path", nav_paths[0] | first -%}
+      {%- elsif nav_index != nil -%}
+        {%- if nav_index == 0 -%}
+          {%- assign prev_is_home = true -%}
+        {%- else -%}
+          {%- assign prev_index = nav_index | minus: 1 -%}
+          {%- assign prev_page = site.pages | where: "path", nav_paths[prev_index] | first -%}
+        {%- endif -%}
+        {%- assign next_index = nav_index | plus: 1 -%}
+        {%- if next_index < nav_paths.size -%}
+          {%- assign next_page = site.pages | where: "path", nav_paths[next_index] | first -%}
+        {%- endif -%}
+      {%- endif -%}
+
+      <div class="content-column">
+        <main id="main-content" class="page-content" aria-label="Content">
+          <div class="wrapper">
+            {%- comment -%}
+              Every table gets a scroll wrapper (the table itself keeps
+              display: table), and code is marked translate="no" so browser
+              page translation leaves parameter names and payloads alone.
+            {%- endcomment -%}
+            {{ content | replace: "<table", '<div class="table-scroll"><table' | replace: "</table>", "</table></div>" | replace: "<pre", '<pre translate="no"' | replace: "<code", '<code translate="no"' }}
+
+            {%- if prev_page or prev_is_home or next_page %}
+            <nav class="page-nav" aria-label="Previous and next page">
+              {%- if prev_is_home %}
+              <a class="page-nav-link page-nav-prev" href="{{ home_url | relative_url }}" rel="prev"><span class="page-nav-label">Previous</span> <span class="page-nav-title">Home</span></a>
+              {%- elsif prev_page %}
+              <a class="page-nav-link page-nav-prev" href="{{ prev_page.url | relative_url }}" rel="prev"><span class="page-nav-label">Previous</span> <span class="page-nav-title">{{ prev_page.title | escape }}</span></a>
+              {%- endif -%}
+              {%- if next_page %}
+              <a class="page-nav-link page-nav-next" href="{{ next_page.url | relative_url }}" rel="next"><span class="page-nav-label">Next</span> <span class="page-nav-title">{{ next_page.title | escape }}</span></a>
+              {%- endif %}
+            </nav>
+            {%- endif %}
+          </div>
+        </main>
+
+        <footer class="site-footer">
+          <div class="wrapper">
+            <p>Found a problem in this guide? Report it on the <a href="https://github.com/SeokRae/nicepay-manual-eng/issues">issue tracker</a>.</p>
+            <p>Issues are public: never post your secret key, an Authorization header, <code translate="no">encData</code>, card numbers, or customer data.</p>
+          </div>
+        </footer>
+      </div>
     </div>
+
+    <script>
+      // Tables and code blocks that are wider than the column scroll sideways.
+      // Make each one that actually overflows reachable by keyboard and give it
+      // a name taken from the nearest preceding heading. Recomputed on resize,
+      // since overflow depends on the viewport width.
+      (function () {
+        var main = document.getElementById("main-content");
+        if (!main || !main.querySelectorAll) return;
+
+        function headingBefore(el) {
+          var headings = main.querySelectorAll("h1, h2, h3, h4, h5, h6");
+          for (var i = headings.length - 1; i >= 0; i--) {
+            if (headings[i].compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING) {
+              return headings[i].textContent.replace(/\s+/g, " ").trim();
+            }
+          }
+          return document.title;
+        }
+
+        function update() {
+          var seen = {};
+          var regions = main.querySelectorAll(".table-scroll, pre");
+          for (var i = 0; i < regions.length; i++) {
+            var el = regions[i];
+            if (el.scrollWidth > el.clientWidth + 1) {
+              var name = (el.tagName === "PRE" ? "Code: " : "Table: ") + headingBefore(el);
+              seen[name] = (seen[name] || 0) + 1;
+              if (seen[name] > 1) name += " (" + seen[name] + ")";
+              el.setAttribute("tabindex", "0");
+              el.setAttribute("role", "region");
+              el.setAttribute("aria-label", name);
+            } else if (el.hasAttribute("tabindex")) {
+              el.removeAttribute("tabindex");
+              el.removeAttribute("role");
+              el.removeAttribute("aria-label");
+            }
+          }
+        }
+
+        var timer;
+        function schedule() {
+          clearTimeout(timer);
+          timer = setTimeout(update, 150);
+        }
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", update);
+        } else {
+          update();
+        }
+        window.addEventListener("load", update);
+        window.addEventListener("resize", schedule);
+      })();
+    </script>
 
   </body>
 
