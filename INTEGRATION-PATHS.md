@@ -16,7 +16,7 @@ NicePay For Startups offers three ways to charge a card. They're distinguished b
       <th scope="row">Card details held by</th>
       <td>The customer, entered on NicePay's Hosted Payment Page</td>
       <td>The merchant (MOTO / manually entered)</td>
-      <td>The merchant, once, to register a reusable token</td>
+      <td>The merchant, when your server registers the token with <code>/v1/subscribe/regist</code>. The customer, on NicePay's Hosted Payment Page, when the token is registered through Checkout with a billing <code>method</code> such as <code>cardBill</code>.</td>
     </tr>
     <tr>
       <th scope="row">Entry point</th>
@@ -46,7 +46,7 @@ NicePay For Startups offers three ways to charge a card. They're distinguished b
       <th scope="row">PCI scope for the merchant</th>
       <td>Minimal: your server never touches raw card numbers</td>
       <td><a href="./info/nicepay-info-pci-dss.html">Full</a>: your server receives and encrypts raw card data</td>
-      <td>Full at registration, minimal afterward (only the token)</td>
+      <td>Same as Key-in for the system that calls <code>/v1/subscribe/regist</code>. Same as Checkout when the card is registered through Checkout. Each charge sends only the token (<code>bid</code>).</td>
     </tr>
     <tr>
       <th scope="row">Guide</th>
