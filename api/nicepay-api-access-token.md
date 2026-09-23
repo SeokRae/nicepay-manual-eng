@@ -9,16 +9,16 @@
 - The token is valid for 30 minutes.   
 - Therefore, after the initial token is generated, the same token will be returned for 30 minutes, and if a new token is requested after 30 minutes, a newly generated token will be issued.  
 
-We recommend testing against the [Sandbox](../info/nicepay-info-sandbox.md) first, then switching to Live once verified. The example below uses the Live domain (`api.nicepay.co.kr`); swap it for `sandbox-api.nicepay.co.kr` to test in Sandbox.
+We recommend testing against the [Sandbox](../info/nicepay-info-sandbox.md) first, then switching to Live once verified. The example below calls Sandbox (`sandbox-api.nicepay.co.kr`) with the public Sandbox key from [Test key information](../info/nicepay-info-sandbox.md#test-key-information). For Live, use `api.nicepay.co.kr` and your own Live key.
 
 <br>
 
 ### Access token API Call example
 
 ```shell
-curl --location --request POST 'https://api.nicepay.co.kr/v1/access-token' \
+curl --location --request POST 'https://sandbox-api.nicepay.co.kr/v1/access-token' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Basic UjFfNzc5ODhmMzMxYTFhNDExYjhlMjE1ZDA3ZTJkZGRmNWM6YmUwZDdlMDBiZjQzNGJhMWJiZWM3ZjgyNzY2MmFiMzA='
+--header 'Authorization: Basic UzFfY2UxYmIxZWJlYmM0NGZlMWEzZjdjZWM5NzZjODNlYTc6MTNlOTY5YTc3YTA1NDU3OTkyNDJjY2MzOTE1MjQzZDM='
 ```
 
 ```shell

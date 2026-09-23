@@ -1,6 +1,8 @@
 ## URI LIST
 All endpoints for this API. Click a link in the table below for that endpoint's parameter reference.
 
+The Sandbox column is the one list of Sandbox availability in this manual. An endpoint marked Yes still answers with simulated data in Sandbox, see [Sandbox limitations](../info/nicepay-info-sandbox.md#sandbox-limitations).
+
 | API                                                               |     Method      |               Endpoint              |   Sandbox |
 |:------------------------------------------------------------------|:-------------:|:--------------------------------------|:---------:|
 | [Create checkout session](./nicepay-api-payment-window-url.md#hosted-payment-page-request-parameter) |      `POST`    | `/v1/checkout` |     Yes     |
@@ -20,9 +22,9 @@ All endpoints for this API. Click a link in the table below for that endpoint's 
 | [Transaction Status Inquiry-sessionId](./nicepay-api-retrieve.md#transaction-status-inquiry-with-sessionid)   |  `GET`     |     `/v1/payments/checkout/{sessionId}`     |     Yes     |
 | [Card event inquiry](./nicepay-api-retrieve.md#card-event-api)               |       `GET`     |     `/v1/card/event`                  |     Dummy data     |
 | [Card installment inquiry](./nicepay-api-retrieve.md#interest-free-installment-information-api)       |       `GET`     |     `/v1/card/interest-free`                  |     Dummy data     |
-| [Webhook creation](./nicepay-api-webhook.md) |      `POST`    |     `/v1/webhook`      |     No     |
-| [Webhook Inquiry](./nicepay-api-webhook.md) |      `GET`    |    `/v1/webhook`     |     No     |
-| [Webhook delete](./nicepay-api-webhook.md) |      `POST`    |      `/v1/webhook/{method}/delete`      |     No     |
-| [Webhook update](./nicepay-api-webhook.md) |      `POST`    |      `/v1/webhook/{method}/update`      |     No     |
+| [Webhook creation](./nicepay-api-webhook.md) |      `POST`    |     `/v1/webhook`      |     Yes     |
+| [Webhook Inquiry](./nicepay-api-webhook.md) |      `GET`    |    `/v1/webhook`     |     Yes     |
+| [Webhook delete](./nicepay-api-webhook.md) |      `POST`    |      `/v1/webhook/{method}/delete`      |     Yes     |
+| [Webhook update](./nicepay-api-webhook.md) |      `POST`    |      `/v1/webhook/{method}/update`      |     Yes     |
 | [Transactions](./nicepay-api-reconciliation.md) |      `GET`    |      `/v1/transactions`      |     No     |
 | [Settlement](./nicepay-api-reconciliation.md) |      `GET`    |      `/v1/settlements`     |     No     |

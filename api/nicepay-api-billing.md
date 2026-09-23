@@ -1,5 +1,14 @@
 ## Recurring Payment
 
+This page covers four APIs:
+
+- [Create Token](#recurring-payment---create-token) (`POST /v1/subscribe/regist`): register a card once and receive a token (`bid`).
+- [Authorization](#recurring-payment---authorization) (`POST /v1/subscribe/{bid}/payments`): charge the token each time a payment is due.
+- [Delete Token](#delete-token) (`POST /v1/subscribe/{bid}/expire`): delete the token when the subscription ends.
+- [Bid Status Inquiry](#bid-status-inquiry) (`POST /v1/subscribe/{bid}/status`): check whether a Toss Pay token is still active.
+
+Create Token sends raw card details from your server. See [PCI-DSS Overview](../info/nicepay-info-pci-dss.md) for what that generally implies, and confirm the specific requirements for your account with NicePay. A token registered through Checkout with a billing `method` such as `cardBill` keeps card details off your server, see [Which Integration Should I Use?](../INTEGRATION-PATHS.md).
+
 <br>
 
 ## Recurring Payment - Create Token
@@ -16,7 +25,7 @@ After that, if you pass the encrypted Token(bid) through the `/v1/subscribe/{bid
 **Before you start**, you'll need:
 - A [Client and Secret key](../info/nicepay-info-key.md) issued from the NicePay admin console
 - An `Authorization` header built from those keys, see [Basic and Bearer authentication](../info/nicepay-info-basic-token.md)
-- We recommend testing against the [Sandbox](../info/nicepay-info-sandbox.md) first, then switching to Live once verified
+- We recommend testing against the Sandbox first, then switching to Live once verified. See [Recurring Payment in Sandbox](../info/nicepay-info-sandbox.md#recurring-payment-in-sandbox) for what Sandbox checks and returns
 
 <br>
 
@@ -28,23 +37,24 @@ After that, if you pass the encrypted Token(bid) through the `/v1/subscribe/{bid
 **Default (AES-128, no `encMode`)**
 
 ```bash
-curl -X POST 'https://api.nicepay.co.kr/v1/subscribe/regist' 
+curl -X POST 'https://sandbox-api.nicepay.co.kr/v1/subscribe/regist' 
 -H 'Content-Type: application/json' 
--H 'Authorization: Basic ZWVjOGQzNTA4Y2IwNDI1ZGI5NTViMzBiZjM5...' 
+-H 'Authorization: Basic UzFfY2UxYmIxZWJlYmM0NGZlMWEzZjdjZWM5NzZjODNlYTc6MTNlOTY5YTc3YTA1NDU3OTkyNDJjY2MzOTE1MjQzZDM=' 
 --data '{
     "encData": "2127975b6d82c36136ba8197a997a994f6c086ff75a6d35e514c54a1e686545e60b76f11bec706de1082e43dd74ae5c5f0709dc1eca6c3cd20e1c0e9e9b7a85c6505461c91c865d82072e41ba5284bd7",
     "orderId": "merchant-order-id"
 }'
 ```
 
+> These examples call Sandbox with the public Sandbox key from [Test key information](../info/nicepay-info-sandbox.md#test-key-information). The `encData` values are placeholders that NicePay cannot decrypt (`F101`): encrypt your own card fields with the Sandbox Secret key, as in the encryption examples below.  
 > `encData` here is encrypted with AES-128 (see [encData Field Encryption Example (AES-128)](#encdata-field-encryption-example-aes-128) below). No `encMode` field is sent, so the default algorithm applies.
 
 **AES-256 (`encMode=A2`)**
 
 ```bash
-curl -X POST 'https://api.nicepay.co.kr/v1/subscribe/regist' 
+curl -X POST 'https://sandbox-api.nicepay.co.kr/v1/subscribe/regist' 
 -H 'Content-Type: application/json' 
--H 'Authorization: Basic ZWVjOGQzNTA4Y2IwNDI1ZGI5NTViMzBiZjM5...' 
+-H 'Authorization: Basic UzFfY2UxYmIxZWJlYmM0NGZlMWEzZjdjZWM5NzZjODNlYTc6MTNlOTY5YTc3YTA1NDU3OTkyNDJjY2MzOTE1MjQzZDM=' 
 --data '{
     "encData": "C41346B71984...",
     "orderId": "merchant-order-id",
@@ -153,6 +163,7 @@ Related error codes: `A253`, `F101`, `F110`, `F115`, `F116`, `U317`, see [API Re
 - Token(bid) authorization means payment (approval) processing through the issued Token(bid).
 - If you call the `/v1/subscribe/{bid}/payments` API through the registered Token(bid), payment (approval) will be processed.
 - For Token(bid) approval, the `Create Token`process is required.
+- Available in Sandbox, see [Recurring Payment in Sandbox](../info/nicepay-info-sandbox.md#recurring-payment-in-sandbox).
 
 <br>
 
@@ -161,9 +172,9 @@ Related error codes: `A253`, `F101`, `F110`, `F115`, `F116`, `U317`, see [API Re
 
 ### Token authorization example
 ```bash
-curl -X POST 'https://api.nicepay.co.kr/v1/subscribe/BIKYnicuntct2m2107272028532670/payments' 
+curl -X POST 'https://sandbox-api.nicepay.co.kr/v1/subscribe/BIKYnicuntct2m2107272028532670/payments' 
 -H 'Content-Type: application/json' 
--H 'Authorization: Basic ZWVjOGQzNTA4Y2IwNDI1ZGI5NTViMzBi...' 
+-H 'Authorization: Basic UzFfY2UxYmIxZWJlYmM0NGZlMWEzZjdjZWM5NzZjODNlYTc6MTNlOTY5YTc3YTA1NDU3OTkyNDJjY2MzOTE1MjQzZDM=' 
 --data '{
     "orderId": "merchant-order-id",
     "amount": 1004,
@@ -311,6 +322,7 @@ The table below lists the error codes of `/v1/subscribe/{bid}/payments`. See [AP
 `Delete Token` refers to the process of deleting the issued Token(bid).  
 If you pass the registered billkey to the `/v1/subscribe/{bid}/expire` API, the Token(bid) will be deleted.  
 Deleted Token(bid) cannot be restored or approved. 
+Available in Sandbox, see [Recurring Payment in Sandbox](../info/nicepay-info-sandbox.md#recurring-payment-in-sandbox).
 
 <br>
 
@@ -322,9 +334,9 @@ Deleted Token(bid) cannot be restored or approved.
 ### Delete Token(bid) Example code
 
 ``` bash
-curl -X POST 'https://api.nicepay.co.kr/v1/subscribe/BIKYnicuntct2m2107272028532670/expire' 
+curl -X POST 'https://sandbox-api.nicepay.co.kr/v1/subscribe/BIKYnicuntct2m2107272028532670/expire' 
 -H 'Content-Type: application/json' 
--H 'Authorization: Basic ZWVjOGQzNTA4Y2IwNDI1ZGI5NTViMzBiZjM...' 
+-H 'Authorization: Basic UzFfY2UxYmIxZWJlYmM0NGZlMWEzZjdjZWM5NzZjODNlYTc6MTNlOTY5YTc3YTA1NDU3OTkyNDJjY2MzOTE1MjQzZDM=' 
 --data '{
     "orderId": "your-order-id"
 }'
@@ -392,7 +404,7 @@ Related error codes: `U115`, `A255`, see [API Response code](../code/nicepay-cod
 If you pass the registered billkey to the `/v1/subscribe/{bid}/status` API, NicePay returns its current status.
 
 > **⚠️ Important:** This API currently supports Toss Pay-issued tokens only (`method: tosspayBill`); any other `method` value is rejected with `U119`.  
-> This API does not work in [Sandbox](../info/nicepay-info-sandbox.md#base-url-information-for-sandbox-and-live), because Sandbox cannot issue Toss Pay tokens.  
+> This API does not work in [Sandbox](../info/nicepay-info-sandbox.md#sandbox-limitations), because Sandbox cannot issue Toss Pay tokens.  
 
 <br>
 
@@ -401,7 +413,7 @@ If you pass the registered billkey to the `/v1/subscribe/{bid}/status` API, Nice
 ```bash
 curl -X POST 'https://api.nicepay.co.kr/v1/subscribe/BIKYnicuntct2m2107272028532670/status' 
 -H 'Content-Type: application/json' 
--H 'Authorization: Basic ZWVjOGQzNTA4Y2IwNDI1ZGI5NTViMzBiZjM...' 
+-H 'Authorization: Basic <credentials>' 
 --data '{
     "orderId": "your-order-id",
     "method": "tosspayBill"

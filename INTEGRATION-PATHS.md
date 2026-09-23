@@ -1,6 +1,6 @@
 ## Which Integration Should I Use?
 
-NicePay For Startups offers three ways to charge a card. They're distinguished by **who holds the card details**, and that single question decides which one fits your use case.
+NicePay For Startups offers three integration paths. They're distinguished by **who holds the card details**, and that single question decides which one fits your use case. They also differ in the payment methods they take, see the Payment methods row below.
 
 <table>
   <thead>
@@ -17,6 +17,12 @@ NicePay For Startups offers three ways to charge a card. They're distinguished b
       <td>The customer, entered on NicePay's Hosted Payment Page</td>
       <td>The merchant (MOTO / manually entered)</td>
       <td>The merchant, when your server registers the token with <code>/v1/subscribe/regist</code>. The customer, on NicePay's Hosted Payment Page, when the token is registered through Checkout with a billing <code>method</code> such as <code>cardBill</code>.</td>
+    </tr>
+    <tr>
+      <th scope="row">Payment methods</th>
+      <td>Cards, bank transfer, virtual accounts, mobile phone billing and Korean easy-pay wallets, chosen with <a href="./api/nicepay-api-payment-window-url.html#hosted-payment-page-request-parameter"><code>method</code></a></td>
+      <td>Cards only</td>
+      <td>Cards registered with <code>/v1/subscribe/regist</code>. Cards and some easy-pay wallets registered through Checkout with a billing <code>method</code></td>
     </tr>
     <tr>
       <th scope="row">Entry point</th>
@@ -57,7 +63,7 @@ NicePay For Startups offers three ways to charge a card. They're distinguished b
   </tbody>
 </table>
 
-Key-in Payment is not provided in Sandbox; see [Sandbox](./info/nicepay-info-sandbox.md#base-url-information-for-sandbox-and-live) for the full per-API availability table.
+Key-in Payment is not provided in Sandbox. See [URI LIST](./api/nicepay-api-uri-list.md) for the Sandbox availability of every endpoint, and [Sandbox limitations](./info/nicepay-info-sandbox.md#sandbox-limitations) for what else differs from Live.
 
 <br>
 

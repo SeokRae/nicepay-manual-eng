@@ -4,6 +4,8 @@ Sandbox and Live have a difference in domain and Client ID.
 Please use it after checking whether the issued Client ID is for Sandbox or Live.   
 Sandbox responds with TEST data, and no actual approval occurs.  
 
+Your own Sandbox keys are on the `Development Information` tab of your test merchant in the admin console, see [Where to get your keys](./nicepay-info-key.md#where-to-get-your-keys). To try the API before you sign up, use the public key in [Test key information](#test-key-information).
+
 <br>
 
 ### Advantages of sandbox
@@ -11,6 +13,23 @@ Sandbox responds with TEST data, and no actual approval occurs.
 - Immediate test and development are possible.  
 - It is possible to test comfortably because actual payment does not occur.  
 - A test system that does not affect the live environment.  
+
+<br>
+
+### Sandbox limitations
+
+Sandbox differs from Live in these ways. [URI LIST](../api/nicepay-api-uri-list.md) shows the Sandbox availability of every endpoint.
+
+- No payment reaches a card company or bank. NicePay simulates the approval and returns fixed values: card code `04`, card number `123412******1234`, lump-sum payment (`cardQuota` `0`), and approval number `000000`.
+- Every Sandbox payment is in KRW, whatever `currency` the request sends.
+- Key-in Payment is not provided. See [Key-in Payment](../api/nicepay-api-keyin.md).
+- Only full cancellation works. A request with `cancelAmt` fails, see [Cancel](#cancel).
+- Recurring Payment registers card tokens with `/v1/subscribe/regist` only. Naver Pay, Kakao Pay and Toss Pay recurring payments and the Bid Status Inquiry are not available. See [Recurring Payment in Sandbox](#recurring-payment-in-sandbox).
+- The card event and interest-free installment inquiries return dummy data.
+- With `fakeAuth` set to `true` in Create checkout, the Hosted Payment Page is a dummy page without card company authentication. See [Request a checkout page](#request-a-checkout-page).
+- Transaction Search and Settlement are not available.
+
+Webhooks work in Sandbox. You can register webhook URLs with your Sandbox key, and NicePay sends the payment event for a Sandbox payment to them. This manual has not confirmed that cancellation events are sent in Sandbox. See [Webhook](../api/nicepay-api-webhook.md).
 
 <br>
 
@@ -25,25 +44,7 @@ Sandbox and Live use different domains for the API and the Hosted Payment Page. 
 - Sandbox : sandbox-api.nicepay.co.kr  
 - Live : api.nicepay.co.kr  
 
-| API                                             | Method | Endpoint                                   | Sandbox          |
-|-------------------------------------------------|--------|--------------------------------------------|------------------|
-| Create checkout session                         | `POST` | `/v1/checkout`                             | Yes              |
-| Retrieve checkout session                       | `GET`  | `/v1/checkout/{sessionId}`                 | Yes              |
-| Expire checkout session                         | `POST` | `/v1/checkout/{sessionId}/expire`          | Yes              |
-| Key-in Payment                                  | `POST` | `/v1/key-in/payments`                      | No               |
-| Recurring payment: Token Issue                  | `POST` | `/v1/subscribe/regist`                     | Yes              |
-| Recurring Payment: Token authorization          | `POST` | `/v1/subscribe/{bid}/payments`             | Yes              |
-| Recurring Payment: Token delete                 | `POST` | `/v1/subscribe/{bid}/expire`               | Yes              |
-| Recurring Payment: Bid status inquiry           | `POST` | `/v1/subscribe/{bid}/status`               | No               |
-| AccessToken Generation                          | `POST` | `/v1/access-token`                         | Yes              |
-| Cancel request with session id                  | `POST` | `/v1/payments/checkout/{sessionId}/cancel` | Full cancel only |
-| Cancel request with tid                         | `POST` | `/v1/payments/{tid}/cancel`                | Full cancel only |
-| Transaction Status Inquiry-Authorization amount | `POST` | `/v1/check-amount/{tid}`                   | Yes              |
-| Transaction Status Inquiry-Transaction status   | `GET`  | `/v1/payments/{tid}`                       | Yes              |
-| Transaction Status Inquiry-orderId              | `GET`  | `/v1/payments/find/{orderId}`              | Yes              |
-| Transaction Status Inquiry-sessionId            | `GET`  | `/v1/payments/checkout/{sessionId}`        | Yes              |
-
-Key-in Payment is not provided in Sandbox. Test it directly against Live once your merchant account is enabled for manual-entry payments. See [Key-in Payment](../api/nicepay-api-keyin.md).
+See [URI LIST](../api/nicepay-api-uri-list.md) for the Sandbox availability of each endpoint, and [Sandbox limitations](#sandbox-limitations) for how Sandbox responses differ from Live.
 
 <br>
 
@@ -67,14 +68,7 @@ Secret : 13e969a77a0545799242ccc3915243d3
 Authorization : Basic UzFfY2UxYmIxZWJlYmM0NGZlMWEzZjdjZWM5NzZjODNlYTc6MTNlOTY5YTc3YTA1NDU3OTkyNDJjY2MzOTE1MjQzZDM= 
 ```
 
-```bash
-// Live Test key
-// pay.nicepay.co.kr or api.nicepay.co.kr
-
-Client : R1_94eb3a4a30264fdba82ce0d05b465012
-Secret : 12cde12449c64497a86104759b8306b6
-Authorization : Basic UjFfOTRlYjNhNGEzMDI2NGZkYmE4MmNlMGQwNWI0NjUwMTI6MTJjZGUxMjQ0OWM2NDQ5N2E4NjEwNDc1OWI4MzA2YjY=
-```
+Everyone who reads this manual shares this key. Do not use it to register, update or delete webhook URLs, because that changes the settings for every reader. Use your own Sandbox key for that. There is no public Live key: in Live, use the keys of your own Live merchant.
 
 <br><br>
 
@@ -87,7 +81,7 @@ The steps below create a checkout session and open the Hosted Payment Page in Sa
 1. Your Merchant Server creates a `sessionId` and an `orderId` for the order. NicePay does not generate them.
 2. Your Merchant Server calls Create checkout (`POST /v1/checkout`) with these two values and the other request parameters.
 3. NicePay returns the Hosted Payment Page address in the `url` field of the response. Your Merchant Server redirects the customer to `url` exactly as returned. Do not build this address yourself.
-4. The customer pays on the Hosted Payment Page. In Sandbox, card company authentication is skipped, and the customer's browser sends the payment result to your `returnUrl`.
+4. The customer pays on the Hosted Payment Page, and the customer's browser sends the payment result to your `returnUrl`. With `fakeAuth` set to `true`, the page is a dummy page that skips card company authentication. Without it, the customer goes through the regular card company authentication, and NicePay then simulates the approval.
 
 
 Please refer to the link for more detailed information.  
@@ -179,7 +173,7 @@ https://sandbox-pay.nicepay.co.kr/v1/fake/pay/641d555b91ae1
 
 <a href="../image/sandbox-checkout.png"><img alt="Screenshot of the Sandbox checkout page, a dummy version without real card company authentication" src="../image/sandbox-checkout.png" width="715px"></a>
 
-- This is a dummy page without actual card company authentication.  
+- This session was created with `fakeAuth` set to `true`, so this is a dummy page without actual card company authentication.  
 - If you press Next, a success message will be returned in response.  
 - And If you press Cancel, a random failure message will be returned in response.  
 
@@ -819,3 +813,15 @@ Content-type: application/json;charset=utf-8
     "cashReceipts": null
 }
 ```
+
+<br><br>
+
+## Recurring Payment in Sandbox
+
+Recurring Payment works in Sandbox for card tokens. Call the endpoints below on `sandbox-api.nicepay.co.kr` with a Sandbox key, and encrypt `encData` with the Sandbox Secret key of that key. The request and response fields are the same as in [Recurring Payment](../api/nicepay-api-billing.md).
+
+1. **Register a token** with [`POST /v1/subscribe/regist`](../api/nicepay-api-billing.md#create-tokenbid-request-parameter). Sandbox decrypts `encData` and checks that the fields your merchant's level requires are present and not empty, as in [encData Field Details](../api/nicepay-api-billing.md#encdata-field-details): a missing field fails with [`U317`](../code/nicepay-code.md#api-response-code), and `encData` that it cannot decrypt fails with [`F101`](../code/nicepay-code.md#api-response-code). Sandbox does not check the card number itself or whether the expiry date is in the future, and there is no list of test card numbers. It does not store the card you send: the response has a new `bid` and `cardCode` `04` whatever card you sent.
+2. **Charge the token** with [`POST /v1/subscribe/{bid}/payments`](../api/nicepay-api-billing.md#recurring-payment---authorization-request-parameter) and the `bid` from step 1. As in Live, a used `orderId` fails with [`U112`](../code/nicepay-code.md#api-response-code). An installment of more than one month (`cardQuota` greater than `1`) with an `amount` below 50,000 fails with [`3024`](../code/nicepay-code.md#api-response-code). The card fields in the response are the fixed Sandbox values in [Sandbox limitations](#sandbox-limitations).
+3. **Delete the token** with [`POST /v1/subscribe/{bid}/expire`](../api/nicepay-api-billing.md#delete-tokenbid-request-parameter). After that, a charge or a delete with the same `bid` fails with [`U309`](../code/nicepay-code.md#api-response-code).
+
+The [Bid Status Inquiry](../api/nicepay-api-billing.md#bid-status-inquiry) does not work in Sandbox, and Sandbox cannot register Naver Pay, Kakao Pay or Toss Pay recurring tokens through Checkout.
