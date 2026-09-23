@@ -18,14 +18,14 @@ However, for cash transactions such as virtual accounts, refund account informat
 **Before you start**, you'll need:
 - A [Client and Secret key](../info/nicepay-info-key.md) issued from the NicePay admin console
 - An `Authorization` header built from those keys, see [Basic and Bearer authentication](../info/nicepay-info-basic-token.md)
-- We recommend testing against the [Sandbox](../info/nicepay-info-sandbox.md) first, then switching to Live once verified. The example below uses the Live domain (`api.nicepay.co.kr`); swap it for `sandbox-api.nicepay.co.kr` to test in Sandbox.
+- We recommend testing against the [Sandbox](../info/nicepay-info-sandbox.md) first, then switching to Live once verified. The example below calls Sandbox (`sandbox-api.nicepay.co.kr`) with the public Sandbox key from [Test key information](../info/nicepay-info-sandbox.md#test-key-information). For Live, use `api.nicepay.co.kr` and your own Live key. Sandbox takes full cancellations only.
 
 <br>
 
 ### Cancel with session id example
 
 ```bash
-curl --location 'https://api.nicepay.co.kr/v1/payments/checkout/641d555b91ae1/cancel' \
+curl --location 'https://sandbox-api.nicepay.co.kr/v1/payments/checkout/641d555b91ae1/cancel' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Basic UzFfY2UxYmIxZWJlYmM0NGZlMWEzZjdjZWM5NzZjODNlYTc6MTNlOTY5YTc3YTA1NDU3OTkyNDJjY2MzOTE1MjQzZDM=' \
 --data '{

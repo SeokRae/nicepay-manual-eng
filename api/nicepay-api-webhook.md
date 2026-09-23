@@ -4,9 +4,9 @@ You can use Webhook to implement additional business logic by receiving API even
 
 - If you use a payment method such as virtual account that causes a time difference between virtual account creation and deposit time, webhook implementation is absolutely necessary.
 
-> **⚠️ Important:** Webhook registration/inquiry/delete/update is not available in [Sandbox](../info/nicepay-info-sandbox.md); test against Live once your integration is ready.  
+> **⚠️ Important:** Webhook registration, inquiry, delete and update work in [Sandbox](../info/nicepay-info-sandbox.md#sandbox-limitations) and in Live. Register Sandbox URLs with your own Sandbox key, not the public test key: everyone who reads this manual shares that key, so a change to it changes their settings too. URLs registered in Sandbox do not carry over to Live, so register them again with your Live key.  
 > When you register or update a webhook URL, NicePay first sends a test request to that URL, and your endpoint must answer it within 5 seconds. The request fails with [`U336`](../code/nicepay-code.md#api-response-code) if NicePay cannot reach the URL or gets no answer in time, `U337` if the response status is not `200`, and `U338` if the response body is not `OK`. The test request is not a real payment: answer it with HTTP `200` and `OK`, and do not apply it to an order.  
-> To test payment and cancellation events, make a small Live payment with a payment method that has a registered webhook URL, then cancel it. NicePay sends a webhook for the payment and another for the cancellation.  
+> To test the payment event, make a Sandbox payment with a payment method that has a registered webhook URL. This manual has not confirmed that NicePay sends cancellation events in Sandbox, so to test both, make a small Live payment, then cancel it. NicePay sends a webhook for the payment and another for the cancellation.  
 
 <br>
 
@@ -381,10 +381,12 @@ Same fields and rules as [Card information](./nicepay-api-retrieve.md#card-infor
 <br><br>
 
 ### Create a webhook example code
+The examples below call Sandbox (`sandbox-api.nicepay.co.kr`). Replace `<credentials>` with the value built from your own Sandbox key, see [Basic and Bearer authentication](../info/nicepay-info-basic-token.md). For Live, use `api.nicepay.co.kr` and your Live key.
+
 ```bash
-curl --location --request POST 'https://api.nicepay.co.kr/v1/webhook' \
+curl --location --request POST 'https://sandbox-api.nicepay.co.kr/v1/webhook' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Basic UjFfOTRlYjNhNGEzMDI2NGZkYmE4MmNlMGQwNWI0NjUwMTI6MTJjZGUxMjQ0OWM2NDQ5N2E4NjEwNDc1OWI4MzA2YjY=' \
+--header 'Authorization: Basic <credentials>' \
 --data-raw '{"method":"vbank","url":"https://your-webhook.url"}'
 ```
 
@@ -439,9 +441,9 @@ Related error codes: `U100`, `U111`, `U133`, `U333`, `U334`, `U335`, `U336`, `U3
 
 ### Retrieve a webhook example code
 ```bash
-curl --location --request GET 'https://api.nicepay.co.kr/v1/webhook' \
+curl --location --request GET 'https://sandbox-api.nicepay.co.kr/v1/webhook' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Basic UjFfOTRlYjNhNGEzMDI2NGZkYmE4MmNlMGQwNWI0NjUwMTI6MTJjZGUxMjQ0OWM2NDQ5N2E4NjEwNDc1OWI4MzA2YjY=' \
+--header 'Authorization: Basic <credentials>' \
 ```
 
 ```bash
@@ -494,9 +496,9 @@ Related error codes: `U100`, `U111`, `U133`, `U333`, `U334`, `U335`, `U336`, `U3
 
 ### Delete a webhook example code
 ```bash
-curl --location --request POST 'https://api.nicepay.co.kr/v1/webhook/{method}/delete' \
+curl --location --request POST 'https://sandbox-api.nicepay.co.kr/v1/webhook/{method}/delete' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Basic UjFfOTRlYjNhNGEzMDI2NGZkYmE4MmNlMGQwNWI0NjUwMTI6MTJjZGUxMjQ0OWM2NDQ5N2E4NjEwNDc1OWI4MzA2YjY=' \
+--header 'Authorization: Basic <credentials>' \
 ```
 
 ```bash
@@ -543,9 +545,9 @@ Related error codes: `U100`, `U111`, `U133`, `U333`, `U334`, `U335`, `U336`, `U3
 
 ### Update a webhook example code
 ```bash
-curl --location --request POST 'https://api.nicepay.co.kr/v1/webhook/{method}/update' \
+curl --location --request POST 'https://sandbox-api.nicepay.co.kr/v1/webhook/{method}/update' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Basic UjFfOTRlYjNhNGEzMDI2NGZkYmE4MmNlMGQwNWI0NjUwMTI6MTJjZGUxMjQ0OWM2NDQ5N2E4NjEwNDc1OWI4MzA2YjY=' \
+--header 'Authorization: Basic <credentials>' \
 --data '{"url":"https://your-new-webhook.url"}'
 ```
 

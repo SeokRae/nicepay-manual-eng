@@ -40,10 +40,12 @@ New to Checkout? The [Quick Start Guide](../QUICKSTART.md) walks through this en
 
 ### Create Hosted Payment Page Example Code
 
+This example calls Sandbox (`sandbox-api.nicepay.co.kr`) with the public Sandbox key from [Test key information](../info/nicepay-info-sandbox.md#test-key-information). For Live, use `api.nicepay.co.kr` and your own Live key.
+
 ```bash
-curl --location 'https://api.nicepay.co.kr/v1/checkout' \
+curl --location 'https://sandbox-api.nicepay.co.kr/v1/checkout' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Basic UjFfOTRlYjN...' \
+--header 'Authorization: Basic UzFfY2UxYmIxZWJlYmM0NGZlMWEzZjdjZWM5NzZjODNlYTc6MTNlOTY5YTc3YTA1NDU3OTkyNDJjY2MzOTE1MjQzZDM=' \
 --data '{
     "method": "cardAndEasyPay",
     "sessionId" : "unique-sessionId-001",
@@ -63,7 +65,7 @@ curl --location 'https://api.nicepay.co.kr/v1/checkout' \
     "resultMsg": "정상 처리되었습니다.",
     "sessionId": "unique-sessionId-001",
     "orderId": "order-id-unique-order-001",
-    "clientId": "R1_94eb3a4a30264fdba82ce0d05b465012",
+    "clientId": "S1_ce1bb1ebebc44fe1a3f7cec976c83ea7",
     "tid": null,
     "amount": 1004,
     "goodsName": "test",
@@ -94,7 +96,7 @@ curl --location 'https://api.nicepay.co.kr/v1/checkout' \
     "directReceiptNo": null,
     "appScheme": null,
     "method": "cardAndEasyPay",
-    "url": "https://pay.nicepay.co.kr/v1/checkout/pay/G1cKzR8pQmT3xYVn5A9Lse2f/unique-sessionId-001",
+    "url": "https://sandbox-pay.nicepay.co.kr/v1/checkout/pay/G1cKzR8pQmT3xYVn5A9Lse2f/unique-sessionId-001",
     "messageSource": "nicepay"
 }
 ```
@@ -131,6 +133,7 @@ Required: Yes = always send; No = optional; Conditional = send in the case state
 |   `language`    | String  | No |  2	  | Language shown in the payment page<br> EN : English / CN : Chinese / KO : Korean (Default)| 
 | `returnCharSet` | String  | No | 10	  | Character set of the result page that sends the `returnUrl` callback: `utf-8` (default) or `euc-kr`<br>Keep `utf-8`. EUC-KR cannot represent many non-Korean characters, such as accented Latin letters (é, ñ) and simplified Chinese, in fields such as `buyerName` and `goodsName`<br>This value does not change the Create checkout response, which is always UTF-8, or the Bytes limits, which NicePay counts in UTF-8. A value other than `utf-8`, `euc-kr`, `UTF-8` or `EUC-KR` fails with [`U132`](../code/nicepay-code.md#api-response-code)	 | 
 |   `skinType`    | String  | No | 10	  | Skin Setting for Payment Page <br>red/green/purple/gray/dark | 
+|   `fakeAuth`    | Boolean | No |  -	  | Sandbox testing only<br>`true`: the returned `url` opens a dummy Hosted Payment Page without card company authentication, see [Request a checkout page](../info/nicepay-info-sandbox.md#request-a-checkout-page)<br>Omitted or `false` (default): the regular Hosted Payment Page. In Sandbox the customer still goes through card company authentication, and NicePay simulates the approval<br>Never send it in Live. NicePay does not reject it there, but the returned `url` then points to the dummy page instead of the regular Hosted Payment Page<br>The response does not echo this field | 
 
 <br>
 

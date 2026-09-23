@@ -1,5 +1,11 @@
 # Transaction Status Inquiry
 
+This page covers these APIs. All of them are available in Sandbox, and the two card inquiries return dummy data there.
+
+- [Transaction Status Inquiry](#transaction-status-inquiry-with-tidtransaction-id): the full record of one payment, including its cancellations. Look it up by `tid` when you stored it. Use `orderId` when your server lost the payment result before it stored `tid`, and `sessionId` for a Checkout session.
+- [Check Authorization Amount](#check-authorization-amount): only whether an `amount` matches the approved amount of a `tid`.
+- [Card event API](#card-event-api) and [Interest-free installment information API](#interest-free-installment-information-api): card company promotions to show the customer before the payment.
+
 ## Check Transaction Status 
 
 <a href="../image/payment-retrieve.svg"><img alt="Sequence diagram of four calls the Merchant Server can make: Check Authorization Amount, or Transaction Status Inquiry by tid, orderId, or sessionId" src="../image/payment-retrieve.svg" width="800px"></a>
@@ -11,16 +17,16 @@ It is recommended to use the Transaction Status Inquiry API in the following cas
 - In case of suspicion of forgery and alteration of data in the payment (approval).
 - When it is necessary to check the cancellation balance of a payment (approval).
 
-We recommend testing against the [Sandbox](../info/nicepay-info-sandbox.md) first, then switching to Live once verified. The examples below use the Live domain (`api.nicepay.co.kr`); swap it for `sandbox-api.nicepay.co.kr` to test in Sandbox.
+We recommend testing against the [Sandbox](../info/nicepay-info-sandbox.md) first, then switching to Live once verified. The examples below call Sandbox (`sandbox-api.nicepay.co.kr`) with the public Sandbox key from [Test key information](../info/nicepay-info-sandbox.md#test-key-information). For Live, use `api.nicepay.co.kr` and your own Live key.
 
 <br>
 
 ### Check Transaction Status Example code
 
 ```bash
-curl -X GET 'https://api.nicepay.co.kr/v1/payments/nicuntct1m0101210727200125A056' \
+curl -X GET 'https://sandbox-api.nicepay.co.kr/v1/payments/nicuntct1m0101210727200125A056' \
 -H 'Content-Type: application/json' \
--H 'Authorization: Basic YWYwZDExNjIzNmRmNDM3ZjgzMT...'
+-H 'Authorization: Basic UzFfY2UxYmIxZWJlYmM0NGZlMWEzZjdjZWM5NzZjODNlYTc6MTNlOTY5YTc3YTA1NDU3OTkyNDJjY2MzOTE1MjQzZDM='
 ```
 
 <br>
@@ -38,9 +44,9 @@ curl -X GET 'https://api.nicepay.co.kr/v1/payments/nicuntct1m0101210727200125A05
 ### Check Authorization Amount Example code
 
 ```bash
-curl -X POST 'https://api.nicepay.co.kr/v1/check-amount/nicuntct1m0101210727200708A058' \
+curl -X POST 'https://sandbox-api.nicepay.co.kr/v1/check-amount/nicuntct1m0101210727200708A058' \
 -H 'Content-Type: application/json' \
--H 'Authorization: Basic YWYwZDExNjIzNmRmNDM3Zjgz...' \
+-H 'Authorization: Basic UzFfY2UxYmIxZWJlYmM0NGZlMWEzZjdjZWM5NzZjODNlYTc6MTNlOTY5YTc3YTA1NDU3OTkyNDJjY2MzOTE1MjQzZDM=' \
 --data '{
     "amount" : 1004
 }'
@@ -299,9 +305,9 @@ Use it to show customers which card company to choose.
 ### Card event API Example code
 
 ```bash
-curl -X GET 'https://api.nicepay.co.kr/v1/card/event?amount={your-amount}&useAuth=false&ediDate={ISO 8601}&...' \
+curl -X GET 'https://sandbox-api.nicepay.co.kr/v1/card/event?amount={your-amount}&useAuth=false&ediDate={ISO 8601}&...' \
 -H 'Content-Type: application/json' \
--H 'Authorization: Basic YWYwZDExNjIzNmRmNDM3ZjgzMT...'
+-H 'Authorization: Basic UzFfY2UxYmIxZWJlYmM0NGZlMWEzZjdjZWM5NzZjODNlYTc6MTNlOTY5YTc3YTA1NDU3OTkyNDJjY2MzOTE1MjQzZDM='
 ```
 
 <br>
@@ -367,9 +373,9 @@ Interest-free installment information API can check interest-free about card com
 ### Interest-free installment information API Example code
 
 ```bash
-curl -X GET 'https://api.nicepay.co.kr/v1/card/interest-free?useAuth=true&ediDate={ISO 8601 format date}' \
+curl -X GET 'https://sandbox-api.nicepay.co.kr/v1/card/interest-free?useAuth=true&ediDate={ISO 8601 format date}' \
 -H 'Content-Type: application/json' \
--H 'Authorization: Basic YWYwZDExNjIzNmRmNDM3ZjgzMT...'
+-H 'Authorization: Basic UzFfY2UxYmIxZWJlYmM0NGZlMWEzZjdjZWM5NzZjODNlYTc6MTNlOTY5YTc3YTA1NDU3OTkyNDJjY2MzOTE1MjQzZDM='
 ```
 
 <br>

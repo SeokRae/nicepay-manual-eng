@@ -11,7 +11,7 @@ Key-in (Manual Entry) payment lets you submit a card charge directly with card d
 **Before you start**, you'll need:
 - A [Client and Secret key](../info/nicepay-info-key.md) issued from the NicePay admin console
 - An `Authorization` header built from those keys, see [Basic and Bearer authentication](../info/nicepay-info-basic-token.md)
-- This API has no Sandbox, see the note above; test against Live directly
+- This API has no Sandbox, see the note above; test against Live directly. A Live test charges a real card: cancel each test payment afterwards with [Cancel request with tid](./nicepay-api-cancel.md#cancel-request-parameter-with-tid)
 - Your server will handle raw card numbers directly. See [PCI-DSS Overview](../info/nicepay-info-pci-dss.md) for what that generally implies, and confirm the specific requirements for your account with NicePay
 
 <br>
@@ -26,7 +26,7 @@ Key-in (Manual Entry) payment lets you submit a card charge directly with card d
 ```bash
 curl -X POST 'https://api.nicepay.co.kr/v1/key-in/payments' \
 -H 'Content-Type: application/json' \
--H 'Authorization: Basic ZWVjOGQzNTA4Y2IwNDI1ZGI5NTViMzBiZjM5...' \
+-H 'Authorization: Basic <credentials>' \
 -d '{
     "orderId": "merchant-order-id",
     "amount": 1004,

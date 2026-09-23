@@ -11,7 +11,7 @@ Reading this on GitHub? Open the guide at [seokrae.github.io/nicepay-manual-eng]
 
 ## Quick guide
 
-New to NicePay For Startups? NicePay offers three ways to charge a card. Not sure which fits your service? See **[Which Integration Should I Use?](./INTEGRATION-PATHS.md)**.
+New to NicePay For Startups? NicePay is a Korean payment gateway. You sign up for NicePay For Startups on the [admin console](https://start.nicepay.co.kr/merchant/login/main.do) and take your keys from there, see [Client and Secret key](./info/nicepay-info-key.md). The API has three integration paths. Checkout takes cards, bank transfer, virtual accounts, mobile phone billing and Korean easy-pay wallets through its `method` parameter. Key-in Payment charges cards, and Recurring Payment charges a card or easy-pay wallet registered once as a token. Not sure which fits your service? See **[Which Integration Should I Use?](./INTEGRATION-PATHS.md)**.
 
 Already know you want a standard hosted checkout? Start here: **[Quick Start Guide](./QUICKSTART.md)** (create your first Checkout session and receive a test payment result in about 10 minutes).
 
