@@ -1,17 +1,11 @@
-<div align="right">
-  <a href="https://github.com/nicepayments">
-    <img alt="" src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fnicepayments&count_bg=%233D7CC8&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false">
-  </a>
-</div>
 <h1 align="center">
   NicePay For Startups
 </h1>
 
-<!-- https://github.com/denvercoder1/readme-typing-svg -->
-<p align="center">
-  <img alt="" src="https://readme-typing-svg.herokuapp.com?lines=Hello!+Nicepay+%7Bdevelopers%7D&center=true&width=360&height=50">
-</p>
-                           
+<p align="center">The English integration guide for NicePay For Startups, for merchants outside Korea.</p>
+
+Reading this on GitHub? Open the guide at [seokrae.github.io/nicepay-manual-eng](https://seokrae.github.io/nicepay-manual-eng/): the links below work only on the site.
+
 <br>
 
 
@@ -50,30 +44,32 @@ This is a technical document that includes information about the API.
   <a class="resource-card" href="./api/nicepay-api-webhook.html">Webhook</a>
 </div>
 
-<div align="left"> 
+## Sample code (Korean, 2021)
+These repositories hold Korean-language sample code from 2021, written for NicePay's Korean manual: the JavaScript payment window (`AUTHNICE`) and billing. They do not call the Checkout API in this guide, so use them only as a general reference.
+
+<div align="left">
  <a href="https://github.com/nicepayments/nicepay-node">
-  <img alt="Node.js SDK on GitHub" src="https://img.shields.io/badge/node.js-339933?style=for-the-badge&logo=node.js&logoColor=white">
+  <img alt="Node.js sample code" src="https://img.shields.io/badge/node.js-2E7D32?style=for-the-badge&logo=node.js&logoColor=white">
  </a>
  <a href="https://github.com/nicepayments/nicepay-python">
-  <img alt="Python SDK on GitHub" src="https://img.shields.io/badge/python-3776AB?style=for-the-badge&logo=python&logoColor=white"> 
+  <img alt="Python sample code" src="https://img.shields.io/badge/python-3776AB?style=for-the-badge&logo=python&logoColor=white">
  </a>
  <a href="https://github.com/nicepayments/nicepay-ruby">
-  <img alt="Ruby SDK on GitHub" src="https://img.shields.io/badge/ruby-CC342D?style=for-the-badge&logo=ruby&logoColor=white">
- </a> 
+  <img alt="Ruby sample code" src="https://img.shields.io/badge/ruby-CC342D?style=for-the-badge&logo=ruby&logoColor=white">
+ </a>
  <a href="https://github.com/nicepayments/nicepay-asp">
-  <img alt="ASP SDK on GitHub" src="https://img.shields.io/badge/asp-007396?style=for-the-badge&logo=&logoColor=white">
+  <img alt="ASP sample code" src="https://img.shields.io/badge/asp-007396?style=for-the-badge&logo=&logoColor=white">
  </a>
  <a href="https://github.com/nicepayments/nicepay-java">
-  <img alt="Java SDK on GitHub" src="https://img.shields.io/badge/java-F7DF1E?style=for-the-badge&logo=&logoColor=white">
- </a>  
+  <img alt="Java sample code" src="https://img.shields.io/badge/java-F7DF1E?style=for-the-badge&logo=&logoColor=white">
+ </a>
  <a href="https://github.com/nicepayments/nicepay-php">
-  <img alt="PHP SDK on GitHub" src="https://img.shields.io/badge/php-777BB4?style=for-the-badge&logo=php&logoColor=white">
+  <img alt="PHP sample code" src="https://img.shields.io/badge/php-5B5FA0?style=for-the-badge&logo=php&logoColor=white">
  </a>
  <a href="https://github.com/nicepayments/nicepay-dotnet">
-  <img alt=".NET SDK on GitHub" src="https://img.shields.io/badge/.net-512BD4?style=for-the-badge&logo=.net&logoColor=white">
- </a>  
+  <img alt=".NET sample code" src="https://img.shields.io/badge/.net-512BD4?style=for-the-badge&logo=.net&logoColor=white">
+ </a>
 </div>
-Click a language to view its SDK source code on GitHub.  
 
 <br>
 
