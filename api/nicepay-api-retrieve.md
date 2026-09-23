@@ -62,10 +62,10 @@ Required: Yes = always send; No = optional; Conditional = send in the case state
 
 | Parameter     | Type   | Required | Bytes | Description |
 |:--------------|:------:|:--------:|:------:|:---------|
-| `amount`      |  Int   | Yes |   12   | amount of payment |
-| `ediDate`     | String | No |   -    | Message creation date and time (ISO 8601 format) |
+| `amount`      |  Int   | Yes |   12   | Amount to compare with the approved amount<br>Whole number with no decimal point, in the same unit as the `amount` that NicePay returns for the payment. See [Amounts and currencies](../info/nicepay-info-general.md#amounts-and-currencies) |
+| `ediDate`     | String | Conditional |   -    | Request timestamp (ISO 8601) that your Merchant Server creates, see [Dates in requests](../info/nicepay-info-general.md#dates-in-requests)<br>Required when you send `signData` |
 | `signData`    | String | No |  256   | Forgery Verification Data<br>Rule: hex(sha256(tid + amount + ediDate + SecretKey)) |
-| `returnCharSet` | String | No | 10        | utf-8(Default) / euc-kr |
+| `returnCharSet` | String | No | 10        | `utf-8` (default) or `euc-kr`<br>Sets the charset in the `Content-Type` header of the response. Keep `utf-8` |
 
 <br>
 
@@ -75,6 +75,8 @@ Required: Yes = always send; No = optional; Conditional = send in the case state
 POST
 Content-type: application/json
 ```
+
+Dates and times that NicePay returns are in Korea Standard Time (KST, UTC+9), for example `2023-03-24T14:04:16.982+0900`. See [Dates in responses](../info/nicepay-info-general.md#dates-in-responses) for how to parse them.
 
 Required: Yes = has a non-empty value in every response whose `resultCode` is `0000`; No = can be `null`, empty, or left out. For a field of an object or array, Yes applies whenever that object or array element is present.
 
@@ -100,11 +102,30 @@ Authorization: Basic <credentials>  or Bearer <token>
 Content-type: application/json;charset=utf-8
 ```
 
+`GET` requests have no body. Send `ediDate`, `signData` and `returnCharSet` as query parameters, and percent-encode each value. The `+` in the `ediDate` offset must become `%2B`: an unencoded `+` reaches NicePay as a space, and the `signData` check then fails with [`U312`](../code/nicepay-code.md#api-response-code). This is the same in Sandbox and Live. When you do not send `signData`, you can leave `ediDate` out too, as in [Check Transaction Status Example code](#check-transaction-status-example-code).
+
+Example with the Sandbox test key from [Test key information](../info/nicepay-info-sandbox.md#test-key-information):
+
+```bash
+tid       = UT0000104m00012303241646422011
+ediDate   = 2023-03-24T16:55:00.000+0900
+SecretKey = 13e969a77a0545799242ccc3915243d3
+
+String to hash (before encoding):
+UT0000104m000123032416464220112023-03-24T16:55:00.000+090013e969a77a0545799242ccc3915243d3
+
+signData:
+c78d6b12b11036bc626a018d26320aa04ba0344e9c52fd0303ef23377ca3569b
+
+curl -X GET 'https://sandbox-api.nicepay.co.kr/v1/payments/UT0000104m00012303241646422011?ediDate=2023-03-24T16%3A55%3A00.000%2B0900&signData=c78d6b12b11036bc626a018d26320aa04ba0344e9c52fd0303ef23377ca3569b' \
+-H 'Authorization: Basic UzFfY2UxYmIxZWJlYmM0NGZlMWEzZjdjZWM5NzZjODNlYTc6MTNlOTY5YTc3YTA1NDU3OTkyNDJjY2MzOTE1MjQzZDM='
+```
+
 | Parameter | Type | Required | Bytes | Description |
 |:--------------|:-----:|:-----:|:-----:|:----------|
-| `ediDate` | String | Yes | - | Response message creation date and time (ISO 8601 format) |
+| `ediDate` | String | Conditional | - | Request timestamp (ISO 8601) that your Merchant Server creates, see [Dates in requests](../info/nicepay-info-general.md#dates-in-requests)<br>Required when you send `signData` |
 | `signData`    |   String   | No |  256  | Forgery Verification Data<br>Generation rule: hex(sha256(tid + ediDate + SecretKey))|
-| `returnCharSet` | String    | No | 10        | utf-8(Default) / euc-kr |
+| `returnCharSet` | String    | No | 10        | `utf-8` (default) or `euc-kr`<br>Sets the charset in the `Content-Type` header of the response. Keep `utf-8` |
 
 <br><br>
 
@@ -118,11 +139,13 @@ Authorization: Basic <credentials>  or Bearer <token>
 Content-type: application/json;charset=utf-8  
 ```
 
+Send `ediDate`, `signData` and `returnCharSet` as query parameters, as in [Transaction Status Inquiry (with tid:Transaction ID)](#transaction-status-inquiry-with-tidtransaction-id).
+
 | Parameter | Type | Required | Bytes | Description |
 |:--------------|:-----:|:-----:|:-----:|:----------|
-| `ediDate` | String | Yes | - | Message creation date and time (ISO 8601 format) |
+| `ediDate` | String | Conditional | - | Request timestamp (ISO 8601) that your Merchant Server creates, see [Dates in requests](../info/nicepay-info-general.md#dates-in-requests)<br>Required when you send `signData` |
 | `signData`    |   String   | No |  256  | Forgery Verification Data<br>Rule: hex(sha256(orderId + ediDate + SecretKey))|
-| `returnCharSet` | String    | No | 10        | utf-8(Default) / euc-kr |
+| `returnCharSet` | String    | No | 10        | `utf-8` (default) or `euc-kr`<br>Sets the charset in the `Content-Type` header of the response. Keep `utf-8` |
 
 <br>
 
@@ -231,7 +254,7 @@ Content-type: application/json
 |:-----------|:----------|:--------:|:-----:|:------:|:------------------|
 | `bank`     |          |  Object  |  No  |       | bank object    |
 |           | `bankCode`  |  String  |   Yes   |   3    | bank code  |
-|            | `bankName`  |  String  |   Yes   |   20   | bank name (euc-kr encoded) |
+|            | `bankName`  |  String  |   Yes   |   20   | Bank name |
 
 <br>
 
@@ -292,14 +315,16 @@ Authorization: Basic <credentials>  or Bearer <token>
 Content-type: application/json;charset=utf-8
 ```
 
+Send the parameters below as query parameters, and percent-encode each value, as in [Transaction Status Inquiry (with tid:Transaction ID)](#transaction-status-inquiry-with-tidtransaction-id).
+
 | Parameter |   Type   |  Required   |  Bytes  | Description  |
 |:--------------|:----:|:-----:|:-----:|:--------|
 | `amount` | Int | Yes | 12 | payment amount |
 | `useAuth`     |  Boolean   | Yes |   -   | true : checkout or payment window <br> false : billing or key-in  |
-| `ediDate`    | String    | Yes | -         | Full Text Creation Date<br>ISO 8601 Format |
+| `ediDate`    | String    | Conditional | -         | Request timestamp (ISO 8601) that your Merchant Server creates, see [Dates in requests](../info/nicepay-info-general.md#dates-in-requests)<br>Required when you send `signData` |
 | `mid`         |  String   | No |  10   | [Optional] Merchant ID separately contracted with Nice Payments |
 | `signData`    | String    | No | 256       | Forgery Verification Data<br>Generation rule: hex(sha256(ediDate + SecretKey)) |
-| `returnCharSet` | String    | No | 10        | utf-8(Default) / euc-kr |
+| `returnCharSet` | String    | No | 10        | `utf-8` (default) or `euc-kr`<br>Sets the charset in the `Content-Type` header of the response. Keep `utf-8` |
 
 <br>
 
@@ -359,13 +384,15 @@ Authorization: Basic <credentials>  or Bearer <token>
 Content-type: application/json;charset=utf-8
 ```
 
+Send the parameters below as query parameters, and percent-encode each value, as in [Transaction Status Inquiry (with tid:Transaction ID)](#transaction-status-inquiry-with-tidtransaction-id).
+
 | Parameter     |   Type   |  Required   |  Bytes  | Description  |
 |:--------------|:---------:|:-----:|:------:|:--------|
 | `useAuth`     |  Boolean   | Yes |   -   | true : checkout or payment window <br> false : billing or key-in  |
-| `ediDate`  | String    | No | -         | Full Text Creation Date<br>ISO 8601 Format |
+| `ediDate`  | String    | Conditional | -         | Request timestamp (ISO 8601) that your Merchant Server creates, see [Dates in requests](../info/nicepay-info-general.md#dates-in-requests)<br>Required when you send `signData` |
 | `mid`         |  String   | No |  10   | [Optional] Merchant ID separately contracted with Nice Payments |
 | `signData`    | String    | No | 256       | Forgery Verification Data<br>Generation rule: hex(sha256(ediDate + SecretKey)) |
-| `returnCharSet` | String    | No | 10        | utf-8(Default) / euc-kr |
+| `returnCharSet` | String    | No | 10        | `utf-8` (default) or `euc-kr`<br>Sets the charset in the `Content-Type` header of the response. Keep `utf-8` |
 
 <br>
 

@@ -74,21 +74,23 @@ Required: Yes = always send; No = optional; Conditional = send in the case state
 | `buyerEmail`    |  String  |   No   |   60   | Buyer Email |
 | `buyerTel`      |  String  |   No   |   20   | Buyer phone number<br> *Number only|
 | `encMode`       |  String  |   No   |   10   | Encryption Mode<br>`encData` Field Encryption Algorithm Definition<br><br> A2 : AES256<br>Encryption Algorithm : AES256<br> Encryption Detail : AES/CBC/PKCS5padding <br> Encryption Result Encoding : Hex Encoding <br> *Encryption KEY: SecretKey (32byte)<br>•IV: 16 digits before the SecretKey |
-| `ediDate`       |  String  |   No   |   -    | Response message creation date and time (ISO 8601 format) |
+| `ediDate`       |  String  |   Conditional   |   -    | Request timestamp (ISO 8601) that your Merchant Server creates, see [Dates in requests](../info/nicepay-info-general.md#dates-in-requests)<br>Required when you send `signData` |
 | `signData`      |   String    |   No   |  256   | Forgery Verification Data<br> Rule : hex(sha256(orderId + ediDate +   SecretKey)) |
-| `returnCharSet` | String    |   No    | 10        | utf-8(Default) / euc-kr |
+| `returnCharSet` | String    |   No    | 10        | `utf-8` (default) or `euc-kr`<br>Sets the charset in the `Content-Type` header of the response. Keep `utf-8` |
 
 <br>
 
 ### encData Field Details
+
+NicePay checks `encData` against the encryption and authentication level of your merchant account with the same rules as Key-in, see the level table and the note in [Key-in encData Field Details](./nicepay-api-keyin.md#encdata-field-details). On this API, a failed check returns [`U317`](../code/nicepay-code.md#api-response-code) instead of `U341`, in Sandbox and in Live, and `encData` that NicePay cannot decrypt returns [`F101`](../code/nicepay-code.md#api-response-code). The encryption examples below contain both `idNo` and `cardPw`, as for level 11: leave out the fields that your level does not list. For overseas-issued cards, see [Accepting overseas customers](../info/nicepay-info-general.md#accepting-overseas-customers).
 
 | Parameter     | Type      | Required | Bytes | Description |
 |:--------------|:--------:|:-----:|:------:|:---------------|
 | `cardNo`     |  String  |     Yes      |   16   | Card Number<br>Numbers only     |
 | `expYear`    |  String  |     Yes      |   2    | expiration year<br>format : YY  |
 | `expMonth`   |  String  |     Yes      |   2    | expiration month<br>format : MM  |
-| `idNo`       |  String  |  No  |   13   | Individual(Date of birth, 6 digits) : YYMMDD <br/> Corporation: business number of korea, 10 digits  |
-| `cardPw`     |  String  |  No  |   2    | First 2 digits of the card password |
+| `idNo`       |  String  |  Conditional  |   13   | Card holder's date of birth, 6 digits: YYMMDD (for example `800101` for 1 January 1980)<br>Corporate card: Korean business registration number, 10 digits<br>Required when your merchant's level is 10 or 11 |
+| `cardPw`     |  String  |  Conditional  |   2    | First 2 digits of the 4-digit card password of a Korean card<br>Required when your merchant's level is 03 or 11 |
 
 <br>
 
@@ -122,6 +124,8 @@ POST
 Content-type: application/json
 ```
 
+Dates and times that NicePay returns are in Korea Standard Time (KST, UTC+9), for example `2023-03-24T14:04:16.982+0900`. See [Dates in responses](../info/nicepay-info-general.md#dates-in-responses) for how to parse them.
+
 Required: Yes = has a non-empty value in every response whose `resultCode` is `0000`; No = can be `null`, empty, or left out. For a field of an object or array, Yes applies whenever that object or array element is present.
 
 | Parameter     | Type      | Required | Bytes | Description |
@@ -140,7 +144,7 @@ Required: Yes = has a non-empty value in every response whose `resultCode` is `0
 > **⚠️ Important:** Even though NicePay allows multiple tokens per card, a `regist` call can still fail with [`F201`](../code/nicepay-code.md#api-response-code) ("card already registered", bill key issuance failed), returned as-is in `resultCode` with `status: failed`, no `bid`, and `messageSource: external`. That check happens on the card issuer/payment network side, not NicePay's, so the exact conditions that trigger it are not documented here; [open an issue on this manual's repository](https://github.com/SeokRae/nicepay-manual-eng/issues) if you hit it unexpectedly.  
 > `F201` is specific to card-based bill-key issuance (this API, and Checkout's `cardBill` method, see [Hosted Payment Page Request Parameter](./nicepay-api-payment-window-url.md#hosted-payment-page-request-parameter)); Recurring Payment enrolled through Naver Pay/Kakao Pay/Toss Pay checkout (`naverCardBill`/`naverPointBill`/`kakaoBill`/`tosspayBill`) goes through a separate corePG code family and is not affected by it.  
 
-Related error codes: `A253`, `F110`, `F115`, `F116`, see [API Response code](../code/nicepay-code.md#api-response-code).
+Related error codes: `A253`, `F101`, `F110`, `F115`, `F116`, `U317`, see [API Response code](../code/nicepay-code.md#api-response-code).
 
 <br>
 
@@ -184,7 +188,7 @@ Content-type: application/json;charset=utf-8
 | Parameter     | Type      | Required | Bytes | Description |
 |:--------------|:---------:|:--------:|:------:|:-----------|
 | `orderId`         |  String  |   Yes   |   64   | Your unique order ID. It must differ from every `orderId` that your merchant account has used, including Key-in payments and partial cancellations.<br>After a declined charge (`status` `failed`), NicePay releases the `orderId`, so you can use it again |
-| `amount`          |   Int    |   Yes   |   12   | Payment amount  |
+| `amount`          |   Int    |   Yes   |   12   | Payment amount in Korean won<br>Whole number with no decimal point. Recurring Payment accepts KRW only. See [Amounts and currencies](../info/nicepay-info-general.md#amounts-and-currencies) |
 | `goodsName`       |  String  |   Yes   |   40   | Product name  |
 | `method`          |  String  |   No   |   20   | Payment method the token was issued under<br>Leave empty for a card-issued token (default)<br>`naverCardBill` / `naverPointBill` / `kakaoBill` / `tosspayBill` for a token issued through the corresponding Easy Pay checkout |
 | `cardQuota`       |   Int    |   Conditional  |   2    | Installment Month<br>0: Pay in full amount, 2:2 months, 3:3 months …<br>Required when `method` is not `tosspayBill`; must be omitted when `method` is `tosspayBill` (rejected with `U143` otherwise) |
@@ -193,16 +197,16 @@ Content-type: application/json;charset=utf-8
 | `buyerName`       |  String  |   No   |   30   | Buyer name |
 | `buyerTel`        |  String  |   No   |   20   | Buyer phone number<br>*Number only   |
 | `buyerEmail`      |  String  |   No   |   60   | Buyer Email |
-| `taxFreeAmt`      |   Int    |   No   |   12   | Tax-free amount  |
+| `taxFreeAmt`      |   Int    |   No   |   12   | Tax-free part of `amount`<br>Whole number with no decimal point, not greater than `amount`: a larger value fails with [`U321`](../code/nicepay-code.md#api-response-code). See [Tax breakdown](../info/nicepay-info-general.md#tax-breakdown) |
 | `supplyAmt`       |   Int    |   No   |   12   | Supply amount, the pre-VAT portion of `amount`<br>Ignored on this API: NicePay computes it from `amount` and `taxFreeAmt`, see the note below |
 | `goodsVat`        |   Int    |   No   |   12   | VAT portion of `amount`<br>Ignored on this API, see the note below |
 | `serviceAmt`      |   Int    |   No   |   12   | Service charge portion of `amount`<br>Ignored on this API, see the note below |
 | `mallReserved`    |  String  |   No   |  500   | Spare field for store information delivery<br>It is recommended to use JSON string format.<br>However, double quotation marks (") cannot be used  |
-| `ediDate`         |  String  |   No   |   -    | Response message creation date and time <br>ISO 8601 format |
+| `ediDate`         |  String  |   Conditional   |   -    | Request timestamp (ISO 8601) that your Merchant Server creates, see [Dates in requests](../info/nicepay-info-general.md#dates-in-requests)<br>Required when you send `signData` |
 | `signData`        |  String  |   No   |  256   | Forgery Verification Data<br> Rule : hex(sha256(orderId + bid + ediDate + SecretKey))      |
-| `returnCharSet` | String    |   No    | 10        | utf-8(Default) / euc-kr |
+| `returnCharSet` | String    |   No    | 10        | `utf-8` (default) or `euc-kr`<br>Sets the charset in the `Content-Type` header of the response. Keep `utf-8` |
 
-> **⚠️ Important:** On this API, NicePay ignores the `supplyAmt`, `goodsVat` and `serviceAmt` that you send. NicePay computes them from `amount` and `taxFreeAmt` (0 when you leave it out): `supplyAmt` is (`amount` - `taxFreeAmt`) / 1.1, rounded half up to a whole number, `goodsVat` is `amount` - `taxFreeAmt` - `supplyAmt`, and `serviceAmt` is 0. The four values therefore always add up to `amount`. To change the tax split, send `taxFreeAmt`.  
+> **⚠️ Important:** On this API, NicePay ignores the `supplyAmt`, `goodsVat` and `serviceAmt` that you send. NicePay computes them from `amount` and `taxFreeAmt` (0 when you leave it out), so the four values always add up to `amount`. To change the tax split, send `taxFreeAmt`. See [Tax breakdown](../info/nicepay-info-general.md#tax-breakdown) for the formula.  
 
 <br>
 
@@ -343,9 +347,9 @@ Content-type: application/json;charset=utf-8
 | `orderId`       | String |  Yes       |  64   | Your unique order ID *Not reusable |
 | `method` | String | Conditional | 20 | Payment method the token was issued under. See the table below.<br>Required when the token was issued under `naverCardBill`, `naverPointBill`, `kakaoBill` or `tosspayBill` |
 | `reason` | String | Conditional | 100 | Reason for deletion. See the table below.<br>If `method` is `naverCardBill`, `naverPointBill` or `tosspayBill` and `reason` is missing or blank, the request fails with [`U100`](../code/nicepay-code.md#api-response-code).<br>Required when `method` is `naverCardBill`, `naverPointBill` or `tosspayBill` |
-| `ediDate`       | String |     No     |   -   | Creation Date<br> ISO 8601 format |
+| `ediDate`       | String |     Conditional     |   -   | Request timestamp (ISO 8601) that your Merchant Server creates, see [Dates in requests](../info/nicepay-info-general.md#dates-in-requests)<br>Required when you send `signData` |
 | `signData`      | String |     No     |  256  | Forgery Verification Data<br>Rule : hex(sha256(orderId + bid +   ediDate + SecretKey))|
-| `returnCharSet` | String |     No     |  10   | utf-8(Default) / euc-kr |	
+| `returnCharSet` | String |     No     |  10   | `utf-8` (default) or `euc-kr`<br>Sets the charset in the `Content-Type` header of the response. Keep `utf-8` |	
 
 Which `method` and `reason` to send depends on how the token was issued:
 
@@ -420,9 +424,9 @@ Content-type: application/json;charset=utf-8
 |:--------------|:------:|:--------:|:------:|:-----------|
 | `orderId`       | String |  Yes       |  64   | Your unique order ID |
 | `method`        | String |  Yes       |  20   | Payment method the token was issued under<br>Currently only `tosspayBill` is supported |
-| `ediDate`       | String |     No     |   -   | Creation Date<br> ISO 8601 format |
+| `ediDate`       | String |     Conditional     |   -   | Request timestamp (ISO 8601) that your Merchant Server creates, see [Dates in requests](../info/nicepay-info-general.md#dates-in-requests)<br>Required when you send `signData` |
 | `signData`      | String |     No     |  256  | Forgery Verification Data<br>Rule : hex(sha256(orderId + bid +   ediDate + SecretKey))|
-| `returnCharSet` | String |     No     |  10   | utf-8(Default) / euc-kr |
+| `returnCharSet` | String |     No     |  10   | `utf-8` (default) or `euc-kr`<br>Sets the charset in the `Content-Type` header of the response. Keep `utf-8` |
 
 <br>
 

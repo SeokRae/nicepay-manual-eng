@@ -73,13 +73,13 @@ Required: Yes = always send; No = optional; Conditional = send in the case state
 |:--------------|:---------:|:--------:|:------:|:-----------|
 | `reason`         | String    | Conditional | 100   | Cancellation reason<br>Required when `isNetCancel` is absent or `false` |
 | `orderId`        | String    | Conditional | 64    | Order ID for this cancel request. NicePay finds the payment by the `sessionId` in the path, not by this value.<br>For a partial cancellation, send a value you have never used, not the `orderId` of the payment: a used value fails with [`U112`](../code/nicepay-code.md#api-response-code).<br>Required when `isNetCancel` is absent or `false` |
-| `cancelAmt`      | Int       | No          | 12    | Cancellation Amount<br>If the value is missing, full cancellation will be occured<br>For a partial cancellation, the value must not exceed the amount not yet cancelled, or the request fails with [`U123`](../code/nicepay-code.md#api-response-code)<br>In Sandbox, a request that contains `cancelAmt` always fails, even when the value equals the full amount. The error is [`U128`](../code/nicepay-code.md#api-response-code) unless an earlier check fails first. Leave `cancelAmt` out to cancel in Sandbox |
+| `cancelAmt`      | Int       | No          | 12    | Cancellation amount<br>Whole number with no decimal point, in the same unit as the `amount` that NicePay returns for the payment. See [Amounts and currencies](../info/nicepay-info-general.md#amounts-and-currencies)<br>If the value is missing, full cancellation will be occured<br>For a partial cancellation, the value must not exceed the amount not yet cancelled, or the request fails with [`U123`](../code/nicepay-code.md#api-response-code)<br>In Sandbox, a request that contains `cancelAmt` always fails, even when the value equals the full amount. The error is [`U128`](../code/nicepay-code.md#api-response-code) unless an earlier check fails first. Leave `cancelAmt` out to cancel in Sandbox |
 | `mallReserved`   | String    | No          | 500   | Spare field for store information delivery |
-| `ediDate`        | String    | No          | -     | Full Text Creation Date<br>ISO 8601 Format |
+| `ediDate`        | String    | Conditional | -     | Request timestamp (ISO 8601) that your Merchant Server creates, see [Dates in requests](../info/nicepay-info-general.md#dates-in-requests)<br>Required when you send `signData` |
 | `signData`       | String    | No          | 256   | Forgery Verification Data<br>Rule: hex(sha256(tid + ediDate + SecretKey)) |
-| `returnCharSet`  | String    | No          | 10    | utf-8(Default) / euc-kr |
+| `returnCharSet`  | String    | No          | 10    | `utf-8` (default) or `euc-kr`<br>Sets the charset in the `Content-Type` header of the response. Keep `utf-8` |
 | `isNetCancel`    | Boolean   | No          | 5     | `true` sends this as a net cancel, for a Checkout payment whose result your server did not receive. See the callout below. Default `false` |
-| `taxFreeAmt`     | Int       | No          | 12    | Tax-free amount among cancellation amount<br>For a partial cancellation, the value must not exceed the tax-free amount not yet cancelled, or the request fails with [`U319`](../code/nicepay-code.md#api-response-code) |
+| `taxFreeAmt`     | Int       | No          | 12    | Tax-free part of the cancellation amount, a whole number with no decimal point<br>For a partial cancellation, the value must not exceed the tax-free amount not yet cancelled, or the request fails with [`U319`](../code/nicepay-code.md#api-response-code) |
 | `refundAccount`  | String    | No          | 16    | Refund account number (Only for Virtual account) |
 | `refundBankCode` | String    | No          | 3     | Refund account code (Only for Virtual account) |
 | `refundHolder`   | String    | No          | 10    | Refund account holder name (Only for Virtual account) |
@@ -105,13 +105,13 @@ Content-type: application/json;charset=utf-8
 |:--------------|:---------:|:--------:|:------:|:-----------|
 | `reason`         | String    | Conditional | 100   | Cancellation reason<br>Required when `isNetCancel` is absent or `false` |
 | `orderId`        | String    | Conditional | 64    | Order ID for this cancel request. NicePay finds the payment by the `tid` in the path, not by this value.<br>For a partial cancellation, send a value you have never used, not the `orderId` of the payment: a used value fails with [`U112`](../code/nicepay-code.md#api-response-code).<br>Required when `isNetCancel` is absent or `false` |
-| `cancelAmt`      | Int       | No          | 12    | Cancellation Amount<br>If the value is missing, full cancellation will be occured<br>For a partial cancellation, the value must not exceed the amount not yet cancelled, or the request fails with [`U123`](../code/nicepay-code.md#api-response-code)<br>In Sandbox, a request that contains `cancelAmt` always fails, even when the value equals the full amount. The error is [`U128`](../code/nicepay-code.md#api-response-code) unless an earlier check fails first. Leave `cancelAmt` out to cancel in Sandbox |
+| `cancelAmt`      | Int       | No          | 12    | Cancellation amount<br>Whole number with no decimal point, in the same unit as the `amount` that NicePay returns for the payment. See [Amounts and currencies](../info/nicepay-info-general.md#amounts-and-currencies)<br>If the value is missing, full cancellation will be occured<br>For a partial cancellation, the value must not exceed the amount not yet cancelled, or the request fails with [`U123`](../code/nicepay-code.md#api-response-code)<br>In Sandbox, a request that contains `cancelAmt` always fails, even when the value equals the full amount. The error is [`U128`](../code/nicepay-code.md#api-response-code) unless an earlier check fails first. Leave `cancelAmt` out to cancel in Sandbox |
 | `mallReserved`   | String    | No          | 500   | Spare field for store information delivery |
-| `ediDate`        | String    | No          | -     | Full Text Creation Date<br>ISO 8601 Format |
+| `ediDate`        | String    | Conditional | -     | Request timestamp (ISO 8601) that your Merchant Server creates, see [Dates in requests](../info/nicepay-info-general.md#dates-in-requests)<br>Required when you send `signData` |
 | `signData`       | String    | No          | 256   | Forgery Verification Data<br>Rule: hex(sha256(tid + ediDate + SecretKey)) |
-| `returnCharSet`  | String    | No          | 10    | utf-8(Default) / euc-kr |
+| `returnCharSet`  | String    | No          | 10    | `utf-8` (default) or `euc-kr`<br>Sets the charset in the `Content-Type` header of the response. Keep `utf-8` |
 | `isNetCancel`    | Boolean   | No          | 5     | `true` sends this as a net cancel, for a Checkout payment whose result your server did not receive. See the callout under [Cancel Request parameter (with sessionId)](#cancel-request-parameter-with-sessionid). Default `false` |
-| `taxFreeAmt`     | Int       | No          | 12    | Tax-free amount among cancellation amount<br>For a partial cancellation, the value must not exceed the tax-free amount not yet cancelled, or the request fails with [`U319`](../code/nicepay-code.md#api-response-code) |
+| `taxFreeAmt`     | Int       | No          | 12    | Tax-free part of the cancellation amount, a whole number with no decimal point<br>For a partial cancellation, the value must not exceed the tax-free amount not yet cancelled, or the request fails with [`U319`](../code/nicepay-code.md#api-response-code) |
 | `refundAccount`  | String    | No          | 16    | Refund account number (Only for Virtual account) |
 | `refundBankCode` | String    | No          | 3     | Refund account code (Only for Virtual account) |
 | `refundHolder`   | String    | No          | 10    | Refund account holder name (Only for Virtual account) |
@@ -125,6 +125,8 @@ Content-type: application/json;charset=utf-8
 POST
 Content-type: application/json
 ```
+
+Dates and times that NicePay returns are in Korea Standard Time (KST, UTC+9), for example `2023-03-24T14:04:16.982+0900`. See [Dates in responses](../info/nicepay-info-general.md#dates-in-responses) for how to parse them.
 
 Required: Yes = has a non-empty value in every response whose `resultCode` is `0000`; No = can be `null`, empty, or left out. For a field of an object or array, Yes applies whenever that object or array element is present.
 
@@ -212,7 +214,7 @@ Same fields and rules as [Card information](./nicepay-api-retrieve.md#card-infor
 |:-----------|:----------|:--------:|:-----:|:------:|:------------------|
 | `bank`     |            |  Object  | No    |        | bank object    |
 |            | `bankCode`  |  String  |  Yes  |   3    | bank code  |
-|            | `bankName`  |  String  |  Yes  |   20   | bank name (euc-kr encoded) |
+|            | `bankName`  |  String  |  Yes  |   20   | Bank name |
 
 <br>
 

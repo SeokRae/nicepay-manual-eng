@@ -56,25 +56,25 @@ Required: Yes = always send; No = optional; Conditional = send in the case state
 | Parameter | Type | Required | Bytes | Description |
 |:--------------|:---------:|:----------:|:-------:|:--------------|
 | `orderId` | String | Yes | 64 | Your unique order id<br> cannot reuse the orderid |
-| `amount` | Int | Yes | 12 | Transaction amount (only numbers are allowed) |
+| `amount` | Int | Yes | 12 | Transaction amount<br>Whole number with no decimal point. See [Amounts and currencies](../info/nicepay-info-general.md#amounts-and-currencies) |
 | `goodsName` | String | Yes | 40 | Product Name |
 | `encData` | String | Yes | 512 | Card information encryption data<br>See [encData Field Details](#encdata-field-details) below |
 | `isInterestFree` | Boolean | Yes | 5 | true: the merchant pays the customer's installment interest / false: general |
 | `cardQuota` | Int | Yes | 2 | Installment period<br>0: pay in full, 2: 2 months, 3: 3 months … |
-| `ediDate` | String | Conditional | 40 | ISO 8601<br>Required when you send `signData` |
+| `ediDate` | String | Conditional | 40 | Request timestamp (ISO 8601) that your Merchant Server creates, see [Dates in requests](../info/nicepay-info-general.md#dates-in-requests)<br>Required when you send `signData` |
 | `signData` | String | No | 256 | Forgery verification data<br>Rule: hex(sha256(orderId + ediDate + SecretKey)) |
 | `buyerName` | String | No | 30 | Buyer name |
 | `buyerEmail` | String | No | 60 | Buyer email |
 | `buyerTel` | String | No | 40 | Buyer phone number (number only) |
-| `taxFreeAmt` | Int | No | 12 | Tax-free amount within `amount`<br>Must not exceed `amount` |
-| `supplyAmt` | Int | No | 12 | Supply amount, the pre-VAT portion of `amount`<br>See the note below on how the four amount fields relate |
-| `goodsVat` | Int | No | 12 | VAT portion of `amount` |
-| `serviceAmt` | Int | No | 12 | Service charge portion of `amount` |
-| `currency` | String | No | 3 | KRW: Korean Won, USD: US Dollar, CNY: Chinese Yuan |
-| `returnCharSet` | String | No | 10 | utf-8(Default) / euc-kr |
+| `taxFreeAmt` | Int | No | 12 | Tax-free part of `amount`<br>Whole number with no decimal point, not greater than `amount`: a larger value fails with [`U321`](../code/nicepay-code.md#api-response-code). See [Tax breakdown](../info/nicepay-info-general.md#tax-breakdown) |
+| `supplyAmt` | Int | No | 12 | Supply amount, the pre-VAT portion of `amount`<br>Ignored on this API: NicePay computes it from `amount` and `taxFreeAmt`, see the note below |
+| `goodsVat` | Int | No | 12 | VAT portion of `amount`<br>Ignored on this API, see the note below |
+| `serviceAmt` | Int | No | 12 | Service charge portion of `amount`<br>Ignored on this API, see the note below |
+| `currency` | String | No | 3 | Currency of `amount`<br>`KRW`: Korean won / `USD`: US dollar / `CNY`: Chinese yuan<br>Upper case only. There is no default: send `KRW` for a payment in won. See [Amounts and currencies](../info/nicepay-info-general.md#amounts-and-currencies) |
+| `returnCharSet` | String | No | 10 | `utf-8` (default) or `euc-kr`<br>Sets the charset in the `Content-Type` header of the response. Keep `utf-8` |
 | `mallReserved` | String | No | 500 | Reserved field for the merchant<br>We recommend using it in JSON string format.<br>Double quotation mark (") cannot be used. |
 
-> **⚠️ Important:** `supplyAmt`, `goodsVat`, `serviceAmt` and `taxFreeAmt` break `amount` down for tax purposes, so they have to add up to it: `amount = supplyAmt + goodsVat + serviceAmt + taxFreeAmt`. NicePay passes them to the payment network without checking the arithmetic, and the network answers a mismatch with [`1615`](../code/nicepay-code.md#api-response-code) ("Total transaction amount error"). Send all four or none of them.  
+> **⚠️ Important:** On this API, NicePay ignores the `supplyAmt`, `goodsVat` and `serviceAmt` that you send. NicePay computes them from `amount` and `taxFreeAmt` (0 when you leave it out), so the four values always add up to `amount`. To change the tax split, send `taxFreeAmt`. See [Tax breakdown](../info/nicepay-info-general.md#tax-breakdown) for the formula.  
 
 <br>
 
@@ -84,20 +84,23 @@ Common required fields: `cardNo`, `expYear`, `expMonth`. Which additional field(
 
 | Your merchant's level | Additional field(s) | Meaning |
 |:---|:---|:---|
-| 01 | *(none)* | Card number + expiration date only |
-| 03 | `cardPw` | Card password verification |
-| 10 | `idNo` | Date of birth (individual) or business registration number (corporation) |
+| 01 | *(none)* | Card number + expiration date only. NicePay does not send `idNo` or `cardPw` to the payment network, even if you include them |
+| 03 | `cardPw` | First 2 digits of the card password |
+| 10 | `idNo` | Card holder's date of birth, or the Korean business registration number for a corporate card |
 | 11 | `idNo` + `cardPw` | Both |
 
-> ⚠️ Sending a field your merchant's level does not expect (or omitting one it requires) fails encData verification with `U341`. [Open an issue on this manual's repository](https://github.com/SeokRae/nicepay-manual-eng/issues) if you are not sure which level your account is enrolled with.
+> **⚠️ Important:** NicePay checks only the fields that `encData` contains. At level 03, 10 or 11, a field other than the common fields and the additional fields of your level fails the request with `U341`, for example `idNo` at level 03. An empty `cardNo`, `expYear` or `expMonth`, or an empty additional field of your level, also fails with `U341`. NicePay does not reject a missing field: it sends the payment to the payment network without it. Always include the additional fields of your level.  
+> NicePay does not return your level through the API. [Open an issue on this manual's repository](https://github.com/SeokRae/nicepay-manual-eng/issues) if you are not sure which level your account is enrolled with.  
 
 | Parameter | Type | Required | Bytes | Description |
 |:--------------|:---------:|:----------:|:-------:|:--------------|
 | `cardNo` | String | Yes | 16 | Card number, numbers only |
 | `expYear` | String | Yes | 2 | Expiration year, format: YY |
 | `expMonth` | String | Yes | 2 | Expiration month, format: MM |
-| `idNo` | String | Conditional | 13 | Individual (date of birth, 6 digits): YYMMDD<br>Corporation: business registration number, 10 digits<br>Required when your merchant's level is 10 or 11 |
-| `cardPw` | String | Conditional | 2 | First 2 digits of the card password<br>Required when your merchant's level is 03 or 11 |
+| `idNo` | String | Conditional | 13 | Card holder's date of birth, 6 digits: YYMMDD (for example `800101` for 1 January 1980)<br>Corporate card: Korean business registration number, 10 digits<br>Required when your merchant's level is 10 or 11 |
+| `cardPw` | String | Conditional | 2 | First 2 digits of the 4-digit card password of a Korean card<br>Required when your merchant's level is 03 or 11 |
+
+In the plain text, put `expMonth` directly after `expYear`, as in the example below. NicePay appends the `expMonth` value to the field in front of it, so another order corrupts the card number or the expiration date. The example contains both `idNo` and `cardPw`, as for level 11: leave out the fields that your level does not list. For overseas-issued cards, see [Accepting overseas customers](../info/nicepay-info-general.md#accepting-overseas-customers).
 
 <br>
 
@@ -126,6 +129,8 @@ POST
 Content-type: application/json
 ```
 
+Dates and times that NicePay returns are in Korea Standard Time (KST, UTC+9), for example `2023-03-24T14:04:16.982+0900`. See [Dates in responses](../info/nicepay-info-general.md#dates-in-responses) for how to parse them.
+
 Required: Yes = has a non-empty value in every response whose `resultCode` is `0000`; No = can be `null`, empty, or left out. For a field of an object or array, Yes applies whenever that object or array element is present.
 
 | Parameter | Type | Required | Bytes | Description |
@@ -135,7 +140,7 @@ Required: Yes = has a non-empty value in every response whose `resultCode` is `0
 | `tid` | String | Yes | 30 | NICEPAY transaction ID |
 | `orderId` | String | Yes | 64 | Your unique order ID |
 | `amount` | Int | Yes | 12 | payment amount |
-| `currency` | String | No | 3 | KRW: Korean Won, USD: US Dollar, CNY: Chinese Yuan |
+| `currency` | String | No | 3 | The `currency` of the request, returned as sent<br>`null` when the request had no `currency` |
 | `goodsName` | String | Yes | 40 | Product name |
 | `status` | String | Yes | 20 | Payment processing status<br>paid: payment completed<br>failed: payment failed<br>['paid', 'failed'] |
 | `paidAt` | String | Yes | - | Time of payment completed, ISO 8601 format<br>If payment is not completed, return 0 |

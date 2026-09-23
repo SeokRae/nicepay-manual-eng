@@ -56,6 +56,8 @@ curl --location 'https://sandbox-api.nicepay.co.kr/v1/checkout' \
 
 > The `clientId`/`Authorization` above are the Sandbox test key from [Sandbox](./info/nicepay-info-sandbox.md#test-key-information); `fakeAuth: "true"` skips real card company authentication so you get an immediate test result. Once you switch to Live, drop `fakeAuth` and use your Live key instead.
 
+`amount` is a whole number with no decimal point. This request has no `currency`, so the payment is in Korean won: `1004` is KRW 1,004. See [Amounts and currencies](./info/nicepay-info-general.md#amounts-and-currencies).
+
 ### Create a checkout example response
 
 ```bash

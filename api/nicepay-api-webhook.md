@@ -258,6 +258,8 @@ Example: a card payment made through Checkout. It is signed with the example Sec
 
 A webhook for a Key-in payment has the fields of [Key-in Payment Response Parameter](./nicepay-api-keyin.md#key-in-payment-response-parameter) instead of the table below.
 
+Dates and times that NicePay returns are in Korea Standard Time (KST, UTC+9), for example `2023-03-24T14:04:16.982+0900`. See [Dates in responses](../info/nicepay-info-general.md#dates-in-responses) for how to parse them.
+
 Required: Yes = has a non-empty value in every response whose `resultCode` is `0000`; No = can be `null`, empty, or left out. For a field of an object or array, Yes applies whenever that object or array element is present.
 
 | Parameter | Type | Required | Bytes | Description |
@@ -347,7 +349,7 @@ Same fields and rules as [Card information](./nicepay-api-retrieve.md#card-infor
 |:-----------|:----------|:--------:|:-----:|:------:|:------------------|
 | `bank`       |          |  Object  | No |       | bank object    |
 |           | `bankCode`  |  String  | Yes |   3    | bank code  |
-|            | `bankName`  |  String  | Yes |   20   | bank name (euc-kr encoded) |
+|            | `bankName`  |  String  | Yes |   20   | Bank name |
 
 <br>
 
@@ -410,7 +412,7 @@ Required: Yes = always send; No = optional; Conditional = send in the case state
 
 | Parameter | Type | Required | Bytes | Description |
 |:--------------|:-----:|:-----:|:-----:|:----------|
-|    `method`     | String  |  Yes  | 20	  |  all : all payment methods <br> card : local cards <br> bank : bank transfer <br> vbank : virtual account  <br> cellphone : carrier billing | 
+|    `method`     | String  |  Yes  | 20	  |  all : all payment methods <br> card : credit and debit cards <br> bank : bank transfer <br> vbank : virtual account  <br> cellphone : carrier billing | 
 | `url` | String | Yes | 200 | The URL of the webhook endpoint |
 | `managerEmail` | String | No | 255 |Stored and echoed back on lookup, but NOT the address NicePay emails on delivery failure; that notification goes to your merchant account's registered admin email instead|
 
@@ -425,7 +427,7 @@ Required: Yes = has a non-empty value in every response whose `resultCode` is `0
 | `resultCode`|      | String | Yes         | 4       | 0000 : success / other failure |
 | `resultMsg` |      | String | Yes         | 100     | Result message |
 | `urls` | | Array | No | | All webhook URLs registered for your account after this request, one element per payment method, in no fixed order |
-|           | `method` | String | Yes | 20 | Payment method of this URL<br>card : local cards <br> bank : bank transfer <br> vbank : virtual account <br> cellphone : carrier billing<br>A URL registered with `all` is returned as four elements, one per method |
+|           | `method` | String | Yes | 20 | Payment method of this URL<br>card : credit and debit cards <br> bank : bank transfer <br> vbank : virtual account <br> cellphone : carrier billing<br>A URL registered with `all` is returned as four elements, one per method |
 |           | `url` | String | Yes | 200 | The URL of the webhook endpoint |
 |           | `managerEmail` | String | No | 255 | Stored and echoed back on lookup, but NOT the address NicePay emails on delivery failure; that notification goes to your merchant account's registered admin email instead<br>`null` if you did not send one |
 | `messageSource` | | String | Yes | | Always `nicepay` for this API |
@@ -480,7 +482,7 @@ This endpoint takes no request parameters beyond the `Authorization` header.
 | `resultCode`|      | String | Yes         | 4       | 0000 : success / other failure |
 | `resultMsg` |      | String | Yes         | 100     | Result message |
 | `urls` | | Array | Yes | | All webhook URLs registered for your account, one element per payment method, in no fixed order<br>If none is registered, `resultCode` is [`U111`](../code/nicepay-code.md#api-response-code) and `urls` is an empty array |
-|           | `method` | String | Yes | 20 | Payment method of this URL<br>card : local cards <br> bank : bank transfer <br> vbank : virtual account <br> cellphone : carrier billing<br>A URL registered with `all` is returned as four elements, one per method |
+|           | `method` | String | Yes | 20 | Payment method of this URL<br>card : credit and debit cards <br> bank : bank transfer <br> vbank : virtual account <br> cellphone : carrier billing<br>A URL registered with `all` is returned as four elements, one per method |
 |           | `url` | String | Yes | 200 | The URL of the webhook endpoint |
 |           | `managerEmail` | String | No | 255 | Stored and echoed back on lookup, but NOT the address NicePay emails on delivery failure; that notification goes to your merchant account's registered admin email instead<br>`null` if you did not send one |
 | `messageSource` | | String | Yes | | Always `nicepay` for this API |
@@ -519,7 +521,7 @@ Content-type: application/json;charset=utf-8
 
 | Parameter | Type | Required | Bytes | Description |
 |:--------------|:-----:|:-----:|:-----:|:----------|
-|    `method`     | String  |  Yes  | 20	  |  all : all payment methods <br> card : local cards <br> bank : bank transfer <br> vbank : virtual account  <br> cellphone : carrier billing | 
+|    `method`     | String  |  Yes  | 20	  |  all : all payment methods <br> card : credit and debit cards <br> bank : bank transfer <br> vbank : virtual account  <br> cellphone : carrier billing | 
 
 <br>
 
@@ -530,7 +532,7 @@ Content-type: application/json;charset=utf-8
 | `resultCode`|      | String | Yes         | 4       | 0000 : success / other failure |
 | `resultMsg` |      | String | Yes         | 100     | Result message |
 | `urls` | | Array | No | | All webhook URLs registered for your account after this request, one element per payment method, in no fixed order<br>An empty array after you delete the last URL |
-|           | `method` | String | Yes | 20 | Payment method of this URL<br>card : local cards <br> bank : bank transfer <br> vbank : virtual account <br> cellphone : carrier billing<br>A URL registered with `all` is returned as four elements, one per method |
+|           | `method` | String | Yes | 20 | Payment method of this URL<br>card : credit and debit cards <br> bank : bank transfer <br> vbank : virtual account <br> cellphone : carrier billing<br>A URL registered with `all` is returned as four elements, one per method |
 |           | `url` | String | Yes | 200 | The URL of the webhook endpoint |
 |           | `managerEmail` | String | No | 255 | Stored and echoed back on lookup, but NOT the address NicePay emails on delivery failure; that notification goes to your merchant account's registered admin email instead<br>`null` if you did not send one |
 | `messageSource` | | String | Yes | | Always `nicepay` for this API |
@@ -569,7 +571,7 @@ Content-type: application/json;charset=utf-8
 
 | Parameter | Type | Required | Bytes | Description |
 |:--------------|:-----:|:-----:|:-----:|:----------|
-|    `method`     | String  |  Yes  | 20	  |  all : all payment methods <br> card : local cards <br> bank : bank transfer <br> vbank : virtual account  <br> cellphone : carrier billing | 
+|    `method`     | String  |  Yes  | 20	  |  all : all payment methods <br> card : credit and debit cards <br> bank : bank transfer <br> vbank : virtual account  <br> cellphone : carrier billing | 
 | `url` | String | Yes | 200 | The URL of the webhook endpoint |
 | `managerEmail` | String | No | 255 |Stored and echoed back on lookup, but NOT the address NicePay emails on delivery failure; that notification goes to your merchant account's registered admin email instead|
 
@@ -582,7 +584,7 @@ Content-type: application/json;charset=utf-8
 | `resultCode`|      | String | Yes         | 4       | 0000 : success / other failure |
 | `resultMsg` |      | String | Yes         | 100     | Result message |
 | `urls` | | Array | No | | All webhook URLs registered for your account after this request, one element per payment method, in no fixed order |
-|           | `method` | String | Yes | 20 | Payment method of this URL<br>card : local cards <br> bank : bank transfer <br> vbank : virtual account <br> cellphone : carrier billing<br>A URL registered with `all` is returned as four elements, one per method |
+|           | `method` | String | Yes | 20 | Payment method of this URL<br>card : credit and debit cards <br> bank : bank transfer <br> vbank : virtual account <br> cellphone : carrier billing<br>A URL registered with `all` is returned as four elements, one per method |
 |           | `url` | String | Yes | 200 | The URL of the webhook endpoint |
 |           | `managerEmail` | String | No | 255 | Stored and echoed back on lookup, but NOT the address NicePay emails on delivery failure; that notification goes to your merchant account's registered admin email instead<br>`null` if you did not send one |
 | `messageSource` | | String | Yes | | Always `nicepay` for this API |
