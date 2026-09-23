@@ -59,11 +59,13 @@ Required: Yes = always send; No = optional; Conditional = send in the case state
 Content-type: application/json
 ```
 
+Required: Yes = has a non-empty value in every response whose `resultCode` is `0000`; No = can be `null`, empty, or left out. For a field of an object or array, Yes applies whenever that object or array element is present.
+
 |  Parameter  |  Type  | Required  | Bytes | Description  |
 |:-----------:|:------:|:---------:|:----:|:-------------|
-| `resultCode`  | String |  O  |  4   | Response code<br>0000:success, other failures  |
-|  `resultMsg`  | String |  O  | 100  | Result message  |
-| `accessToken` | String |  O  |  40  | Access token  |
-|  `tokenType`  | String |  O  |  10  | Authentication Scheme Type <br> 'Bearer' fixed  |
-|  `expireAt`  | String |  O  |      | Token expiration time<br>ISO 8601 format |
-|     `now`     | String |  O  |      | Current time<br> ISO 8601 format |
+| `resultCode`  | String |  Yes  |  4   | Response code<br>0000:success, other failures  |
+|  `resultMsg`  | String |  Yes  | 100  | Result message  |
+| `accessToken` | String |  Yes  |  40  | Access token  |
+|  `tokenType`  | String |  Yes  |  10  | Authentication Scheme Type <br> 'Bearer' fixed  |
+|  `expireAt`  | String |  Yes  |      | Token expiration time<br>ISO 8601 format |
+|     `now`     | String |  Yes  |      | Current time<br> ISO 8601 format |

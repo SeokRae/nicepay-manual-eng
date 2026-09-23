@@ -24,13 +24,13 @@ This page is general background on the standard itself, not NicePay-specific gui
       <th scope="row">Does your server see the raw card number?</th>
       <td>No (entered on NicePay's Hosted Payment Page)</td>
       <td>Yes (your server receives it and builds <code>encData</code>)</td>
-      <td>Only once, at token registration</td>
+      <td>Yes, at registration, when your server calls <code>/v1/subscribe/regist</code> (your server builds <code>encData</code>, as in Key-in). No, when the customer registers the card on the Hosted Payment Page through Checkout with a billing <code>method</code> such as <code>cardBill</code>. Each charge sends only the token (<code>bid</code>).</td>
     </tr>
     <tr>
       <th scope="row">Rough PCI-DSS impact</th>
       <td>Lowest (comparable to a redirect-based SAQ A scenario)</td>
       <td>Highest (comparable to a card-not-present SAQ D scenario)</td>
-      <td>Low after registration, higher briefly during it</td>
+      <td>Same as Key-in for the system that calls <code>/v1/subscribe/regist</code>. Same as Checkout when the card is registered through Checkout.</td>
     </tr>
   </tbody>
 </table>

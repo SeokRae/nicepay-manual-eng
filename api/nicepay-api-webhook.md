@@ -5,6 +5,8 @@ You can use Webhook to implement additional business logic by receiving API even
 - If you use a payment method such as virtual account that causes a time difference between virtual account creation and deposit time, webhook implementation is absolutely necessary.
 
 > **⚠️ Important:** Webhook registration/inquiry/delete/update is not available in [Sandbox](../info/nicepay-info-sandbox.md); test against Live once your integration is ready.  
+> When you register or update a webhook URL, NicePay first sends a test request to that URL. The request fails with [`U336`](../code/nicepay-code.md#api-response-code) if NicePay cannot reach the URL, `U337` if the response status is not `200`, and `U338` if the response body is not `OK`.  
+> To test payment and cancellation events, make a small Live payment with a payment method that has a registered webhook URL, then cancel it. NicePay sends a webhook for the payment and another for the cancellation.  
 
 <br>
 
@@ -103,14 +105,17 @@ Required: Yes = always send; No = optional; Conditional = send in the case state
 
 ### Create webhook Response Parameter
 
+Required: Yes = has a non-empty value in every response whose `resultCode` is `0000`; No = can be `null`, empty, or left out. For a field of an object or array, Yes applies whenever that object or array element is present.
+
 | Parameter | Field | Type   |  Required   |  Bytes  | Description  |
 |:----------|:----:|:------:|:-----------:|:-------:|:-------------|
-| `resultCode`|      | String | O           | 4       | 0000 : success / other failure |
-| `resultMsg` |      | String | O           | 100     | Result message |
-| `urls`      |      |        |             |         |              |
-|           | `method` | String |  | 20 | all: all <br> card : local cards <br> bank : bank transfer <br> vbank : virtual account  <br> cellphone : carrier billing |
-|           | `url` | String |  | 200 | The URL of the webhook endpoint |
-|           | `managerEmail` | String |  | 255 |  |
+| `resultCode`|      | String | Yes         | 4       | 0000 : success / other failure |
+| `resultMsg` |      | String | Yes         | 100     | Result message |
+| `urls` | | Array | No | | All webhook URLs registered for your account after this request, one element per payment method, in no fixed order |
+|           | `method` | String | Yes | 20 | Payment method of this URL<br>card : local cards <br> bank : bank transfer <br> vbank : virtual account <br> cellphone : carrier billing<br>A URL registered with `all` is returned as four elements, one per method |
+|           | `url` | String | Yes | 200 | The URL of the webhook endpoint |
+|           | `managerEmail` | String | No | 255 | Stored and echoed back on lookup, but NOT the address NicePay emails on delivery failure; that notification goes to your merchant account's registered admin email instead<br>`null` if you did not send one |
+| `messageSource` | | String | Yes | | Always `nicepay` for this API |
 
 Related error codes: `U100`, `U111`, `U133`, `U333`, `U334`, `U335`, `U336`, `U337`, `U338`, `U700`, `U701`, see [API Response code](../code/nicepay-code.md#api-response-code).
 
@@ -128,11 +133,14 @@ curl --location --request GET 'https://api.nicepay.co.kr/v1/webhook' \
 {
     "resultCode": "0000",
     "resultMsg": "정상 처리되었습니다.",
-    "urls": {
-        "method": "card",
-        "url": "https://your-webhook.url"
-        ...
-    }
+    "messageSource": "nicepay",
+    "urls": [
+        {
+            "method": "card",
+            "url": "https://your-webhook.url",
+            "managerEmail": null
+        }
+    ]
 }
 ```
 
@@ -156,12 +164,13 @@ This endpoint takes no request parameters beyond the `Authorization` header.
 
 | Parameter | Field | Type   |  Required   |  Bytes  | Description  |
 |:----------|:----:|:------:|:-----------:|:-------:|:-------------|
-| `resultCode`|      | String | O           | 4       | 0000 : success / other failure |
-| `resultMsg` |      | String | O           | 100     | Result message |
-| `urls`      |      |        |             |         |              |
-|           | `method` | String  |  O  | 20	  | all: all <br> card : local cards <br> bank : bank transfer <br> vbank : virtual account  <br> cellphone : carrier billing |
-|           | `url` | String | O | 200 | The URL of the webhook endpoint |
-|           | `managerEmail` | String |  | 255 |Stored and echoed back on lookup, but NOT the address NicePay emails on delivery failure; that notification goes to your merchant account's registered admin email instead|
+| `resultCode`|      | String | Yes         | 4       | 0000 : success / other failure |
+| `resultMsg` |      | String | Yes         | 100     | Result message |
+| `urls` | | Array | Yes | | All webhook URLs registered for your account, one element per payment method, in no fixed order<br>If none is registered, `resultCode` is [`U111`](../code/nicepay-code.md#api-response-code) and `urls` is an empty array |
+|           | `method` | String | Yes | 20 | Payment method of this URL<br>card : local cards <br> bank : bank transfer <br> vbank : virtual account <br> cellphone : carrier billing<br>A URL registered with `all` is returned as four elements, one per method |
+|           | `url` | String | Yes | 200 | The URL of the webhook endpoint |
+|           | `managerEmail` | String | No | 255 | Stored and echoed back on lookup, but NOT the address NicePay emails on delivery failure; that notification goes to your merchant account's registered admin email instead<br>`null` if you did not send one |
+| `messageSource` | | String | Yes | | Always `nicepay` for this API |
 
 Related error codes: `U100`, `U111`, `U133`, `U333`, `U334`, `U335`, `U336`, `U337`, `U338`, `U700`, `U701`, see [API Response code](../code/nicepay-code.md#api-response-code).
 
@@ -205,12 +214,13 @@ Content-type: application/json;charset=utf-8
 
 | Parameter | Field | Type   |  Required   |  Bytes  | Description  |
 |:----------|:----:|:------:|:-----------:|:-------:|:-------------|
-| `resultCode`|      | String | O           | 4       | 0000 : success / other failure |
-| `resultMsg` |      | String | O           | 100     | Result message |
-| `urls`      |      |        |             |         |              |
-|           | `method` | String |  | 20 | all: all <br> card : local cards <br> bank : bank transfer <br> vbank : virtual account  <br> cellphone : carrier billing |
-|           | `url` | String |  | 200 | The URL of the webhook endpoint |
-|           | `managerEmail` | String |  | 255 |  |
+| `resultCode`|      | String | Yes         | 4       | 0000 : success / other failure |
+| `resultMsg` |      | String | Yes         | 100     | Result message |
+| `urls` | | Array | No | | All webhook URLs registered for your account after this request, one element per payment method, in no fixed order<br>An empty array after you delete the last URL |
+|           | `method` | String | Yes | 20 | Payment method of this URL<br>card : local cards <br> bank : bank transfer <br> vbank : virtual account <br> cellphone : carrier billing<br>A URL registered with `all` is returned as four elements, one per method |
+|           | `url` | String | Yes | 200 | The URL of the webhook endpoint |
+|           | `managerEmail` | String | No | 255 | Stored and echoed back on lookup, but NOT the address NicePay emails on delivery failure; that notification goes to your merchant account's registered admin email instead<br>`null` if you did not send one |
+| `messageSource` | | String | Yes | | Always `nicepay` for this API |
 
 Related error codes: `U100`, `U111`, `U133`, `U333`, `U334`, `U335`, `U336`, `U337`, `U338`, `U700`, `U701`, see [API Response code](../code/nicepay-code.md#api-response-code).
 
@@ -256,12 +266,13 @@ Content-type: application/json;charset=utf-8
 
 | Parameter | Field | Type   |  Required   |  Bytes  | Description  |
 |:----------|:----:|:------:|:-----------:|:-------:|:-------------|
-| `resultCode`|      | String | O           | 4       | 0000 : success / other failure |
-| `resultMsg` |      | String | O           | 100     | Result message |
-| `urls`      |      |        |             |         |              |
-|           | `method` | String |  | 20 | all: all <br> card : local cards <br> bank : bank transfer <br> vbank : virtual account  <br> cellphone : carrier billing |
-|           | `url` | String |  | 200 | The URL of the webhook endpoint |
-|           | `managerEmail` | String |  | 255 |  |
+| `resultCode`|      | String | Yes         | 4       | 0000 : success / other failure |
+| `resultMsg` |      | String | Yes         | 100     | Result message |
+| `urls` | | Array | No | | All webhook URLs registered for your account after this request, one element per payment method, in no fixed order |
+|           | `method` | String | Yes | 20 | Payment method of this URL<br>card : local cards <br> bank : bank transfer <br> vbank : virtual account <br> cellphone : carrier billing<br>A URL registered with `all` is returned as four elements, one per method |
+|           | `url` | String | Yes | 200 | The URL of the webhook endpoint |
+|           | `managerEmail` | String | No | 255 | Stored and echoed back on lookup, but NOT the address NicePay emails on delivery failure; that notification goes to your merchant account's registered admin email instead<br>`null` if you did not send one |
+| `messageSource` | | String | Yes | | Always `nicepay` for this API |
 
 Related error codes: `U100`, `U111`, `U133`, `U333`, `U334`, `U335`, `U336`, `U337`, `U338`, `U700`, `U701`, see [API Response code](../code/nicepay-code.md#api-response-code).
 
@@ -274,35 +285,39 @@ POST
 Content-type: application/json;charset=utf-8
 ```
 
-| Parameter | Type | required | Bytes | Description |
+A webhook for a Key-in payment has the fields of [Key-in Payment Response Parameter](./nicepay-api-keyin.md#key-in-payment-response-parameter) instead of the table below.
+
+| Parameter | Type | Required | Bytes | Description |
 |:------------------|:--------:|:-----:|:------:|:---------------------------------------------------------------------------------------------------------------------|
-| `resultCode` | String | O | 4 | 0000 : success / other failure |
-| `resultMsg` | String | O | 100 | Result message |
-|   `sessionId`    | String  |  O  | 256	  | Merchant unique session id, issued by merchant | 
-| `tid` | String | O | 30 | NICEPAY transaction ID |
-| `cancelledTid` | String | | 30 | Cancellation transaction ID<br>- Responded only with cancellation requests<br>- Use when finding canceled transaction information in the cancels object. |
-| `orderId` | String | O | 64 | Unique order number |
-| `ediDate` | String | O | - | Response message creation date and time (ISO 8601 format) |
-| `signature` | String | | 256 | Forgery verification data<br>- Respond only to valid transactions<br>- Creation rule: hex(sha256(tid + amount + ediDate+ SecretKey))<br>- For data validation, it is recommended to implement a comparison at business logic |
-| `status` | String | O | 20 | Payment processing status<br>paid: payment completed<br> ready: ready<br>failed: payment failed<br>cancelled: cancelled<br>partialCancelled: partially cancelled<br>['paid', 'ready', 'failed', 'cancelled', 'partialCancelled'] |
-| `paidAt` | String | O | - | Time of payment completed ISO 8601 format<br>If payment is not completed, return 0 |
-| `failedAt` | String | O | - | Time of payment failure ISO 8601 format<br>If not payment is not failed, return 0 |
-| `cancelledAt` | String | O | - | Payment cancellation time ISO 8601 format<br>If it is not cancellation request, return 0<br>In case of partial cancellation, the last cancellation time will be return |
-| `payMethod` | String | O | 10 | Payment method<br><br>card: credit card, <br>vbank: virtual account, <br>bank: account transfer, <br>cellphone: mobile phone, <br>naverpay=Naver Pay, <br>kakaopay=Kakao Pay, <br>samsungpay=Samsung Pay |
-| `amount` | Int | O | 12 | payment amount |
-| `balanceAmt` | Int | O | 12 | Remained balance for cancellation |
-| `goodsName` | String | O | 40 | Product name |
-| `mallReserved` | String | | 500 | Spare field for store information delivery<br>It is recommended to use JSON string format.<br>However, double quotation marks (") cannot be used |
-| `useEscrow` | Boolean | O | - | Escrow transaction status<br> true: Escrow transaction |
-| `currency` | String | O | 3 | Approved currency<br>KRW: Korean Won, USD: USD, CNY: Yuan |
-| `channel` | String | | 10 | pc:PC payment, mobile:mobile payment<br>['pc', 'mobile', 'null'] |
-| `approveNo` | String | | 30 | Authorization Number<br>Credit Card, Bank Transfer, Mobile Phone |
-| `buyerName` | String | | 30 | Buyer name |
-| `buyerTel` | String | | 40 | Buyer phone number |
-| `buyerEmail` | String | | 60 | Buyer Email |
-| `issuedCashReceipt` | Boolean | | - | Issuance status of cash receipts<br>true: issued / false: not issued |
-| `receiptUrl` | String | | 200 | URL for receipt|
-| `mallUserId` | String | | 20 | User ID managed by the store |
+| `resultCode` | String | Yes | 4 | 0000 : success / other failure |
+| `resultMsg` | String | Yes | 100 | Result message |
+| `sessionId` | String | No | 256 | Checkout session ID of the payment<br>Sent only when the payment was made through Checkout; otherwise the key is left out. A webhook for a cancellation made with `tid` does not include it |
+| `tid` | String | Yes | 30 | NICEPAY transaction ID |
+| `cancelledTid` | String | No | 30 | Cancellation transaction ID<br>- Responded only with cancellation requests<br>- Use when finding canceled transaction information in the cancels object. |
+| `orderId` | String | Yes | 64 | Unique order number |
+| `ediDate` | String | Yes | - | Response message creation date and time (ISO 8601 format) |
+| `signature` | String | No | 256 | Forgery verification data<br>- Respond only to valid transactions<br>- Creation rule: hex(sha256(tid + amount + ediDate+ SecretKey))<br>- For data validation, it is recommended to implement a comparison at business logic |
+| `status` | String | Yes | 20 | Payment processing status<br>paid: payment completed<br> ready: ready<br>failed: payment failed<br>cancelled: cancelled<br>partialCancelled: partially cancelled<br>['paid', 'ready', 'failed', 'cancelled', 'partialCancelled'] |
+| `paidAt` | String | Yes | - | Time of payment completed ISO 8601 format<br>If payment is not completed, return 0<br>For a virtual account that is not paid yet, the time the account number was requested |
+| `failedAt` | String | Yes | - | Time of payment failure ISO 8601 format<br>If not payment is not failed, return 0 |
+| `cancelledAt` | String | Yes | - | Payment cancellation time ISO 8601 format<br>If it is not cancellation request, return 0<br>In case of partial cancellation, the last cancellation time will be return |
+| `payMethod` | String | Yes | 10 | Payment method<br><br>card: credit card, <br>vbank: virtual account, <br>bank: account transfer, <br>cellphone: mobile phone, <br>naverpay=Naver Pay, <br>kakaopay=Kakao Pay, <br>samsungpay=Samsung Pay, <br>payco=Payco, <br>ssgpay=SSG Pay, <br>tosspay=Toss Pay |
+| `amount` | Int | Yes | 12 | payment amount |
+| `balanceAmt` | Int | Yes | 12 | Remained balance for cancellation |
+| `goodsName` | String | Yes | 40 | Product name |
+| `mallReserved` | String | No | 500 | Spare field for store information delivery<br>It is recommended to use JSON string format.<br>However, double quotation marks (") cannot be used |
+| `useEscrow` | Boolean | Yes | - | Escrow transaction status<br> true: Escrow transaction |
+| `currency` | String | Yes | 3 | Approved currency<br>KRW: Korean Won, USD: USD, CNY: Yuan |
+| `channel` | String | No | 10 | pc:PC payment, mobile:mobile payment<br>['pc', 'mobile', 'null'] |
+| `approveNo` | String | No | 30 | Authorization Number<br>Credit Card, Bank Transfer, Mobile Phone |
+| `buyerName` | String | No | 30 | Buyer name |
+| `buyerTel` | String | No | 40 | Buyer phone number |
+| `buyerEmail` | String | No | 60 | Buyer Email |
+| `issuedCashReceipt` | Boolean | Yes | - | Issuance status of cash receipts<br>true: issued / false: not issued |
+| `receiptUrl` | String | No | 200 | URL for receipt|
+| `mallUserId` | String | No | 20 | User ID managed by the store |
+| `cellphone` | Object | No | - | Always `null`, also for mobile phone payments (`payMethod` `cellphone`). Mobile phone payment details are in the top-level fields |
+| `messageSource` | String | Yes |  | nicepay: Response message generated by nicepay  <br> external: Response message generated by 3rd partner|
 
 
 <br>
@@ -311,25 +326,27 @@ Content-type: application/json;charset=utf-8
 
 | Parameter | Field     |   Type   |  Required   |  Bytes  |    Description     |
 |:----------|:----------|:--------:|:-----:|:-------:|:--------------|
-| `coupon`    |           | Object   |       | - | Information for instant discount promotion |
-|           | `couponAmt` | Int      |       | 12 | Amount of instant discount applied |
+| `coupon`    |           | Object   | No    | - | Information for instant discount promotion |
+|           | `couponAmt` | Int      | Yes   | 12 | Amount of instant discount applied |
 
 <br>
 
 #### Card information <img alt="Object type" src="https://img.shields.io/badge/-Object-F7DF1E"> <img alt="Nullable" src="https://img.shields.io/badge/-nullable-555555">
 
+Same fields and rules as [Card information](./nicepay-api-retrieve.md#card-information--) in Transaction Status Inquiry.
+
 | Parameter | Field          |   Type   |  Required   |  Bytes  | Description   |
 |:----------|:---------------|:--------:|:-----:|:-------:|:------------------|
-| `card` | | Object | | | Credit Card Object |
-| | `cardCode` | String | O | 3 | Card company code |
-| | `cardName` | String | O | 20 | Card issuer name <br> ex) BC |
-| | `cardNum` | String | | 20 | Card number<br>3rd range masked<br>Ex) 53611234****1234*<br>- Kakao Money/Naver Point/Payco Point used for payment 'null' will be return. |
-| | `cardQuota` | Int | O | 3 | Installment Month<br>0: lump sum, 2:2 months, 3:3 months … |
-| | `isInterestFree` | Boolean | O | - | The store pays the customer's installment interest<br>true:yes, false:no |
-| | `cardType` | String | | 1 | Card type<br>credit:credit card, check:debit |
-| | `canPartCancel` | String | O | - | Whether partial cancellation is possible<br>true: Possible, false: Impossible |
-| | `acquCardCode` | String | O | 3 | Acquirer code |
-| | `acquCardName` | String | O | 100 | Acquirer Name |
+| `card` | | Object | No | | Credit Card Object<br>`null` for virtual account, bank transfer and mobile phone payments, and for a failed payment |
+| | `cardCode` | String | Yes | 3 | Card company code |
+| | `cardName` | String | Yes | 20 | Card issuer name <br> ex) BC |
+| | `cardNum` | String | No | 20 | Card number, masked: for a card number of 13 digits or more, the first 6 and the last 4 digits are shown and the digits between them are replaced with `*`<br>Ex) `123412******1234`<br>- Kakao Money/Naver Point/Payco Point used for payment 'null' will be return. |
+| | `cardQuota` | Int | Yes | 3 | Installment Month<br>0: lump sum, 2:2 months, 3:3 months … |
+| | `isInterestFree` | Boolean | No | - | The store pays the customer's installment interest<br>true: yes, false: no, null: not reported for this payment |
+| | `cardType` | String | No | 6 | Card type<br>credit:credit card, check:debit |
+| | `canPartCancel` | Boolean | No | - | Whether partial cancellation is possible<br>true: Possible, false: Impossible, null: not reported by the acquirer for this card |
+| | `acquCardCode` | String | Yes | 3 | Acquirer code |
+| | `acquCardName` | String | Yes | 100 | Acquirer Name |
 
 
 <br>
@@ -338,15 +355,15 @@ Content-type: application/json;charset=utf-8
 
 | Parameter     | Field        |   Type   |   Required   |  Bytes  | Description |
 |:--------------|:-------------|:--------:|:------:|:------:|:-------------------|
-| `cashReceipts` | | Array | | | Cash Receipt Issuance Information<br>-When the customer used Naverpay Points and Virtual Account, this value will be return.<br>-In case of partial cancellation, array will be more than 2 |
-| | `receiptTid` | String | O | 30 | Cash Receipt TID |
-| | `orgTid` | String | O | 30 | Related original approval/cancel transaction ID.<br>In case of partial cancellation, it is mapped with the original TID. |
-| | `status` | String | O | 20 | issueRequested : Issuance Requested <br>issueReqCancelled : Issuance Request cancelled<br>issued: Issuance completed by the National Tax Service <br>issueFailed: Issuance failed<br>cancelRequested: Cancellation requested <br>cancelReqCancelled: issuance Cancelled by the National Tax Service<br>cancelled: Cancellation completed <br>cancelFailed: Cancellation failed |
-| | `amount` | Int | O | 12 | Total amount of cash receipt issued |
-| | `taxFreeAmt` | Int | O | 12 | Tax-free amount of the cash receipt |
-| | `receiptType` | String | O | 20 | Cash Receipt Type<br>individual: For personal income deduction<br>company: For proof of business expenses |
-| | `issueNo` | String | O | 30 | Issued number by the National Tax Service |
-| | `receiptUrl` | String | O | 200 | Cash Receipt URL for user |
+| `cashReceipts` | | Array | No | | Cash Receipt Issuance Information<br>-When the customer used Naverpay Points and Virtual Account, this value will be return.<br>-In case of partial cancellation, array will be more than 2 |
+| | `receiptTid` | String | Yes | 30 | Cash Receipt TID |
+| | `orgTid` | String | Yes | 30 | Related original approval/cancel transaction ID.<br>In case of partial cancellation, it is mapped with the original TID. |
+| | `status` | String | Yes | 20 | issueRequested : Issuance Requested <br>issueReqCancelled : Issuance Request cancelled<br>issued: Issuance completed by the National Tax Service <br>issueFailed: Issuance failed<br>cancelRequested: Cancellation requested <br>cancelReqCancelled: issuance Cancelled by the National Tax Service<br>cancelled: Cancellation completed <br>cancelFailed: Cancellation failed |
+| | `amount` | Int | Yes | 12 | Total amount of cash receipt issued |
+| | `taxFreeAmt` | Int | Yes | 12 | Tax-free amount of the cash receipt |
+| | `receiptType` | String | Yes | 20 | Cash Receipt Type<br>individual: For personal income deduction<br>company: For proof of business expenses |
+| | `issueNo` | String | Yes | 30 | Issued number by the National Tax Service |
+| | `receiptUrl` | String | Yes | 200 | Cash Receipt URL for user |
 
 <br>
 
@@ -354,9 +371,9 @@ Content-type: application/json;charset=utf-8
 
 | Parameter  | Field     |   Type   |  Required   |  Bytes  | Description  |
 |:-----------|:----------|:--------:|:-----:|:------:|:------------------|
-| `bank`       |          |  Object  |      |       | bank object    |
-|           | `bankCode`  |  String  |   O   |   3    | bank code  |
-|            | `bankName`  |  String  |   O   |   20   | bank name (euc-kr encoded) |
+| `bank`       |          |  Object  | No |       | bank object    |
+|           | `bankCode`  |  String  | Yes |   3    | bank code  |
+|            | `bankName`  |  String  | Yes |   20   | bank name (euc-kr encoded) |
 
 <br>
 
@@ -364,12 +381,12 @@ Content-type: application/json;charset=utf-8
 
 | Parameter | Field        |  Type   |  Required   |  Bytes  | Description  |
 |:----------|:-------------|:-------:|:-----:|:------:|:-------------------------|
-| `vbank` | | Object | | | Virtual account object |
-| | `vbankCode` | String | O | 3 | Virtual account bank code |
-| | `vbankName` | String | O | 20 | Virtual account bank name |
-| | `vbankNumber` | String | O | 20 | Virtual account number |
-| | `vbankExpDate` | String | O | - | Expiration Date<br>ISO 8601 format |
-| | `vbankHolder` | String | O | 40 | Virtual account holder name |
+| `vbank` | | Object | No | | Virtual account object |
+| | `vbankCode` | String | Yes | 3 | Virtual account bank code |
+| | `vbankName` | String | Yes | 20 | Virtual account bank name |
+| | `vbankNumber` | String | Yes | 20 | Virtual account number |
+| | `vbankExpDate` | String | No | - | Expiration Date<br>ISO 8601 format |
+| | `vbankHolder` | String | Yes | 40 | Virtual account holder name |
 
 <br>
 
@@ -377,10 +394,10 @@ Content-type: application/json;charset=utf-8
 
 | Parameter | Field       |  Type   |  Required   |  Bytes  | Description  |
 |:----------|:------------|:-------:|:-----:|:-------:|:-----------------------|
-| `cancels` | | Array | | | Cancellation history |
-| | `tid` | String | O | 30 | Cancel Transaction ID |
-| | `amount` | Int | O | 12 | Cancellation Amount |
-| | `cancelledAt` | String | O | - | Canceled Time<br>ISO 8601 format |
-| | `reason` | String | O | 100 | Cancellation reason |
-| | `receiptUrl` | String | O | 200 | <br>Receipt URL for user |
-| | `couponAmt` | Int | | 12 | Cancellation amount of coupon <br> *Optional|
+| `cancels` | | Array | No | | Cancellation history |
+| | `tid` | String | Yes | 30 | Cancel Transaction ID |
+| | `amount` | Int | Yes | 12 | Cancellation Amount |
+| | `cancelledAt` | String | Yes | - | Canceled Time<br>ISO 8601 format |
+| | `reason` | String | Yes | 100 | Cancellation reason |
+| | `receiptUrl` | String | Yes | 200 | <br>Receipt URL for user |
+| | `couponAmt` | Int | No | 12 | Cancellation amount of coupon <br> *Optional|

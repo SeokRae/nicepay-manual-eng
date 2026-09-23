@@ -16,7 +16,7 @@ Sandbox responds with TEST data, and no actual approval occurs.
 
 ### Using Sandbox and Live domains
 
-Sandbox and Live use different domains and IP ranges for each service (API, payment window, webhook). See the [Firewall Policy](./nicepay-info-firewall-timeout.md#firewall-policy) table for the full, authoritative list instead of a partial copy here.
+Sandbox and Live use different domains for the API and the Hosted Payment Page. See the [Firewall Policy](./nicepay-info-firewall-timeout.md#firewall-policy) table for the full, authoritative list of domains and IP addresses instead of a partial copy here.
 
 <br>
 
@@ -34,10 +34,11 @@ Sandbox and Live use different domains and IP ranges for each service (API, paym
 | Recurring payment: Token Issue                  | `POST` | `/v1/subscribe/regist`                     | Yes              |
 | Recurring Payment: Token authorization          | `POST` | `/v1/subscribe/{bid}/payments`             | Yes              |
 | Recurring Payment: Token delete                 | `POST` | `/v1/subscribe/{bid}/expire`               | Yes              |
+| Recurring Payment: Bid status inquiry           | `POST` | `/v1/subscribe/{bid}/status`               | No               |
 | AccessToken Generation                          | `POST` | `/v1/access-token`                         | Yes              |
 | Cancel request with session id                  | `POST` | `/v1/payments/checkout/{sessionId}/cancel` | Full cancel only |
 | Cancel request with tid                         | `POST` | `/v1/payments/{tid}/cancel`                | Full cancel only |
-| Transaction Status Inquiry-Authorization amount | `GET`  | `/v1/check-amount/{tid}`                   | Yes              |
+| Transaction Status Inquiry-Authorization amount | `POST` | `/v1/check-amount/{tid}`                   | Yes              |
 | Transaction Status Inquiry-Transaction status   | `GET`  | `/v1/payments/{tid}`                       | Yes              |
 | Transaction Status Inquiry-orderId              | `GET`  | `/v1/payments/find/{orderId}`              | Yes              |
 | Transaction Status Inquiry-sessionId            | `GET`  | `/v1/payments/checkout/{sessionId}`        | Yes              |
@@ -46,14 +47,12 @@ Key-in Payment is not provided in Sandbox. Test it directly against Live once yo
 
 <br>
 
+The Hosted Payment Page runs on these domains:
+
 - Sandbox : sandbox-pay.nicepay.co.kr  
 - Live : pay.nicepay.co.kr  
 
-| API                  | Method | Endpoint                                     | Sandbox |
-|----------------------|--------|----------------------------------------------|---------|
-| NicePay checkout url | `POST` | `/v1/checkout/pay/{uniquevalue}/{sessionId}` | Yes     |
-
-NicePay generates this URL when you call the Checkout API.
+Your Merchant Server does not call the Hosted Payment Page itself. NicePay returns its full address in the `url` field of the [Create checkout response](../api/nicepay-api-payment-window-url.md#hosted-payment-page-response-parameter). Redirect the customer to `url` exactly as returned, and do not build this address yourself.
 
 <br>
 
@@ -83,18 +82,12 @@ Authorization : Basic UjFfOTRlYjNhNGEzMDI2NGZkYmE4MmNlMGQwNWI0NjUwMTI6MTJjZGUxMj
 
 <img alt="Sequence diagram: the customer places an order with the merchant server, which calls the NicePay Create Checkout API and receives a return URL, then redirects the customer to that URL to complete payment on the NicePay Checkout page" src="../image/payment-overview.svg" width="800px">
 
-The following steps generate a checkout sessionId and call the checkout page through the Sandbox.
+The steps below create a checkout session and open the Hosted Payment Page in Sandbox.
 
-Call the Checkout API to generate a sessionId.
-- Call the Checkout API with the necessary parameters.  
-- Receive the generated sessionId in the response.  
-  
-Use the `url` for Checkout.
-- The Checkout URL will be in the following format:
-- https://{sandbox-domain}/v1/checkout/{sessionId}
-
-Call the Checkout URL.
-- In the Sandbox, card company authentication is skipped and the approval response is sent to the returnUrl.
+1. Your Merchant Server creates a `sessionId` and an `orderId` for the order. NicePay does not generate them.
+2. Your Merchant Server calls Create checkout (`POST /v1/checkout`) with these two values and the other request parameters.
+3. NicePay returns the Hosted Payment Page address in the `url` field of the response. Your Merchant Server redirects the customer to `url` exactly as returned. Do not build this address yourself.
+4. The customer pays on the Hosted Payment Page. In Sandbox, card company authentication is skipped, and the Hosted Payment Page sends the payment result to your `returnUrl`.
 
 
 Please refer to the link for more detailed information.  
@@ -108,7 +101,7 @@ Use the same Sandbox test key shown in [Test key information](#test-key-informat
 
 ## Create a checkout
 
-The session ID and order ID must be unique.
+Your Merchant Server creates `sessionId` (up to 256 bytes) and `orderId` (up to 64 bytes). Each must be unique for your merchant account, with no time limit: a used `orderId` fails with [`U112`](../code/nicepay-code.md#api-response-code), and a used `sessionId` fails with [`U324`](../code/nicepay-code.md#api-response-code), even when the earlier session expired or failed. Replace the example values below with your own. See [Hosted Payment Page Request Parameter](../api/nicepay-api-payment-window-url.md#hosted-payment-page-request-parameter).
 
 <br>
 
@@ -271,6 +264,8 @@ curl --location 'https://sandbox-api.nicepay.co.kr/v1/checkout/641d555b91ae1' \
 
 <br>
 
+This example response was captured after the payment was cancelled (see [Cancel](#cancel) below). It comes from a session that was created with a different `returnUrl` and `language`. That is why `status`, `returnUrl`, `language` and `expireDate` differ from the [Return a checkout](#return-a-checkout) example.
+
 ```bash
 Response
 
@@ -335,6 +330,8 @@ Content-type: application/json;charset=utf-8
 ```
 
 <br>
+
+This example expires a different session (`641d555b91ae2`) that has not been paid, not the session used in the examples above.
 
 ```bash
 curl --location --request POST 'https://sandbox-api.nicepay.co.kr/v1/checkout/641d555b91ae2/expire' \
@@ -634,7 +631,9 @@ Content-type: application/json;charset=utf-8
 
 ## Cancel
 
-In the Sandbox, only full cancellation is possible; passing an `amount` smaller than the full payment fails with [`U128`](../code/nicepay-code.md#api-response-code). Omit `amount` (or pass the full amount) to cancel. Partial cancellation only works once you switch to Live.
+In Sandbox, only full cancellation is possible. To cancel, leave `cancelAmt` out of the request. Sandbox treats any request that contains `cancelAmt` as a partial cancellation and rejects it, even when the value equals the full payment amount. The error is [`U128`](../code/nicepay-code.md#api-response-code) unless an earlier check fails first. Partial cancellation works only in Live. See `cancelAmt` in [Cancel Request parameter (with tid)](../api/nicepay-api-cancel.md#cancel-request-parameter-with-tid).
+
+In Sandbox, the `orderId` in the cancel response is the `orderId` of the payment (`641d555b91ae6` below), not the `orderId` sent in the cancel request.
 
 Please refer to the link for more detailed information.  
 [Cancel request](../api/nicepay-api-cancel.md#cancel-request-parameter-with-sessionid) 
