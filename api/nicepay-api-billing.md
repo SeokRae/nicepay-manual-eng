@@ -22,7 +22,7 @@ After that, if you pass the encrypted Token(bid) through the `/v1/subscribe/{bid
 <br>
 
 ### Create Token Over-view
-<img alt="Recurring payment token registration flow diagram: the customer inputs card information, the merchant server requests a token (bid) from NicePay, and the token is returned for use in repetitive approval requests without re-entering card details" src="../image/payment-subscribe.svg" width="800px"> 
+<a href="../image/payment-subscribe.svg"><img alt="Sequence diagram of the whole recurring payment lifecycle (create token, authorization, optional token deletion), emphasizing this section's Create Token steps" src="../image/payment-subscribe.svg" width="800px"></a>
 
 ### Example code
 
@@ -149,7 +149,7 @@ Content-type: application/json
 <br>
 
 ### Authorization Over-view
-<img alt="Token authorization flow diagram: the merchant server requests authorization using the customer's previously registered token (bid) and receives the approval response, without the customer re-entering card details" src="../image/payment-subscribe-authorization.svg" width="800px">  
+<a href="../image/payment-subscribe-authorization.svg"><img alt="Sequence diagram of the whole recurring payment lifecycle (create token, authorization, optional token deletion), emphasizing this section's Authorization steps" src="../image/payment-subscribe-authorization.svg" width="800px"></a>
 
 ### Token authorization example
 ```bash
@@ -288,7 +288,7 @@ Deleted Token(bid) cannot be restored or approved.
 <br>
 
 ### Delete Token Over-view
-<img alt="Token deletion flow diagram: the merchant server requests deletion of the customer's registered token (bid) from NicePay and receives confirmation that card registration was cancelled" src="../image/payment-subscribe-delete.svg" width="800px">  
+<a href="../image/payment-subscribe-delete.svg"><img alt="Sequence diagram of the whole recurring payment lifecycle (create token, authorization, optional token deletion), emphasizing this section's Delete Token steps" src="../image/payment-subscribe-delete.svg" width="800px"></a>
 
 > #### ⚠️ Important  
 > This request is fully synchronous end-to-end: the client should keep waiting (e.g. a loading indicator) from the moment cancellation is requested until the `/v1/subscribe/{bid}/expire` response comes back through the merchant server. There is no webhook or async callback for this flow, see [Timeout Information](../info/nicepay-info-firewall-timeout.md#timeout-information) for the underlying request timeout values.  

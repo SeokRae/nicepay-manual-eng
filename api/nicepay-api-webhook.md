@@ -10,7 +10,7 @@ You can use Webhook to implement additional business logic by receiving API even
 <br>
 
 ### Over-view
-<img alt="Sequence diagram of the webhook event delivery flow: NicePay pushes a payment or status-change event to the merchant server's registered webhook endpoint, the merchant server checks the signature and amount and processes the event, then responds with HTTP 200 and an OK body to acknowledge receipt; if delivery fails (network error, non-200 response, or a body other than OK), NicePay retries delivery on a configured schedule until it receives an OK acknowledgement" src="../image/payment-webhook.svg" width="800px">
+<a href="../image/payment-webhook.svg"><img alt="Sequence diagram of webhook delivery: NicePay posts an event, the Merchant Server verifies it and replies HTTP 200 with body OK; failures are retried" src="../image/payment-webhook.svg" width="800px"></a>
 
 <br>
 

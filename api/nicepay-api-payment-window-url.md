@@ -12,14 +12,24 @@ New to Checkout? The [Quick Start Guide](../QUICKSTART.md) walks through this en
 <br>
 
 ### Over-view
-<img alt="Sequence diagram: the customer places an order with the merchant server, which calls the NicePay Create Checkout API and receives a return URL, then redirects the customer to that URL to complete payment on the NicePay Checkout page" src="../image/payment-overview.svg" width="800px">
+<a href="../image/payment-overview.svg"><img alt="Sequence diagram: the customer places an order, the Merchant Server creates a checkout and redirects the customer to the returned checkout URL (the Hosted Payment Page), then the customer returns to your returnUrl" src="../image/payment-overview.svg" width="800px"></a>
 
 <br>
 
 ### Card and Easy Pay checkout flow
-<img alt="Sequence diagram of the full card/easy-pay payment cycle for a cardAndEasyPay checkout, from order to cancellation. Steps 1-7 (checkout: create checkout, redirect, Checkout page, Payment Authorization callback) are the focus here; steps 8-9 (cancellation) are shown in orange and detailed in api/nicepay-api-cancel.md" src="../image/payment-checkout-cancel-cycle.svg" width="800px">
+<a href="../image/payment-checkout-cancel-cycle.svg"><img alt="Sequence diagram of the full card and easy-pay cycle: checkout through the returnUrl callback (steps 1-7), then cancellation (steps 8-9)" src="../image/payment-checkout-cancel-cycle.svg" width="800px"></a>
 
-**Steps 1-7 above** are the same flow shown in [Over-view](#over-view), detailed for `method: cardAndEasyPay` (credit card and easy-pay wallets). After the customer selects a card or a wallet on the Checkout page, the field set returned in the `returnUrl` callback varies by `payMethod`; see [Payment Authorization Response Parameter](#payment-authorization-response-parameter). Steps 8-9 (shown in orange) are the cancellation that can follow; see [Cancel](./nicepay-api-cancel.md) for that part of the cycle.
+1. The customer sends an order to the Merchant Server.
+2. The Merchant Server calls Create Checkout (`POST /v1/checkout`) with `method: cardAndEasyPay`.
+3. NicePay responds with `resultCode: 0000`, the checkout `url`, and `status: ready`.
+4. The Merchant Server redirects the customer to that `url`.
+5. The customer opens the Hosted Payment Page and selects a card or an easy-pay wallet.
+6. The customer authenticates and approves the payment.
+7. NicePay sends the Payment Authorization callback to your `returnUrl` (`POST {returnUrl}`): `success: true` and `status: paid` on success, or `success: false` and `status: failed` on failure.
+8. Later, the Merchant Server can cancel the payment with `POST /v1/payments/{tid}/cancel`, sending `reason`, `orderId`, and an optional `cancelAmt` (omit it for a full cancellation, set it for a partial one).
+9. NicePay returns the cancellation result: `resultCode: 0000` with `status: cancelled` or `partialCancelled`, or a `resultCode` other than `0000` on failure.
+
+**Steps 1-7 above** are the same flow shown in [Over-view](#over-view), detailed for `method: cardAndEasyPay` (credit card and easy-pay wallets). After the customer selects a card or a wallet on the Checkout page, the field set returned in the `returnUrl` callback varies by `payMethod`; see [Payment Authorization Response Parameter](#payment-authorization-response-parameter). Steps 8-9, bracketed as Cancellation in the diagram, can follow later; see [Cancel](./nicepay-api-cancel.md) for that part of the cycle.
 
 > #### ⚠️ Important  
 > In Sandbox with `fakeAuth: "true"`, pressing Next on the Checkout page always returns a success result and Cancel returns a random failure result: this is a Sandbox-only shortcut, not real Live authentication/failure behavior.  
