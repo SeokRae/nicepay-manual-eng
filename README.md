@@ -4,7 +4,7 @@
   </a>
 </div>
 <h1 align="center">
-  🚀 NicePay For Startups
+  NicePay For Startups
 </h1>
 
 <!-- https://github.com/denvercoder1/readme-typing-svg -->
@@ -15,11 +15,11 @@
 <br>
 
 
-## ⚡ Quick guide
+## Quick guide
 
 New to NicePay For Startups? NicePay offers three ways to charge a card. Not sure which fits your service? See **[Which Integration Should I Use?](./INTEGRATION-PATHS.md)**.
 
-Already know you want a standard hosted checkout? Start here: **[⚡ Quick Start Guide](./QUICKSTART.md)** (create your first Checkout session and receive a test payment result in about 10 minutes).
+Already know you want a standard hosted checkout? Start here: **[Quick Start Guide](./QUICKSTART.md)** (create your first Checkout session and receive a test payment result in about 10 minutes).
 
 <br><br>
 
@@ -73,7 +73,7 @@ This is a technical document that includes information about the API.
   <img alt=".NET SDK on GitHub" src="https://img.shields.io/badge/.net-512BD4?style=for-the-badge&logo=.net&logoColor=white">
  </a>  
 </div>
-👉 When you click on the development language, you can check the source code.  
+Click a language to view its SDK source code on GitHub.  
 
 <br>
 

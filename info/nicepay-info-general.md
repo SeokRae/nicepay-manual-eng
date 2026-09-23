@@ -20,16 +20,84 @@ NicePay's Hosted Payment Page was developed to be used in 'HTML5' based PC/Mobil
 
 ## Browser support(PC)
 
-|            | Chrome |  Firefox  | IE Over 9 |  Opera  |  Whale  |  Edge  |  Safari  |
-|:-----------|:------:|:---------:|:---------:|:-------:|:-------:|:------:|:--------:|
-| Windows XP |   O    |     O     |     *     |    *    |    *    |   *    |    *     |
-| Windows 7  |   O    |     O     |     O     |    O    |    O    |   *    |    *     |
-| Windows 8  |   O    |     O     |     O     |    O    |    O    |   *    |    *     |
-| Windows 10 |   O    |     O     |     O     |    O    |    O    |   O    |    *     |
-| Windows 11 |   O    |     O     |     O     |    O    |    O    |   O    |    *     |
-| Mac-OSX    |   O    |     O     |     *     |    O    |    O    |   O    |    O     |
+In this table, "OS not supported" means that the browser is not available for that operating system.
 
-&ast;OS not supported
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Operating system</th>
+      <th scope="col">Chrome</th>
+      <th scope="col">Firefox</th>
+      <th scope="col">IE Over 9</th>
+      <th scope="col">Opera</th>
+      <th scope="col">Whale</th>
+      <th scope="col">Edge</th>
+      <th scope="col">Safari</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Windows XP</th>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>OS not supported</td>
+      <td>OS not supported</td>
+      <td>OS not supported</td>
+      <td>OS not supported</td>
+      <td>OS not supported</td>
+    </tr>
+    <tr>
+      <th scope="row">Windows 7</th>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>OS not supported</td>
+      <td>OS not supported</td>
+    </tr>
+    <tr>
+      <th scope="row">Windows 8</th>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>OS not supported</td>
+      <td>OS not supported</td>
+    </tr>
+    <tr>
+      <th scope="row">Windows 10</th>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>OS not supported</td>
+    </tr>
+    <tr>
+      <th scope="row">Windows 11</th>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>OS not supported</td>
+    </tr>
+    <tr>
+      <th scope="row">Mac-OSX</th>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>OS not supported</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+    </tr>
+  </tbody>
+</table>
 
 <br>
 
@@ -37,13 +105,13 @@ NicePay's Hosted Payment Page was developed to be used in 'HTML5' based PC/Mobil
 
 | Company  |  type   |   App   |  support  |
 |:---------|:-----:|:--------:|:------:|
-| naver    | Browser  |  naver   |   O    |
-| daum     | Browser  |   daum   |   O    |
-| google   | Browser  |  google  |   O    |
-| telegram |  messenger  |   telegram   |   O    |
-| naver    |  messenger  |    band    |   O    |
-| naver    |  messenger  |   line   |   O    |
-| kakao    |  messenger  |   kakaotalk   |   O    |
-| facebook |  SNS  |   facebook   |   O    |
+| naver    | Browser  |  naver   |   Yes    |
+| daum     | Browser  |   daum   |   Yes    |
+| google   | Browser  |  google  |   Yes    |
+| telegram |  messenger  |   telegram   |   Yes    |
+| naver    |  messenger  |    band    |   Yes    |
+| naver    |  messenger  |   line   |   Yes    |
+| kakao    |  messenger  |   kakaotalk   |   Yes    |
+| facebook |  SNS  |   facebook   |   Yes    |
 
 <br>

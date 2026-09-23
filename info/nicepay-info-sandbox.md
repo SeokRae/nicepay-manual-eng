@@ -25,35 +25,35 @@ Sandbox and Live use different domains and IP ranges for each service (API, paym
 - Sandbox : sandbox-api.nicepay.co.kr  
 - Live : api.nicepay.co.kr  
 
-| API                                             | Method | Endpoint                                 | Sandbox            |
-|-------------------------------------------------|--------|------------------------------------------|--------------------|
-| Create checkout session                         | POST   | /v1/checkout                             | ○                  |
-| Retrieve checkout session                       | GET    | /v1/checkout/{sessionId}                 | ○                  |
-| Expire checkout session                         | POST   | /v1/checkout/{sessionId}/expire          | ○                  |
-| Key-in Payment                                  | POST   | /v1/key-in/payments                      | × *                |
-| Recurring payment: Token Issue                  | POST   | /v1/subscribe/regist                     | ○                  |
-| Recurring Payment: Token authorization          | POST   | /v1/subscribe/{bid}/payments             | ○                  |
-| Recurring Payment: Token delete                 | POST   | /v1/subscribe/{bid}/expire               | ○                  |
-| AccessToken Generation                          | POST   | /v1/access-token                         | ○                  |
-| Cancel request with session id                  | POST   | /v1/payments/checkout/{sessionId}/cancel | full   cancel only |
-| Cancel request with tid                         | POST   | /v1/payments/{tid}/cancel                | full   cancel only |
-| Transaction Status Inquiry-Authorization amount | GET    | /v1/check-amount/{tid}                   | ○                  |
-| Transaction Status Inquiry-Transaction status   | GET    | /v1/payments/{tid}                       | ○                  |
-| Transaction Status Inquiry-orderId              | GET    | /v1/payments/find/{orderId}              | ○                  |
-| Transaction Status Inquiry-sessionId            | GET    | /v1/payments/checkout/{sessionId}        | ○                  |
+| API                                             | Method | Endpoint                                   | Sandbox          |
+|-------------------------------------------------|--------|--------------------------------------------|------------------|
+| Create checkout session                         | `POST` | `/v1/checkout`                             | Yes              |
+| Retrieve checkout session                       | `GET`  | `/v1/checkout/{sessionId}`                 | Yes              |
+| Expire checkout session                         | `POST` | `/v1/checkout/{sessionId}/expire`          | Yes              |
+| Key-in Payment                                  | `POST` | `/v1/key-in/payments`                      | No               |
+| Recurring payment: Token Issue                  | `POST` | `/v1/subscribe/regist`                     | Yes              |
+| Recurring Payment: Token authorization          | `POST` | `/v1/subscribe/{bid}/payments`             | Yes              |
+| Recurring Payment: Token delete                 | `POST` | `/v1/subscribe/{bid}/expire`               | Yes              |
+| AccessToken Generation                          | `POST` | `/v1/access-token`                         | Yes              |
+| Cancel request with session id                  | `POST` | `/v1/payments/checkout/{sessionId}/cancel` | Full cancel only |
+| Cancel request with tid                         | `POST` | `/v1/payments/{tid}/cancel`                | Full cancel only |
+| Transaction Status Inquiry-Authorization amount | `GET`  | `/v1/check-amount/{tid}`                   | Yes              |
+| Transaction Status Inquiry-Transaction status   | `GET`  | `/v1/payments/{tid}`                       | Yes              |
+| Transaction Status Inquiry-orderId              | `GET`  | `/v1/payments/find/{orderId}`              | Yes              |
+| Transaction Status Inquiry-sessionId            | `GET`  | `/v1/payments/checkout/{sessionId}`        | Yes              |
 
-* Key-in Payment is not provided in Sandbox. Test it directly against Live once your merchant account is enabled for manual-entry payments, see [Key-in Payment](../api/nicepay-api-keyin.md).
+Key-in Payment is not provided in Sandbox. Test it directly against Live once your merchant account is enabled for manual-entry payments. See [Key-in Payment](../api/nicepay-api-keyin.md).
 
 <br>
 
 - Sandbox : sandbox-pay.nicepay.co.kr  
 - Live : pay.nicepay.co.kr  
 
-| API      | Method | Endpoint                                   | Sandbox |
-|----------|--------|--------------------------------------------|---------|
-| NicePay checkout url | POST   | /v1/checkout/pay/{uniquevalue}/{sessionId} | ○       |
+| API                  | Method | Endpoint                                     | Sandbox |
+|----------------------|--------|----------------------------------------------|---------|
+| NicePay checkout url | `POST` | `/v1/checkout/pay/{uniquevalue}/{sessionId}` | Yes     |
 
-* This url will be generated by nicepay, when you using checkout-api
+NicePay generates this URL when you call the Checkout API.
 
 <br>
 
