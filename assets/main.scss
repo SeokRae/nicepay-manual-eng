@@ -1,6 +1,13 @@
 ---
 ---
 
+// minima's default brand color (#2a7ae2) is only 4.15:1 on the page background
+// and 3.77:1 on the active sidebar tint. #1a66c9 clears 4.5:1 everywhere it is
+// used: 5.45:1 on #fdfdfd, 5.17:1 on even table rows (#f7f7f7), 4.83:1 on code
+// (#eef), 4.88:1 on the active sidebar tint, and white on it is 5.54:1.
+// It must be declared before the import so minima's `!default` picks it up.
+$brand-color: #1a66c9;
+
 @import "minima";
 
 // ---------------------------------------------------------------------------
@@ -9,6 +16,9 @@
 // ---------------------------------------------------------------------------
 
 $sidebar-width: 260px;
+// 3.63:1 on $background-color, the WCAG 1.4.11 minimum for a border that
+// marks a boundary is 3:1.
+$border-color-strong: #858585;
 
 .skip-link {
   position: absolute;
@@ -28,6 +38,7 @@ $sidebar-width: 260px;
 .site-shell {
   display: flex;
   align-items: flex-start;
+  flex: 1 0 auto;
 }
 
 .sidebar {
@@ -55,6 +66,14 @@ $sidebar-width: 260px;
   &:hover {
     color: $brand-color;
   }
+}
+
+// The "Menu" toggle only exists on narrow screens. On wide screens the
+// <details> stays open (the layout renders it open, and the script next to it
+// only closes it below the breakpoint), so hiding the summary leaves the full
+// link list visible with no toggle UI.
+.sidebar-toggle {
+  display: none;
 }
 
 .sidebar-group {
@@ -106,14 +125,27 @@ $sidebar-width: 260px;
   }
 }
 
-.page-content {
+// Holds <main> and the site footer, so the footer stays a top-level
+// contentinfo landmark instead of sitting inside <main>.
+.content-column {
   flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.page-content {
+  flex: 1 0 auto;
   min-width: 0;
 }
 
 .wrapper {
   max-width: 900px;
   width: 90%;
+  // minima adds 30px side padding outside that 90%, which overflowed the
+  // content column by a few px between 801px and ~860px viewports.
+  width: unquote("min(90%, calc(100% - #{$spacing-unit * 2}))");
   margin-left: auto;
   margin-right: auto;
   padding-top: $spacing-unit;
@@ -123,6 +155,9 @@ $sidebar-width: 260px;
 @include media-query($on-laptop) {
   .site-shell {
     flex-direction: column;
+    // flex-start would size every column item to its content, so one wide
+    // table or code line made the whole page wider than the viewport.
+    align-items: stretch;
   }
 
   .sidebar {
@@ -135,10 +170,169 @@ $sidebar-width: 260px;
     padding: ($spacing-unit / 2);
   }
 
+  .sidebar-title {
+    margin-bottom: $spacing-unit / 3;
+  }
+
+  .sidebar-toggle {
+    display: list-item;
+    cursor: pointer;
+    padding: 8px ($spacing-unit / 2);
+    border: 1px solid $border-color-strong;
+    border-radius: 4px;
+    font-weight: 600;
+
+    &:focus-visible {
+      outline: 2px solid $brand-color;
+      outline-offset: 2px;
+    }
+  }
+
+  .sidebar-menu[open] > .sidebar-toggle {
+    margin-bottom: $spacing-unit / 2;
+  }
+
+  .content-column {
+    min-height: 0;
+  }
+
   .wrapper {
     width: 100%;
+    // width: 100% plus side padding overflowed the viewport under the default
+    // content-box sizing.
+    box-sizing: border-box;
     padding-left: $spacing-unit / 2;
     padding-right: $spacing-unit / 2;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Page title, callouts, and links in content
+// ---------------------------------------------------------------------------
+
+// _layouts/page.html turns the Markdown's first heading into the page's single
+// visible title, so it keeps minima's post-title look plus the spacing that
+// minima's post-header used to add.
+.post-content > .post-title:first-child {
+  margin-bottom: $spacing-unit;
+}
+
+// minima's blockquote is #828282 italic 18px with -1px letter-spacing
+// (3.78:1). Every "⚠️ Important" callout is a blockquote, so it gets body-size
+// upright text at 12.42:1 and a 3.63:1 left border.
+blockquote {
+  color: #333;
+  font-size: $base-font-size;
+  font-style: normal;
+  letter-spacing: normal;
+  border-left: 4px solid $border-color-strong;
+}
+
+// Links in running text are underlined so they do not rely on color alone
+// (WCAG 1.4.1). Sidebar links and resource cards are navigation blocks and
+// keep their own styling.
+.post-content a,
+.home a:not(.resource-card),
+.site-footer a {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+// Badge links (README's SDK row) would otherwise draw stray underlines under
+// the whitespace around each image.
+.post-content a:has(> img),
+.home a:has(> img) {
+  text-decoration: none;
+}
+
+// ---------------------------------------------------------------------------
+// Syntax highlighting: minima's Rouge colors fall below 4.5:1 on the #eef code
+// background (strings 4.32, variables 4.16, builtins 3.62, numbers 3.04,
+// comments 2.52). Every token below is at least 4.5:1 on #eef.
+// ---------------------------------------------------------------------------
+
+.highlight {
+  .c, .cm, .c1, .cs, .cp { color: #5c5c5c; }           // comments 5.83:1
+  .bp, .gh, .go, .gu, .w { color: #5c5c5c; }           // 5.83:1
+  .m, .mf, .mh, .mi, .mo, .il { color: #00667a; }      // numbers 5.75:1
+  .s, .s1, .s2, .sb, .sc, .sd, .se, .sh, .si, .sx { color: #b3124a; } // strings 5.90:1
+  .na, .no, .nv, .vc, .vg, .vi { color: #006d6d; }     // attributes, variables 5.37:1
+  .nb { color: #006a94; }                              // builtins 5.25:1
+  .sr { color: #087330; }                              // regex 5.22:1
+}
+
+// ---------------------------------------------------------------------------
+// Previous / next page links and site footer
+// ---------------------------------------------------------------------------
+
+.page-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: $spacing-unit / 2;
+  margin-top: $spacing-unit * 1.5;
+  padding-top: $spacing-unit / 2;
+  border-top: 1px solid $grey-color-light;
+}
+
+.page-nav-link {
+  display: block;
+  max-width: 48%;
+  padding: 8px 12px;
+  border: 1px solid $border-color-strong;
+  border-radius: 6px;
+  color: $text-color;
+  text-decoration: none;
+
+  &:hover {
+    border-color: $brand-color;
+    color: $text-color;
+
+    .page-nav-title {
+      text-decoration: underline;
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid $brand-color;
+    outline-offset: 2px;
+  }
+}
+
+.page-nav-next {
+  margin-left: auto;
+  text-align: right;
+}
+
+.page-nav-label {
+  display: block;
+  font-size: $small-font-size;
+  color: $grey-color-dark;
+}
+
+.page-nav-title {
+  display: block;
+  color: $brand-color;
+  font-weight: 600;
+}
+
+.site-footer {
+  border-top: 1px solid $grey-color-light;
+  padding: 0;
+  font-size: $small-font-size;
+  color: $grey-color-dark;
+
+  p {
+    margin-bottom: $spacing-unit / 3;
+  }
+}
+
+@include media-query($on-palm) {
+  .page-nav {
+    flex-direction: column;
+  }
+
+  .page-nav-link {
+    max-width: none;
   }
 }
 
@@ -154,9 +348,13 @@ $sidebar-width: 260px;
 }
 
 .resource-card {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
   padding: 12px 14px;
-  border: 1px solid $grey-color-light;
+  // 3.63:1 against the page, so the card outline reads as a control.
+  border: 1px solid $border-color-strong;
   border-radius: 6px;
   color: $text-color;
   text-decoration: none;
@@ -164,10 +362,27 @@ $sidebar-width: 260px;
   line-height: $base-line-height;
   transition: border-color 0.1s ease-in-out, background-color 0.1s ease-in-out;
 
-  &:hover {
+  // Arrow cue that the card is a link. The empty alt text keeps screen
+  // readers from announcing it; browsers without that syntax keep the first
+  // declaration.
+  &::after {
+    content: "\2192";
+    content: "\2192" / "";
+    color: $brand-color;
+    flex: none;
+    transition: transform 0.1s ease-in-out;
+  }
+
+  &:hover,
+  &:focus-visible {
     border-color: $brand-color;
     background-color: rgba($brand-color, 0.05);
-    text-decoration: none;
+    color: $text-color;
+    text-decoration: underline;
+
+    &::after {
+      transform: translateX(3px);
+    }
   }
 
   &:focus-visible {
@@ -180,9 +395,46 @@ $sidebar-width: 260px;
 // Content overflow safety nets
 // ---------------------------------------------------------------------------
 
-table {
-  display: block;
+// _layouts/default.html wraps every table in .table-scroll, so the table keeps
+// display: table (and its table semantics in every browser) while the wrapper
+// scrolls. The inline script there makes an overflowing wrapper or <pre> a
+// focusable, named region.
+.table-scroll {
   overflow-x: auto;
+  margin-bottom: $spacing-unit;
+
+  > table {
+    margin-bottom: 0;
+  }
+}
+
+// The Description column holds long unbroken lists (card company lists,
+// encData formulas). `anywhere` lets them wrap and, unlike `break-word`, also
+// stops them from setting the column's minimum width.
+td:last-child,
+td:last-child code {
+  overflow-wrap: anywhere;
+}
+
+// Without a minimum, `anywhere` let a narrow screen squeeze the Description
+// column of the 5 to 7 column parameter tables to a few characters, since the
+// table then shrinks to its min-content width. The 8-column browser matrix and
+// the 4-column Sandbox (O/X) tables are left alone.
+td:last-child:nth-child(n+5):nth-child(-n+7) {
+  min-width: 12em;
+}
+
+// With the default middle alignment, a long Description cell pushed the
+// parameter name a screen or a printed page away from the top of its row.
+th,
+td {
+  vertical-align: top;
+}
+
+// A bare URL in running text (sandbox.md) was wider than a 320px column.
+.post-content,
+.home {
+  overflow-wrap: break-word;
 }
 
 pre {
@@ -191,4 +443,134 @@ pre {
 
 code {
   overflow-wrap: break-word;
+}
+
+.table-scroll,
+pre {
+  &:focus-visible {
+    outline: 2px solid $brand-color;
+    outline-offset: 2px;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Windows High Contrast / forced colors
+// ---------------------------------------------------------------------------
+
+@media (forced-colors: active) {
+  // A transparent border is painted in CanvasText under forced colors, which
+  // drew the active-page bar next to every sidebar link.
+  .sidebar-link {
+    border-left-color: Canvas;
+
+    &.active {
+      border-left-color: Highlight;
+      text-decoration: underline;
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Print
+// ---------------------------------------------------------------------------
+
+@media print {
+  .skip-link,
+  .sidebar,
+  .sidebar-toggle,
+  .page-nav {
+    display: none !important;
+  }
+
+  body,
+  .site-shell,
+  .content-column {
+    display: block;
+    min-height: 0;
+  }
+
+  .page-content {
+    padding: 0;
+  }
+
+  .wrapper {
+    max-width: none;
+    width: auto;
+    margin: 0;
+    padding: 0;
+  }
+
+  // Tables print at full size: no scroll box, the header row repeats on each
+  // page, and a row never splits across pages. Only the Description column
+  // wraps anywhere (see td:last-child above); doing that in every column let
+  // the table algorithm squeeze parameter names to three letters per line.
+  .table-scroll {
+    overflow: visible;
+  }
+
+  // Slightly smaller type and tighter padding let the 6 and 7 column
+  // parameter tables fit the printable width of Letter and A4 paper.
+  table {
+    display: table;
+    width: 100%;
+    font-size: 0.85em;
+  }
+
+  table th,
+  table td {
+    padding: 6px 8px;
+    overflow-wrap: break-word;
+  }
+
+  td:last-child:nth-child(n+5):nth-child(-n+7) {
+    min-width: 10em;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  tr,
+  blockquote,
+  figure,
+  img {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  pre {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    overflow: visible;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  // Diagrams scale to the page instead of splitting across two pages.
+  img {
+    max-width: 100% !important;
+    height: auto;
+  }
+
+  .post-content img[src*="image/"] {
+    max-height: 8in;
+    object-fit: contain;
+  }
+
+  // Paper has no hover: print the address after external links, but not after
+  // image-only links (badges) whose URL would be noise.
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.85em;
+    overflow-wrap: anywhere;
+  }
+
+  a[href^="http"]:has(img)::after {
+    content: none;
+  }
 }
