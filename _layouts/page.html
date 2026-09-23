@@ -1,0 +1,27 @@
+---
+layout: default
+---
+{%- comment -%}
+  Replaces minima's page layout, which printed page.title as an extra H1 above
+  the Markdown's own first heading, so every page showed its title twice.
+  page.title (from jekyll-titles-from-headings) still labels the sidebar and
+  the <title>; here the Markdown's first heading becomes the single visible
+  H1. Its id is kept, so links to that anchor keep working. A page whose
+  content does not open with a heading falls back to page.title.
+{%- endcomment -%}
+{%- assign body = content | strip -%}
+{%- assign opening = body | slice: 0, 3 -%}
+<article class="post">
+
+  <div class="post-content">
+    {%- if opening == "<h1" %}
+    {{ body | replace_first: "<h1", '<h1 class="post-title"' }}
+    {%- elsif opening == "<h2" %}
+    {{ body | replace_first: "<h2", '<h1 class="post-title"' | replace_first: "</h2>", "</h1>" }}
+    {%- else %}
+    <h1 class="post-title">{{ page.title | escape }}</h1>
+    {{ content }}
+    {%- endif %}
+  </div>
+
+</article>
