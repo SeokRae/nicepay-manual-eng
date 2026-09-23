@@ -9,9 +9,9 @@ However, for cash transactions such as virtual accounts, refund account informat
 
 <br>
 
-<img alt="Sequence diagram of the full card/easy-pay payment cycle for a cardAndEasyPay checkout, from order to cancellation. Steps 8-9 (cancellation, shown in orange: merchant server calls the Cancel API, NicePay responds with resultCode 0000, or a failing cancellation with resultCode other than 0000) are the focus here; steps 1-7 (checkout) are detailed in api/nicepay-api-payment-window-url.md" src="../image/payment-checkout-cancel-cycle.svg" width="800px">
+<a href="../image/payment-checkout-cancel-cycle.svg"><img alt="Sequence diagram: order, create checkout, redirect, pay, result page, browser posts to returnUrl, status inquiry, confirm order; Cancellation: cancel, result" src="../image/payment-checkout-cancel-cycle.svg" width="800px"></a>
 
-**Steps 8-9 above (in orange)** are this server-to-server call the merchant makes after a card or easy-pay checkout has already completed (see [Card and Easy Pay checkout flow](./nicepay-api-payment-window-url.md#card-and-easy-pay-checkout-flow) for steps 1-7); there's no customer/browser step here. `refundAccount`/`refundBankCode`/`refundHolder` only apply to virtual account refunds and are omitted above; see the parameter tables below for the full field list.
+**Steps 11-12 above (bracketed as Cancellation)** are this server-to-server call the merchant makes after a card or easy-pay checkout has already completed (see [Card and Easy Pay checkout flow](./nicepay-api-payment-window-url.md#card-and-easy-pay-checkout-flow) for steps 1-10); there's no customer/browser step here. `refundAccount`/`refundBankCode`/`refundHolder` only apply to virtual account refunds and are omitted above; see the parameter tables below for the full field list.
 
 <br>
 

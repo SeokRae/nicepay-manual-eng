@@ -3,7 +3,7 @@
 <br>
 
 ### Over-view
-<img alt="Sequence diagram of the Access token flow: the merchant server builds an Authorization header from its Client and Secret key, calls POST /v1/access-token with Basic authentication, and NicePay returns the accessToken, tokenType, and expireAt in the response" src="../image/payment-access-token.svg" width="800px">
+<a href="../image/payment-access-token.svg"><img alt="Sequence diagram of the Access token flow: the Merchant Server builds a Basic Authorization header from its Client and Secret key, calls POST /v1/access-token, and receives the accessToken" src="../image/payment-access-token.svg" width="800px"></a>
 
 - You can use the Access token API when calling an API with Bearer token HTTP authentication.
 - The token is valid for 30 minutes.   
