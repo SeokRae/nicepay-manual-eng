@@ -497,6 +497,9 @@ Some messages carry Korean payment-industry terms straight into the English colu
 | P042 | <span lang="ko">이미 만료된 세션 아이디 입니다.</span>  | The session ID has already expired.   |
 | P043 | <span lang="ko">유효하지 않은 세션 아이디 입니다.</span>      | Invalid session ID.     |
 | P044 | <span lang="ko">승인 상태 수정에 실패하였습니다.</span>       | Failed to modify approval status.     |
+| P045 | <span lang="ko">이미 처리된 거래건 입니다.</span> | Transaction has already been processed. |
+| P047 | <span lang="ko">이미 처리된 상태[{0}]의 세션 아이디 입니다.</span> | Session ID in state [{0}] has already been processed. |
+| P049 | <span lang="ko">결제 승인 처리 중입니다. 완료 후 결과를 확인해주세요.</span> | Payment authorization is in progress. Please check the result once it is completed. |
 | P101 | <span lang="ko">DB 트랜잭션 실패</span>   | Database transaction failed.   |
 | P102 | <span lang="ko">auth history 데이터 추가 실패하였습니다.</span>      | Failed to add authentication history data.   |
 | P103 | <span lang="ko">log trace 데이터 추가 실패하였습니다.</span>   | Failed to add log trace data.         |

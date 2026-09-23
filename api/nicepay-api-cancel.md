@@ -137,8 +137,8 @@ Required: Yes = has a non-empty value in every response whose `resultCode` is `0
 | `orderId` | String | Yes | 64 | Unique order number |
 | `sessionId` | String | No | 256 | Checkout session ID of the payment<br>Always returned when you cancel with `sessionId`. When you cancel with `tid`, returned only when the payment was made through Checkout; otherwise the key is left out |
 | `ediDate` | String | Yes | - | Response message creation date and time (ISO 8601 format) |
-| `signature` | String | Yes | 256 | Forgery verification data<br>- Respond only to valid transactions<br>- Creation rule: hex(sha256(tid + amount + ediDate+ SecretKey))<br>- For data validation, it is recommended to implement a comparison at business logic |
-| `status` | String | Yes | 20 | Payment processing status<br>paid: payment completed<br> ready: ready<br>failed: payment failed<br>cancelled: cancelled<br>partialCancelled: partially cancelled<br>['paid', 'ready', 'failed', 'cancelled', 'partialCancelled'] |
+| `signature` | String | Yes | 256 | Forgery verification data<br>Rule: hex(sha256(tid + amount + ediDate + SecretKey)), see [Verifying the payment result](./nicepay-api-payment-window-url.md#verifying-the-payment-result)<br>Covers only `tid`, `amount` and `ediDate`. Check `resultCode` and `status` separately |
+| `status` | String | Yes | 20 | Payment processing status<br>paid: payment completed<br>ready: virtual account issued, not paid yet<br>failed: payment failed<br>cancelled: cancelled<br>partialCancelled: partially cancelled<br>['paid', 'ready', 'failed', 'cancelled', 'partialCancelled'] |
 | `paidAt` | String | Yes | - | Time of payment completed ISO 8601 format<br>If payment is not completed, return 0<br>For a virtual account that is not paid yet, the time the account number was requested |
 | `failedAt` | String | Yes | - | Time of payment failure ISO 8601 format<br>If not payment is not failed, return 0 |
 | `cancelledAt` | String | Yes | - | Payment cancellation time ISO 8601 format<br>If it is not cancellation request, return 0<br>In case of partial cancellation, the last cancellation time will be return |

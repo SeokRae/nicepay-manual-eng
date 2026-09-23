@@ -19,17 +19,9 @@ New to Checkout? The [Quick Start Guide](../QUICKSTART.md) walks through this en
 ### Card and Easy Pay checkout flow
 <img alt="Sequence diagram of the full card/easy-pay payment cycle for a cardAndEasyPay checkout, from order to cancellation. Steps 1-7 (checkout: create checkout, redirect, Checkout page, Payment Authorization callback) are the focus here; steps 8-9 (cancellation) are shown in orange and detailed in api/nicepay-api-cancel.md" src="../image/payment-checkout-cancel-cycle.svg" width="800px">
 
-**Steps 1-7 above** are the same flow shown in [Over-view](#over-view), detailed for `method: cardAndEasyPay` (credit card and easy-pay wallets). After the customer selects a card or a wallet on the Checkout page, the field set returned in the `returnUrl` callback varies by `payMethod`; see [Payment Authorization Response Parameter](#payment-authorization-response-parameter). Steps 8-9 (shown in orange) are the cancellation that can follow; see [Cancel](./nicepay-api-cancel.md) for that part of the cycle.
+**Steps 1-7 above** are the same flow shown in [Over-view](#over-view), detailed for `method: cardAndEasyPay` (credit card and easy-pay wallets). After the customer selects a card or a wallet on the Hosted Payment Page, the field set returned in the `returnUrl` callback varies by `payMethod`; see [Payment Authorization Response Parameter](#payment-authorization-response-parameter). Steps 8-9 (shown in orange) are the cancellation that can follow; see [Cancel](./nicepay-api-cancel.md) for that part of the cycle. Before you confirm an order, run the checks in [Verifying the payment result](#verifying-the-payment-result).
 
 > **⚠️ Important:** In Sandbox with `fakeAuth: "true"`, pressing Next on the Checkout page always returns a success result and Cancel returns a random failure result: this is a Sandbox-only shortcut, not real Live authentication/failure behavior.  
-
-<br>
-
-### Exception handling
-- You must check the amount from `signature` for tampering verification in the response message.
-- If you need to verify the amount, please refer to the [Transaction Inquiry API](./nicepay-api-retrieve.md).
-- If your server does not receive the payment result, see [Timeout Information](../info/nicepay-info-firewall-timeout.md#timeout-information) for how to look the payment up and cancel it if needed.
-  
 
 <br>
 
@@ -149,6 +141,10 @@ Required: Yes = always send; No = optional; Conditional = send in the case state
 
 #### Virtual account Option
 
+> **⚠️ Important:** For `method` `vbank`, the `returnUrl` callback arrives when NicePay issues the virtual account, before the customer pays. It has `resultCode` `0000` and `status` `ready`. Do not ship the order yet.  
+> Register a [webhook](./nicepay-api-webhook.md#delivery-of-webhook) for `vbank` or `all`, and confirm the order when the deposit event (`status` `paid`) arrives. Without a registered webhook URL, NicePay sends no deposit event, and your Merchant Server has to look the payment up with [Transaction Status Inquiry](./nicepay-api-retrieve.md#transaction-status-inquiry-with-tidtransaction-id) until `status` is `paid`.  
+> Read the account number to show the customer from the `vbank` object of Transaction Status Inquiry. The callback's `vbankNumber` can be empty.  
+
 | Parameter     |   Type   |  Required   |  Bytes  | Description  |
 |:--------------|:---------:|:----------:|:-------:|:--------------|
 | `vbankHolder` | String | Conditional | 40 | Virtual account (merchant name, user name)<br>Required when `method` is `vbank` |
@@ -195,7 +191,7 @@ Required: Yes = has a non-empty value in every response whose `resultCode` is `0
 | `tid` | String | No | 30 | Returned when authorization is successful |
 | `amount` | Int | Yes | 12 | payment amount |
 | `url` | String | Yes |   | The URL to the Checkout Session. Redirect customers to this URL to take them to Checkout. |
-| `status` | String | Yes | 20 | Payment processing status<br><br>paid: payment completed, ready: ready (virtual account number), failed: payment failed, cancelled: cancelled, partialCancelled: partially cancelled<br>['paid', 'ready', 'failed', 'cancelled', 'partialCancelled']<br><br>Expiration is not represented as a `status` value; check the separate `isExpire` boolean field instead. |
+| `status` | String | Yes | 20 | Status of the checkout session<br><br>ready: created, not paid yet<br>pending: the customer authenticated, and approval is in progress<br>paid: approved. For a virtual account, the account was issued<br>failed: authentication or approval failed<br>closed: the customer left the Hosted Payment Page<br>cancelled: cancelled<br>partialCancelled: partially cancelled<br>['ready', 'pending', 'paid', 'failed', 'closed', 'cancelled', 'partialCancelled']<br><br>A virtual account deposit does not change this value. To learn about the deposit, use the [webhook](./nicepay-api-webhook.md#delivery-of-webhook) or [Transaction Status Inquiry](./nicepay-api-retrieve.md#transaction-status-inquiry-with-sessionid). In Sandbox with `fakeAuth: "true"`, the session takes the `status` of the payment, so a virtual account session shows `ready` after the account is issued.<br><br>Expiration is not represented as a `status` value; check the separate `isExpire` boolean field instead. |
 | `isExpire` | Boolean | Yes |  | true : Expired <br> false : Not expired |
 | `expireDate` | String | Yes |  | ISO 8601 (session validity period) |
 | `messageSource` | String | Yes |  | nicepay: Response message generated by nicepay  <br> external: Response message generated by 3rd partner|
@@ -208,17 +204,18 @@ Parameters you requested are also echoed back in the response.
 
 ### Payment Authorization
 
-If you access the URL received through the Payment Request API, the NicePay Hosted Payment Page will be displayed.
-When the customer proceeds with card authentication in the Hosted Payment Page, NicePay will respond with approval processing result.
-
-The payment approval response value will be delivered to the `returnUrl` callback provided through the 'Payment Request API'
-
+Your Merchant Server redirects the customer to the `url` from the Create checkout response, and the customer's browser opens the Hosted Payment Page. After the customer authenticates, NicePay approves the payment. NicePay then returns a result page to the customer's browser, and the browser sends the result to the `returnUrl` of the session as a form `POST`. NicePay's servers do not call `returnUrl`.
 
 ```bash
 POST {returnUrl}
 HTTP/1.1
 Content-type: application/x-www-form-urlencoded
 ```
+
+- The request comes from the customer's browser, not from NicePay's IP addresses. Do not limit `returnUrl` to the webhook IP addresses in [Firewall Policy](../info/nicepay-info-firewall-timeout.md#firewall-policy).
+- NicePay does not read the response of your `returnUrl` handler and sets no time limit for it. The customer's browser shows your response, so return your order result page.
+- NicePay does not retry the callback. If the customer closes the browser before it is sent, the approved payment still stands. Your Merchant Server then learns the result from the [webhook](./nicepay-api-webhook.md) or from [Transaction Status Inquiry](./nicepay-api-retrieve.md).
+- Check every callback as described in [Verifying the payment result](#verifying-the-payment-result) before you confirm the order.
 
 <br>
 
@@ -229,40 +226,43 @@ POST
 Content-type: application/x-www-form-urlencoded
 ```
 
+The values below are shown after URL decoding. In the request body, every value is percent-encoded text.
+
 | Parameter     |   Type   |  Required   |  Bytes  | Description  |
 |:--------------|:---------:|:----------:|:------:|:--------|
-| `success` | Boolean | No | | Whether payment is successful<br><br>true: successful, false: Payment failure or authentication failure |
+| `success` | Boolean | Yes | | Whether payment is successful<br><br>`true` when `resultCode` is `0000`, otherwise `false` |
 | `authToken` | String | Yes | 40 | Authentication TOKEN<br><br>Authentication transaction Unique Key<br>- Can be used for communication with nicepay when authentication failed. |
-| `tid` | String | No | 30 | Transaction ID<br><br>Returned when authorization is successful.<br>*If authentication fails, the TID will not be returned.|
-| `orderId` | String | Yes | 64 | Your Unique order ID<br>*Not reusable|
-| `clientId` | String | No | 50 | Client ID issued by NICEPAY |
+| `tid` | String | Yes | 30 | Transaction ID<br><br>Returned when authorization is successful.<br>*If authentication fails, the TID will not be returned.|
+| `orderId` | String | Yes | 64 | Your Unique order ID<br>*Not reusable<br>Find your order by this value|
+| `sessionId` | String | No | 256 | Checkout session ID<br>Sent in Sandbox when the session was created with `fakeAuth: "true"`. Not guaranteed in Live: find your order by `orderId` |
+| `clientId` | String | Yes | 50 | Client ID issued by NICEPAY |
 | `mallReserved` | String | No | 500 | Spare field for store information delivery<br>It is recommended to use JSON string format.<br>However, double quotation marks (") cannot be used |
 | `resultCode` | String | Yes | 4 | Result code<br><br>0000 : success / other failure |
 | `resultMsg` | String | Yes | 100 | Result message |
 | `amount` | Int | Yes | 12 | payment amount |
 | `goodsName` | String | Yes | 40 | Product Name<br><br>Product Name (", * Special characters not allowed) |
-| `channel` | String | Yes | 10 | pc:PC payment, mobile:mobile payment |
-| `status` | String | No | 20 | Payment processing status<br><br>paid: payment completed, ready: ready (virtual account number), failed: payment failed, cancelled: cancelled, partialCancelled: partially cancelled<br>['paid', 'ready', 'failed', 'cancelled', 'partialCancelled']<br><br>Expiration is not represented as a `status` value; check the separate `isExpire` boolean field instead. |
-| `ediDate` | String | No | - | Creation date and time <br><br>ISO 8601 format |
-| `signature` | String | No | 256 | Forgery verification data<br><br>- Respond only with successful transactions<br>- Rule: hex(sha256(tid + amount + ediDate+ SecretKey))|
-| `paidAt` | String | No | - | When payment is complete<br><br>ISO 8601 format<br> If payment is not completed 0 |
-| `failedAt` | String | No | - | Time of payment failure<br><br>ISO 8601 format<br>If not payment failure 0 |
+| `channel` | String | No | 10 | pc:PC payment, mobile:mobile payment |
+| `status` | String | Yes | 20 | Result of the payment<br><br>paid: approved<br>ready: virtual account issued, not paid yet<br>failed: declined, authentication failed, or cancelled by NicePay after an error (`U504`)<br>closed: the customer cancelled or closed the Hosted Payment Page<br>['paid', 'ready', 'failed', 'closed'] |
+| `ediDate` | String | Yes | - | Creation date and time <br><br>ISO 8601 format<br>Use it exactly as received when you verify `signature` |
+| `signature` | String | Yes | 256 | Forgery verification data<br><br>Rule: hex(sha256(tid + amount + ediDate + SecretKey)), see [Verifying the payment result](#verifying-the-payment-result)<br>Covers only `tid`, `amount` and `ediDate`. Verify it only when `resultCode` is `0000`: on a failure it can hold a value that this rule does not reproduce |
+| `paidAt` | String | Yes | - | When payment is complete<br><br>ISO 8601 format<br> If payment is not completed 0 |
+| `failedAt` | String | Yes | - | Time of payment failure<br><br>ISO 8601 format<br>If not payment failure 0 |
 | `payMethod` | String | Yes | 10 | Payment method<br><br>card: credit card, vbank: virtual account, bank: account transfer, cellphone: mobile phone, <br>naverpay=Naver Pay, kakaopay=Kakao Pay, payco=Payco, ssgpay=SSGPAY, samsungpay=Samsung Pay, tosspay=Toss Pay |
 | `useEscrow` | Boolean | No | - | Escrow transaction status<br><br>false: Normal transaction / true: Escrow transaction |
-| `currency` | String | No | 3 | Approval currency<br><br>KRW: Korean Won, USD: USD, CNY: Yuan |
+| `currency` | String | Yes | 3 | Approval currency<br><br>KRW: Korean Won, USD: USD, CNY: Yuan |
 | `approveNo` | String | No | 30 | Authorization Number<br>Credit Card, Bank Transfer, Mobile Phone |
-| `couponAmt` | Int | No | 12 | Amount of instant discount applied |
+| `couponAmt` | Int | No | 12 | Amount of instant discount applied<br>Can be empty or the text `null` when no discount was applied |
 | `buyerName` | String | No | 30 | Buyer name |
 | `buyerTel` | String | No | 40 | Buyer phone number |
 | `buyerEmail` | String | No | 60 | Buyer Email |
-| `issuedCashReceipt` | Boolean | No | - | Issuance of cash receipts<br><br>true: issued / false: not issued |
+| `issuedCashReceipt` | Boolean | Yes | - | Issuance of cash receipts<br><br>true: issued / false: not issued |
 | `receiptUrl` | String | No | 200 | Receipt URL |
 | `mallUserId` | String | No | 20 | Store User ID<br>Optional |
 | `cardCode` | String | No | 3 | Payment card issuer code |
 | `cardName` | String | No | 20 | Payment card issuer name |
 | `cardQuota` | Int | No | 3 | Installment Months<br><br>0: lump sum, 2:2 months, 3:3 months … |
 | `isInterestFree` | Boolean | No | - | Whether the merchant pays the customer's installment interest |
-| `cardType` | String | No | 1 | Card type<br>credit:credit card, check:debit |
+| `cardType` | String | No | 6 | Card type<br>credit:credit card, check:debit |
 | `canPartCancel` | Boolean | No | - | Whether partial cancellation is possible<br>true: Possible, false: Impossible |
 | `acquCardCode` | String | No | 3 | Acquirer code |
 | `acquCardName` | String | No | 100 | Acquirer Name |
@@ -271,9 +271,47 @@ Content-type: application/x-www-form-urlencoded
 | `vbankNumber` | String | No | 20 | Virtual account number to receive deposit |
 | `vbankExpDate` | String | No | - | Virtual Account Expiration Date<br><br>ISO 8601 |
 | `vbankHolder` | String | No | 40 | Account holder name for issued virtual account|
-| `bankCode` | String | Yes | 3 | Bank code |
-| `bankName` | String | Yes | 20 | Bank name (euc-kr) |
-| `messageSource` | String | No |  | nicepay: Response message generated by nicepay  <br> external: Response message generated by 3rd partner|
+| `bankCode` | String | No | 3 | Bank code |
+| `bankName` | String | No | 20 | Bank name |
+| `messageSource` | String | Yes |  | nicepay: Response message generated by nicepay  <br> external: Response message generated by 3rd partner|
+
+The `vbankCode`, `vbankName`, `vbankNumber`, `vbankExpDate`, `vbankHolder`, `bankCode` and `bankName` fields can be empty even when `payMethod` is `vbank` or `bank`. Read the virtual account from the `vbank` object, and the bank from the `bank` object, of [Transaction Status Inquiry](./nicepay-api-retrieve.md#transaction-status-inquiry-with-tidtransaction-id).
+
+<br>
+
+### Verifying the payment result
+
+Your Merchant Server runs these checks on every `returnUrl` callback before it confirms the order. The callback passes through the customer's browser, so your Merchant Server trusts it only after these checks.
+
+1. Read the form fields. Your web framework URL-decodes them. Use the decoded values in the steps below.
+2. Find your order by `orderId`. Do not use `sessionId` or a browser cookie for this: `sessionId` is not in every callback, and the browser does not send cookies set with `SameSite=Lax` or `SameSite=Strict` with this request. If the order is already recorded as paid, keep it paid and stop here. The customer's browser can send a second callback for the same session, and that callback reports a failure (`P045`, `P047` or `P049`) even when the payment succeeded.
+3. Check `resultCode`. Continue only when it is `0000`. `success` is `false` whenever `resultCode` is not `0000`, so you do not need to check both. For any other code, do not confirm the order. `P045`, `P047` and `P049` mean that the session was already processed or is still being approved: look the payment up with [Transaction Status Inquiry (with sessionId)](./nicepay-api-retrieve.md#transaction-status-inquiry-with-sessionid) to learn its result. See [API response code](../code/nicepay-code.md#api-response-code) for the other codes.
+4. Check `status`. Continue only when it is one of these:
+   - `paid`: the payment is approved. Continue with step 5.
+   - `ready`: NicePay issued a virtual account, and the customer has not paid yet. Run steps 5 and 6, record the order as waiting for payment, and stop. Do not ship the order. Confirm it when the deposit webhook (`status` `paid`) arrives, or when Transaction Status Inquiry returns `status` `paid`. See [Virtual account Option](#virtual-account-option).
+5. Verify `signature`. Build the string `tid + amount + ediDate + SecretKey`: join the values as plain text with no separator, write `amount` as whole-number digits (`1004`), use `ediDate` exactly as received, and use the Secret key of the `clientId` that created the session. Hash the UTF-8 bytes of the string with SHA-256 and write the result as 64 lowercase hexadecimal characters. If it differs from `signature`, do not confirm the order.
+6. Compare `amount` with the amount of your order. NicePay rejects an approval whose amount differs from the amount of the Create checkout request, so a different `amount` means that the callback was changed on the way. Do not confirm the order.
+7. Look the payment up from your Merchant Server with [Transaction Status Inquiry](./nicepay-api-retrieve.md#transaction-status-inquiry-with-tidtransaction-id) (`GET /v1/payments/{tid}`, available in Sandbox and Live). Verify the `signature` of its response in the same way. Check that its `orderId` and `amount` match your order and that its `status` is `paid`. The callback's `signature` covers only `tid`, `amount` and `ediDate`, so a changed `orderId` or `status` in the callback still passes step 5. The inquiry response goes directly from NicePay to your Merchant Server.
+8. Confirm the order and store `tid`. You need `tid` to look the payment up or cancel it later.
+
+Worked example for step 5, with the public Sandbox Secret key from [Test key information](../info/nicepay-info-sandbox.md#test-key-information) and the values of the Sandbox callback in [Payment result (returnUrl callback)](../info/nicepay-info-sandbox.md#payment-result-returnurl-callback):
+
+```bash
+tid       = UT0000104m00012303241646422011
+amount    = 1004
+ediDate   = 2023-03-24T16:46:42.484+0900
+SecretKey = 13e969a77a0545799242ccc3915243d3
+
+String to hash:
+UT0000104m0001230324164642201110042023-03-24T16:46:42.484+090013e969a77a0545799242ccc3915243d3
+
+Expected signature:
+6cd4cc86f52f15c7532f95f9be162e4f7be89292836ed02fddf6bdecb7357535
+```
+
+Handle each payment once. When a webhook URL is registered for the payment method, NicePay sends the webhook of a Checkout payment as soon as it approves the payment, so the webhook can arrive before the callback. Apply the first one that passes these checks, and ignore the other if the order is already confirmed.
+
+If your Merchant Server does not receive the callback, the payment still stands. See [Timeout Information](../info/nicepay-info-firewall-timeout.md#timeout-information) for how to look it up and cancel it if needed.
 
 <br><br>
 
@@ -311,7 +349,7 @@ Content-type: application/json;charset=utf-8
 | `tid` | String | No | 30 | Returned when authorization is successful |
 | `amount` | Int | Yes | 12 | payment amount |
 | `url` | String | Yes |   | The URL to the Checkout Session. Redirect customers to this URL to take them to Checkout. |
-| `status` | String | Yes | 20 | Payment processing status<br><br>paid: payment completed, ready: ready (virtual account number), failed: payment failed, cancelled: cancelled, partialCancelled: partially cancelled<br>['paid', 'ready', 'failed', 'cancelled', 'partialCancelled']<br><br>Expiration is not represented as a `status` value; check the separate `isExpire` boolean field instead.|
+| `status` | String | Yes | 20 | Status of the checkout session<br><br>ready: created, not paid yet<br>pending: the customer authenticated, and approval is in progress<br>paid: approved. For a virtual account, the account was issued<br>failed: authentication or approval failed<br>closed: the customer left the Hosted Payment Page<br>cancelled: cancelled<br>partialCancelled: partially cancelled<br>['ready', 'pending', 'paid', 'failed', 'closed', 'cancelled', 'partialCancelled']<br><br>A virtual account deposit does not change this value. To learn about the deposit, use the [webhook](./nicepay-api-webhook.md#delivery-of-webhook) or [Transaction Status Inquiry](./nicepay-api-retrieve.md#transaction-status-inquiry-with-sessionid). In Sandbox with `fakeAuth: "true"`, the session takes the `status` of the payment, so a virtual account session shows `ready` after the account is issued.<br><br>Expiration is not represented as a `status` value; check the separate `isExpire` boolean field instead. |
 | `isExpire` | Boolean | Yes |  | true : Expired <br> false : Not expired |
 | `expireDate` | String | Yes |  | ISO 8601 (session validity period) |
 | `messageSource` | String | Yes |  | nicepay: Response message generated by nicepay  <br> external: Response message generated by 3rd partner|
@@ -355,7 +393,7 @@ Content-type: application/json;charset=utf-8
 | `tid` | String | No | 30 | Returned when authorization is successful |
 | `amount` | Int | Yes | 12 | payment amount |
 | `url` | String | Yes |   | The URL to the Checkout Session. Redirect customers to this URL to take them to Checkout. |
-| `status` | String | Yes | 20 | Payment processing status<br><br>paid: payment completed, ready: ready (virtual account number), failed: payment failed, cancelled: cancelled, partialCancelled: partially cancelled<br>['paid', 'ready', 'failed', 'cancelled', 'partialCancelled']<br><br>Expiration is not represented as a `status` value; check the separate `isExpire` boolean field instead.|
+| `status` | String | Yes | 20 | Status of the checkout session<br><br>ready: created, not paid yet<br>pending: the customer authenticated, and approval is in progress<br>paid: approved. For a virtual account, the account was issued<br>failed: authentication or approval failed<br>closed: the customer left the Hosted Payment Page<br>cancelled: cancelled<br>partialCancelled: partially cancelled<br>['ready', 'pending', 'paid', 'failed', 'closed', 'cancelled', 'partialCancelled']<br><br>A virtual account deposit does not change this value. To learn about the deposit, use the [webhook](./nicepay-api-webhook.md#delivery-of-webhook) or [Transaction Status Inquiry](./nicepay-api-retrieve.md#transaction-status-inquiry-with-sessionid). In Sandbox with `fakeAuth: "true"`, the session takes the `status` of the payment, so a virtual account session shows `ready` after the account is issued.<br><br>Expiration is not represented as a `status` value; check the separate `isExpire` boolean field instead. |
 | `isExpire` | Boolean | Yes |  | true : Expired <br> false : Not expired |
 | `expireDate` | String | Yes |  | ISO 8601 (session validity period) |
 | `messageSource` | String | Yes |  | nicepay: Response message generated by nicepay  <br> external: Response message generated by 3rd partner|

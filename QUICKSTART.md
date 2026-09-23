@@ -101,7 +101,7 @@ curl --location 'https://sandbox-api.nicepay.co.kr/v1/checkout' \
 
 ### Step 2. Redirect the customer to the checkout URL
 
-When you access the URL that was responded, the Checkout page will be displayed, and the customer will be able to make a payment.
+Your Merchant Server redirects the customer to the `url` from the Step 1 response. The customer's browser opens the Hosted Payment Page, and the customer pays there.
 
 Since Step 1 used `fakeAuth: "true"`, this is a dummy Sandbox page without real card company authentication: pressing Next returns a success result, and Cancel returns a random failure result.
 
@@ -111,23 +111,24 @@ Since Step 1 used `fakeAuth: "true"`, this is a dummy Sandbox page without real 
 
 ### Step 3. Receive the payment result
 
-- When the customer completes the payment, the approval information will be sent to the endpoint of the `returnUrl`
+- When the customer finishes paying, NicePay shows a result page in the customer's browser, and the browser sends the result to your `returnUrl`. NicePay's servers do not call `returnUrl`. See [Payment Authorization](./api/nicepay-api-payment-window-url.md#payment-authorization) for what your handler returns.
 
 - Refer to the [Code](./code/nicepay-code.md) for the response and error codes. 
 
-- This is delivered as a `POST` with `Content-type: application/x-www-form-urlencoded`, a flat form body, not JSON. See the [Payment Authorization Response Parameter](./api/nicepay-api-payment-window-url.md#payment-authorization-response-parameter) table for the full field list.
+- The browser sends a `POST` with `Content-type: application/x-www-form-urlencoded`, a flat form body, not JSON. See the [Payment Authorization Response Parameter](./api/nicepay-api-payment-window-url.md#payment-authorization-response-parameter) table for the full field list.
 
 ```bash
 POST {returnUrl}
 Content-type: application/x-www-form-urlencoded
 ```
 
-Shown one field per line below for readability, the real request body is a single `&`-joined query string:
+Shown one field per line below for readability, after URL decoding. The real request body is a single `&`-joined string with percent-encoded values:
 
 ```bash
 success=true
+sessionId=unique-sessionId-001
 authToken=NICEUNTT0992E00E775A88C5DC13938447D237F0
-tid=nicepay01m01012303241404031098
+tid=UT0000104m00012303241404031098
 orderId=order-id-unique-order-001
 clientId=S1_ce1bb1ebebc44fe1a3f7cec976c83ea7
 resultCode=0000
@@ -137,30 +138,48 @@ goodsName=test
 channel=pc
 status=paid
 ediDate=2023-03-24T14:04:16.982+0900
-signature=59a05ad89bbbb6b5dda157dd31c48510f78eefdffc13ebec94f5afffa067fa4f
+signature=1e5851b3a925ea3307cde0163c1c12883fb8c218c3df16861cd9cb534b51b8b1
 paidAt=2023-03-24T14:04:03.000+0900
+failedAt=0
 payMethod=card
-buyerEmail=test@abc.com
-receiptUrl=https://npg.nicepay.co.kr/issue/IssueLoader.do?type=0%26innerWin=Y%26TID=nicepay01m01012303241404031098
+useEscrow=false
+currency=KRW
+approveNo=000000
+buyerEmail=null
+receiptUrl=https://npg.nicepay.co.kr/issue/IssueLoader.do?type=0&innerWin=Y&TID=UT0000104m00012303241404031098
 issuedCashReceipt=false
-cardCode=07
-cardName=현대
+cardCode=04
+cardName=삼성
 cardQuota=0
 isInterestFree=false
-cardType=1
+cardType=credit
 canPartCancel=true
-acquCardCode=07
-acquCardName=현대
+acquCardCode=04
+acquCardName=삼성
 messageSource=nicepay
 ```
+
+This sample verifies with the Sandbox Secret key `13e969a77a0545799242ccc3915243d3`: the SHA-256 of `UT0000104m0001230324140403109810042023-03-24T14:04:16.982+090013e969a77a0545799242ccc3915243d3` (`tid` + `amount` + `ediDate` + Secret key) is the `signature` above.
+
 > **⚠️ Important:** When conducting tests through the Sandbox, actual approvals will not occur.  
 > Also, arbitrary values are returned in the response.  
+
+Before your Merchant Server confirms the order, it checks the result in this order. [Verifying the payment result](./api/nicepay-api-payment-window-url.md#verifying-the-payment-result) explains each step.
+
+1. Read the URL-decoded form fields.
+2. Find your order by `orderId`. If the order is already paid, stop.
+3. Check that `resultCode` is `0000`. For any other code, do not confirm the order.
+4. Check `status`: `paid` means approved. `ready` means that a virtual account was issued and the customer has not paid yet: do not ship the order yet.
+5. Compute `hex(sha256(tid + amount + ediDate + SecretKey))` and compare it with `signature`.
+6. Compare `amount` with the amount of your order.
+7. Look the payment up with [Transaction Status Inquiry](./api/nicepay-api-retrieve.md#transaction-status-inquiry-with-tidtransaction-id) (`GET /v1/payments/{tid}`) and check its `orderId`, `amount` and `status`.
+8. Confirm the order and store `tid`.
 
 <br><br>
 
 ### Next steps
 
-- Verify the amount from `signature`, then check the transaction status anytime via [Transaction Status Inquiry](./api/nicepay-api-retrieve.md).
+- Check the transaction status anytime via [Transaction Status Inquiry](./api/nicepay-api-retrieve.md).
 - Need to cancel or refund a payment? See [Cancel](./api/nicepay-api-cancel.md).
 - Using virtual accounts or other methods with delayed settlement? Register a [Webhook](./api/nicepay-api-webhook.md) to catch async events like deposits.
 - Ready to go live? Revisit the Sandbox vs. Live domain note above and switch your keys and base URL.

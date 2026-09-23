@@ -87,7 +87,7 @@ The steps below create a checkout session and open the Hosted Payment Page in Sa
 1. Your Merchant Server creates a `sessionId` and an `orderId` for the order. NicePay does not generate them.
 2. Your Merchant Server calls Create checkout (`POST /v1/checkout`) with these two values and the other request parameters.
 3. NicePay returns the Hosted Payment Page address in the `url` field of the response. Your Merchant Server redirects the customer to `url` exactly as returned. Do not build this address yourself.
-4. The customer pays on the Hosted Payment Page. In Sandbox, card company authentication is skipped, and the Hosted Payment Page sends the payment result to your `returnUrl`.
+4. The customer pays on the Hosted Payment Page. In Sandbox, card company authentication is skipped, and the customer's browser sends the payment result to your `returnUrl`.
 
 
 Please refer to the link for more detailed information.  
@@ -191,7 +191,7 @@ POST {returnUrl}
 Content-type: application/x-www-form-urlencoded
 ```
 
-The response data will be sent to the returnUrl set in the checkout request, as a flat `&`-joined query string. Shown one field per line below for readability:
+The customer's browser sends the result to the `returnUrl` set in the checkout request, as a flat `&`-joined form body. Shown one field per line below for readability, after URL decoding:
 
 ```bash
 success=true
@@ -220,7 +220,7 @@ buyerName=null
 buyerTel=null
 buyerEmail=null
 issuedCashReceipt=false
-receiptUrl=https://npg.nicepay.co.kr/issue/IssueLoader.do?type=0%26innerWin=Y%26TID=UT0000104m00012303241646422011
+receiptUrl=https://npg.nicepay.co.kr/issue/IssueLoader.do?type=0&innerWin=Y&TID=UT0000104m00012303241646422011
 mallUserId=null
 cardCode=04
 cardName=삼성
@@ -230,7 +230,10 @@ cardType=credit
 canPartCancel=true
 acquCardCode=04
 acquCardName=삼성
+messageSource=nicepay
 ```
+
+This sample verifies with the Sandbox Secret key in [Test key information](#test-key-information). See the worked example in [Verifying the payment result](../api/nicepay-api-payment-window-url.md#verifying-the-payment-result).
 
 Through the page below, you can easily check the flow when conducting a test  
 https://nicepaytest.link/checkout/sandbox-redirect.php  

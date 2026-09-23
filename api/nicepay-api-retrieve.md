@@ -28,7 +28,8 @@ curl -X GET 'https://api.nicepay.co.kr/v1/payments/nicuntct1m0101210727200125A05
 ## Check Authorization Amount
 
 - If you need to check the payment amount after approval, use the `Check-amount` API to check the approved payment amount.
-- If the amount requested and the approval amount are different, be sure to cancel the payment.
+- `resultCode` is `0000` whether or not the amounts match, so check `isValid`. `false` means that the `amount` you sent differs from the amount NicePay approved for the `tid`. NicePay compares with the amount of the original approval, not with the balance after partial cancellations.
+- If `isValid` is `false`, cancel the payment before you deliver the goods: send [Cancel request with tid](./nicepay-api-cancel.md#cancel-request-parameter-with-tid) without `cancelAmt` to cancel the full amount.
 
 > **⚠️ Important:** You are responsible for problems caused by not checking the approved (payment) amount.
 
@@ -156,8 +157,8 @@ Content-type: application/json
 | `orderId` | String | Yes | 64 | Unique order number |
 | `sessionId` | String | No | 256 | Checkout session ID of the payment<br>Always returned when you look up with `sessionId`. When you look up with `tid` or `orderId`, returned only when the payment was made through Checkout; otherwise the key is left out |
 | `ediDate` | String | Yes | - | Response message creation date and time (ISO 8601 format) |
-| `signature` | String | No | 256 | Forgery verification data<br>- Respond only to valid transactions<br>- Creation rule: hex(sha256(tid + amount + ediDate+ SecretKey))<br>- For data validation, it is recommended to implement a comparison at business logic |
-| `status` | String | Yes | 20 | Payment processing status<br>paid: payment completed<br> ready: ready<br>failed: payment failed<br>cancelled: cancelled<br>partialCancelled: partially cancelled<br>['paid', 'ready', 'failed', 'cancelled', 'partialCancelled'] |
+| `signature` | String | Yes | 256 | Forgery verification data<br>Rule: hex(sha256(tid + amount + ediDate + SecretKey)), see [Verifying the payment result](./nicepay-api-payment-window-url.md#verifying-the-payment-result)<br>Covers only `tid`, `amount` and `ediDate`. Check `resultCode` and `status` separately<br>Every inquiry returns a new `ediDate`, so `signature` differs on each call |
+| `status` | String | Yes | 20 | Payment processing status<br>paid: payment completed<br>ready: virtual account issued, not paid yet<br>failed: payment failed<br>cancelled: cancelled<br>partialCancelled: partially cancelled<br>['paid', 'ready', 'failed', 'cancelled', 'partialCancelled'] |
 | `paidAt` | String | Yes | - | Time of payment completed ISO 8601 format<br>If payment is not completed, return 0<br>For a virtual account that is not paid yet, the time the account number was requested |
 | `failedAt` | String | Yes | - | Time of payment failure ISO 8601 format<br>If not payment is not failed, return 0 |
 | `cancelledAt` | String | Yes | - | Payment cancellation time ISO 8601 format<br>If it is not cancellation request, return 0<br>In case of partial cancellation, the last cancellation time will be return |
