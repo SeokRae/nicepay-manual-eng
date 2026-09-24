@@ -2,8 +2,8 @@
 
 Key-in (Manual Entry) payment lets you submit a card charge directly with card details you already hold (MOTO / manually entered card), without redirecting the customer through the Hosted Payment Page. You encrypt the card data server-side (the encryption key is derived from your SecretKey, which must never leave your server) and call this API directly; NicePay returns the final approval result synchronously in the response; there is no separate authorization callback.
 
-> **⚠️ Important:** Key-in is only available to merchants specifically enabled for manual-entry payments. Calling this API without that permission returns `A128 Not a key-in merchant`.  
-> Your merchant account is enrolled with one of several encryption/authentication levels by NicePay (see [encData Field Details](#encdata-field-details) below); it is not something you choose per request.  
+> **⚠️ Important:** Key-in is only available to merchants that NicePay has enabled for manual-entry payments. Without that, the call fails in one of two ways. [`U313`](../code/nicepay-code.md#api-response-code) means that your client key has no merchant ID for card payments without customer authentication. [`A128`](../code/nicepay-code.md#api-response-code) (`Not a key-in merchant`) means that the merchant ID exists but the payment network has not enabled it for Key-in.  
+> NicePay assigns your merchant account one Key-in authentication type: `01`, `03`, `10` or `11`. The type decides which card holder details `encData` carries, see [encData Field Details](#encdata-field-details) below. You cannot choose it per request.  
 > Key-in Payment is not provided in [Sandbox](../info/nicepay-info-sandbox.md#base-url-information-for-sandbox-and-live); you can only test it against Live once your merchant account is enabled for manual-entry payments.  
 
 <br>
@@ -80,27 +80,27 @@ Required: Yes = always send; No = optional; Conditional = send in the case state
 
 ### encData Field Details
 
-Common required fields: `cardNo`, `expYear`, `expMonth`. Which additional field(s) are required depends on the encryption/authentication level your merchant account is enrolled with:
+Common required fields: `cardNo`, `expYear`, `expMonth`. Which additional field(s) are required depends on the authentication type of your merchant account. The number is a code, not a rank:
 
-| Your merchant's level | Additional field(s) | Meaning |
+| Authentication type | Additional field(s) | Meaning |
 |:---|:---|:---|
 | 01 | *(none)* | Card number + expiration date only. NicePay does not send `idNo` or `cardPw` to the payment network, even if you include them |
 | 03 | `cardPw` | First 2 digits of the card password |
 | 10 | `idNo` | Card holder's date of birth, or the Korean business registration number for a corporate card |
 | 11 | `idNo` + `cardPw` | Both |
 
-> **⚠️ Important:** NicePay checks only the fields that `encData` contains. At level 03, 10 or 11, a field other than the common fields and the additional fields of your level fails the request with `U341`, for example `idNo` at level 03. An empty `cardNo`, `expYear` or `expMonth`, or an empty additional field of your level, also fails with `U341`. NicePay does not reject a missing field: it sends the payment to the payment network without it. Always include the additional fields of your level.  
-> NicePay does not return your level through the API. [Open an issue on this manual's repository](https://github.com/SeokRae/nicepay-manual-eng/issues) if you are not sure which level your account is enrolled with.  
+> **⚠️ Important:** NicePay checks only the fields that `encData` contains. With type `03`, `10` or `11`, a field other than the common fields and the additional fields of your type fails the request with `U341`, for example `idNo` with type `03`. An empty `cardNo`, `expYear` or `expMonth`, or an empty additional field of your type, also fails with `U341`. NicePay does not reject a missing field: it sends the payment to the payment network without it. Always include the additional fields of your type.  
+> NicePay does not return your authentication type through the API. [Open an issue on this manual's repository](https://github.com/SeokRae/nicepay-manual-eng/issues) if you are not sure which authentication type your account has.  
 
 | Parameter | Type | Required | Bytes | Description |
 |:--------------|:---------:|:----------:|:-------:|:--------------|
 | `cardNo` | String | Yes | 16 | Card number, numbers only |
 | `expYear` | String | Yes | 2 | Expiration year, format: YY |
 | `expMonth` | String | Yes | 2 | Expiration month, format: MM |
-| `idNo` | String | Conditional | 13 | Card holder's date of birth, 6 digits: YYMMDD (for example `800101` for 1 January 1980)<br>Corporate card: Korean business registration number, 10 digits<br>Required when your merchant's level is 10 or 11 |
-| `cardPw` | String | Conditional | 2 | First 2 digits of the 4-digit card password of a Korean card<br>Required when your merchant's level is 03 or 11 |
+| `idNo` | String | Conditional | 13 | Card holder's date of birth, 6 digits: YYMMDD (for example `800101` for 1 January 1980)<br>Corporate card: Korean business registration number, 10 digits<br>Required when your authentication type is `10` or `11` |
+| `cardPw` | String | Conditional | 2 | First 2 digits of the 4-digit card password of a Korean card<br>Required when your authentication type is `03` or `11` |
 
-In the plain text, put `expMonth` directly after `expYear`, as in the example below. NicePay appends the `expMonth` value to the field in front of it, so another order corrupts the card number or the expiration date. The example contains both `idNo` and `cardPw`, as for level 11: leave out the fields that your level does not list. For overseas-issued cards, see [Accepting overseas customers](../info/nicepay-info-general.md#accepting-overseas-customers).
+In the plain text, put `expMonth` directly after `expYear`, as in the example below. NicePay appends the `expMonth` value to the field in front of it, so another order corrupts the card number or the expiration date. The example contains both `idNo` and `cardPw`, as for type `11`: leave out the fields that your type does not list. For overseas-issued cards, see [Accepting overseas customers](../info/nicepay-info-general.md#accepting-overseas-customers).
 
 <br>
 
@@ -182,4 +182,4 @@ Same fields and rules as [Card information](./nicepay-api-retrieve.md#card-infor
 - Key-in does not have its own cancel API. Cancel or refund with the standard [Cancel request with tid](./nicepay-api-cancel.md#cancel-request-parameter-with-tid).
 - You can look up a Key-in transaction anytime via [Transaction Status Inquiry](./nicepay-api-retrieve.md#transaction-status-inquiry-with-tidtransaction-id) with the `tid`.
 - If the Key-in call times out, look the payment up by `orderId` as described in [Timeout Information](../info/nicepay-info-firewall-timeout.md#timeout-information).
-- Related error codes: `A128`, `U340`, `U341`, see [API Response code](../code/nicepay-code.md#api-response-code).
+- Related error codes: `A128`, `U313`, `U340`, `U341`, see [API Response code](../code/nicepay-code.md#api-response-code).
