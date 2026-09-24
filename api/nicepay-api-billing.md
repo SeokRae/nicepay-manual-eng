@@ -93,15 +93,15 @@ Required: Yes = always send; No = optional; Conditional = send in the case state
 
 ### encData Field Details
 
-NicePay checks `encData` against the encryption and authentication level of your merchant account with the same rules as Key-in, see the level table and the note in [Key-in encData Field Details](./nicepay-api-keyin.md#encdata-field-details). On this API, a failed check returns [`U317`](../code/nicepay-code.md#api-response-code) instead of `U341`, in Sandbox and in Live, and `encData` that NicePay cannot decrypt returns [`F101`](../code/nicepay-code.md#api-response-code). The encryption examples below contain both `idNo` and `cardPw`, as for level 11: leave out the fields that your level does not list. For overseas-issued cards, see [Accepting overseas customers](../info/nicepay-info-general.md#accepting-overseas-customers).
+NicePay checks `encData` against the authentication type of your merchant account with the same rules as Key-in, see the type table and the note in [Key-in encData Field Details](./nicepay-api-keyin.md#encdata-field-details). On this API, a failed check returns [`U317`](../code/nicepay-code.md#api-response-code) instead of `U341`, in Sandbox and in Live, and `encData` that NicePay cannot decrypt returns [`F101`](../code/nicepay-code.md#api-response-code). The encryption examples below contain both `idNo` and `cardPw`, as for type `11`: leave out the fields that your type does not list. For overseas-issued cards, see [Accepting overseas customers](../info/nicepay-info-general.md#accepting-overseas-customers).
 
 | Parameter     | Type      | Required | Bytes | Description |
 |:--------------|:--------:|:-----:|:------:|:---------------|
 | `cardNo`     |  String  |     Yes      |   16   | Card Number<br>Numbers only     |
 | `expYear`    |  String  |     Yes      |   2    | expiration year<br>format : YY  |
 | `expMonth`   |  String  |     Yes      |   2    | expiration month<br>format : MM  |
-| `idNo`       |  String  |  Conditional  |   13   | Card holder's date of birth, 6 digits: YYMMDD (for example `800101` for 1 January 1980)<br>Corporate card: Korean business registration number, 10 digits<br>Required when your merchant's level is 10 or 11 |
-| `cardPw`     |  String  |  Conditional  |   2    | First 2 digits of the 4-digit card password of a Korean card<br>Required when your merchant's level is 03 or 11 |
+| `idNo`       |  String  |  Conditional  |   13   | Card holder's date of birth, 6 digits: YYMMDD (for example `800101` for 1 January 1980)<br>Corporate card: Korean business registration number, 10 digits<br>Required when your authentication type is `10` or `11` |
+| `cardPw`     |  String  |  Conditional  |   2    | First 2 digits of the 4-digit card password of a Korean card<br>Required when your authentication type is `03` or `11` |
 
 <br>
 
