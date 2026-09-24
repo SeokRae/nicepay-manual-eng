@@ -20,7 +20,7 @@ You can use the Transaction Search API to retrieve and cross-check transaction r
 
 ```bash
 curl --request GET 'https://api.nicepay.co.kr/v1/transactions?date=20230228&limit=10' \
---header 'Authorization: Basic UjFfOTRlYjNhNGEzMDI2NGZkYmE4MmNlMGQwNWI0NjUwMTI6MTJjZGUxMjQ0OWM2NDQ5N2E4NjEwNDc1OWI4MzA2YjY=' \
+--header 'Authorization: Basic <credentials>' \
 --header 'Content-Type: application/json'
 ```
 
@@ -40,8 +40,8 @@ curl --request GET 'https://api.nicepay.co.kr/v1/transactions?date=20230228&limi
     "transactions": [
         {
             "sequence": 1,
-            "originalTid": "yeoshin01m01012302280815095301",
-            "tid": "yeoshin01m01012302280815095301",
+            "originalTid": "nictest00m01012302280815095301",
+            "tid": "nictest00m01012302280815095301",
             "orderId": "1233321132323323",
             "currency": "KRW",
             "amount": 1004,
@@ -52,8 +52,8 @@ curl --request GET 'https://api.nicepay.co.kr/v1/transactions?date=20230228&limi
         },
         {
             "sequence": 2,
-            "originalTid": "yeoshin01m01012302280834436052",
-            "tid": "yeoshin01m01012302280834436052",
+            "originalTid": "nictest00m01012302280834436052",
+            "tid": "nictest00m01012302280834436052",
             "orderId": "12174575685",
             "currency": "KRW",
             "amount": 8377,
@@ -64,8 +64,8 @@ curl --request GET 'https://api.nicepay.co.kr/v1/transactions?date=20230228&limi
         },
         {
             "sequence": 3,
-            "originalTid": "yeoshin02m01162302280839111365",
-            "tid": "yeoshin02m01162302280839111365",
+            "originalTid": "nictest00m01162302280839111365",
+            "tid": "nictest00m01162302280839111365",
             "orderId": "furyOrderId311655",
             "currency": "KRW",
             "amount": 1004,
@@ -143,7 +143,7 @@ You can retrieve settlement records based on the specified date.
 
 ```bash
 curl --request GET 'https://api.nicepay.co.kr/v1/settlements?limit=10&date=20230308' \
---header 'Authorization: Basic UjFfOTRlYjNhNGEzMDI2NGZkYmE4MmNlMGQwNWI0NjUwMTI6MTJjZGUxMjQ0OWM2NDQ5N2E4NjEwNDc1OWI4MzA2YjY=' \
+--header 'Authorization: Basic <credentials>' \
 --header 'Content-Type: application/json' 
 ```
 
@@ -163,8 +163,8 @@ curl --request GET 'https://api.nicepay.co.kr/v1/settlements?limit=10&date=20230
     "settlements": [
         {
             "sequence": 1,
-            "originalTid": "yeoshin01m01012303081045096292",
-            "tid": "yeoshin01m01012303081045096292",
+            "originalTid": "nictest00m01012303081045096292",
+            "tid": "nictest00m01012303081045096292",
             "orderId": "32377033887",
             "currency": "KRW",
             "settlementCurrency": "USD",
@@ -187,8 +187,8 @@ curl --request GET 'https://api.nicepay.co.kr/v1/settlements?limit=10&date=20230
         },
         {
             "sequence": 2,
-            "originalTid": "yeoshin01m01012303081048526992",
-            "tid": "yeoshin01m01012303081048526992",
+            "originalTid": "nictest00m01012303081048526992",
+            "tid": "nictest00m01012303081048526992",
             "orderId": "59721917475",
             "currency": "KRW",
             "settlementCurrency": "USD",
