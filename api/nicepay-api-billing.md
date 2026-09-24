@@ -26,6 +26,7 @@ After that, if you pass the encrypted Token(bid) through the `/v1/subscribe/{bid
 - A [Client and Secret key](../info/nicepay-info-key.md) issued from the NicePay admin console
 - An `Authorization` header built from those keys, see [Basic and Bearer authentication](../info/nicepay-info-basic-token.md)
 - We recommend testing against the Sandbox first, then switching to Live once verified. See [Recurring Payment in Sandbox](../info/nicepay-info-sandbox.md#recurring-payment-in-sandbox) for what Sandbox checks and returns
+- A merchant ID for card payments without customer authentication on your client key, the same one that [Key-in Payment](./nicepay-api-keyin.md) uses. NicePay sets it up for your account. Without it, Create Token fails with [`U107`](../code/nicepay-code.md#api-response-code), although that code otherwise means that a transaction was not found, and Delete Token and Bid Status Inquiry fail with [`U313`](../code/nicepay-code.md#api-response-code)
 
 <br>
 
@@ -154,7 +155,7 @@ Required: Yes = has a non-empty value in every response whose `resultCode` is `0
 > **⚠️ Important:** Even though NicePay allows multiple tokens per card, a `regist` call can still fail with [`F201`](../code/nicepay-code.md#api-response-code) ("card already registered", bill key issuance failed), returned as-is in `resultCode` with `status: failed`, no `bid`, and `messageSource: external`. That check happens on the card issuer/payment network side, not NicePay's, so the exact conditions that trigger it are not documented here; [open an issue on this manual's repository](https://github.com/SeokRae/nicepay-manual-eng/issues) if you hit it unexpectedly.  
 > `F201` is specific to card-based bill-key issuance (this API, and Checkout's `cardBill` method, see [Hosted Payment Page Request Parameter](./nicepay-api-payment-window-url.md#hosted-payment-page-request-parameter)); Recurring Payment enrolled through Naver Pay/Kakao Pay/Toss Pay checkout (`naverCardBill`/`naverPointBill`/`kakaoBill`/`tosspayBill`) goes through a separate corePG code family and is not affected by it.  
 
-Related error codes: `A253`, `F101`, `F110`, `F115`, `F116`, `U317`, see [API Response code](../code/nicepay-code.md#api-response-code).
+Related error codes: `A253`, `F101`, `F110`, `F115`, `F116`, `U107`, `U317`, see [API Response code](../code/nicepay-code.md#api-response-code).
 
 <br>
 
@@ -394,7 +395,7 @@ Content-type: application/json
 > **⚠️ Important:** Deleting a Token(bid) that is already deleted or does not exist returns [`U115`](../code/nicepay-code.md#api-response-code) ("Deleted BID"), not `0000`. NicePay normalizes the payment-network code behind it, so you get `U115` whether the token was a card billkey or an easy-pay (NaverPay/KakaoPay/TossPay) one. Treat `U115` as "already gone" rather than as a retryable failure.  
 > A successful card-billkey deletion always returns `0000`. You will not see [`F101`](../code/nicepay-code.md#api-response-code) here even though the payment network uses it for this case internally; on this API `F101` only ever means a signature/encryption verification failure.  
 
-Related error codes: `U115`, `A255`, see [API Response code](../code/nicepay-code.md#api-response-code).
+Related error codes: `U115`, `U313`, `A255`, see [API Response code](../code/nicepay-code.md#api-response-code).
 
 <br>
 

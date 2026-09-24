@@ -2,7 +2,7 @@
 
 Key-in (Manual Entry) payment lets you submit a card charge directly with card details you already hold (MOTO / manually entered card), without redirecting the customer through the Hosted Payment Page. You encrypt the card data server-side (the encryption key is derived from your SecretKey, which must never leave your server) and call this API directly; NicePay returns the final approval result synchronously in the response; there is no separate authorization callback.
 
-> **⚠️ Important:** Key-in is only available to merchants specifically enabled for manual-entry payments. Calling this API without that permission returns `A128 Not a key-in merchant`.  
+> **⚠️ Important:** Key-in is only available to merchants that NicePay has enabled for manual-entry payments. Without that, the call fails in one of two ways. [`U313`](../code/nicepay-code.md#api-response-code) means that your client key has no merchant ID for card payments without customer authentication. [`A128`](../code/nicepay-code.md#api-response-code) (`Not a key-in merchant`) means that the merchant ID exists but the payment network has not enabled it for Key-in.  
 > Your merchant account is enrolled with one of several encryption/authentication levels by NicePay (see [encData Field Details](#encdata-field-details) below); it is not something you choose per request.  
 > Key-in Payment is not provided in [Sandbox](../info/nicepay-info-sandbox.md#base-url-information-for-sandbox-and-live); you can only test it against Live once your merchant account is enabled for manual-entry payments.  
 
@@ -182,4 +182,4 @@ Same fields and rules as [Card information](./nicepay-api-retrieve.md#card-infor
 - Key-in does not have its own cancel API. Cancel or refund with the standard [Cancel request with tid](./nicepay-api-cancel.md#cancel-request-parameter-with-tid).
 - You can look up a Key-in transaction anytime via [Transaction Status Inquiry](./nicepay-api-retrieve.md#transaction-status-inquiry-with-tidtransaction-id) with the `tid`.
 - If the Key-in call times out, look the payment up by `orderId` as described in [Timeout Information](../info/nicepay-info-firewall-timeout.md#timeout-information).
-- Related error codes: `A128`, `U340`, `U341`, see [API Response code](../code/nicepay-code.md#api-response-code).
+- Related error codes: `A128`, `U313`, `U340`, `U341`, see [API Response code](../code/nicepay-code.md#api-response-code).

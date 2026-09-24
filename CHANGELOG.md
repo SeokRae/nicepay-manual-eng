@@ -68,12 +68,13 @@ Between 18 and 24 September 2026, every page of this manual was checked against 
 - **The charge API's error codes are listed with what to do for each.** Not documented before. On `U112`, `U503` or `U506`, look the charge up by `orderId` before resending, and on validation codes such as `U100`, fix the request and resend. See [After a Recurring Payment charge](./api/nicepay-api-billing.md#after-a-recurring-payment-charge).
 - **A declined charge gets no webhook and can be looked up by `tid` only.** Not documented before. Keep the `tid` from the decline response, because a lookup by `orderId` returns `U107`. See [After a Recurring Payment charge](./api/nicepay-api-billing.md#after-a-recurring-payment-charge).
 - **Deleting a token that is already deleted or does not exist returns `U115`, not `0000`.** Not documented before. Treat `U115` from Delete Token as already deleted, not as a failure to retry. See [Delete Token(bid) Response Parameter](./api/nicepay-api-billing.md#delete-tokenbid-response-parameter).
+- **Create Token, Delete Token and Bid Status Inquiry need a merchant ID for card payments without customer authentication, the one Key-in Payment uses.** Not documented before. Without it, Create Token fails with `U107` and the other two with `U313`. Ask NicePay to set it up before you build Recurring Payment. See [Recurring Payment - Create Token](./api/nicepay-api-billing.md#recurring-payment---create-token).
 - **NicePay does not charge tokens on a schedule.** Not documented before. Run your own billing schedule and call `POST /v1/subscribe/{bid}/payments` each time a charge is due. See [Still not sure?](./INTEGRATION-PATHS.md#still-not-sure).
 - **Recurring Payment in Sandbox is described.** Not documented before. Register card tokens only, encrypt `encData` with your Sandbox Secret key, and expect `cardCode` `04` whatever card you send. Sandbox does not validate the card number or check that the expiry date is in the future. See [Recurring Payment in Sandbox](./info/nicepay-info-sandbox.md#recurring-payment-in-sandbox).
 
 #### Key-in Payment
 
-- **Key-in Payment (`POST /v1/key-in/payments`) is documented.** Not documented before. It works in Live only and needs Key-in enablement on your account (`A128` otherwise). Build `encData` on your server with AES-128 ECB, with exactly the fields your merchant level requires. See [Key-in Payment](./api/nicepay-api-keyin.md#key-in-payment).
+- **Key-in Payment (`POST /v1/key-in/payments`) is documented.** Not documented before. It works in Live only and needs Key-in enablement on your account (`U313` or `A128` otherwise). Build `encData` on your server with AES-128 ECB, with exactly the fields your merchant level requires. See [Key-in Payment](./api/nicepay-api-keyin.md#key-in-payment).
 
 #### Cancel
 
