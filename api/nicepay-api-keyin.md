@@ -182,4 +182,4 @@ Same fields and rules as [Card information](./nicepay-api-retrieve.md#card-infor
 - Key-in does not have its own cancel API. Cancel or refund with the standard [Cancel request with tid](./nicepay-api-cancel.md#cancel-request-parameter-with-tid).
 - You can look up a Key-in transaction anytime via [Transaction Status Inquiry](./nicepay-api-retrieve.md#transaction-status-inquiry-with-tidtransaction-id) with the `tid`.
 - If the Key-in call times out, look the payment up by `orderId` as described in [Timeout Information](../info/nicepay-info-firewall-timeout.md#timeout-information).
-- Related error codes: `A128`, `U340`, `U341`, `U342`, see [API Response code](../code/nicepay-code.md#api-response-code).
+- Related error codes: `A128`, `U340`, `U341`, see [API Response code](../code/nicepay-code.md#api-response-code).

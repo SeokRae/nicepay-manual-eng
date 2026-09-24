@@ -15,6 +15,8 @@ New to NicePay For Startups? NicePay is a Korean payment gateway. You sign up fo
 
 Already know you want a standard hosted checkout? Start here: **[Quick Start Guide](./QUICKSTART.md)** (create your first Checkout session and receive a test payment result in about 10 minutes).
 
+Built your integration from an earlier version of this manual? The **[Changelog](./CHANGELOG.md)** lists every change that affects an integration.
+
 <br><br>
 
 ## Information 
@@ -27,6 +29,7 @@ This is a common guide needed before development.
   <a class="resource-card" href="./info/nicepay-info-general.html">Support environment</a>
   <a class="resource-card" href="./info/nicepay-info-sandbox.html">Sandbox</a>
   <a class="resource-card" href="./info/nicepay-info-pci-dss.html">PCI-DSS Overview</a>
+  <a class="resource-card" href="./CHANGELOG.html">Changelog</a>
 </div>
 
 ## API
