@@ -239,7 +239,7 @@ Content-type: application/json;charset=utf-8
 | Parameter        | Type    | Required | Bytes | Description                                                                      |
 |:-----------------|:-------:|:--------:|:-----:|:---------------------------------------------------------------------------------|
 | date             | String  | O        | 8     | Start date for settlement search <br> (yyyyMMdd)  <br> ex) 20230201 |
-| type             | String  |          | 30    | Not currently read or validated by the server, has no effect on the request |
+| type             | String  |          | 30    | Has no effect on the request. You can leave it out |
 | startingSequence | String  | -        | 30    | Starting point of the sequence. <br> The sequence is created based on the startDate.    |
 | limit            | Integer | -        | -     | default 100 <br> max 500   |
 
@@ -266,7 +266,7 @@ Content-type: application/json;charset=utf-8
 |            | interestFee        | Integer | O        | 14    | Interest-free fee |
 |            | useEscrow          | Boolean | O        |       | Escrow transaction status <br> true: Escrow transaction, false |
 |            | transactionStatus  | String  | O        | 20    | Payment processing status <br><br> paid: payment completed<br> cancelled: cancelled<br> partialCancelled: partially cancelled<br> vbankCreate: virtual account issued<br> vbankCancelled: virtual account cancelled   |
-|            | cardAcquiringStatus  | Boolean  | O        |     | Whether the acquirer has recorded an acquiring date for this transaction<br>true: acquired, false: not yet acquired   |
+|            | cardAcquiringStatus  | Boolean  | O        |     | Whether the card payment has been acquired<br>true: acquired, false: not yet acquired   |
 |            | method             | String  | O        | 10    | Payment method<br><br>card: credit card <br>vbank: virtual account  <br>bank: account transfer  <br>cellphone: mobile phone |
 |            | fee                | Integer | O        | 10    | fee     |
 |            | supplyAmt          | Integer | O        | 14    | Supply amount of the payment amount       |
