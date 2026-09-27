@@ -1,4 +1,14 @@
 ## Recurring Payment
+{:.no_toc}
+
+<details class="page-toc" markdown="1">
+<summary>On this page</summary>
+
+* TOC
+{:toc}
+
+</details>
+
 
 This page covers three APIs:
 

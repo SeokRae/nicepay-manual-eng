@@ -1,4 +1,14 @@
 ## Webhook
+{:.no_toc}
+
+<details class="page-toc" markdown="1">
+<summary>On this page</summary>
+
+* TOC
+{:toc}
+
+</details>
+
 
 You can use Webhook to implement additional business logic by receiving API events as server-side responses.
 
