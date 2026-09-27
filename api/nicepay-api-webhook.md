@@ -51,7 +51,7 @@ By integration:
 - **Key-in**: NicePay sends a payment event after an approved Key-in payment. Its body has the fields of [Key-in Payment Response Parameter](./nicepay-api-keyin.md#key-in-payment-response-parameter): `status` is `paid`, and there is no `payMethod` or `cancelledTid`.
 - **Recurring Payment**: NicePay sends a payment event after an approved charge with `/v1/subscribe/{bid}/payments`. Its body also has `bid`. Registering or deleting a token sends no webhook.
 
-NicePay sends every event other than the Checkout events above from a job that runs every minute. This includes cancellations and virtual account deposits.
+Every event other than the Checkout events above, including cancellations and virtual account deposits, can arrive up to about a minute after it happens.
 
 NicePay sends no webhook for a declined or failed payment, so every webhook has `resultCode` `0000`. It also sends none for a payment method that has no registered URL at the time of the event. Use [Transaction Status Inquiry](./nicepay-api-retrieve.md) for those results.
 
@@ -434,7 +434,7 @@ Required: Yes = has a non-empty value in every response whose `resultCode` is `0
 |           | `managerEmail` | String | No | 255 | Stored and echoed back on lookup, but NOT the address NicePay emails on delivery failure; that notification goes to your merchant account's registered admin email instead<br>`null` if you did not send one |
 | `messageSource` | | String | Yes | | Always `nicepay` for this API |
 
-Related error codes: `U100`, `U111`, `U133`, `U333`, `U334`, `U335`, `U336`, `U337`, `U338`, `U700`, `U701`, see [API Response code](../code/nicepay-code.md#api-response-code).
+Related error codes: `U100`, `U111`, `U133`, `U333`, `U334`, `U335`, `U336`, `U337`, `U338`, `U700`, see [API Response code](../code/nicepay-code.md#api-response-code).
 
 <br><br>
 
@@ -489,7 +489,7 @@ This endpoint takes no request parameters beyond the `Authorization` header.
 |           | `managerEmail` | String | No | 255 | Stored and echoed back on lookup, but NOT the address NicePay emails on delivery failure; that notification goes to your merchant account's registered admin email instead<br>`null` if you did not send one |
 | `messageSource` | | String | Yes | | Always `nicepay` for this API |
 
-Related error codes: `U100`, `U111`, `U133`, `U333`, `U334`, `U335`, `U336`, `U337`, `U338`, `U700`, `U701`, see [API Response code](../code/nicepay-code.md#api-response-code).
+Related error codes: `U100`, `U111`, `U133`, `U333`, `U334`, `U335`, `U336`, `U337`, `U338`, `U700`, see [API Response code](../code/nicepay-code.md#api-response-code).
 
 
 <br><br>
@@ -539,7 +539,7 @@ Content-type: application/json;charset=utf-8
 |           | `managerEmail` | String | No | 255 | Stored and echoed back on lookup, but NOT the address NicePay emails on delivery failure; that notification goes to your merchant account's registered admin email instead<br>`null` if you did not send one |
 | `messageSource` | | String | Yes | | Always `nicepay` for this API |
 
-Related error codes: `U100`, `U111`, `U133`, `U333`, `U334`, `U335`, `U336`, `U337`, `U338`, `U700`, `U701`, see [API Response code](../code/nicepay-code.md#api-response-code).
+Related error codes: `U100`, `U111`, `U133`, `U333`, `U334`, `U335`, `U336`, `U337`, `U338`, `U700`, see [API Response code](../code/nicepay-code.md#api-response-code).
 
 <br><br>
 
@@ -591,4 +591,4 @@ Content-type: application/json;charset=utf-8
 |           | `managerEmail` | String | No | 255 | Stored and echoed back on lookup, but NOT the address NicePay emails on delivery failure; that notification goes to your merchant account's registered admin email instead<br>`null` if you did not send one |
 | `messageSource` | | String | Yes | | Always `nicepay` for this API |
 
-Related error codes: `U100`, `U111`, `U133`, `U333`, `U334`, `U335`, `U336`, `U337`, `U338`, `U700`, `U701`, see [API Response code](../code/nicepay-code.md#api-response-code).
+Related error codes: `U100`, `U111`, `U133`, `U333`, `U334`, `U335`, `U336`, `U337`, `U338`, `U700`, see [API Response code](../code/nicepay-code.md#api-response-code).

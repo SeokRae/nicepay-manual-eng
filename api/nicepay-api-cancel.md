@@ -49,7 +49,7 @@ curl --location 'https://sandbox-api.nicepay.co.kr/v1/payments/checkout/641d555b
 | Escrow (after purchasing decision) | No | No                | No          | No             | -                   |
 | Escrow (after purchase rejection) | Yes | No                | Yes         | No             | -                   |
 
-> Cancelling a cash-receipt payment through `/v1/payments/{tid}/cancel` or `/v1/payments/checkout/{sessionId}/cancel` fails with [`U106`](../code/nicepay-code.md#api-response-code) ("cash receipt cancellation requires a separate API"). That separate cash-receipt cancellation API is not part of the Untact v1 API this manual documents; [open an issue on this manual's repository](https://github.com/SeokRae/nicepay-manual-eng/issues) if you need it.  
+> Cancelling a cash-receipt payment through `/v1/payments/{tid}/cancel` or `/v1/payments/checkout/{sessionId}/cancel` fails with [`U106`](../code/nicepay-code.md#api-response-code) ("cash receipt cancellation requires a separate API"). That separate cash-receipt cancellation API is not part of the API this manual documents; [open an issue on this manual's repository](https://github.com/SeokRae/nicepay-manual-eng/issues) if you need it.  
 
 <br>
 
@@ -71,23 +71,17 @@ Required: Yes = always send; No = optional; Conditional = send in the case state
 
 | Parameter     | Type      | Required | Bytes | Description |
 |:--------------|:---------:|:--------:|:------:|:-----------|
-| `reason`         | String    | Conditional | 100   | Cancellation reason<br>Required when `isNetCancel` is absent or `false` |
-| `orderId`        | String    | Conditional | 64    | Order ID for this cancel request. NicePay finds the payment by the `sessionId` in the path, not by this value.<br>For a partial cancellation, send a value you have never used, not the `orderId` of the payment: a used value fails with [`U112`](../code/nicepay-code.md#api-response-code).<br>Required when `isNetCancel` is absent or `false` |
+| `reason`         | String    | Yes | 100   | Cancellation reason |
+| `orderId`        | String    | Yes | 64    | Order ID for this cancel request. NicePay finds the payment by the `sessionId` in the path, not by this value.<br>For a partial cancellation, send a value you have never used, not the `orderId` of the payment: a used value fails with [`U112`](../code/nicepay-code.md#api-response-code). |
 | `cancelAmt`      | Int       | No          | 12    | Cancellation amount<br>Whole number with no decimal point, in the same unit as the `amount` that NicePay returns for the payment. See [Amounts and currencies](../info/nicepay-info-general.md#amounts-and-currencies)<br>If the value is missing, full cancellation will be occured<br>For a partial cancellation, the value must not exceed the amount not yet cancelled, or the request fails with [`U123`](../code/nicepay-code.md#api-response-code)<br>In Sandbox, a request that contains `cancelAmt` always fails, even when the value equals the full amount. The error is [`U128`](../code/nicepay-code.md#api-response-code) unless an earlier check fails first. Leave `cancelAmt` out to cancel in Sandbox |
 | `mallReserved`   | String    | No          | 500   | Spare field for store information delivery |
 | `ediDate`        | String    | Conditional | -     | Request timestamp (ISO 8601) that your Merchant Server creates, see [Dates in requests](../info/nicepay-info-general.md#dates-in-requests)<br>Required when you send `signData` |
 | `signData`       | String    | No          | 256   | Forgery Verification Data<br>Rule: hex(sha256(tid + ediDate + SecretKey)) |
 | `returnCharSet`  | String    | No          | 10    | `utf-8` (default) or `euc-kr`<br>Sets the charset in the `Content-Type` header of the response. Keep `utf-8` |
-| `isNetCancel`    | Boolean   | No          | 5     | `true` sends this as a net cancel, for a Checkout payment whose result your server did not receive. See the callout below. Default `false` |
 | `taxFreeAmt`     | Int       | No          | 12    | Tax-free part of the cancellation amount, a whole number with no decimal point<br>For a partial cancellation, the value must not exceed the tax-free amount not yet cancelled, or the request fails with [`U319`](../code/nicepay-code.md#api-response-code) |
 | `refundAccount`  | String    | No          | 16    | Refund account number (Only for Virtual account) |
 | `refundBankCode` | String    | No          | 3     | Refund account code (Only for Virtual account) |
 | `refundHolder`   | String    | No          | 10    | Refund account holder name (Only for Virtual account) |
-
-> **⚠️ Important:** A net cancel (`isNetCancel: true`) cancels a Checkout payment whose result your Merchant Server did not receive. For the steps after a timeout in each integration, see [Timeout Information](../info/nicepay-info-firewall-timeout.md#timeout-information).  
-> A net cancel takes a different path from an ordinary cancellation. `reason` and `orderId` are not required, and `cancelAmt` is ignored: a net cancel always cancels the full amount of the authorization. NicePay finds the authorization in the record of the customer's authentication on the Hosted Payment Page. With `tid`, an unknown `tid` fails with [`U107`](../code/nicepay-code.md#api-response-code), and a `tid` without that record fails with [`U122`](../code/nicepay-code.md#api-response-code) ("No transaction to cancel"). With `sessionId`, an unknown `sessionId` fails with `U107`, and a session without a payment fails with [`U120`](../code/nicepay-code.md#api-response-code).  
-> In Sandbox, a net cancel sent more than 1 hour after the payment was approved fails with [`2020`](../code/nicepay-code.md#api-response-code).  
-> For a cancellation you are choosing to make on a payment you know succeeded, leave `isNetCancel` out and send `reason` and `orderId` as usual.  
 
 <br><br>
 
@@ -103,14 +97,13 @@ Content-type: application/json;charset=utf-8
 
 | Parameter     | Type      | Required | Bytes | Description |
 |:--------------|:---------:|:--------:|:------:|:-----------|
-| `reason`         | String    | Conditional | 100   | Cancellation reason<br>Required when `isNetCancel` is absent or `false` |
-| `orderId`        | String    | Conditional | 64    | Order ID for this cancel request. NicePay finds the payment by the `tid` in the path, not by this value.<br>For a partial cancellation, send a value you have never used, not the `orderId` of the payment: a used value fails with [`U112`](../code/nicepay-code.md#api-response-code).<br>Required when `isNetCancel` is absent or `false` |
+| `reason`         | String    | Yes | 100   | Cancellation reason |
+| `orderId`        | String    | Yes | 64    | Order ID for this cancel request. NicePay finds the payment by the `tid` in the path, not by this value.<br>For a partial cancellation, send a value you have never used, not the `orderId` of the payment: a used value fails with [`U112`](../code/nicepay-code.md#api-response-code). |
 | `cancelAmt`      | Int       | No          | 12    | Cancellation amount<br>Whole number with no decimal point, in the same unit as the `amount` that NicePay returns for the payment. See [Amounts and currencies](../info/nicepay-info-general.md#amounts-and-currencies)<br>If the value is missing, full cancellation will be occured<br>For a partial cancellation, the value must not exceed the amount not yet cancelled, or the request fails with [`U123`](../code/nicepay-code.md#api-response-code)<br>In Sandbox, a request that contains `cancelAmt` always fails, even when the value equals the full amount. The error is [`U128`](../code/nicepay-code.md#api-response-code) unless an earlier check fails first. Leave `cancelAmt` out to cancel in Sandbox |
 | `mallReserved`   | String    | No          | 500   | Spare field for store information delivery |
 | `ediDate`        | String    | Conditional | -     | Request timestamp (ISO 8601) that your Merchant Server creates, see [Dates in requests](../info/nicepay-info-general.md#dates-in-requests)<br>Required when you send `signData` |
 | `signData`       | String    | No          | 256   | Forgery Verification Data<br>Rule: hex(sha256(tid + ediDate + SecretKey)) |
 | `returnCharSet`  | String    | No          | 10    | `utf-8` (default) or `euc-kr`<br>Sets the charset in the `Content-Type` header of the response. Keep `utf-8` |
-| `isNetCancel`    | Boolean   | No          | 5     | `true` sends this as a net cancel, for a Checkout payment whose result your server did not receive. See the callout under [Cancel Request parameter (with sessionId)](#cancel-request-parameter-with-sessionid). Default `false` |
 | `taxFreeAmt`     | Int       | No          | 12    | Tax-free part of the cancellation amount, a whole number with no decimal point<br>For a partial cancellation, the value must not exceed the tax-free amount not yet cancelled, or the request fails with [`U319`](../code/nicepay-code.md#api-response-code) |
 | `refundAccount`  | String    | No          | 16    | Refund account number (Only for Virtual account) |
 | `refundBankCode` | String    | No          | 3     | Refund account code (Only for Virtual account) |

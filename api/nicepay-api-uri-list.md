@@ -12,7 +12,6 @@ The Sandbox column is the one list of Sandbox availability in this manual. An en
 | [Recurring payment: Token Issue](./nicepay-api-billing.md)             |      `POST`     |     `/v1/subscribe/regist`            |     Yes     |
 | [Recurring Payment: Token authorization](./nicepay-api-billing.md)              |      `POST`     |     `/v1/subscribe/{bid}/payments`    |     Yes     |
 | [Recurring Payment: Token delete](./nicepay-api-billing.md#delete-token) |      `POST`     |     `/v1/subscribe/{bid}/expire`      |     Yes     |
-| [Recurring Payment: Bid status inquiry](./nicepay-api-billing.md#bid-status-inquiry) |      `POST`     |     `/v1/subscribe/{bid}/status`      |     No     |
 | [AccessToken Generation](./nicepay-api-access-token.md)                  |      `POST`     |     `/v1/access-token`                |     Yes     |
 | [Cancel request with session id](./nicepay-api-cancel.md#cancel-request-parameter-with-sessionid)  |      `POST`     |     `/v1/payments/checkout/{sessionId}/cancel` | Full cancel only |
 | [Cancel request with tid](./nicepay-api-cancel.md#cancel-request-parameter-with-tid)  |      `POST`     |     `/v1/payments/{tid}/cancel`       | Full cancel only |
