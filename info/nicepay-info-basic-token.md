@@ -1,4 +1,4 @@
-## API Authentication
+## Basic and Bearer authentication
 
 ### Basic authentication
 To access API, `credentials` is required for `HTTP Authorization header`.

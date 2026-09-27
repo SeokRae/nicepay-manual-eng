@@ -36,7 +36,7 @@ This is a common guide needed before development.
 This is a technical document that includes information about the API.
 
 <div class="resource-grid">
-  <a class="resource-card" href="./api/nicepay-api-uri-list.html">List of API</a>
+  <a class="resource-card" href="./api/nicepay-api-uri-list.html">API list</a>
   <a class="resource-card" href="./api/nicepay-api-payment-window-url.html">Checkout</a>
   <a class="resource-card" href="./api/nicepay-api-billing.html">Recurring Payment</a>
   <a class="resource-card" href="./api/nicepay-api-keyin.html">Key-in Payment</a>
@@ -81,9 +81,9 @@ These are response and error codes.
 
 <div class="resource-grid">
   <a class="resource-card" href="./code/nicepay-code.html#http-status-code">HTTP status code</a>
-  <a class="resource-card" href="./code/nicepay-code.html#card-code">Card-code</a>
-  <a class="resource-card" href="./code/nicepay-code.html#bank-code">Bank-code</a>
-  <a class="resource-card" href="./code/nicepay-code.html#api-response-code">API Response code</a>
+  <a class="resource-card" href="./code/nicepay-code.html#card-code">Card code</a>
+  <a class="resource-card" href="./code/nicepay-code.html#bank-code">Bank code</a>
+  <a class="resource-card" href="./code/nicepay-code.html#api-response-code">API response code</a>
 </div>
 
 <br>

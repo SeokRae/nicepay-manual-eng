@@ -1,3 +1,5 @@
+# Firewall and Timeout
+
 ## Firewall Policy
 Please check if the server's HTTP client supports `TLS 1.2` for safety.  
 Allow the IP below in your firewall to call the `NicePay` API on the server.  

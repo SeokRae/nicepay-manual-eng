@@ -51,7 +51,7 @@ NicePay For Startups offers three integration paths. They're distinguished by **
     <tr>
       <th scope="row">PCI scope for the merchant</th>
       <td>Minimal: your server never touches raw card numbers</td>
-      <td><a href="./info/nicepay-info-pci-dss.html">Full</a>: your server receives and encrypts raw card data</td>
+      <td>Full: your server receives and encrypts raw card data, see <a href="./info/nicepay-info-pci-dss.html">PCI-DSS Overview</a></td>
       <td>Same as Key-in for the system that calls <code>/v1/subscribe/regist</code>. Same as Checkout when the card is registered through Checkout. Each charge sends only the token (<code>bid</code>).</td>
     </tr>
     <tr>
@@ -63,7 +63,7 @@ NicePay For Startups offers three integration paths. They're distinguished by **
   </tbody>
 </table>
 
-Key-in Payment is not provided in Sandbox. See [URI LIST](./api/nicepay-api-uri-list.md) for the Sandbox availability of every endpoint, and [Sandbox limitations](./info/nicepay-info-sandbox.md#sandbox-limitations) for what else differs from Live.
+Key-in Payment is not provided in Sandbox. See [API list](./api/nicepay-api-uri-list.md) for the Sandbox availability of every endpoint, and [Sandbox limitations](./info/nicepay-info-sandbox.md#sandbox-limitations) for what else differs from Live.
 
 <br>
 
@@ -76,7 +76,7 @@ Key-in Payment is not provided in Sandbox. See [URI LIST](./api/nicepay-api-uri-
 
 - **Building a normal storefront where the customer checks out themselves?** Use **Checkout**. It's the default path this guide's [Quick Start Guide](./QUICKSTART.md) walks through, and it keeps raw card data off your server entirely.
 - **Charging a card your support team already has on file (phone order, invoice payment)?** Use **Key-in**.
-- **Billing the same customer repeatedly (subscription, membership)?** Use **Recurring Payment** to register a token once, then call the Payments API yourself each time a charge is due (there's no automatic billing scheduler on NicePay's side).
+- **Billing the same customer repeatedly (subscription, membership)?** Use **Recurring Payment** to register a token once, then call [Recurring Payment - Authorization](./api/nicepay-api-billing.md#recurring-payment---authorization) yourself each time a charge is due (there's no automatic billing scheduler on NicePay's side).
 - **Not mutually exclusive**: a merchant can use Checkout for one-time purchases and Recurring for subscriptions in the same integration.
 
 <br>
@@ -85,4 +85,4 @@ Key-in Payment is not provided in Sandbox. See [URI LIST](./api/nicepay-api-uri-
 
 All three use the same [Authorization header](./info/nicepay-info-basic-token.md) and the same [Cancel](./api/nicepay-api-cancel.md) and [Transaction Status Inquiry](./api/nicepay-api-retrieve.md) APIs afterward. Their payment results (the Checkout `returnUrl` callback and the Key-in and Recurring Payment responses), cancellation responses, Transaction Status Inquiry responses and webhooks carry a `signature` built with one rule: `hex(sha256(tid + amount + ediDate + SecretKey))`. The four values are joined as plain text with no separator, and the result is lowercase hexadecimal. See [Verifying the payment result](./api/nicepay-api-payment-window-url.md#verifying-the-payment-result) for a worked example. Other responses use other rules: Check Authorization Amount signs `tid + ediDate + SecretKey`, the card event and interest-free installment inquiries sign `ediDate + SecretKey`, and the token (`bid`) registration, deletion and status responses have no `signature`.
 
-Where Key-in and Recurring differ from each other: **their `encData` card-detail encryption is not interchangeable**. Key-in uses AES/ECB (no IV); Recurring uses AES/CBC (needs an IV). Copying one's example into the other will fail decryption on NicePay's side. See each API's own `encData Field Encryption Example` section.
+Where Key-in and Recurring differ from each other: **their `encData` card-detail encryption is not interchangeable**. Key-in uses AES/ECB (no IV); Recurring uses AES/CBC (needs an IV). Copying one's example into the other will fail decryption on NicePay's side. See [Key-in encData Field Encryption Example](./api/nicepay-api-keyin.md#encdata-field-encryption-example) and [Recurring encData Field Encryption Example (AES-128)](./api/nicepay-api-billing.md#encdata-field-encryption-example-aes-128).

@@ -18,7 +18,7 @@ Your own Sandbox keys are on the `Development Information` tab of your test merc
 
 ### Sandbox limitations
 
-Sandbox differs from Live in these ways. [URI LIST](../api/nicepay-api-uri-list.md) shows the Sandbox availability of every endpoint.
+Sandbox differs from Live in these ways. [API list](../api/nicepay-api-uri-list.md) shows the Sandbox availability of every endpoint.
 
 - No payment reaches a card company or bank. NicePay simulates the approval and returns fixed values: card code `04`, card number `123412******1234`, lump-sum payment (`cardQuota` `0`), and approval number `000000`.
 - Every Sandbox payment is in KRW, whatever `currency` the request sends.
@@ -43,7 +43,7 @@ Sandbox and Live use different domains for the API and the Hosted Payment Page. 
 - Sandbox : sandbox-api.nicepay.co.kr  
 - Live : api.nicepay.co.kr  
 
-See [URI LIST](../api/nicepay-api-uri-list.md) for the Sandbox availability of each endpoint, and [Sandbox limitations](#sandbox-limitations) for how Sandbox responses differ from Live.
+See [API list](../api/nicepay-api-uri-list.md) for the Sandbox availability of each endpoint, and [Sandbox limitations](#sandbox-limitations) for how Sandbox responses differ from Live.
 
 <br>
 
@@ -382,7 +382,7 @@ You can check `Transaction Status` through the response id(sessionId or transact
 
 
 Please refer to the link for more detailed information.  
-[Transaction Status Inquiry-Transaction status](../api/nicepay-api-retrieve.md#transaction-status-inquiry-with-sessionid)
+[Transaction Status Inquiry (with sessionId)](../api/nicepay-api-retrieve.md#transaction-status-inquiry-with-sessionid)
 
 <br>
 
