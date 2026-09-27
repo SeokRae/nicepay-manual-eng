@@ -162,9 +162,9 @@ Content-type: application/json;charset=utf-8
 
 <br>
 
-## Request a checkout page
+## Open the Hosted Payment Page
 ```bash
-The customer follows the link to the checkout page.
+The customer follows the link to the Hosted Payment Page.
 
 https://sandbox-pay.nicepay.co.kr/v1/checkout/pay/Hk2vN7qRtW4mZc8sPb3LdY6a/641d555b91ae1
 ```
@@ -225,7 +225,7 @@ This sample verifies with the Sandbox Secret key in [Test key information](#test
 
 <br><br>
 
-## Retrieve a checkout page
+## Retrieve a checkout session
 
 Use it if you need to check the status of the session ID.  
 
@@ -298,7 +298,7 @@ Response
 
 <br><br>
 
-## Expire a checkout page
+## Expire a checkout session
 
 If no expiration time is specified for the session ID, it will be accessible for up to 24 hours.   
 If you want to expire the session before that, please call the expire API.  

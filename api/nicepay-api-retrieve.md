@@ -119,7 +119,7 @@ Content-type: application/json
 | `signature` | String | Yes | 256 | Forgery verification data<br>Rule: hex(sha256(tid + amount + ediDate + SecretKey)), see [Verifying the payment result](./nicepay-api-payment-window-url.md#verifying-the-payment-result)<br>Covers only `tid`, `amount` and `ediDate`. Check `resultCode` and `status` separately<br>Every inquiry returns a new `ediDate`, so `signature` differs on each call |
 | `status` | String | Yes | 20 | Payment processing status<br>paid: payment completed<br>ready: virtual account issued, not paid yet<br>failed: payment failed<br>cancelled: cancelled<br>partialCancelled: partially cancelled<br>['paid', 'ready', 'failed', 'cancelled', 'partialCancelled'] |
 | `paidAt` | String | Yes | - | Time of payment completed ISO 8601 format<br>If payment is not completed, return 0<br>For a virtual account that is not paid yet, the time the account number was requested |
-| `failedAt` | String | Yes | - | Time of payment failure ISO 8601 format<br>If not payment is not failed, return 0 |
+| `failedAt` | String | Yes | - | Time of payment failure, ISO 8601 format<br>`0` when the payment has not failed |
 | `cancelledAt` | String | Yes | - | Payment cancellation time ISO 8601 format<br>If it is not cancellation request, return 0<br>In case of partial cancellation, the last cancellation time will be return |
 | `payMethod` | String | Yes | 10 | Payment method<br><br>card: credit card, <br>vbank: virtual account, <br>bank: account transfer, <br>cellphone: mobile phone, <br>naverpay=Naver Pay, <br>kakaopay=Kakao Pay, <br>samsungpay=Samsung Pay, <br>payco=Payco, <br>ssgpay=SSG Pay, <br>tosspay=Toss Pay |
 | `amount` | Int | Yes | 12 | payment amount |
@@ -292,7 +292,7 @@ Required: Yes = has a non-empty value in every response whose `resultCode` is `0
 The card event API responds with event information for each card company corresponding to the requested amount.
 Use it to show customers which card company to choose.
 
-> If the amount is less than KRW 50,000, No interest will be return.
+> For an amount below KRW 50,000, the response has no interest-free installment information, because installments need an amount of 50,000 or more.  
 > In Sandbox, this API always returns the same fixed dummy card-event data regardless of the amount you send; it does not simulate real card company data.
 
 <br>
@@ -321,7 +321,7 @@ Send the parameters below as query parameters, and percent-encode each value, as
 | Parameter |   Type   |  Required   |  Bytes  | Description  |
 |:--------------|:----:|:-----:|:-----:|:--------|
 | `amount` | Int | Yes | 12 | payment amount |
-| `useAuth`     |  Boolean   | Yes |   -   | true : checkout or payment window <br> false : billing or key-in  |
+| `useAuth`     |  Boolean   | Yes |   -   | true : Checkout (Hosted Payment Page) <br> false : Recurring Payment or Key-in Payment  |
 | `ediDate`    | String    | Conditional | -         | Request timestamp (ISO 8601) that your Merchant Server creates, see [Dates in requests](../info/nicepay-info-general.md#dates-in-requests)<br>Required when you send `signData` |
 | `mid`         |  String   | No |  10   | [Optional] Merchant ID separately contracted with Nice Payments |
 | `signData`    | String    | No | 256       | Forgery Verification Data<br>Generation rule: hex(sha256(ediDate + SecretKey)) |
@@ -339,7 +339,7 @@ Content-type: application/json
 |:--------------|:----:|:-----:|:-----:|:--------|
 | `resultCode` | String | Yes | 4 | 0000 : success / other failure |
 | `resultMsg` | String | Yes | 100 | Result message |
-| `ediDate`  | String    | Yes | -         | Full Text Creation Date<br>ISO 8601 Format |
+| `ediDate`  | String    | Yes | -         | Date and time NicePay created the response<br>ISO 8601 format |
 | `signature`  | String  |  Yes  |  256   | Forgery Verification Data<br>Generation rule: hex(sha256(ediDate + SecretKey))  |
 | `cardPoint`  | String  |  No  |       | Cards that support point payment<br>-List card codes with a colon (:) as separator<br>-Card company points provide usable card company information regardless of the amount<br>ex) 01:02:04:07<br>- Description: Card company points can be used for BC, Kookmin, Samsung, and Hyundai cards|
 
@@ -387,7 +387,7 @@ Send the parameters below as query parameters, and percent-encode each value, as
 
 | Parameter     |   Type   |  Required   |  Bytes  | Description  |
 |:--------------|:---------:|:-----:|:------:|:--------|
-| `useAuth`     |  Boolean   | Yes |   -   | true : checkout or payment window <br> false : billing or key-in  |
+| `useAuth`     |  Boolean   | Yes |   -   | true : Checkout (Hosted Payment Page) <br> false : Recurring Payment or Key-in Payment  |
 | `ediDate`  | String    | Conditional | -         | Request timestamp (ISO 8601) that your Merchant Server creates, see [Dates in requests](../info/nicepay-info-general.md#dates-in-requests)<br>Required when you send `signData` |
 | `mid`         |  String   | No |  10   | [Optional] Merchant ID separately contracted with Nice Payments |
 | `signData`    | String    | No | 256       | Forgery Verification Data<br>Generation rule: hex(sha256(ediDate + SecretKey)) |
@@ -405,7 +405,7 @@ Content-type: application/json
 |:--------------|:----:|:-----:|:-----:|:--------|
 | `resultCode` | String | Yes | 4 | 0000 : success / other failure |
 | `resultMsg` | String | Yes | 100 | Result message |
-| `ediDate`  | String    | Yes | -         | Full Text Creation Date<br>ISO 8601 Format |
+| `ediDate`  | String    | Yes | -         | Date and time NicePay created the response<br>ISO 8601 format |
 | `signature`  | String  |  Yes  |  256   | Forgery Verification Data<br>Generation rule: hex(sha256(ediDate + SecretKey))  |
 
 

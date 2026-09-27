@@ -128,9 +128,9 @@ Required: Yes = always send; No = optional; Conditional = send in the case state
 |   `useEscrow`   | Boolean | No |  -	  | true: Escrow transaction / false: general transaction(default)<br>Not available with some `method` values, see [Payment methods](#payment-methods): `true` fails with [`U331`](../code/nicepay-code.md#code-u331) | 
 |   `currency`    | String  | No |  3	  | Currency of `amount`<br>`KRW`: Korean won (default) / `USD`: US dollar / `CNY`: Chinese yuan<br>Upper case only. Before you use `USD` or `CNY`, see [Amounts and currencies](../info/nicepay-info-general.md#amounts-and-currencies) and [Accepting overseas customers](../info/nicepay-info-general.md#accepting-overseas-customers) | 
 |  `logoImgUrl`   | String  | No | 100	 | Logo Image of the merchant in full URL<br>  ex) https://youre.site.com/image/logo.jpg<br> *(pixel)*<br>- Mobile : width 50 X height 50<br>- PC : width 94 X height 25  | 
-|   `language`    | String  | No |  2	  | Language shown in the payment page<br> EN : English / CN : Chinese / KO : Korean (Default)<br>It does not change API responses: `resultMsg` and names such as `cardName` stay in Korean | 
+|   `language`    | String  | No |  2	  | Language of the Hosted Payment Page<br> EN : English / CN : Chinese / KO : Korean (Default)<br>It does not change API responses: `resultMsg` and names such as `cardName` stay in Korean | 
 | `returnCharSet` | String  | No | 10	  | Character set of the result page that sends the `returnUrl` callback: `utf-8` (default) or `euc-kr`<br>Keep `utf-8`. EUC-KR cannot represent many non-Korean characters, such as accented Latin letters (é, ñ) and simplified Chinese, in fields such as `buyerName` and `goodsName`<br>This value does not change the Create checkout response, which is always UTF-8, or the Bytes limits, which NicePay counts in UTF-8. A value other than `utf-8`, `euc-kr`, `UTF-8` or `EUC-KR` fails with [`U132`](../code/nicepay-code.md#code-u132)	 | 
-|   `skinType`    | String  | No | 10	  | Skin Setting for Payment Page <br>red/green/purple/gray/dark | 
+|   `skinType`    | String  | No | 10	  | Color theme of the Hosted Payment Page <br>red/green/purple/gray/dark | 
 
 <br>
 
@@ -365,7 +365,7 @@ If your Merchant Server does not receive the callback, the payment still stands.
 
 ## Retrieve Checkout session API
 
-This API returns a checkout session: its `status`, `isExpire` and the settings of the Create checkout request. To get the payment made with the session, with its card, cancellations and receipt, use [Transaction Status Inquiry (with sessionId)](./nicepay-api-retrieve.md#transaction-status-inquiry-with-sessionid) (`GET /v1/payments/checkout/{sessionId}`) instead. For a Sandbox example, see [Retrieve a checkout page](../info/nicepay-info-sandbox.md#retrieve-a-checkout-page).
+This API returns a checkout session: its `status`, `isExpire` and the settings of the Create checkout request. To get the payment made with the session, with its card, cancellations and receipt, use [Transaction Status Inquiry (with sessionId)](./nicepay-api-retrieve.md#transaction-status-inquiry-with-sessionid) (`GET /v1/payments/checkout/{sessionId}`) instead. For a Sandbox example, see [Retrieve a checkout session](../info/nicepay-info-sandbox.md#retrieve-a-checkout-session).
 
 <br>
 
@@ -408,7 +408,7 @@ Parameters you requested are also echoed back in the response.
 
 ## Expire Checkout session API
 
-This API marks a checkout session as expired (`isExpire` becomes `true`). It does not cancel a payment already made with the session: use [Cancel](./nicepay-api-cancel.md) for that. An unknown `sessionId` fails with [`U111`](../code/nicepay-code.md#code-u111), and a session that has already expired returns [`U325`](../code/nicepay-code.md#code-u325). For a Sandbox example, see [Expire a checkout page](../info/nicepay-info-sandbox.md#expire-a-checkout-page).
+This API marks a checkout session as expired (`isExpire` becomes `true`). It does not cancel a payment already made with the session: use [Cancel](./nicepay-api-cancel.md) for that. An unknown `sessionId` fails with [`U111`](../code/nicepay-code.md#code-u111), and a session that has already expired returns [`U325`](../code/nicepay-code.md#code-u325). For a Sandbox example, see [Expire a checkout session](../info/nicepay-info-sandbox.md#expire-a-checkout-session).
 
 <br>
 
