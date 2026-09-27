@@ -77,6 +77,7 @@ Between 18 and 24 September 2026, every page of this manual was checked against 
 - **NicePay does not charge tokens on a schedule.** Not documented before. Run your own billing schedule and call `POST /v1/subscribe/{bid}/payments` each time a charge is due. See [Still not sure?](./INTEGRATION-PATHS.md#still-not-sure).
 - **Recurring Payment in Sandbox is described.** Not documented before. Register card tokens only, encrypt `encData` with your Sandbox Secret key, and expect `cardCode` `04` whatever card you send. Sandbox does not validate the card number or check that the expiry date is in the future. See [Recurring Payment in Sandbox](./info/nicepay-info-sandbox.md#recurring-payment-in-sandbox).
 - **The Create Token, charge and Delete Token curl examples run as copied.** The manual's examples had no line-continuation backslashes, so a shell ran `curl` without the headers and the body. Copy them again. See [Recurring Payment - Create Token](./api/nicepay-api-billing.md#recurring-payment---create-token).
+- **Without `encMode`, the Create Token `encData` is AES-128 in ECB mode with no IV, the same as Key-in.** The manual said AES/CBC with the first 16 characters of the SecretKey as the IV, and its AES-128 example was CBC output, which NicePay cannot decrypt. Encrypt with ECB and no IV, or send `encMode` `A2` for AES-256 in CBC mode. See [encData Field Encryption Example (AES-128)](./api/nicepay-api-billing.md#encdata-field-encryption-example-aes-128).
 
 #### Key-in Payment
 
