@@ -48,36 +48,36 @@ The card networks group merchants into levels by annual transaction volume. Exac
 | 3 | ~20,000 – 1 million (e-commerce) |
 | 4 | Below level 3's threshold |
 
-Higher levels generally require a formal on-site assessment by a Qualified Security Assessor (QSA); lower levels are typically eligible for self-assessment.
+Level 1, the highest volume, generally requires a formal on-site assessment by a Qualified Security Assessor (QSA). Levels 2 to 4 are typically eligible for self-assessment.
 
 <br>
 
 ## Self-Assessment Questionnaire (SAQ) types
 
-Merchants who don't need a full on-site QSA assessment validate compliance with one of several SAQ types, matched to how card data flows through their systems:
+Merchants who don't need a full on-site QSA assessment validate compliance with one of several SAQ types, matched to how card data flows through their systems. The types below follow PCI DSS v4.0:
 
 | SAQ type | Typical scenario |
 |:--------:|:-------------------|
-| A | Card data fully outsourced to a redirect/hosted payment page; the merchant's own systems never touch it |
-| A-EP | Merchant's website controls how the payment page is presented (e.g. an iframe) but doesn't receive card data directly |
+| A | Card data fully outsourced: the merchant's website redirects to, or shows in an iframe, the payment page of a PCI DSS compliant provider, and the merchant's own systems never touch card data |
+| A-EP | The merchant's website creates the payment form itself (for example a direct post or its own script) and sends card data straight to the provider, without receiving it |
 | B / B-IP | Card-present, using standalone or IP-connected payment terminals, no electronic cardholder data storage |
 | C | Card-present, using a payment application connected to the internet |
 | C-VT | Manually entering card data one transaction at a time into a virtual terminal, no electronic storage |
-| P2PE-HW | Card data captured via a validated point-to-point encryption hardware solution |
+| P2PE | Card-present, using a validated point-to-point encryption (P2PE) solution (formerly SAQ P2PE-HW) |
 | D | Everyone else, including merchants whose own servers receive, process, or store card data electronically (the typical bucket for a custom Key-in integration) |
 
 <br>
 
-## The 12 PCI-DSS requirements
+## PCI-DSS requirements
 
-PCI-DSS groups its requirements into 6 control objectives:
+PCI DSS v4.0 has 12 requirements, grouped into 6 goals:
 
-1. **Build and maintain a secure network**: install and maintain firewall configuration; don't use vendor-supplied defaults for passwords/security parameters.
-2. **Protect cardholder data**: protect stored cardholder data; encrypt transmission of cardholder data across open, public networks.
-3. **Maintain a vulnerability management program**: use and regularly update anti-malware; develop and maintain secure systems and applications.
-4. **Implement strong access control**: restrict access to cardholder data by business need-to-know; identify and authenticate access to system components; restrict physical access to cardholder data.
-5. **Regularly monitor and test networks**: track and monitor all access to network resources and cardholder data; regularly test security systems and processes.
-6. **Maintain an information security policy**: maintain a policy that addresses information security for personnel and third parties.
+1. **Build and maintain a secure network and systems**: install and maintain network security controls (Requirement 1); apply secure configurations to all system components (Requirement 2).
+2. **Protect account data**: protect stored account data (Requirement 3); protect cardholder data with strong cryptography during transmission over open, public networks (Requirement 4).
+3. **Maintain a vulnerability management program**: protect all systems and networks from malicious software (Requirement 5); develop and maintain secure systems and software (Requirement 6).
+4. **Implement strong access control measures**: restrict access to system components and cardholder data by business need to know (Requirement 7); identify users and authenticate access to system components (Requirement 8); restrict physical access to cardholder data (Requirement 9).
+5. **Regularly monitor and test networks**: log and monitor all access to system components and cardholder data (Requirement 10); test the security of systems and networks regularly (Requirement 11).
+6. **Maintain an information security policy**: support information security with organizational policies and programs (Requirement 12).
 
 <br>
 

@@ -1,14 +1,11 @@
 # Support environment
 
-NicePay's API supports over `TLS 1.2`, and provides various options and test environments for developers.
+NicePay's API supports `TLS 1.2` or later, and provides:
 
-- Support various development languages
-- node.js, python, ruby, jsp, php, classic asp, .net
-- REST API
-- HTTP Status code
-- Detailed response code
-- Webhook
-- Sandbox
+- A REST API that you can call from any language. Sample code in Node.js, Python, Ruby, ASP, Java and PHP is listed in [Sample code (Korean, 2021)](../README.md#sample-code-korean-2021)
+- [HTTP status codes](../code/nicepay-code.md#http-status-code) and detailed [response codes](../code/nicepay-code.md#api-response-code)
+- [Webhooks](../api/nicepay-api-webhook.md)
+- A [Sandbox](./nicepay-info-sandbox.md) for testing
 
 <br>
 

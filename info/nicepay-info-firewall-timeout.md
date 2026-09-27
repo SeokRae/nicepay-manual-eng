@@ -1,16 +1,15 @@
 # Firewall and Timeout
 
 ## Firewall Policy
-Please check if the server's HTTP client supports `TLS 1.2` for safety.  
-Allow the IP below in your firewall to call the `NicePay` API on the server.  
+These rules are for the firewall in front of your Merchant Server. Your server's HTTP client must support `TLS 1.2` or later.
 
-| Service              | Domain                    | IP Address                      | Direction       |
-|--------------------|---------------------------|------------------------------------|----------|
-| payment window (live)   | pay.nicepay.co.kr         | 121.133.126.64/27                  | OUTBOUND |
-| payment window (sandbox)  | sandbox-pay.nicepay.co.kr | 121.133.126.64/27                  | OUTBOUND |
-| API (live)  | api.nicepay.co.kr         | 121.133.126.64/27                  | OUTBOUND |
-| API (sandbox) | sandbox-api.nicepay.co.kr | 121.133.126.64/27                  | OUTBOUND |
-| Webhook  | -  | 121.133.126.86 <br> 121.133.126.87 | INBOUND  |
+| Traffic | Direction | Domain | IP address | Port |
+|:--------|:---------:|:-------|:-----------|:----:|
+| Your server calls the API (Live) | Outbound | `api.nicepay.co.kr` | `121.133.126.64/27` | `443` |
+| Your server calls the API (Sandbox) | Outbound | `sandbox-api.nicepay.co.kr` | `121.133.126.64/27` | `443` |
+| NicePay sends [webhooks](../api/nicepay-api-webhook.md) to your server | Inbound | None | `121.133.126.86`, `121.133.126.87` | The port of your webhook URL |
+
+The customer's browser, not your server, opens the Hosted Payment Page at `pay.nicepay.co.kr` (Live) or `sandbox-pay.nicepay.co.kr` (Sandbox), on port `443`. Your server's firewall needs no rule for it. If your office network filters the browsers of your staff or test devices, allow those two domains there.
 
 <br>
 
