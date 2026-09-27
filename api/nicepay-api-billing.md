@@ -41,7 +41,7 @@ curl -X POST 'https://sandbox-api.nicepay.co.kr/v1/subscribe/regist' \
 -H 'Content-Type: application/json' \
 -H 'Authorization: Basic UzFfY2UxYmIxZWJlYmM0NGZlMWEzZjdjZWM5NzZjODNlYTc6MTNlOTY5YTc3YTA1NDU3OTkyNDJjY2MzOTE1MjQzZDM=' \
 --data '{
-    "encData": "2127975b6d82c36136ba8197a997a994f6c086ff75a6d35e514c54a1e686545e60b76f11bec706de1082e43dd74ae5c5f0709dc1eca6c3cd20e1c0e9e9b7a85c6505461c91c865d82072e41ba5284bd7",
+    "encData": "7c4b12eb43324290bd0e522900a892343f57e0d176cdadae757132c7f3cd442f023ef5c3ffa254ed04b6d47624d4c7847e8061f3be0d67adf1b463b46a542052cf47a5206bfd23945fc1851d426468f4",
     "orderId": "merchant-order-id"
 }'
 ```
@@ -77,12 +77,12 @@ Required: Yes = always send; No = optional; Conditional = send in the case state
 
 | Parameter     | Type      | Required | Bytes | Description |
 |:--------------|:--------:|:-----:|:------:|:---------------|
-| `encData`       |  String  |   Yes   |  512   | Payment Information Encryption Data<br>- Encryption Algorithm: AES128<br>- Encryption Details: AES/CBC/PKCS5padding<br>- Encoding Encryption Result: Hex Encoding<br>- Encryption KEY: 16 digits before SecretKey<br>- IV : 16 digits before SecretKey<br><br> Hex(AES(cardNo=value&expYear=YY&expMonth=MM&idNo=value&cardPw=value)) |
+| `encData`       |  String  |   Yes   |  512   | Payment Information Encryption Data<br>- Encryption Algorithm: AES128<br>- Encryption Details: AES/ECB/PKCS5Padding, no IV<br>- Encoding Encryption Result: Hex Encoding<br>- Encryption KEY: the first 16 characters of the SecretKey<br><br> Hex(AES(cardNo=value&expYear=YY&expMonth=MM&idNo=value&cardPw=value)) |
 | `orderId`       |  String  |   Yes   |   64   | Unique order number or payment number managed by the merchant |
 | `buyerName`     |  String  |   No   |   30   | Buyer name  |
 | `buyerEmail`    |  String  |   No   |   60   | Buyer Email |
 | `buyerTel`      |  String  |   No   |   20   | Buyer phone number<br> *Number only|
-| `encMode`       |  String  |   No   |   10   | Encryption Mode<br>`encData` Field Encryption Algorithm Definition<br><br> A2 : AES256<br>Encryption Algorithm : AES256<br> Encryption Detail : AES/CBC/PKCS5padding <br> Encryption Result Encoding : Hex Encoding <br> *Encryption KEY: SecretKey (32byte)<br>•IV: 16 digits before the SecretKey |
+| `encMode`       |  String  |   No   |   10   | Encryption Mode<br>`encData` Field Encryption Algorithm Definition<br><br> A2 : AES256<br>Encryption Algorithm : AES256<br> Encryption Detail : AES/CBC/PKCS5padding <br> Encryption Result Encoding : Hex Encoding <br> *Encryption KEY: the whole SecretKey (32 bytes)<br>•IV: the first 16 characters of the SecretKey |
 | `ediDate`       |  String  |   Conditional   |   -    | Request timestamp (ISO 8601) that your Merchant Server creates, see [Dates in requests](../info/nicepay-info-general.md#dates-in-requests)<br>Required when you send `signData` |
 | `signData`      |   String    |   No   |  256   | Forgery Verification Data<br> Rule : hex(sha256(orderId + ediDate +   SecretKey)) |
 | `returnCharSet` | String    |   No    | 10        | `utf-8` (default) or `euc-kr`<br>Sets the charset in the `Content-Type` header of the response. Keep `utf-8` |
@@ -106,11 +106,11 @@ NicePay checks `encData` against the additional fields that your merchant accoun
 ### encData Field Encryption Example (AES-128)
 
 ```bash
+- Encryption Details : AES/ECB/PKCS5Padding, no IV
 - Plain-text  : cardNo=1234567890123456&expYear=25&expMonth=12&idNo=800101&cardPw=12
-- Encryption-key : 2dcc2a0d63bf4694 (16 digits before SecretKey)
-- IV : 2dcc2a0d63bf4694 (16 digits before SecretKey)
+- Encryption-key : 2dcc2a0d63bf4694 (the first 16 characters of the SecretKey)
 
-- Encrypted-text : `2127975b6d82c36136ba8197a997a994f6c086ff75a6d35e514c54a1e686545e60b76f11bec706de1082e43dd74ae5c5f0709dc1eca6c3cd20e1c0e9e9b7a85c6505461c91c865d82072e41ba5284bd7`
+- Encrypted-text : `7c4b12eb43324290bd0e522900a892343f57e0d176cdadae757132c7f3cd442f023ef5c3ffa254ed04b6d47624d4c7847e8061f3be0d67adf1b463b46a542052cf47a5206bfd23945fc1851d426468f4`
 ```
 
 <br>
@@ -119,7 +119,7 @@ NicePay checks `encData` against the additional fields that your merchant accoun
 ```bash
 - Plain-text : cardNo=1234567890123456&expYear=25&expMonth=12&idNo=800101&cardPw=12
 - Encryption-key : 2dcc2a0d63bf469490bb19a201be3735
-- IV  : 2dcc2a0d63bf4694 (16 digits before SecretKey)
+- IV  : 2dcc2a0d63bf4694 (the first 16 characters of the SecretKey)
 
 - Encrypted-text : `6ecfe97e521bc67c3053d74a9dbdba53033d343fc9e8e38e730964b22ef2e4a59607171b00a9da977141b3f79fffa1e80a16c08bc58666b479f554a966a363414347e62f2621f8df220c7a4a545592d0`
 ```

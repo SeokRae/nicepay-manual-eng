@@ -37,7 +37,7 @@ curl -X POST 'https://api.nicepay.co.kr/v1/key-in/payments' \
 }'
 ```
 
-> `encData` here is encrypted with AES/ECB (see [encData Field Encryption Example](#encdata-field-encryption-example) below). This is a different mode from the CBC encryption used for [Recurring Payment](./nicepay-api-billing.md#encdata-field-encryption-example-aes-128)'s `encData`, do not reuse that example's key derivation here.
+> `encData` here is encrypted with AES-128 in ECB mode, with the first 16 characters of your SecretKey as the key and no IV (see [encData Field Encryption Example](#encdata-field-encryption-example) below). [Recurring Payment](./nicepay-api-billing.md#encdata-field-encryption-example-aes-128) uses the same encryption when you send no `encMode`.
 
 <br>
 
@@ -98,16 +98,16 @@ In the plain text, put `expMonth` directly after `expYear`, as in the example be
 
 ### encData Field Encryption Example
 
-Unlike [Recurring Payment](./nicepay-api-billing.md#encdata-field-encryption-example-aes-128)'s `encData`, Key-in's `encData` is encrypted with **AES/ECB**, not CBC, so there is no IV.
+Key-in's `encData` is encrypted with **AES-128 in ECB mode**, so there is no IV. It is the same encryption as the default of [Recurring Payment](./nicepay-api-billing.md#encdata-field-encryption-example-aes-128), and the two examples give the same `encData`.
 
 ```bash
 - Encryption Algorithm : AES128
 - Encryption Details   : AES/ECB/PKCS5Padding
 - Encoding             : Hex Encoding
-- Encryption KEY       : 16 digits before SecretKey (ECB mode does not use an IV)
+- Encryption KEY       : the first 16 characters of the SecretKey (ECB mode does not use an IV)
 
 - Plain-text     : cardNo=1234567890123456&expYear=25&expMonth=12&idNo=800101&cardPw=12
-- Encryption-key : 2dcc2a0d63bf4694 (16 digits before SecretKey)
+- Encryption-key : 2dcc2a0d63bf4694 (the first 16 characters of the SecretKey)
 
 - Encrypted-text : `7c4b12eb43324290bd0e522900a892343f57e0d176cdadae757132c7f3cd442f023ef5c3ffa254ed04b6d47624d4c7847e8061f3be0d67adf1b463b46a542052cf47a5206bfd23945fc1851d426468f4`
 ```
