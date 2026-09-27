@@ -62,9 +62,9 @@ Your Merchant Server does not call the Hosted Payment Page itself. NicePay retur
 // Test key for basic authentication
 // sandbox-api.nicepay.co.kr
 
-Client : S1_ce1bb1ebebc44fe1a3f7cec976c83ea7		
+Client : S1_ce1bb1ebebc44fe1a3f7cec976c83ea7
 Secret : 13e969a77a0545799242ccc3915243d3
-Authorization : Basic UzFfY2UxYmIxZWJlYmM0NGZlMWEzZjdjZWM5NzZjODNlYTc6MTNlOTY5YTc3YTA1NDU3OTkyNDJjY2MzOTE1MjQzZDM= 
+Authorization: Basic UzFfY2UxYmIxZWJlYmM0NGZlMWEzZjdjZWM5NzZjODNlYTc6MTNlOTY5YTc3YTA1NDU3OTkyNDJjY2MzOTE1MjQzZDM=
 ```
 
 Everyone who reads this manual shares this key. Do not use it to register, update or delete webhook URLs, because that changes the settings for every reader. Use your own Sandbox key for that. There is no public Live key: in Live, use the keys of your own Live merchant.

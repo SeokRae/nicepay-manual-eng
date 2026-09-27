@@ -37,9 +37,9 @@ After that, if you pass the encrypted Token(bid) through the `/v1/subscribe/{bid
 **Default (AES-128, no `encMode`)**
 
 ```bash
-curl -X POST 'https://sandbox-api.nicepay.co.kr/v1/subscribe/regist' 
--H 'Content-Type: application/json' 
--H 'Authorization: Basic UzFfY2UxYmIxZWJlYmM0NGZlMWEzZjdjZWM5NzZjODNlYTc6MTNlOTY5YTc3YTA1NDU3OTkyNDJjY2MzOTE1MjQzZDM=' 
+curl -X POST 'https://sandbox-api.nicepay.co.kr/v1/subscribe/regist' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Basic UzFfY2UxYmIxZWJlYmM0NGZlMWEzZjdjZWM5NzZjODNlYTc6MTNlOTY5YTc3YTA1NDU3OTkyNDJjY2MzOTE1MjQzZDM=' \
 --data '{
     "encData": "2127975b6d82c36136ba8197a997a994f6c086ff75a6d35e514c54a1e686545e60b76f11bec706de1082e43dd74ae5c5f0709dc1eca6c3cd20e1c0e9e9b7a85c6505461c91c865d82072e41ba5284bd7",
     "orderId": "merchant-order-id"
@@ -52,9 +52,9 @@ curl -X POST 'https://sandbox-api.nicepay.co.kr/v1/subscribe/regist'
 **AES-256 (`encMode=A2`)**
 
 ```bash
-curl -X POST 'https://sandbox-api.nicepay.co.kr/v1/subscribe/regist' 
--H 'Content-Type: application/json' 
--H 'Authorization: Basic UzFfY2UxYmIxZWJlYmM0NGZlMWEzZjdjZWM5NzZjODNlYTc6MTNlOTY5YTc3YTA1NDU3OTkyNDJjY2MzOTE1MjQzZDM=' 
+curl -X POST 'https://sandbox-api.nicepay.co.kr/v1/subscribe/regist' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Basic UzFfY2UxYmIxZWJlYmM0NGZlMWEzZjdjZWM5NzZjODNlYTc6MTNlOTY5YTc3YTA1NDU3OTkyNDJjY2MzOTE1MjQzZDM=' \
 --data '{
     "encData": "C41346B71984...",
     "orderId": "merchant-order-id",
@@ -172,9 +172,9 @@ Related error codes: `A253`, `F101`, `F110`, `F115`, `F116`, `U107`, `U317`, see
 
 ### Token authorization example
 ```bash
-curl -X POST 'https://sandbox-api.nicepay.co.kr/v1/subscribe/BIKYnicuntct2m2107272028532670/payments' 
--H 'Content-Type: application/json' 
--H 'Authorization: Basic UzFfY2UxYmIxZWJlYmM0NGZlMWEzZjdjZWM5NzZjODNlYTc6MTNlOTY5YTc3YTA1NDU3OTkyNDJjY2MzOTE1MjQzZDM=' 
+curl -X POST 'https://sandbox-api.nicepay.co.kr/v1/subscribe/BIKYnicuntct2m2107272028532670/payments' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Basic UzFfY2UxYmIxZWJlYmM0NGZlMWEzZjdjZWM5NzZjODNlYTc6MTNlOTY5YTc3YTA1NDU3OTkyNDJjY2MzOTE1MjQzZDM=' \
 --data '{
     "orderId": "merchant-order-id",
     "amount": 1004,
@@ -334,9 +334,9 @@ Available in Sandbox, see [Recurring Payment in Sandbox](../info/nicepay-info-sa
 ### Delete Token(bid) Example code
 
 ``` bash
-curl -X POST 'https://sandbox-api.nicepay.co.kr/v1/subscribe/BIKYnicuntct2m2107272028532670/expire' 
--H 'Content-Type: application/json' 
--H 'Authorization: Basic UzFfY2UxYmIxZWJlYmM0NGZlMWEzZjdjZWM5NzZjODNlYTc6MTNlOTY5YTc3YTA1NDU3OTkyNDJjY2MzOTE1MjQzZDM=' 
+curl -X POST 'https://sandbox-api.nicepay.co.kr/v1/subscribe/BIKYnicuntct2m2107272028532670/expire' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Basic UzFfY2UxYmIxZWJlYmM0NGZlMWEzZjdjZWM5NzZjODNlYTc6MTNlOTY5YTc3YTA1NDU3OTkyNDJjY2MzOTE1MjQzZDM=' \
 --data '{
     "orderId": "your-order-id"
 }'

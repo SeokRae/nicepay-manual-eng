@@ -11,33 +11,37 @@ Authorization: Basic <credentials>
 ```
 
 #### Credentials Generation Algorithm
-```bash
-Base64(`client-key:secret-key`)
+```text
+Base64(<client key>:<secret key>)
 ```
 
 <br>
 
 #### Credentials Generation example
 
-First step
-```bash
-clientId = 'af0d116236df437f831483ee9c500bc4'
-secretKey = '433a8421be754b34989048cf148a5ffc'
->> `af0d116236df437f831483ee9c500bc4:433a8421be754b34989048cf148a5ffc`
+First step: join the client key and the secret key with a colon (`:`).
+
+```text
+af0d116236df437f831483ee9c500bc4:433a8421be754b34989048cf148a5ffc
 ```
 
-Second step
-Encode the plain text to `Base64` to complete the `Credentials`
+Second step: encode that text in Base64 to get the `Credentials`. In a shell:
 
 ```bash
-// Base64('{clientId}:{secretKey}') 
-Base64('af0d116236df437f831483ee9c500bc4:433a8421be754b34989048cf148a5ffc')
->> `YWYwZDExNjIzNmRmNDM3ZjgzMTQ4M2VlOWM1MDBiYzQ6NDMzYTg0MjFiZTc1NGIzNDk4OTA0OGNmMTQ4YTVmZmM=`
-```  
+echo -n 'af0d116236df437f831483ee9c500bc4:433a8421be754b34989048cf148a5ffc' | base64
+```
+
+Output:
+
+```text
+YWYwZDExNjIzNmRmNDM3ZjgzMTQ4M2VlOWM1MDBiYzQ6NDMzYTg0MjFiZTc1NGIzNDk4OTA0OGNmMTQ4YTVmZmM=
+```
+
+Keep `-n`. Without it, `echo` adds a newline that becomes part of the encoded value, and the request fails with HTTP `401` and [`U104`](../code/nicepay-code.md#api-response-code).
 
 Set `Credentials` to `HTTP header` for HTTP authentication.
 ```bash
-Authorization: Basic YWYwZDExNjIzNmRmNDM3ZjgzMTQ4M2VlOWM1MDBiYzQ6NDMzYTg0MjFiZTc1NGIzNDk4OTA0OGNmMTQ4YTVmZmM= 
+Authorization: Basic YWYwZDExNjIzNmRmNDM3ZjgzMTQ4M2VlOWM1MDBiYzQ6NDMzYTg0MjFiZTc1NGIzNDk4OTA0OGNmMTQ4YTVmZmM=
 ```
 
 <br><br>

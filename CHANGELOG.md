@@ -13,6 +13,7 @@ Between 18 and 24 September 2026, every page of this manual was checked against 
 #### Authentication and keys
 
 - **Checkout needs a Client Authentication client key.** Not documented before. With a Server Authentication key, the Hosted Payment Page rejects the customer with `P025`, and `tosspayBill` fails at Create checkout with `U147`. Check your Checkout key type. Key-in Payment and Recurring Payment accept either type. See [Client Key Type](./info/nicepay-info-key.md#client-key-type).
+- **Build the Basic credentials with `echo -n '<client key>:<secret key>' | base64`.** The manual showed pseudo-code that does not run in a shell. Keep `-n`: a trailing newline in the encoded value fails with HTTP `401` and `U104`. See [Credentials Generation example](./info/nicepay-info-basic-token.md#credentials-generation-example).
 
 #### Checkout
 
@@ -46,6 +47,7 @@ Between 18 and 24 September 2026, every page of this manual was checked against 
 - **A second callback for a paid session can report `P045`, `P047` or `P049`, and the webhook can come first.** Not documented before. Keep an already paid order paid, and apply the first of the webhook and the callback that passes the checks, once. See [Verifying the payment result](./api/nicepay-api-payment-window-url.md#verifying-the-payment-result).
 - **For `vbank`, the callback arrives when the account is issued, with `status` `ready`.** The manual listed `ready` (virtual account number) but did not say the customer has not paid. Do not ship yet. Register a webhook for `vbank` or `all` for the deposit, or poll Transaction Status Inquiry, and read the account number from its `vbank` object. See [Virtual account Option](./api/nicepay-api-payment-window-url.md#virtual-account-option).
 - **Checkout `method` also accepts `naverpayPoint`, `naverCardBill`, `naverPointBill`, `kakaoBill`, `tosspay`, `tosspayCard`, `tosspayMoney` and `tosspayBill`.** Not documented before. Use them to offer Naver Pay points, Toss Pay, or easy-pay recurring enrollment through Checkout. See [Hosted Payment Page Request Parameter](./api/nicepay-api-payment-window-url.md#hosted-payment-page-request-parameter).
+- **`cardShowOpt` joins its entries with an ASCII pipe (`|`), as in `08:3|02:3`.** The manual showed a broken bar (`¦`) and a `CardShowOpt=` prefix. Send only the value: another format fails with `U133`. See [Cards & Wallets](./api/nicepay-api-payment-window-url.md#cards--wallets).
 
 #### Recurring Payment
 
@@ -70,6 +72,7 @@ Between 18 and 24 September 2026, every page of this manual was checked against 
 - **Create Token and Delete Token need Recurring Payment enabled for your client key.** Not documented before. Without it, Create Token fails with `U107` and Delete Token with `U313`. Ask NicePay to enable it before you build Recurring Payment. See [Recurring Payment - Create Token](./api/nicepay-api-billing.md#recurring-payment---create-token).
 - **NicePay does not charge tokens on a schedule.** Not documented before. Run your own billing schedule and call `POST /v1/subscribe/{bid}/payments` each time a charge is due. See [Still not sure?](./INTEGRATION-PATHS.md#still-not-sure).
 - **Recurring Payment in Sandbox is described.** Not documented before. Register card tokens only, encrypt `encData` with your Sandbox Secret key, and expect `cardCode` `04` whatever card you send. Sandbox does not validate the card number or check that the expiry date is in the future. See [Recurring Payment in Sandbox](./info/nicepay-info-sandbox.md#recurring-payment-in-sandbox).
+- **The Create Token, charge and Delete Token curl examples run as copied.** The manual's examples had no line-continuation backslashes, so a shell ran `curl` without the headers and the body. Copy them again. See [Recurring Payment - Create Token](./api/nicepay-api-billing.md#recurring-payment---create-token).
 
 #### Key-in Payment
 
@@ -119,6 +122,7 @@ Between 18 and 24 September 2026, every page of this manual was checked against 
 - **Key-in and Recurring Payment events go to the URL registered for `card`.** Not documented before. A Key-in event has the Key-in response fields with no `payMethod` or `cancelledTid`, and a Recurring event adds `bid`. Route events by `status` and `cancelledTid`. See [Delivery of webhook](./api/nicepay-api-webhook.md#delivery-of-webhook).
 - **A cancellation webhook can arrive for a payment you never saw approved.** Not documented before. When NicePay's own processing fails after an approval, NicePay net-cancels the payment and sends a cancellation event. Handle a cancellation for an order that is not marked paid. See [Delivery of webhook](./api/nicepay-api-webhook.md#delivery-of-webhook).
 - **A cancellation webhook keeps the original payment `amount`.** Not documented before. Match the event to the order by `tid`, and read `balanceAmt` and `cancels` for what was cancelled. See [Verifying a webhook](./api/nicepay-api-webhook.md#verifying-a-webhook).
+- **The Retrieve and Delete webhook curl examples end on the last header line.** The manual ended them with a backslash, so a shell waited for more input. Copy them again. See [Retrieve a webhook example code](./api/nicepay-api-webhook.md#retrieve-a-webhook-example-code).
 
 #### Access token
 
@@ -134,6 +138,7 @@ Between 18 and 24 September 2026, every page of this manual was checked against 
 - **In Sandbox, a cancel request that contains `cancelAmt` fails, even for the full amount.** The Sandbox guide said to pass an amount for a partial cancellation. Leave `cancelAmt` out of Sandbox cancels, expect `U128` if you send it, and test partial cancellation in Live. See [Cancel](./info/nicepay-info-sandbox.md#cancel).
 - **A Sandbox cancel response returns the payment's `orderId`, not the one in the cancel request.** Not documented before. Do not match a Sandbox cancel response by the `orderId` you sent in the cancel request. See [Cancel](./info/nicepay-info-sandbox.md#cancel).
 - **Sandbox approvals return fixed card values and are always in KRW.** Not documented before. Card code is `04`, card number `123412******1234`, `cardQuota` `0` and approval number `000000`, whatever the request sends. Do not build tests that depend on these values or on `currency`. See [Sandbox limitations](./info/nicepay-info-sandbox.md#sandbox-limitations).
+- **The Sandbox test key block writes the header as `Authorization: Basic ...`, with nothing after the key.** The manual wrote `Authorization : Basic` and left tabs and spaces at line ends, which break the header and the client key when copied. See [Test key information](./info/nicepay-info-sandbox.md#test-key-information).
 
 #### Amounts, dates, signatures and shared fields
 
