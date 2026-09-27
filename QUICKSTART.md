@@ -47,8 +47,7 @@ curl --location 'https://sandbox-api.nicepay.co.kr/v1/checkout' \
     "amount": 1004,
     "goodsName" : "test",
     "returnUrl": "https://your-server.example/nicepay/return",
-    "language" : "EN",
-    "fakeAuth": "true"
+    "language" : "EN"
 }'
 ```
 
@@ -57,7 +56,7 @@ Replace these values before you run the command:
 - `returnUrl`: an address on your own server that the customer's browser can reach. `your-server.example` does not exist, so with it you never see the payment result of [Step 3](#step-3-receive-the-payment-result).
 - `sessionId` and `orderId`: new values on every run. Everyone who reads this guide shares the Sandbox test key, and a value that was already used with it fails with [`U324`](./code/nicepay-code.md#api-response-code) (`sessionId`) or [`U112`](./code/nicepay-code.md#api-response-code) (`orderId`).
 
-> The `clientId`/`Authorization` above are the Sandbox test key from [Sandbox](./info/nicepay-info-sandbox.md#test-key-information); `fakeAuth: "true"` skips real card company authentication so you get an immediate test result. Once you switch to Live, drop `fakeAuth` and use your Live key instead.
+> The `clientId`/`Authorization` above are the Sandbox test key from [Sandbox](./info/nicepay-info-sandbox.md#test-key-information). Once you switch to Live, use your Live key instead.
 
 `amount` is a whole number with no decimal point. This request has no `currency`, so the payment is in Korean won: `1004` is KRW 1,004. See [Amounts and currencies](./info/nicepay-info-general.md#amounts-and-currencies).
 
@@ -100,7 +99,7 @@ Replace these values before you run the command:
     "directReceiptNo": null,
     "appScheme": null,
     "method": "cardAndEasyPay",
-    "url": "https://sandbox-pay.nicepay.co.kr/v1/fake/pay/unique-sessionId-001"
+    "url": "https://sandbox-pay.nicepay.co.kr/v1/checkout/pay/G1cKzR8pQmT3xYVn5A9Lse2f/unique-sessionId-001"
 }
 ```
 
@@ -108,7 +107,7 @@ Replace these values before you run the command:
 
 Your Merchant Server redirects the customer to the `url` from the Step 1 response. The customer's browser opens the Hosted Payment Page, and the customer pays there.
 
-Since Step 1 used `fakeAuth: "true"`, this is a dummy Sandbox page without real card company authentication: pressing Next returns a success result, and Cancel returns a random failure result.
+In Sandbox, the customer goes through the regular card company authentication on this page, and NicePay then simulates the approval. No payment reaches a card company, see [Sandbox limitations](./info/nicepay-info-sandbox.md#sandbox-limitations).
 
 <a href="./image/payment-checkout-cancel-cycle.svg"><img alt="Sequence diagram: order, create checkout, redirect, pay, result page, browser posts to returnUrl, status inquiry, confirm order; Cancellation: cancel, result" src="./image/payment-checkout-cancel-cycle.svg" width="800px"></a>
 
@@ -190,11 +189,10 @@ Before your first Live payment, change these settings. Sandbox and Live share no
 
 1. **Keys**: replace the Sandbox key with the keys of your Live merchant, from its `Development Information` tab in the admin console. That covers `clientId`, the `Authorization` header, and the Secret key that your server uses to check `signature` and to encrypt `encData`. For Checkout, the client key must be a Client Authentication key. See [Client and Secret key](./info/nicepay-info-key.md).
 2. **Domain**: call `api.nicepay.co.kr` instead of `sandbox-api.nicepay.co.kr`. The Hosted Payment Page address still comes in the `url` of the Create checkout response. See [Base URL information for Sandbox and Live](./info/nicepay-info-sandbox.md#base-url-information-for-sandbox-and-live).
-3. **`fakeAuth`**: remove it from the Create checkout request. See `fakeAuth` in [Hosted Payment Page Request Parameter](./api/nicepay-api-payment-window-url.md#hosted-payment-page-request-parameter).
-4. **`returnUrl`**: point it at the Live address of your handler.
-5. **Firewall**: allow the Live domains and IP addresses, and the webhook source addresses, in [Firewall Policy](./info/nicepay-info-firewall-timeout.md#firewall-policy).
-6. **Webhooks**: register your webhook URLs again with the Live key, see [Create a webhook](./api/nicepay-api-webhook.md#create-a-webhook-). URLs registered in Sandbox do not carry over.
-7. **What Sandbox could not test**: partial cancellation, Key-in Payment, and Naver Pay, Kakao Pay and Toss Pay recurring payments work only in Live, see [Sandbox limitations](./info/nicepay-info-sandbox.md#sandbox-limitations). A Live test is a real payment, so cancel each one afterwards with [Cancel](./api/nicepay-api-cancel.md).
+3. **`returnUrl`**: point it at the Live address of your handler.
+4. **Firewall**: allow the Live domains and IP addresses, and the webhook source addresses, in [Firewall Policy](./info/nicepay-info-firewall-timeout.md#firewall-policy).
+5. **Webhooks**: register your webhook URLs again with the Live key, see [Create a webhook](./api/nicepay-api-webhook.md#create-a-webhook-). URLs registered in Sandbox do not carry over.
+6. **What Sandbox could not test**: partial cancellation, Key-in Payment, and Naver Pay, Kakao Pay and Toss Pay recurring payments work only in Live, see [Sandbox limitations](./info/nicepay-info-sandbox.md#sandbox-limitations). A Live test is a real payment, so cancel each one afterwards with [Cancel](./api/nicepay-api-cancel.md).
 
 <br><br>
 

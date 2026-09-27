@@ -26,7 +26,6 @@ Sandbox differs from Live in these ways. [URI LIST](../api/nicepay-api-uri-list.
 - Only full cancellation works. A request with `cancelAmt` fails, see [Cancel](#cancel).
 - Recurring Payment registers card tokens with `/v1/subscribe/regist` only. Naver Pay, Kakao Pay and Toss Pay recurring payments and the Bid Status Inquiry are not available. See [Recurring Payment in Sandbox](#recurring-payment-in-sandbox).
 - The card event and interest-free installment inquiries return dummy data.
-- With `fakeAuth` set to `true` in Create checkout, the Hosted Payment Page is a dummy page without card company authentication. See [Request a checkout page](#request-a-checkout-page).
 - Transaction Search and Settlement are not available.
 
 Webhooks work in Sandbox. You can register webhook URLs with your Sandbox key, and NicePay sends the payment event for a Sandbox payment to them. This manual has not confirmed that cancellation events are sent in Sandbox. See [Webhook](../api/nicepay-api-webhook.md).
@@ -81,7 +80,7 @@ The steps below create a checkout session and open the Hosted Payment Page in Sa
 1. Your Merchant Server creates a `sessionId` and an `orderId` for the order. NicePay does not generate them.
 2. Your Merchant Server calls Create checkout (`POST /v1/checkout`) with these two values and the other request parameters.
 3. NicePay returns the Hosted Payment Page address in the `url` field of the response. Your Merchant Server redirects the customer to `url` exactly as returned. Do not build this address yourself.
-4. The customer pays on the Hosted Payment Page, and the customer's browser sends the payment result to your `returnUrl`. With `fakeAuth` set to `true`, the page is a dummy page that skips card company authentication. Without it, the customer goes through the regular card company authentication, and NicePay then simulates the approval.
+4. The customer goes through the regular card company authentication on the Hosted Payment Page, and NicePay then simulates the approval. The customer's browser sends the payment result to your `returnUrl`.
 
 
 Please refer to the link for more detailed information.  
@@ -111,8 +110,7 @@ curl --location 'https://sandbox-api.nicepay.co.kr/v1/checkout' \
     "amount" : 1004,
     "goodsName" : "test",
     "returnUrl": "http://your-return-url.com",
-    "language" : "EN",
-    "fakeAuth": "true"
+    "language" : "EN"
 }'
 ```
 
@@ -158,7 +156,7 @@ Content-type: application/json;charset=utf-8
     "directReceiptNo": null,
     "appScheme": null,
     "method": "cardAndEasyPay",
-    "url": "https://sandbox-pay.nicepay.co.kr/v1/fake/pay/641d555b91ae1"
+    "url": "https://sandbox-pay.nicepay.co.kr/v1/checkout/pay/Hk2vN7qRtW4mZc8sPb3LdY6a/641d555b91ae1"
 }
 ```
 
@@ -168,14 +166,10 @@ Content-type: application/json;charset=utf-8
 ```bash
 The customer follows the link to the checkout page.
 
-https://sandbox-pay.nicepay.co.kr/v1/fake/pay/641d555b91ae1
+https://sandbox-pay.nicepay.co.kr/v1/checkout/pay/Hk2vN7qRtW4mZc8sPb3LdY6a/641d555b91ae1
 ```
 
-<a href="../image/sandbox-checkout.png"><img alt="Screenshot of the Sandbox checkout page, a dummy version without real card company authentication" src="../image/sandbox-checkout.png" width="715px"></a>
-
-- This session was created with `fakeAuth` set to `true`, so this is a dummy page without actual card company authentication.  
-- If you press Next, a success message will be returned in response.  
-- And If you press Cancel, a random failure message will be returned in response.  
+The customer goes through the regular card company authentication on this page, and NicePay then simulates the approval. No payment reaches a card company, see [Sandbox limitations](#sandbox-limitations).
 
 <br><br>
 
@@ -231,7 +225,6 @@ This sample verifies with the Sandbox Secret key in [Test key information](#test
 
 Through the page below, you can easily check the flow when conducting a test  
 https://nicepaytest.link/checkout/sandbox-redirect.php  
-https://nicepaytest.link/checkout/sandbox-redirect-fake.php  
 
 <br><br>
 
@@ -302,7 +295,7 @@ Response
   "directReceiptNo": null,
   "appScheme": null,
   "method": "cardAndEasyPay",
-  "url": "https://sandbox-pay.nicepay.co.kr/v1/fake/pay/641d555b91ae1"
+  "url": "https://sandbox-pay.nicepay.co.kr/v1/checkout/pay/Hk2vN7qRtW4mZc8sPb3LdY6a/641d555b91ae1"
 }
 
 ```
@@ -377,7 +370,7 @@ Response
     "directReceiptNo": null,
     "appScheme": null,
     "method": "cardAndEasyPay",
-    "url": "https://sandbox-pay.nicepay.co.kr/v1/fake/pay/641d555b91ae2"
+    "url": "https://sandbox-pay.nicepay.co.kr/v1/checkout/pay/Jn5wQ2xFvB8rTk4mYc7GsH1e/641d555b91ae2"
 }
 
 
