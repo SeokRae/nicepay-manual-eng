@@ -189,4 +189,15 @@ To parse a value:
 - **`expireDate`** (Checkout): send UTC with `Z`, for example `2023-03-25T04:58:01Z`, or the response pattern with milliseconds and an offset without a colon, for example `2023-03-25T13:58:01.000+0900`. Other forms, such as an offset with a colon (`+09:00`) or no offset, fail with [`U322`](../code/nicepay-code.md#code-u322).
 - **`vbankExpDate`** (Checkout, `method` `vbank`): send a date and a time in KST, as `yyyy-MM-ddTHH:mm`, for example `2023-03-25T23:59`. NicePay also accepts a date only (`2023-03-25`), but it then stores only the date, and this manual does not confirm the closing time on that day. A value in one of the `expireDate` forms also works. Other values fail with [`U330`](../code/nicepay-code.md#code-u330).
 
-<br>
+<br><br>
+
+## Korean payment terms
+
+Some request fields refer to features of Korean card and bank payments. What they mean:
+
+- **Installment payment** (`cardQuota`): a Korean credit card can split one payment into monthly installments. `cardQuota` limits the months that the customer can choose, and an installment needs an `amount` of 50,000 or more. With an interest-free installment, the merchant pays the installment interest instead of the customer (`isInterestFree`).
+- **Card authentication methods** (`cardShowOpt`): Korean card companies authenticate the customer on the Hosted Payment Page in one of several ways, such as Ansim Click (the card company's web authentication), a simple payment, or the card company's own app (App Card). `cardShowOpt` chooses the method for each card company.
+- **Escrow** (`useEscrow`): NicePay holds the payment until the customer confirms the purchase after delivery, and then settles it to the merchant. Escrow is not available with every `method`, see [Payment methods](../api/nicepay-api-payment-window-url.md#payment-methods).
+- **Cash receipt** (`directReceiptType`, `directReceiptNo`, `cashReceipts`): a receipt that is reported to the National Tax Service for a payment made with cash, such as a bank transfer or a virtual account. It is issued to the customer's mobile phone number or business registration number.
+- **App scheme** (`appScheme`): when your mobile app shows the Hosted Payment Page and the customer authenticates in a card or wallet app, this URL scheme brings the customer back to your app.
+
