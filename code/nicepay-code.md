@@ -226,7 +226,6 @@ Some messages carry Korean payment-industry terms straight into the English colu
 | <span id="code-f116">F116</span> | <span lang="ko">빌키 발급 불가 가맹점입니다.(해지)</span> | Can not issue billkey (Contract is terminated) |
 | <span id="code-f117">F117</span> | <span lang="ko">빌링 미사용 가맹점입니다</span>  | Billing service agreement required |
 | <span id="code-f118">F118</span> | <span lang="ko">해당카드는 사용이 불가능 합니다 타사카드를 이용해주세요</span>  | The card cannot be used Please use a another card |
-| <span id="code-f201">F201</span> | <span lang="ko">이미 등록된 카드 입니다(빌키발급실패)</span>   | This card has been registered already (failed to issue bill key) |
 | <span id="code-2003">2003</span> | <span lang="ko">취소 실패</span>  | Cancellation Failed |
 | <span id="code-2010">2010</span> | <span lang="ko">취소 요청금액 0원 이하</span> | Cancellation amount is KRW 0 or less |
 | 2011 | <span lang="ko">취소 금액 불일치</span>   | Cancellation amount discrepancy (cancel) |
