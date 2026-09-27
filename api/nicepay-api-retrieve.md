@@ -31,73 +31,6 @@ curl -X GET 'https://sandbox-api.nicepay.co.kr/v1/payments/nicuntct1m01012107272
 
 <br>
 
-## Check Authorization Amount
-
-- If you need to check the payment amount after approval, use the `Check-amount` API to check the approved payment amount.
-- `resultCode` is `0000` whether or not the amounts match, so check `isValid`. `false` means that the `amount` you sent differs from the amount NicePay approved for the `tid`. NicePay compares with the amount of the original approval, not with the balance after partial cancellations.
-- If `isValid` is `false`, cancel the payment before you deliver the goods: send [Cancel request with tid](./nicepay-api-cancel.md#cancel-request-parameter-with-tid) without `cancelAmt` to cancel the full amount.
-
-> **⚠️ Important:** You are responsible for problems caused by not checking the approved (payment) amount.
-
-<br>
-
-### Check Authorization Amount Example code
-
-```bash
-curl -X POST 'https://sandbox-api.nicepay.co.kr/v1/check-amount/nicuntct1m0101210727200708A058' \
--H 'Content-Type: application/json' \
--H 'Authorization: Basic UzFfY2UxYmIxZWJlYmM0NGZlMWEzZjdjZWM5NzZjODNlYTc6MTNlOTY5YTc3YTA1NDU3OTkyNDJjY2MzOTE1MjQzZDM=' \
---data '{
-    "amount" : 1004
-}'
-```
-
-<br>
-
-### Check Authorization Amount Request parameter
-
-```bash
-POST /v1/check-amount/{tid}  
-HTTP/1.1  
-Host: api.nicepay.co.kr 
-Authorization: Basic <credentials> or Bearer <token>
-Content-type: application/json;charset=utf-8
-```
-
-Required: Yes = always send; No = optional; Conditional = send in the case stated in Description. Bytes = maximum length in bytes.
-
-| Parameter     | Type   | Required | Bytes | Description |
-|:--------------|:------:|:--------:|:------:|:---------|
-| `amount`      |  Int   | Yes |   12   | Amount to compare with the approved amount<br>Whole number with no decimal point, in the same unit as the `amount` that NicePay returns for the payment. See [Amounts and currencies](../info/nicepay-info-general.md#amounts-and-currencies) |
-| `ediDate`     | String | Conditional |   -    | Request timestamp (ISO 8601) that your Merchant Server creates, see [Dates in requests](../info/nicepay-info-general.md#dates-in-requests)<br>Required when you send `signData` |
-| `signData`    | String | No |  256   | Forgery Verification Data<br>Rule: hex(sha256(tid + amount + ediDate + SecretKey)) |
-| `returnCharSet` | String | No | 10        | `utf-8` (default) or `euc-kr`<br>Sets the charset in the `Content-Type` header of the response. Keep `utf-8` |
-
-<br>
-
-### Check Authorization Amount Response parameter
-
-```bash
-POST
-Content-type: application/json
-```
-
-Dates and times that NicePay returns are in Korea Standard Time (KST, UTC+9), for example `2023-03-24T14:04:16.982+0900`. See [Dates in responses](../info/nicepay-info-general.md#dates-in-responses) for how to parse them.
-
-Required: Yes = has a non-empty value in every response whose `resultCode` is `0000`; No = can be `null`, empty, or left out. For a field of an object or array, Yes applies whenever that object or array element is present.
-
-| Parameter     | Type   | Required | Bytes | Description |
-|:-----------|:-----:|:-----:|:------:|:-------------|
-| `resultCode` | String | Yes | 4 | 0000 : success / other failure |
-| `resultMsg` | String | Yes | 100 | Result message |
-| `ediDate` | String | Yes | - | Message creation date and time (ISO 8601 format) |
-| `signature`  |  String  |   Yes   |  256   | Forgery Verification Data<br>Rule: hex(sha256(tid + ediDate + SecretKey)) |
-| `isValid`  |   Boolean   |   Yes   |   -    | Whether the amount transferred to the check-amount API matches the actual approved amount.<br>true : match / false : mismatch |
-| `tid`      |   String   |   Yes   |   30   | Requested transaction ID |
-
-
-<br><br>
-
 ### Transaction Status Inquiry (with tid:Transaction ID)
 
 ```bash
@@ -288,6 +221,73 @@ Content-type: application/json
 | | `reason` | String | Yes | 100 | Cancellation reason |
 | | `receiptUrl` | String | Yes | 200 | <br>Receipt URL for user n |
 | | `couponAmt` | Int | No | 12 | Cancellation amount of coupon <br> *Optional|
+
+<br><br>
+
+## Check Authorization Amount
+
+- If you need to check the payment amount after approval, use the `Check-amount` API to check the approved payment amount.
+- `resultCode` is `0000` whether or not the amounts match, so check `isValid`. `false` means that the `amount` you sent differs from the amount NicePay approved for the `tid`. NicePay compares with the amount of the original approval, not with the balance after partial cancellations.
+- If `isValid` is `false`, cancel the payment before you deliver the goods: send [Cancel request with tid](./nicepay-api-cancel.md#cancel-request-parameter-with-tid) without `cancelAmt` to cancel the full amount.
+
+> **⚠️ Important:** You are responsible for problems caused by not checking the approved (payment) amount.
+
+<br>
+
+### Check Authorization Amount Example code
+
+```bash
+curl -X POST 'https://sandbox-api.nicepay.co.kr/v1/check-amount/nicuntct1m0101210727200708A058' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Basic UzFfY2UxYmIxZWJlYmM0NGZlMWEzZjdjZWM5NzZjODNlYTc6MTNlOTY5YTc3YTA1NDU3OTkyNDJjY2MzOTE1MjQzZDM=' \
+--data '{
+    "amount" : 1004
+}'
+```
+
+<br>
+
+### Check Authorization Amount Request parameter
+
+```bash
+POST /v1/check-amount/{tid}  
+HTTP/1.1  
+Host: api.nicepay.co.kr 
+Authorization: Basic <credentials> or Bearer <token>
+Content-type: application/json;charset=utf-8
+```
+
+Required: Yes = always send; No = optional; Conditional = send in the case stated in Description. Bytes = maximum length in bytes.
+
+| Parameter     | Type   | Required | Bytes | Description |
+|:--------------|:------:|:--------:|:------:|:---------|
+| `amount`      |  Int   | Yes |   12   | Amount to compare with the approved amount<br>Whole number with no decimal point, in the same unit as the `amount` that NicePay returns for the payment. See [Amounts and currencies](../info/nicepay-info-general.md#amounts-and-currencies) |
+| `ediDate`     | String | Conditional |   -    | Request timestamp (ISO 8601) that your Merchant Server creates, see [Dates in requests](../info/nicepay-info-general.md#dates-in-requests)<br>Required when you send `signData` |
+| `signData`    | String | No |  256   | Forgery Verification Data<br>Rule: hex(sha256(tid + amount + ediDate + SecretKey)) |
+| `returnCharSet` | String | No | 10        | `utf-8` (default) or `euc-kr`<br>Sets the charset in the `Content-Type` header of the response. Keep `utf-8` |
+
+<br>
+
+### Check Authorization Amount Response parameter
+
+```bash
+POST
+Content-type: application/json
+```
+
+Dates and times that NicePay returns are in Korea Standard Time (KST, UTC+9), for example `2023-03-24T14:04:16.982+0900`. See [Dates in responses](../info/nicepay-info-general.md#dates-in-responses) for how to parse them.
+
+Required: Yes = has a non-empty value in every response whose `resultCode` is `0000`; No = can be `null`, empty, or left out. For a field of an object or array, Yes applies whenever that object or array element is present.
+
+| Parameter     | Type   | Required | Bytes | Description |
+|:-----------|:-----:|:-----:|:------:|:-------------|
+| `resultCode` | String | Yes | 4 | 0000 : success / other failure |
+| `resultMsg` | String | Yes | 100 | Result message |
+| `ediDate` | String | Yes | - | Message creation date and time (ISO 8601 format) |
+| `signature`  |  String  |   Yes   |  256   | Forgery Verification Data<br>Rule: hex(sha256(tid + ediDate + SecretKey)) |
+| `isValid`  |   Boolean   |   Yes   |   -    | Whether the amount transferred to the check-amount API matches the actual approved amount.<br>true : match / false : mismatch |
+| `tid`      |   String   |   Yes   |   30   | Requested transaction ID |
+
 
 <br><br>
 

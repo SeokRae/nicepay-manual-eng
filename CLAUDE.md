@@ -45,7 +45,7 @@ A new Markdown file is not reachable until it is registered in three places, non
 2. `README.md`: a resource card in the grid, with an `.html` href (see the link conventions below).
 3. `api/nicepay-api-uri-list.md`: for an API doc, add every endpoint to the master table with its method, path, and Sandbox availability.
 
-The sidebar label is the page's **first heading** (no front matter is used), so choose that heading with the sidebar in mind. Note that sidebar labels and README card labels are worded independently today, e.g. the sidebar says "URI LIST" where the README card says "List of API".
+The sidebar label is the page's **first heading** (no front matter is used), so choose that heading with the sidebar in mind. Keep the README card label the same as the sidebar label. When a page's first heading is also a section that other pages link to (as `## Firewall Policy` was), put a page title above it (`# Firewall and Timeout`) instead of renaming the section, so its anchor stays.
 
 When sweeping wording across the repo (branding, terminology, style), grep beyond `*.md`: `_config.yml` and the text inside `image/*.svg` are merchant-visible too, and a `--include="*.md"` grep has missed them before.
 

@@ -33,7 +33,7 @@ For the success/failure branches of a card or easy-pay checkout, see [Card and E
 ### Step 1. Create a checkout session
 
 - If the Create Checkout API call is successful, it will respond with a URL.
-- Please refer to the [link](./api/nicepay-api-payment-window-url.md) for the request parameters of the Create Checkout API.
+- For the request parameters of Create checkout, see [Hosted Payment Page Request Parameter](./api/nicepay-api-payment-window-url.md#hosted-payment-page-request-parameter).
 
 ```bash
 curl --location 'https://sandbox-api.nicepay.co.kr/v1/checkout' \

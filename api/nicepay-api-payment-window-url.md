@@ -260,7 +260,7 @@ Content-type: application/x-www-form-urlencoded
 
 - The request comes from the customer's browser, not from NicePay's IP addresses. Do not limit `returnUrl` to the webhook IP addresses in [Firewall Policy](../info/nicepay-info-firewall-timeout.md#firewall-policy).
 - NicePay does not read the response of your `returnUrl` handler and sets no time limit for it. The customer's browser shows your response, so return your order result page.
-- NicePay does not retry the callback. If the customer closes the browser before it is sent, the approved payment still stands. Your Merchant Server then learns the result from the [webhook](./nicepay-api-webhook.md) or from [Transaction Status Inquiry](./nicepay-api-retrieve.md).
+- NicePay does not retry the callback. If the customer closes the browser before it is sent, the approved payment still stands. Your Merchant Server then learns the result from the [webhook](./nicepay-api-webhook.md) or from [Transaction Status Inquiry (with sessionId)](./nicepay-api-retrieve.md#transaction-status-inquiry-with-sessionid).
 - Check every callback as described in [Verifying the payment result](#verifying-the-payment-result) before you confirm the order.
 
 <br>
@@ -363,9 +363,9 @@ If your Merchant Server does not receive the callback, the payment still stands.
 
 <br><br>
 
-### Retrieve Checkout session API
+## Retrieve Checkout session API
 
-This is an API that allows you to check the status of a generated session.
+This API returns a checkout session: its `status`, `isExpire` and the settings of the Create checkout request. To get the payment made with the session, with its card, cancellations and receipt, use [Transaction Status Inquiry (with sessionId)](./nicepay-api-retrieve.md#transaction-status-inquiry-with-sessionid) (`GET /v1/payments/checkout/{sessionId}`) instead. For a Sandbox example, see [Retrieve a checkout page](../info/nicepay-info-sandbox.md#retrieve-a-checkout-page).
 
 <br>
 
@@ -407,9 +407,9 @@ Parameters you requested are also echoed back in the response.
 
 <br><br>
 
-### Expire Checkout session API
+## Expire Checkout session API
 
-This is an API for expiring a generated session.
+This API marks a checkout session as expired (`isExpire` becomes `true`). It does not cancel a payment already made with the session: use [Cancel](./nicepay-api-cancel.md) for that. An unknown `sessionId` fails with [`U111`](../code/nicepay-code.md#code-u111), and a session that has already expired returns [`U325`](../code/nicepay-code.md#code-u325). For a Sandbox example, see [Expire a checkout page](../info/nicepay-info-sandbox.md#expire-a-checkout-page).
 
 <br>
 
