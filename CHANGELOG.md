@@ -176,6 +176,8 @@ Between 18 and 24 September 2026, every page of this manual was checked against 
 - **The table adds `U133` to `U136`, `U138` to `U154`, `U327` to `U331`, `U339`, `U343` to `U345` and `2045`.** Not documented before. They cover request format, installment, Easy Pay, `vbankExpDate`, amount, tax, escrow, `bid` and partial cancel checks. Add them to your error handling. See [API response code](./code/nicepay-code.md#api-response-code).
 - **`4126`, `4127`, `A303`, `M001` and `M002` mean your account is not set up for the partner institution behind a bank transfer, virtual account or mobile carrier payment.** Not documented before. Get the account set up instead of changing the request. See [API response code](./code/nicepay-code.md#api-response-code).
 - **Card code `46` is Toss Money.** Not documented before. Map it if you display or store card company names. See [Card code](./code/nicepay-code.md#card-code).
+- **Only `0000` means success.** The code table listed payment network success codes, such as `3001` and `2001`, without saying that the API returns `0000` in their place. Treat every code other than `0000` as not successful. See [API response code](./code/nicepay-code.md#api-response-code).
+- **`1534` means that partial cancellation is not available, and `2010` and `7041` include KRW 0.** The manual said that `1534` means the transaction cannot be cancelled, and described `2010` and `7041` as amounts below KRW 0. Offer a full cancellation when you get `1534`. See [API response code](./code/nicepay-code.md#api-response-code).
 
 #### Reconciliation (Beta)
 

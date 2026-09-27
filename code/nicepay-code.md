@@ -97,6 +97,8 @@
 
 `U`-prefixed codes come from NicePay's API. Every other code (bare numbers, and `A`/`F`/`C`/`I`/`E`-prefixed codes) normally comes from NicePay's payment network. A few codes, including `0000`, `9999` and `F101`, can come from either, so the same code can carry a different message; the message shown below is the API's.
 
+A success reaches your server only as `0000`. The API converts the payment network's success codes in this table, such as `3001`, `4000`, `4100`, `A000`, `2001` and `2211`, into `0000`, so treat every other code as not successful.
+
 A handful of codes are reused with unrelated meanings depending on which API returned them (for example `2011`, `2012`, `C002`); where that happens, the domain is called out in parentheses in the English message below, e.g. "(cancel)" vs "(general/DB error)". Match that to the API you called.
 
 Some messages carry Korean payment-industry terms straight into the English column. What they mean:
@@ -197,7 +199,7 @@ Some messages carry Korean payment-industry terms straight into the English colu
 | 7013 | <span lang="ko">현금영수증 요청구분 값 오류(1:소득공제, 2:지출증빙)</span>  | Cash Receipt request type error |
 | 7014 | <span lang="ko">현금영수증 서브몰 사업자번호로 발행시 필수값 누락</span>  | Missing required value when issuing cash receipt for sub-mall |
 | 7015 | <span lang="ko">현금영수증 취소시 원승인번호 또는 원거래일자 누락</span>  | Missing original approval number or original transaction date |
-| 7041 | <span lang="ko">금액오류(0원 이하 발행불가)</span>    | Amount error (not issued less than KRW 0) |
+| 7041 | <span lang="ko">금액오류(0원 이하 발행불가)</span>    | Amount error (cannot be issued for KRW 0 or less) |
 | 7042 | <span lang="ko">현금영수증 최대금액 초과오류</span>   | Cash Receipt maximum amount exceeded |
 | A000 | <span lang="ko">휴대폰결제 처리 성공</span>   | Phone bill payment processed successfully |
 | A001 | <span lang="ko">휴대폰결제 처리 실패</span>   | Phone bill payment processing failed |
@@ -214,7 +216,7 @@ Some messages carry Korean payment-industry terms straight into the English colu
 | A568 | <span lang="ko">서비스구분코드 설정 오류</span>   | Service code setting error |
 | 0000 | <span lang="ko">정상 처리되었습니다.</span> | Payment or transaction successful |
 | 9999 | <span lang="ko">일시적인 오류가 발생하였습니다.</span> | A temporary error occurred |
-| 1534 | <span lang="ko">부분취소 불가능 거래</span>      | Non-cancellable transaction.   |
+| 1534 | <span lang="ko">부분취소 불가능 거래</span>      | Partial cancellation is not available for this transaction.   |
 | 1615 | <span lang="ko">거래금액 합계오류(공급가액,부가세,봉사료,면세금액 합계)</span>     | Total transaction amount error (sum of supply, VAT, service charge, and tax-exempt amount).  |
 | 2000 | <span lang="ko">DB오류</span> | DB Error | 
 | 2011 | <span lang="ko">CINO미존재</span> | CINO does not exist (general/DB error) |
@@ -278,9 +280,9 @@ Some messages carry Korean payment-industry terms straight into the English colu
 | E010 | <span lang="ko">구매거절 이미 처리됨</span>  | Escrow Purchase Refusal has been processed already |
 | E011 | <span lang="ko">취소된 거래는 구매거절 불가</span>  | Canceled transactions can not make Escrow Purchase Refusal |
 | 2001 | <span lang="ko">취소 성공</span> | Cancellation successful |
-| 2211 | <span lang="ko">환불 성공 (2001과 함께 취소 성공 처리할 것)</span> | Refund successful (Handling Cancellation Success with 2001) |
+| 2211 | <span lang="ko">환불 성공 (2001과 함께 취소 성공 처리할 것)</span> | Refund successful. Handle it as a successful cancellation, like `2001` |
 | 2003 | <span lang="ko">취소 실패</span>  | Cancellation Failed |
-| 2010 | <span lang="ko">취소 요청금액 0원 이하</span> | Cancellation request amount less than KRW 0 |
+| 2010 | <span lang="ko">취소 요청금액 0원 이하</span> | Cancellation amount is KRW 0 or less |
 | 2011 | <span lang="ko">취소 금액 불일치</span>   | Cancellation amount discrepancy (cancel) |
 | 2012 | <span lang="ko">취소 해당거래 없음</span> | No applicable transaction (cancel) |
 | 2013 | <span lang="ko">취소 완료 거래</span> | Canceled Transactions |
@@ -460,7 +462,7 @@ Some messages carry Korean payment-industry terms straight into the English colu
 | P005 | <span lang="ko">해당되는 MID 정보가 없습니다.</span>    | No MID Information Found       |
 | P006 | <span lang="ko">해당되는 GID 정보가 없습니다.</span>    | No GID Information Found       |
 | P007 | <span lang="ko">필수 파라미터 {param}가 없습니다.</span>      | Required Parameter {param} Missing    |
-| P008 | <span lang="ko">파라미터 {}:{} 길이가 취소길이{} 보다 작은값 입니다.</span>  | Parameter {}:{} length is less than Cancel Length {}      |
+| P008 | <span lang="ko">파라미터 {}:{} 길이가 취소길이{} 보다 작은값 입니다.</span>  | The length of parameter {}:{} is below the minimum length {}      |
 | P009 | <span lang="ko">파라미터 {}:{} 길이가 최대길이{} 보다 큰값 입니다.</span>    | Parameter {}:{} length is greater than Maximum Length {}   |
 | P010 | <span lang="ko">파라미터 {key}[{value}]가 숫자형식이 아닙니다.</span>       | Parameter {key}[{value}] is not a numeric format    |
 | P011 | <span lang="ko">파라미터 {key}[{value}]가 boolean형식이 아닙니다.</span>    | Parameter {key}[{value}] is not a boolean format    |
@@ -545,7 +547,7 @@ Some messages carry Korean payment-industry terms straight into the English colu
 | U139 | <span lang="ko">페이결제는 카드사 선택이 불가합니다.</span>      | This Easy Pay method does not support selecting a card company.         |
 | U140 | <span lang="ko">페이결제는 할부개월 수 지정이 불가합니다.</span>      | This Easy Pay method does not support specifying an installment month.         |
 | U141 | <span lang="ko">해당 결제수단은 할부개월 수 복수설정이 불가합니다.</span>      | This payment method does not support setting multiple installment months.         |
-| U142 | <span lang="ko">[{0}] 필드는 0이하의 값은 허용하지 않습니다.</span>      | The [{0}] field does not allow a value of 0 or less.         |
+| U142 | <span lang="ko">[{0}] 필드는 0이하의 값은 허용하지 않습니다.</span>      | The [{0}] field does not allow a value of 0 or less. Returned by Cancel for a `cancelAmt` of 0 or less         |
 | U143 | <span lang="ko">[{0}] 결제수단에서는 [{1}] 필드 사용이 불가합니다.</span>      | The [{1}] field cannot be used with the [{0}] payment method.         |
 | U144 | <span lang="ko">할부 개월 수는 최대 [{0}] 개월 입니다.</span>      | The maximum installment period is [{0}] months.         |
 | U145 | <span lang="ko">[{0}] 결제수단에서는 해당 카드사 번호 사용이 불가합니다.</span>      | This card company code cannot be used with the [{0}] payment method.         |
@@ -625,7 +627,7 @@ Some messages carry Korean payment-industry terms straight into the English colu
 | U336 | <span lang="ko">해당 URL 페이지 요청을 실패하였습니다.</span> | Failed to request the URL page. |
 | U337 | <span lang="ko">HTTP 상태 코드가 정상(200)이 아닙니다.</span> | The HTTP status code is not 200 |
 | U338 | <span lang="ko">응답 페이지 Body 부분은 OK 문자만 허용됩니다.</span> | Only the 'OK' string is allowed in the response body. |
-| U339 | <span lang="ko">[{0}] 필드는 0이하의 값은 허용하지 않습니다.</span> | The [{0}] field does not allow a value of 0 or less. |
+| U339 | <span lang="ko">[{0}] 필드는 0이하의 값은 허용하지 않습니다.</span> | The [{0}] field does not allow a value of 0 or less. Returned by Create checkout for a `vbankValidHours` of 0 or less |
 | U340 | <span lang="ko">KeyIn 결제정보 암호화 데이터 복호화오류</span> | Failed to decrypt the Key-in payment encryption data. |
 | U341 | <span lang="ko">KeyIn 결제정보 암호화 데이터 검증 오류</span> | Key-in payment encryption data verification error. |
 | U343 | <span lang="ko">가맹점 옵션값 조회 실패.</span> | Failed to retrieve the merchant option value. |
