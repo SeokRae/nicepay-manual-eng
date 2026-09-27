@@ -94,12 +94,26 @@ Authorization: Bearer dc51c8b13620519b8503bef6ee18f11370e8b349
 
 ### When authentication fails
 
-On every API except Access token, a failed Basic or Bearer authentication returns HTTP `401` with `resultCode` [`U104`](../code/nicepay-code.md#code-u104). Check these points:
+A failed Basic or Bearer authentication returns HTTP `401`, and `resultCode` names the cause:
+
+| Code | Cause |
+|:-----|:------|
+| [`U101`](../code/nicepay-code.md#code-u101) | The Basic credentials are not valid Base64 |
+| [`U102`](../code/nicepay-code.md#code-u102) | The client key, the secret key or the token is missing |
+| [`U103`](../code/nicepay-code.md#code-u103) | Your key is not set up for the authentication method you used, Basic or Bearer |
+| [`U104`](../code/nicepay-code.md#code-u104) | The request has no credentials that the API accepts |
+| [`U116`](../code/nicepay-code.md#code-u116) | No client matches the key pair or the token |
+| [`U304`](../code/nicepay-code.md#code-u304) | The `Authorization` header is missing, or the Basic credentials have no colon between the two keys |
+| [`U305`](../code/nicepay-code.md#code-u305) | The `Authorization` header is missing |
+| [`U315`](../code/nicepay-code.md#code-u315) | The request comes from an IP address that the IP access restriction of your merchant account does not allow |
+
+Check these points:
 
 1. The header is `Authorization: Basic <credentials>` or `Authorization: Bearer <token>`.
 2. The credentials were encoded without a trailing newline, see [Credentials Generation example](#credentials-generation-example).
 3. The key belongs to the environment you call: Sandbox keys work only on `sandbox-api.nicepay.co.kr`, and Live keys only on `api.nicepay.co.kr`.
 4. A Bearer token is used before its `expireAt`.
+5. Your server's IP address is allowed, if you set an IP access restriction in the admin console.
 
 The [Access token](../api/nicepay-api-access-token.md) API reports the cause with HTTP `401`: [`U101`](../code/nicepay-code.md#code-u101) when the credentials are not valid Base64, [`U304`](../code/nicepay-code.md#code-u304) when there are no credentials or no colon between the two keys, [`U117`](../code/nicepay-code.md#code-u117) when one of the keys is empty, and [`U116`](../code/nicepay-code.md#code-u116) when no client matches the key pair. It returns HTTP `403` with [`U103`](../code/nicepay-code.md#code-u103) when the key cannot be used to issue a token.
 

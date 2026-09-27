@@ -14,7 +14,7 @@ Between 18 and 24 September 2026, every page of this manual was checked against 
 
 - **Checkout needs a Client Authentication client key.** Not documented before. With a Server Authentication key, the Hosted Payment Page rejects the customer with `P025`, and `tosspayBill` fails at Create checkout with `U147`. Check your Checkout key type. Key-in Payment and Recurring Payment accept either type. See [Client Key Type](./info/nicepay-info-key.md#client-key-type).
 - **Build the Basic credentials with `echo -n '<client key>:<secret key>' | base64`.** The manual showed pseudo-code that does not run in a shell. Keep `-n`: a trailing newline in the encoded value fails with HTTP `401` and `U104`. See [Credentials Generation example](./info/nicepay-info-basic-token.md#credentials-generation-example).
-- **A failed Basic or Bearer authentication returns HTTP `401` with `U104`.** Not documented before. The Access token API names the cause instead: `U101`, `U116`, `U117` or `U304` with HTTP `401`, or `U103` with HTTP `403`. See [When authentication fails](./info/nicepay-info-basic-token.md#when-authentication-fails).
+- **A failed Basic or Bearer authentication returns HTTP `401`, and `resultCode` names the cause.** Not documented before. On every API the cause is `U101`, `U102`, `U103`, `U104`, `U116`, `U304`, `U305` or `U315`. The Access token API also returns `U117`, and `U103` with HTTP `403`. From 27 September 2026 the manual said that every API except Access token returns only `U104`. See [When authentication fails](./info/nicepay-info-basic-token.md#when-authentication-fails).
 
 #### Checkout
 
@@ -185,7 +185,7 @@ Between 18 and 24 September 2026, every page of this manual was checked against 
 - **Card code `46` is Toss Money.** Not documented before. Map it if you display or store card company names. See [Card code](./code/nicepay-code.md#card-code).
 - **Only `0000` means success.** The code table listed payment network success codes, such as `3001` and `2001`, without saying that the API returns `0000` in their place. Treat every code other than `0000` as not successful. See [API response code](./code/nicepay-code.md#api-response-code).
 - **`1534` means that partial cancellation is not available, and `2010` and `7041` include KRW 0.** The manual said that `1534` means the transaction cannot be cancelled, and described `2010` and `7041` as amounts below KRW 0. Offer a full cancellation when you get `1534`. See [API response code](./code/nicepay-code.md#api-response-code).
-- **Most errors come with HTTP `200`, and NicePay does not return `400`.** The HTTP status table listed `401` to `405` without the codes behind them. `401` comes with `U104` or `U108`, `403` with `U109`, `404` with `U107`, `U121` or `U316`, and `405` with `U308`. Check `resultCode` on every response. See [HTTP status code](./code/nicepay-code.md#http-status-code).
+- **Most errors come with HTTP `200`, and NicePay does not return `400`.** The HTTP status table listed `401` to `405` without the codes behind them. `401` comes with the authentication codes in [When authentication fails](./info/nicepay-info-basic-token.md#when-authentication-fails), `403` with `U103` on the Access token API, `404` with `U107`, `U121` or `U316`, and `405` with `U308`. Check `resultCode` on every response. See [HTTP status code](./code/nicepay-code.md#http-status-code).
 
 #### Reconciliation (Beta)
 
