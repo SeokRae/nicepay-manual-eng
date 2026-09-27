@@ -51,6 +51,7 @@ Between 18 and 24 September 2026, every page of this manual was checked against 
 - **`cardShowOpt` joins its entries with an ASCII pipe (`|`), as in `08:3|02:3`.** The manual showed a broken bar (`¦`) and a `CardShowOpt=` prefix. Send only the value: another format fails with `U133`. See [Cards & Wallets](./api/nicepay-api-payment-window-url.md#cards--wallets).
 - **Escrow is not available with `directCard`, `cardAndEasyPay` or the easy-pay wallet `method` values, and `directCard` needs `cardCode` and `cardQuota`.** Not documented before. `useEscrow: true` with one of these methods fails with `U331`, and `directCard` without `cardCode` or `cardQuota` fails with `U135`. See [Payment methods](./api/nicepay-api-payment-window-url.md#payment-methods).
 - **Expire checkout session does not cancel a payment made with the session.** Not documented before. It only sets `isExpire` to `true`: cancel a paid session with Cancel. An unknown `sessionId` fails with `U111`, and a session that has already expired returns `U325`. See [Expire Checkout session API](./api/nicepay-api-payment-window-url.md#expire-checkout-session-api).
+- **`language` sets only the language of the Hosted Payment Page.** Not documented before. `resultMsg` and names such as `cardName` stay in Korean in every response and callback. See [Hosted Payment Page Request Parameter](./api/nicepay-api-payment-window-url.md#hosted-payment-page-request-parameter).
 
 #### Recurring Payment
 
@@ -127,6 +128,7 @@ Between 18 and 24 September 2026, every page of this manual was checked against 
 - **A cancellation webhook can arrive for a payment you never saw approved.** Not documented before. When NicePay's own processing fails after an approval, NicePay net-cancels the payment and sends a cancellation event. Handle a cancellation for an order that is not marked paid. See [Delivery of webhook](./api/nicepay-api-webhook.md#delivery-of-webhook).
 - **A cancellation webhook keeps the original payment `amount`.** Not documented before. Match the event to the order by `tid`, and read `balanceAmt` and `cancels` for what was cancelled. See [Verifying a webhook](./api/nicepay-api-webhook.md#verifying-a-webhook).
 - **The Retrieve and Delete webhook curl examples end on the last header line.** The manual ended them with a backslash, so a shell waited for more input. Copy them again. See [Retrieve a webhook example code](./api/nicepay-api-webhook.md#retrieve-a-webhook-example-code).
+- **The `method` of Delete and Update webhook is the `{method}` in the URL.** The manual listed `method` as a request field without saying where it goes. NicePay ignores a `method` in the body of these two calls. See [Delete webhook Request Parameter](./api/nicepay-api-webhook.md#delete-webhook-request-parameter).
 
 #### Access token
 

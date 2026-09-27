@@ -34,8 +34,7 @@ curl -X GET 'https://sandbox-api.nicepay.co.kr/v1/payments/nicuntct1m01012107272
 ### Transaction Status Inquiry (with tid:Transaction ID)
 
 ```bash
-GET /v1/payments/{tid} 
-HTTP/1.1  
+GET /v1/payments/{tid} HTTP/1.1
 Host: api.nicepay.co.kr 
 Authorization: Basic <credentials>  or Bearer <token>
 Content-type: application/json;charset=utf-8
@@ -71,8 +70,7 @@ curl -X GET 'https://sandbox-api.nicepay.co.kr/v1/payments/UT0000104m00012303241
 ### Transaction Status Inquiry (with orderId)
 
 ```bash
-GET /v1/payments/find/{orderId}   
-HTTP/1.1    
+GET /v1/payments/find/{orderId} HTTP/1.1
 Host: api.nicepay.co.kr  
 Authorization: Basic <credentials>  or Bearer <token>  
 Content-type: application/json;charset=utf-8  
@@ -91,8 +89,7 @@ Send `ediDate`, `signData` and `returnCharSet` as query parameters, as in [Trans
 ### Transaction Status Inquiry (with sessionId)
 
 ```bash
-GET /v1/payments/checkout/{sessionId}  
-HTTP/1.1  
+GET /v1/payments/checkout/{sessionId} HTTP/1.1
 Host: api.nicepay.co.kr 
 Authorization: Basic <credentials>  or Bearer <token>  
 Content-type: application/json;charset=utf-8  
@@ -159,15 +156,15 @@ Content-type: application/json
 | Parameter | Field          |   Type   |  Required   |  Bytes  | Description   |
 |:----------|:---------------|:--------:|:-----:|:-------:|:------------------|
 | `card` | | Object | No | | Credit Card Object<br>`null` for virtual account, bank transfer and mobile phone payments, and for a failed payment |
-| | `cardCode` | String | Yes | 3 | Card company code |
-| | `cardName` | String | Yes | 20 | Card issuer name <br> ex) BC |
+| | `cardCode` | String | Yes | 3 | Card company code, see [Card code](../code/nicepay-code.md#card-code) |
+| | `cardName` | String | Yes | 20 | Card company name, in Korean whatever the `language` of the request, for example `삼성` |
 | | `cardNum` | String | No | 20 | Card number, masked: for a card number of 13 digits or more, the first 6 and the last 4 digits are shown and the digits between them are replaced with `*`<br>Ex) `123412******1234`<br>- Kakao Money/Naver Point/Payco Point used for payment 'null' will be return. |
 | | `cardQuota` | Int | Yes | 3 | Installment Month<br>0: lump sum, 2:2 months, 3:3 months … |
 | | `isInterestFree` | Boolean | No | - | The store pays the customer's installment interest<br>true: yes, false: no, null: not reported for this payment |
 | | `cardType` | String | No | 6 | Card type<br>credit:credit card, check:debit |
 | | `canPartCancel` | Boolean | No | - | Whether partial cancellation is possible<br>true: Possible, false: Impossible, null: not reported by the acquirer for this card |
-| | `acquCardCode` | String | Yes | 3 | Acquirer code |
-| | `acquCardName` | String | Yes | 100 | Acquirer Name |
+| | `acquCardCode` | String | Yes | 3 | Acquirer code, see [Card code](../code/nicepay-code.md#card-code) |
+| | `acquCardName` | String | Yes | 100 | Acquirer name, in Korean |
 
 <br>
 
@@ -192,7 +189,7 @@ Content-type: application/json
 | Parameter  | Field     |   Type   |  Required   |  Bytes  | Description  |
 |:-----------|:----------|:--------:|:-----:|:------:|:------------------|
 | `bank`     |          |  Object  |  No  |       | bank object    |
-|           | `bankCode`  |  String  |   Yes   |   3    | bank code  |
+|           | `bankCode`  |  String  |   Yes   |   3    | Bank code, see [Bank code](../code/nicepay-code.md#bank-code)  |
 |            | `bankName`  |  String  |   Yes   |   20   | Bank name |
 
 <br>
@@ -202,7 +199,7 @@ Content-type: application/json
 | Parameter | Field        |  Type   |  Required   |  Bytes  | Description  |
 |:----------|:-------------|:-------:|:-----:|:------:|:-------------------------|
 | `vbank` | | Object | No | | Virtual account object |
-| | `vbankCode` | String | Yes | 3 | Virtual account bank code |
+| | `vbankCode` | String | Yes | 3 | Virtual account bank code, see [Bank code](../code/nicepay-code.md#bank-code) |
 | | `vbankName` | String | Yes | 20 | Virtual account bank name |
 | | `vbankNumber` | String | Yes | 20 | Virtual account number |
 | | `vbankExpDate` | String | No | - | Expiration Date<br>ISO 8601 format |
@@ -250,8 +247,7 @@ curl -X POST 'https://sandbox-api.nicepay.co.kr/v1/check-amount/nicuntct1m010121
 ### Check Authorization Amount Request parameter
 
 ```bash
-POST /v1/check-amount/{tid}  
-HTTP/1.1  
+POST /v1/check-amount/{tid} HTTP/1.1
 Host: api.nicepay.co.kr 
 Authorization: Basic <credentials> or Bearer <token>
 Content-type: application/json;charset=utf-8
@@ -271,7 +267,6 @@ Required: Yes = always send; No = optional; Conditional = send in the case state
 ### Check Authorization Amount Response parameter
 
 ```bash
-POST
 Content-type: application/json
 ```
 
@@ -337,7 +332,6 @@ Send the parameters below as query parameters, and percent-encode each value, as
 ### Card event API Response parameter
 
 ```bash
-POST
 Content-type: application/json
 ```
 
@@ -355,8 +349,8 @@ Content-type: application/json
 | Parameter     | Field           |   Type   |  Required   |  Bytes  | Description  |
 |:--------------|:----------------|:--------:|:-----:|:------:|:---------|
 | `interestFree` |                 |  Array   |  No  |   -    | All interest-free installment information<br>- All interest-free information provided by NICEPAY and interest-free information applied to the store will be answered.<br>- The interest-free information object for each card code is answered.  |
-| | `cardCode` | String | Yes | 3 | Card company code |
-| | `cardName` | String | Yes | 20 | Card issuer name <br> ex) BC |
+| | `cardCode` | String | Yes | 3 | Card company code, see [Card code](../code/nicepay-code.md#card-code) |
+| | `cardName` | String | Yes | 20 | Card company name |
 | | `freeInstallment` |  String  |   Yes   |  200   | Interest-free installment months<br>Separator is a colon (:)<br>ex) 02:03:04:05<br>-Interest-free installments for 2,3,4,5 months |
 
 <br>
@@ -383,8 +377,7 @@ curl -X GET 'https://sandbox-api.nicepay.co.kr/v1/card/interest-free?useAuth=tru
 ### Interest-free installment information Request parameter
 
 ```bash
-GET /v1/card/interest-free?useAuth=false&ediDate={..} 
-HTTP/1.1  
+GET /v1/card/interest-free?useAuth=false&ediDate={..} HTTP/1.1
 Host: api.nicepay.co.kr 
 Authorization: Basic <credentials>  or Bearer <token>
 Content-type: application/json;charset=utf-8
