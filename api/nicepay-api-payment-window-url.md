@@ -120,7 +120,7 @@ Required: Yes = always send; No = optional; Conditional = send in the case state
 |    `amount`     | Int  	  |  Yes  | 12	  | Transaction amount<br>Whole number with no decimal point. See [Amounts and currencies](../info/nicepay-info-general.md#amounts-and-currencies) | 
 |   `goodsName`   | String  |  Yes  | 100	  | Product Name<br> - Double quotation marks (`"`) and pipes (<code>&#124;</code>) are replaced with `-`<br> - For `tosspayBill` and `kakaoBill`, anything past 40 bytes is cut off before the payment network sees it, with no error. Keep the name within 40 bytes (about 13 Korean characters in UTF-8) for those two methods. | 
 |   `returnUrl`   | String  |  Yes  | 2500	 | url for Redirect after the authentication is processed | 
-| `mallReserved`  | String  | No | 500	 | Reserved field for the merchant<br> We recommend to use it in JSON string format.<br>Double quotation marks (`"`) cannot be used.   | 
+| `mallReserved`  | String  | No | 500	 | Reserved field for the merchant<br>You can send a JSON string. The `returnUrl` callback returns the value as you sent it, double quotation marks included   | 
 |  `mallUserId`   | String  | No | 20	  | Buyer’s ID managed by the merchant  | 
 |   `buyerName`   | String  | No | 30	  | Buyer name 	| 
 |   `buyerTel`    | String  | No | 40	  | Buyer phone number (number only)  | 
@@ -164,6 +164,8 @@ The values of `method`. With `cardAndEasyPay`, the customer chooses a card or a 
 | `cardAndEasyPay` | Cards and easy-pay wallets on one page | Cannot be sent with `cardCode` or `cardQuota`: fails with [`U332`](../code/nicepay-code.md#code-u332) |
 
 Escrow is not available with `directCard`, `cardAndEasyPay`, `naverpayCard`, `naverpayPoint`, `kakaopay`, `kakaopayCard`, `kakaopayMoney`, `samsungpayCard`, `payco`, `ssgpay`, `tosspay`, `tosspayCard`, `tosspayMoney` or `tosspayBill`: `useEscrow: true` fails with [`U331`](../code/nicepay-code.md#code-u331).
+
+The `payMethod` of the callback names what the customer actually paid with, not the `method` you sent: `card` for a card (including `directCard`), `bank`, `vbank` or `cellphone`, or the wallet: `naverpay`, `kakaopay`, `samsungpay`, `payco`, `ssgpay` or `tosspay`. With `cardAndEasyPay`, it is whichever the customer chose.
 
 <br>
 
@@ -284,11 +286,11 @@ Dates and times that NicePay returns are in Korea Standard Time (KST, UTC+9), fo
 | `orderId` | String | Yes | 64 | Your Unique order ID<br>*Not reusable<br>Find your order by this value|
 | `sessionId` | String | No | 256 | Checkout session ID<br>Not sent in every callback: find your order by `orderId` |
 | `clientId` | String | Yes | 50 | Client ID issued by NICEPAY |
-| `mallReserved` | String | No | 500 | Spare field for store information delivery<br>It is recommended to use JSON string format.<br>However, double quotation marks (") cannot be used |
+| `mallReserved` | String | No | 500 | The `mallReserved` of Create checkout, as you sent it, double quotation marks included |
 | `resultCode` | String | Yes | 4 | Result code<br><br>0000 : success / other failure |
 | `resultMsg` | String | Yes | 100 | Result message |
 | `amount` | Int | Yes | 12 | payment amount |
-| `goodsName` | String | Yes | 40 | Product Name<br><br>Product Name (", * Special characters not allowed) |
+| `goodsName` | String | Yes | 40 | Product name<br>Double quotation marks (`"`) and pipes (<code>&#124;</code>) in the `goodsName` of Create checkout arrive as `-` |
 | `channel` | String | No | 10 | pc:PC payment, mobile:mobile payment |
 | `status` | String | Yes | 20 | Result of the payment<br><br>paid: approved<br>ready: virtual account issued, not paid yet<br>failed: declined, authentication failed, or cancelled by NicePay after an error (`U504`)<br>closed: the customer cancelled or closed the Hosted Payment Page<br>['paid', 'ready', 'failed', 'closed'] |
 | `ediDate` | String | Yes | - | Creation date and time <br><br>ISO 8601 format<br>Use it exactly as received when you verify `signature` |
