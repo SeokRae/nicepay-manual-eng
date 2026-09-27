@@ -234,8 +234,7 @@ Use it if you need to check the status of the session ID.
 <br>
 
 ```bash
-GET /v1/checkout/{sessionId} 
-HTTP/1.1  
+GET /v1/checkout/{sessionId} HTTP/1.1
 Host: sandbox-api.nicepay.co.kr 
 Authorization: Basic <credentials>  or Bearer <token>  
 Content-type: application/json;charset=utf-8  
@@ -309,8 +308,7 @@ If you want to expire the session before that, please call the expire API.
 
 
 ```bash
-POST /v1/checkout/{sessionId}/expire
-HTTP/1.1  
+POST /v1/checkout/{sessionId}/expire HTTP/1.1
 Host: sandbox-api.nicepay.co.kr 
 Authorization: Basic <credentials>  or Bearer <token>  
 Content-type: application/json;charset=utf-8  
@@ -391,8 +389,7 @@ Please refer to the link for more detailed information.
 <br>
 
 ```bash
-GET /v1/payments/checkout/{sessionId} 
-HTTP/1.1  
+GET /v1/payments/checkout/{sessionId} HTTP/1.1
 Host: sandbox-api.nicepay.co.kr 
 Authorization: Basic <credentials>  or Bearer <token>
 Content-type: application/json;charset=utf-8
@@ -465,8 +462,7 @@ Content-type: application/json;charset=utf-8
 <br>
 
 ```bash
-GET /v1/payments/{tid} 
-HTTP/1.1  
+GET /v1/payments/{tid} HTTP/1.1
 Host: sandbox-api.nicepay.co.kr 
 Authorization: Basic <credentials>  or Bearer <token>
 Content-type: application/json;charset=utf-8
@@ -546,8 +542,7 @@ Please refer to the link for more detailed information.
 <br>
 
 ```bash
-GET /v1/payments/find/{orderId}  
-HTTP/1.1    
+GET /v1/payments/find/{orderId} HTTP/1.1
 Host: sandbox-api.nicepay.co.kr 
 Authorization: Basic <credentials>  or Bearer <token>
 Content-type: application/json;charset=utf-8
@@ -632,8 +627,7 @@ Please refer to the link for more detailed information.
 <br>
 
 ```bash
-POST /v1/payments/checkout/{sessionId}/cancel  
-HTTP/1.1  
+POST /v1/payments/checkout/{sessionId}/cancel HTTP/1.1
 Host: sandbox-api.nicepay.co.kr  
 Authorization: Basic <credentials>  or Bearer <token>  
 Content-type: application/json;charset=utf-8  
@@ -722,8 +716,7 @@ Content-type: application/json;charset=utf-8
 <br>
 
 ```bash
-POST /v1/payments/{tid}/cancel  
-HTTP/1.1  
+POST /v1/payments/{tid}/cancel HTTP/1.1
 Host: sandbox-api.nicepay.co.kr 
 Authorization: Basic <credentials>  or Bearer <token>
 Content-type: application/json;charset=utf-8

@@ -38,7 +38,7 @@ A cancellation event can also arrive for a payment that you never saw as approve
 
 Each event goes to the URL registered for the payment method:
 
-- `card`: card and easy pay payments, Key-in payments, Recurring Payment charges, and their cancellations
+- `card`: card and easy pay payments, whatever country issued the card, Key-in payments, Recurring Payment charges, and their cancellations
 - `bank`: bank transfer payments and their cancellations
 - `vbank`: virtual account issued, deposit and cancellation events
 - `cellphone`: mobile phone payments and their cancellations
@@ -198,7 +198,7 @@ def hook():
 ### Webhook event payload (sent by NicePay)
 
 ```bash
-POST
+POST {your webhook URL}
 Content-type: application/json;charset=UTF-8
 ```
 
@@ -314,15 +314,15 @@ Same fields and rules as [Card information](./nicepay-api-retrieve.md#card-infor
 | Parameter | Field          |   Type   |  Required   |  Bytes  | Description   |
 |:----------|:---------------|:--------:|:-----:|:-------:|:------------------|
 | `card` | | Object | No | | Credit Card Object<br>`null` for virtual account, bank transfer and mobile phone payments, and for a failed payment |
-| | `cardCode` | String | Yes | 3 | Card company code |
-| | `cardName` | String | Yes | 20 | Card issuer name <br> ex) BC |
+| | `cardCode` | String | Yes | 3 | Card company code, see [Card code](../code/nicepay-code.md#card-code) |
+| | `cardName` | String | Yes | 20 | Card company name, in Korean whatever the `language` of the request, for example `삼성` |
 | | `cardNum` | String | No | 20 | Card number, masked: for a card number of 13 digits or more, the first 6 and the last 4 digits are shown and the digits between them are replaced with `*`<br>Ex) `123412******1234`<br>- Kakao Money/Naver Point/Payco Point used for payment 'null' will be return. |
 | | `cardQuota` | Int | Yes | 3 | Installment Month<br>0: lump sum, 2:2 months, 3:3 months … |
 | | `isInterestFree` | Boolean | No | - | The store pays the customer's installment interest<br>true: yes, false: no, null: not reported for this payment |
 | | `cardType` | String | No | 6 | Card type<br>credit:credit card, check:debit |
 | | `canPartCancel` | Boolean | No | - | Whether partial cancellation is possible<br>true: Possible, false: Impossible, null: not reported by the acquirer for this card |
-| | `acquCardCode` | String | Yes | 3 | Acquirer code |
-| | `acquCardName` | String | Yes | 100 | Acquirer Name |
+| | `acquCardCode` | String | Yes | 3 | Acquirer code, see [Card code](../code/nicepay-code.md#card-code) |
+| | `acquCardName` | String | Yes | 100 | Acquirer name, in Korean |
 
 
 <br>
@@ -348,7 +348,7 @@ Same fields and rules as [Card information](./nicepay-api-retrieve.md#card-infor
 | Parameter  | Field     |   Type   |  Required   |  Bytes  | Description  |
 |:-----------|:----------|:--------:|:-----:|:------:|:------------------|
 | `bank`       |          |  Object  | No |       | bank object    |
-|           | `bankCode`  |  String  | Yes |   3    | bank code  |
+|           | `bankCode`  |  String  | Yes |   3    | Bank code, see [Bank code](../code/nicepay-code.md#bank-code)  |
 |            | `bankName`  |  String  | Yes |   20   | Bank name |
 
 <br>
@@ -358,7 +358,7 @@ Same fields and rules as [Card information](./nicepay-api-retrieve.md#card-infor
 | Parameter | Field        |  Type   |  Required   |  Bytes  | Description  |
 |:----------|:-------------|:-------:|:-----:|:------:|:-------------------------|
 | `vbank` | | Object | No | | Virtual account object |
-| | `vbankCode` | String | Yes | 3 | Virtual account bank code |
+| | `vbankCode` | String | Yes | 3 | Virtual account bank code, see [Bank code](../code/nicepay-code.md#bank-code) |
 | | `vbankName` | String | Yes | 20 | Virtual account bank name |
 | | `vbankNumber` | String | Yes | 20 | Virtual account number |
 | | `vbankExpDate` | String | No | - | Expiration Date<br>ISO 8601 format |
@@ -401,8 +401,7 @@ curl --location --request POST 'https://sandbox-api.nicepay.co.kr/v1/webhook' \
 ### Create a webhook <img alt="Beta version" src="https://img.shields.io/badge/-Beta version-B60205">
 
 ```bash
-POST /v1/webhook
-HTTP/1.1    
+POST /v1/webhook HTTP/1.1
 Host: api.nicepay.co.kr 
 Authorization: Basic <credentials>  or Bearer <token>
 Content-type: application/json;charset=utf-8
@@ -464,8 +463,7 @@ curl --location --request GET 'https://sandbox-api.nicepay.co.kr/v1/webhook' \
 ### Retrieve a webhook <img alt="Beta version" src="https://img.shields.io/badge/-Beta version-B60205">
 
 ```bash
-GET /v1/webhook
-HTTP/1.1    
+GET /v1/webhook HTTP/1.1
 Host: api.nicepay.co.kr 
 Authorization: Basic <credentials>  or Bearer <token>
 Content-type: application/json;charset=utf-8
@@ -512,8 +510,7 @@ curl --location --request POST 'https://sandbox-api.nicepay.co.kr/v1/webhook/{me
 ### Delete a webhook <img alt="Beta version" src="https://img.shields.io/badge/-Beta version-B60205">
 
 ```bash
-POST /v1/webhook/{method}/delete
-HTTP/1.1    
+POST /v1/webhook/{method}/delete HTTP/1.1
 Host: api.nicepay.co.kr 
 Authorization: Basic <credentials>  or Bearer <token>
 Content-type: application/json;charset=utf-8
@@ -523,7 +520,7 @@ Content-type: application/json;charset=utf-8
 
 | Parameter | Type | Required | Bytes | Description |
 |:--------------|:-----:|:-----:|:-----:|:----------|
-|    `method`     | String  |  Yes  | 20	  |  all : all payment methods <br> card : credit and debit cards <br> bank : bank transfer <br> vbank : virtual account  <br> cellphone : carrier billing | 
+|    `method`     | String  |  Yes  | 20	  | Path parameter: the `{method}` in the URL. A `method` in the request body is ignored<br>all : all payment methods <br> card : credit and debit cards <br> bank : bank transfer <br> vbank : virtual account  <br> cellphone : carrier billing | 
 
 <br>
 
@@ -562,8 +559,7 @@ curl --location --request POST 'https://sandbox-api.nicepay.co.kr/v1/webhook/{me
 ### Update a webhook <img alt="Beta version" src="https://img.shields.io/badge/-Beta version-B60205">
 
 ```bash
-POST /v1/webhook/{method}/update
-HTTP/1.1    
+POST /v1/webhook/{method}/update HTTP/1.1
 Host: api.nicepay.co.kr 
 Authorization: Basic <credentials>  or Bearer <token>
 Content-type: application/json;charset=utf-8
@@ -573,7 +569,7 @@ Content-type: application/json;charset=utf-8
 
 | Parameter | Type | Required | Bytes | Description |
 |:--------------|:-----:|:-----:|:-----:|:----------|
-|    `method`     | String  |  Yes  | 20	  |  all : all payment methods <br> card : credit and debit cards <br> bank : bank transfer <br> vbank : virtual account  <br> cellphone : carrier billing | 
+|    `method`     | String  |  Yes  | 20	  | Path parameter: the `{method}` in the URL. A `method` in the request body is ignored<br>all : all payment methods <br> card : credit and debit cards <br> bank : bank transfer <br> vbank : virtual account  <br> cellphone : carrier billing | 
 | `url` | String | Yes | 200 | The URL of the webhook endpoint |
 | `managerEmail` | String | No | 255 |Stored and echoed back on lookup, but NOT the address NicePay emails on delivery failure; that notification goes to your merchant account's registered admin email instead|
 

@@ -38,8 +38,7 @@ curl --location --request POST 'https://sandbox-api.nicepay.co.kr/v1/access-toke
 ### Access token API request parameter
 
 ```bash
-POST /v1/access-token
-HTTP/1.1
+POST /v1/access-token HTTP/1.1
 Host: api.nicepay.co.kr
 Authorization: Basic <credentials>
 Content-type: application/json;charset=utf-8

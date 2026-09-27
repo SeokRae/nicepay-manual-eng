@@ -44,8 +44,7 @@ curl -X POST 'https://api.nicepay.co.kr/v1/key-in/payments' \
 ### Key-in Payment Request Parameter
 
 ```bash
-POST /v1/key-in/payments
-HTTP/1.1
+POST /v1/key-in/payments HTTP/1.1
 Host: api.nicepay.co.kr
 Authorization: Basic <credentials> or Bearer <token>
 Content-type: application/json;charset=utf-8
@@ -118,7 +117,6 @@ Unlike [Recurring Payment](./nicepay-api-billing.md#encdata-field-encryption-exa
 ### Key-in Payment Response Parameter
 
 ```bash
-POST
 Content-type: application/json
 ```
 
@@ -158,15 +156,15 @@ Same fields and rules as [Card information](./nicepay-api-retrieve.md#card-infor
 | Parameter | Field | Type | Required | Bytes | Description |
 |:----------|:----------|:--------:|:-----:|:-------:|:--------------|
 | `card` | | Object | Yes | | Credit card object |
-| | `cardCode` | String | Yes | 3 | Card company code |
-| | `cardName` | String | Yes | 20 | Card issuer name <br> ex) BC |
+| | `cardCode` | String | Yes | 3 | Card company code, see [Card code](../code/nicepay-code.md#card-code) |
+| | `cardName` | String | Yes | 20 | Card company name, in Korean whatever the `language` of the request, for example `삼성` |
 | | `cardNum` | String | No | 20 | Card number, masked: for a card number of 13 digits or more, the first 6 and the last 4 digits are shown and the digits between them are replaced with `*`<br>Ex) `123412******1234`<br>- Kakao Money/Naver Point/Payco Point used for payment 'null' will be return. |
 | | `cardQuota` | Int | Yes | 3 | Installment Month<br>0: lump sum, 2:2 months, 3:3 months … |
 | | `isInterestFree` | Boolean | No | - | The store pays the customer's installment interest<br>true: yes, false: no, null: not reported for this payment |
 | | `cardType` | String | No | 6 | Card type<br>credit:credit card, check:debit |
 | | `canPartCancel` | Boolean | No | - | Whether partial cancellation is possible<br>true: Possible, false: Impossible, null: not reported by the acquirer for this card |
-| | `acquCardCode` | String | Yes | 3 | Acquirer code |
-| | `acquCardName` | String | Yes | 100 | Acquirer Name |
+| | `acquCardCode` | String | Yes | 3 | Acquirer code, see [Card code](../code/nicepay-code.md#card-code) |
+| | `acquCardName` | String | Yes | 100 | Acquirer name, in Korean |
 
 <br>
 
