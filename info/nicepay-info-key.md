@@ -29,7 +29,14 @@ The APIs in this manual use a **Client Authentication** key. Checkout works only
 <br>
 
 ### Secret key
-The generated secret key is used to create an API authentication key.
+Your Merchant Server uses the secret key to:
+
+- build the `Authorization` header, see [Basic authentication](./nicepay-info-basic-token.md)
+- verify `signature` in the `returnUrl` callback and in API responses
+- build `signData` for the requests that take it
+- derive the key that encrypts `encData` for [Recurring Payment](../api/nicepay-api-billing.md) and [Key-in Payment](../api/nicepay-api-keyin.md)
+
+Keep it on your server. Never put it in a web page, a mobile app, a code repository, or an issue on this manual's repository.
 
 > **⚠️ Important:** The Sandbox and Live `secret key` values are different.  
 > If you convert from Sandbox to Live, you must update to the Live `secret key`.  

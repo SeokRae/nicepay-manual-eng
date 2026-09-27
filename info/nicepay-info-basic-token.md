@@ -19,36 +19,37 @@ Base64(<client key>:<secret key>)
 
 #### Credentials Generation example
 
+This example uses the public Sandbox key from [Test key information](./nicepay-info-sandbox.md#test-key-information).
+
 First step: join the client key and the secret key with a colon (`:`).
 
 ```text
-af0d116236df437f831483ee9c500bc4:433a8421be754b34989048cf148a5ffc
+S1_ce1bb1ebebc44fe1a3f7cec976c83ea7:13e969a77a0545799242ccc3915243d3
 ```
 
 Second step: encode that text in Base64 to get the `Credentials`. In a shell:
 
 ```bash
-echo -n 'af0d116236df437f831483ee9c500bc4:433a8421be754b34989048cf148a5ffc' | base64
+echo -n 'S1_ce1bb1ebebc44fe1a3f7cec976c83ea7:13e969a77a0545799242ccc3915243d3' | base64
 ```
 
 Output:
 
 ```text
-YWYwZDExNjIzNmRmNDM3ZjgzMTQ4M2VlOWM1MDBiYzQ6NDMzYTg0MjFiZTc1NGIzNDk4OTA0OGNmMTQ4YTVmZmM=
+UzFfY2UxYmIxZWJlYmM0NGZlMWEzZjdjZWM5NzZjODNlYTc6MTNlOTY5YTc3YTA1NDU3OTkyNDJjY2MzOTE1MjQzZDM=
 ```
 
 Keep `-n`. Without it, `echo` adds a newline that becomes part of the encoded value, and the request fails with HTTP `401` and [`U104`](../code/nicepay-code.md#api-response-code).
 
 Set `Credentials` to `HTTP header` for HTTP authentication.
 ```bash
-Authorization: Basic YWYwZDExNjIzNmRmNDM3ZjgzMTQ4M2VlOWM1MDBiYzQ6NDMzYTg0MjFiZTc1NGIzNDk4OTA0OGNmMTQ4YTVmZmM=
+Authorization: Basic UzFfY2UxYmIxZWJlYmM0NGZlMWEzZjdjZWM5NzZjODNlYTc6MTNlOTY5YTc3YTA1NDU3OTkyNDJjY2MzOTE1MjQzZDM=
 ```
 
 <br><br>
 
 ### Bearer token
-This method uses the `OAuth` based `Bearer` authentication scheme for API access control.   
-To access Token, the `Access token API` must be called.  
+This method sends a token in the `Bearer` authentication scheme. Get the token from the [Access token](../api/nicepay-api-access-token.md) API.  
 
 <br>
 
@@ -63,7 +64,7 @@ Authorization: Bearer <token>
 ```shell
 curl -X POST "https://api.nicepay.co.kr/v1/access-token" \
 -H "Content-Type: application/json" \
--H "Authorization: Basic YWYwZDExNjIzNmRm..."
+-H "Authorization: Basic <credentials>"
 ```
 
 <br>
@@ -87,6 +88,18 @@ curl -X POST "https://api.nicepay.co.kr/v1/access-token" \
 ```bash
 Authorization: Bearer dc51c8b13620519b8503bef6ee18f11370e8b349
 ```
-> The issued token is valid for 30 minutes and renewal of the issued token is not supported.  
-> When a token expires, a new token needs to be generated.  
-> If there is a request within the valid time of the previously issued token, the existing token will be returned.  
+> A token is valid until its `expireAt`, and it cannot be renewed. A request before then returns the same token with the same `expireAt`, so cache the token until `expireAt`, not for 30 minutes from when you received it. After `expireAt`, request a new token.  
+
+<br><br>
+
+### When authentication fails
+
+On every API except Access token, a failed Basic or Bearer authentication returns HTTP `401` with `resultCode` [`U104`](../code/nicepay-code.md#api-response-code). Check these points:
+
+1. The header is `Authorization: Basic <credentials>` or `Authorization: Bearer <token>`.
+2. The credentials were encoded without a trailing newline, see [Credentials Generation example](#credentials-generation-example).
+3. The key belongs to the environment you call: Sandbox keys work only on `sandbox-api.nicepay.co.kr`, and Live keys only on `api.nicepay.co.kr`.
+4. A Bearer token is used before its `expireAt`.
+
+The [Access token](../api/nicepay-api-access-token.md) API reports the cause with HTTP `401`: [`U101`](../code/nicepay-code.md#api-response-code) when the credentials are not valid Base64, [`U304`](../code/nicepay-code.md#api-response-code) when there are no credentials or no colon between the two keys, [`U117`](../code/nicepay-code.md#api-response-code) when one of the keys is empty, and [`U116`](../code/nicepay-code.md#api-response-code) when no client matches the key pair. It returns HTTP `403` with [`U103`](../code/nicepay-code.md#api-response-code) when the key cannot be used to issue a token.
+

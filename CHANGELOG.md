@@ -14,6 +14,7 @@ Between 18 and 24 September 2026, every page of this manual was checked against 
 
 - **Checkout needs a Client Authentication client key.** Not documented before. With a Server Authentication key, the Hosted Payment Page rejects the customer with `P025`, and `tosspayBill` fails at Create checkout with `U147`. Check your Checkout key type. Key-in Payment and Recurring Payment accept either type. See [Client Key Type](./info/nicepay-info-key.md#client-key-type).
 - **Build the Basic credentials with `echo -n '<client key>:<secret key>' | base64`.** The manual showed pseudo-code that does not run in a shell. Keep `-n`: a trailing newline in the encoded value fails with HTTP `401` and `U104`. See [Credentials Generation example](./info/nicepay-info-basic-token.md#credentials-generation-example).
+- **A failed Basic or Bearer authentication returns HTTP `401` with `U104`.** Not documented before. The Access token API names the cause instead: `U101`, `U116`, `U117` or `U304` with HTTP `401`, or `U103` with HTTP `403`. See [When authentication fails](./info/nicepay-info-basic-token.md#when-authentication-fails).
 
 #### Checkout
 
@@ -132,6 +133,7 @@ Between 18 and 24 September 2026, every page of this manual was checked against 
 - **The token expiry field is `expireAt`.** The manual's response table named it `expiredAt`. Read `expireAt` when you schedule token renewal. See [Access token API response (Body)](./api/nicepay-api-access-token.md#access-token-api-response-body).
 - **`POST /v1/access-token` accepts only `Basic` credentials.** The manual said the `Authorization` header could also be `Bearer <token>`. Request every token with your Basic credentials, not with an existing Bearer token. See [Access token API request parameter](./api/nicepay-api-access-token.md#access-token-api-request-parameter).
 - **`returnCharSet` on the access token request goes in the URL query string.** The manual did not say where to send it. If you send it, put it in the query string, for example `?returnCharSet=euc-kr`, not in the JSON body. See [Access token API request parameter](./api/nicepay-api-access-token.md#access-token-api-request-parameter).
+- **Cache an access token until its `expireAt`.** The manual said the token is valid for 30 minutes, and did not say that a request within that time returns the same token with the same `expireAt`. Caching it for 30 minutes from when you receive it can use an expired token. See [Access token](./api/nicepay-api-access-token.md#over-view).
 
 #### Sandbox
 

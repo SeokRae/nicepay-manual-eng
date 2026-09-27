@@ -6,8 +6,9 @@
 <a href="../image/payment-access-token.svg"><img alt="Sequence diagram of the Access token flow: the Merchant Server builds a Basic Authorization header from its Client and Secret key, calls POST /v1/access-token, and receives the accessToken" src="../image/payment-access-token.svg" width="800px"></a>
 
 - You can use the Access token API when calling an API with Bearer token HTTP authentication.
-- The token is valid for 30 minutes.   
-- Therefore, after the initial token is generated, the same token will be returned for 30 minutes, and if a new token is requested after 30 minutes, a newly generated token will be issued.  
+- The token is valid for 30 minutes after NicePay issues it, until the `expireAt` of the response.   
+- A request before `expireAt` returns the same token with the same `expireAt`. Cache the token until `expireAt`, not for 30 minutes from when you received it, and request a new one after that.  
+- For the errors this API returns, see [When authentication fails](../info/nicepay-info-basic-token.md#when-authentication-fails).  
 
 We recommend testing against the [Sandbox](../info/nicepay-info-sandbox.md) first, then switching to Live once verified. The example below calls Sandbox (`sandbox-api.nicepay.co.kr`) with the public Sandbox key from [Test key information](../info/nicepay-info-sandbox.md#test-key-information). For Live, use `api.nicepay.co.kr` and your own Live key.
 
