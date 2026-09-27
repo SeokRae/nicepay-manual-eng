@@ -206,7 +206,7 @@ The charset is the `returnCharSet` of the request that caused the event, in uppe
 
 Example: a card payment made through Checkout. It is signed with the example Secret key of [Verifying a webhook](#verifying-a-webhook). Do not depend on the order of the keys: a resent event can list them in a different order.
 
-```bash
+```json
 {
   "resultCode": "0000",
   "resultMsg": "정상 처리되었습니다.",
@@ -390,7 +390,7 @@ curl --location --request POST 'https://sandbox-api.nicepay.co.kr/v1/webhook' \
 --data-raw '{"method":"vbank","url":"https://your-webhook.url"}'
 ```
 
-```bash
+```json
 {
     "resultCode": "0000",
     "resultMsg": "정상 처리되었습니다."
@@ -443,10 +443,10 @@ Related error codes: `U100`, `U111`, `U133`, `U333`, `U334`, `U335`, `U336`, `U3
 ```bash
 curl --location --request GET 'https://sandbox-api.nicepay.co.kr/v1/webhook' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Basic <credentials>' \
+--header 'Authorization: Basic <credentials>'
 ```
 
-```bash
+```json
 {
     "resultCode": "0000",
     "resultMsg": "정상 처리되었습니다.",
@@ -498,10 +498,10 @@ Related error codes: `U100`, `U111`, `U133`, `U333`, `U334`, `U335`, `U336`, `U3
 ```bash
 curl --location --request POST 'https://sandbox-api.nicepay.co.kr/v1/webhook/{method}/delete' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Basic <credentials>' \
+--header 'Authorization: Basic <credentials>'
 ```
 
-```bash
+```json
 {
     "resultCode": "0000",
     "resultMsg": "정상 처리되었습니다."
@@ -551,7 +551,7 @@ curl --location --request POST 'https://sandbox-api.nicepay.co.kr/v1/webhook/{me
 --data '{"url":"https://your-new-webhook.url"}'
 ```
 
-```bash
+```json
 {
     "resultCode": "0000",
     "resultMsg": "정상 처리되었습니다."
