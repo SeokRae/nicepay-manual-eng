@@ -5,7 +5,8 @@
 ### Over-view
 You can use this API to cancel and refund transactions for which payment (approval) has been completed.  
 Card payment will be canceled by sending `POST` data with tid (Transaction ID) to the cancel API `/v1/payments/{tid}/cancel`.  
-However, for cash transactions such as virtual accounts, refund account information must be passed to the cancel API.  
+For a Checkout payment, you can send the `sessionId` to `/v1/payments/checkout/{sessionId}/cancel` instead, for example when you did not store the `tid`. Both paths cancel the same payment in the same way. The `signData` of both is built from the `tid`, so to send `signData` you need the `tid` either way.  
+To refund a virtual account payment after the customer has deposited the money, also send the refund account: `refundAccount`, `refundBankCode` and `refundHolder`.  
 To cancel a payment whose result your server could not confirm, use [Net cancel](#net-cancel).  
 
 <br>
@@ -77,12 +78,12 @@ Required: Yes = always send; No = optional; Conditional = send in the case state
 | `cancelAmt`      | Int       | No          | 12    | Cancellation amount<br>Whole number with no decimal point, in the same unit as the `amount` that NicePay returns for the payment. See [Amounts and currencies](../info/nicepay-info-general.md#amounts-and-currencies)<br>If the value is missing, full cancellation will be occured<br>For a partial cancellation, the value must not exceed the amount not yet cancelled, or the request fails with [`U123`](../code/nicepay-code.md#api-response-code)<br>In Sandbox, a request that contains `cancelAmt` always fails, even when the value equals the full amount. The error is [`U128`](../code/nicepay-code.md#api-response-code) unless an earlier check fails first. Leave `cancelAmt` out to cancel in Sandbox |
 | `mallReserved`   | String    | No          | 500   | Spare field for store information delivery |
 | `ediDate`        | String    | Conditional | -     | Request timestamp (ISO 8601) that your Merchant Server creates, see [Dates in requests](../info/nicepay-info-general.md#dates-in-requests)<br>Required when you send `signData` |
-| `signData`       | String    | No          | 256   | Forgery Verification Data<br>Rule: hex(sha256(tid + ediDate + SecretKey)) |
+| `signData`       | String    | No          | 256   | Forgery Verification Data<br>Rule: hex(sha256(tid + ediDate + SecretKey))<br>Uses the `tid` of the payment, even on this `sessionId` path |
 | `returnCharSet`  | String    | No          | 10    | `utf-8` (default) or `euc-kr`<br>Sets the charset in the `Content-Type` header of the response. Keep `utf-8` |
 | `taxFreeAmt`     | Int       | No          | 12    | Tax-free part of the cancellation amount, a whole number with no decimal point<br>For a partial cancellation, the value must not exceed the tax-free amount not yet cancelled, or the request fails with [`U319`](../code/nicepay-code.md#api-response-code) |
-| `refundAccount`  | String    | No          | 16    | Refund account number (Only for Virtual account) |
-| `refundBankCode` | String    | No          | 3     | Refund account code (Only for Virtual account) |
-| `refundHolder`   | String    | No          | 10    | Refund account holder name (Only for Virtual account) |
+| `refundAccount`  | String    | Conditional | 16    | Refund account number<br>Required when you cancel a virtual account payment after the customer has deposited the money (a refund) |
+| `refundBankCode` | String    | Conditional | 3     | Bank code of the refund account, see [Bank code](../code/nicepay-code.md#bank-code)<br>Required when you cancel a virtual account payment after the customer has deposited the money (a refund) |
+| `refundHolder`   | String    | Conditional | 10    | Holder name of the refund account<br>Required when you cancel a virtual account payment after the customer has deposited the money (a refund) |
 
 <br><br>
 
@@ -106,9 +107,9 @@ Content-type: application/json;charset=utf-8
 | `signData`       | String    | No          | 256   | Forgery Verification Data<br>Rule: hex(sha256(tid + ediDate + SecretKey)) |
 | `returnCharSet`  | String    | No          | 10    | `utf-8` (default) or `euc-kr`<br>Sets the charset in the `Content-Type` header of the response. Keep `utf-8` |
 | `taxFreeAmt`     | Int       | No          | 12    | Tax-free part of the cancellation amount, a whole number with no decimal point<br>For a partial cancellation, the value must not exceed the tax-free amount not yet cancelled, or the request fails with [`U319`](../code/nicepay-code.md#api-response-code) |
-| `refundAccount`  | String    | No          | 16    | Refund account number (Only for Virtual account) |
-| `refundBankCode` | String    | No          | 3     | Refund account code (Only for Virtual account) |
-| `refundHolder`   | String    | No          | 10    | Refund account holder name (Only for Virtual account) |
+| `refundAccount`  | String    | Conditional | 16    | Refund account number<br>Required when you cancel a virtual account payment after the customer has deposited the money (a refund) |
+| `refundBankCode` | String    | Conditional | 3     | Bank code of the refund account, see [Bank code](../code/nicepay-code.md#bank-code)<br>Required when you cancel a virtual account payment after the customer has deposited the money (a refund) |
+| `refundHolder`   | String    | Conditional | 10    | Holder name of the refund account<br>Required when you cancel a virtual account payment after the customer has deposited the money (a refund) |
 
 <br><br>
 
