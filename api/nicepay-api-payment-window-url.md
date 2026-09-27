@@ -114,7 +114,7 @@ Required: Yes = always send; No = optional; Conditional = send in the case state
 |:--------------|:---------:|:----------:|:-------:|:--------------|
 |   `sessionId`    | String  |  Yes  | 256	  | Merchant unique session id, issued by merchant | 
 |   `clientId`    | String  | No | 50	  | Merchant identifier, issued by NICEPAY | 
-|    `method`     | String  |  Yes  | 20	  | Payment Method <br> card : credit and debit cards <br> cardBill : card billing <br> bank : bank transfer <br> directCard : directly shows card authentication page without the Hosted Payment Page <br> vbank : virtual account  <br> cellphone : carrier billing <br>naverpayCard : Naver Pay - card (excluded Point) <br>naverpayPoint : Naver Pay - point <br>naverCardBill : Naver Pay recurring payment - card (billing key) <br>naverPointBill : Naver Pay recurring payment - point (billing key) <br> kakaopay : Kakao Pay (Card or Money) <br>kakaopayCard : Kakao Pay - Card <br>kakaopayMoney : Kakao Pay - Money <br>kakaoBill : Kakao Pay recurring payment (billing key) <br>samsungpayCard : Samsung Pay Card <br>tosspay : Toss Pay (Card or Money) <br>tosspayCard : Toss Pay - Card <br>tosspayMoney : Toss Pay - Money <br>tosspayBill : Toss Pay recurring payment (billing key) <br>payco : Payco <br>ssgpay : SSGPAY <br>cardAndEasyPay : Card and Wallets, for <br>cardAndEasyPay it cannot be used together with below parameters <br>- cardCode, cardQuota |
+|    `method`     | String  |  Yes  | 20	  | Payment method, see [Payment methods](#payment-methods) for the values | 
 |    `orderId`    | String  |  Yes  | 64	  | Your unique order id<br> cannot reuse the orderid    | 
 |    `expireDate`    | String  | No | -	  | Expiration date and time of the session<br>Default: 1 day after NicePay creates the session, unless NicePay set a different default for your merchant account. The `expireDate` of the response shows the time that applies<br>Format: see [Dates in requests](../info/nicepay-info-general.md#dates-in-requests)  | 
 |    `amount`     | Int  	  |  Yes  | 12	  | Transaction amount<br>Whole number with no decimal point. See [Amounts and currencies](../info/nicepay-info-general.md#amounts-and-currencies) | 
@@ -125,12 +125,45 @@ Required: Yes = always send; No = optional; Conditional = send in the case state
 |   `buyerName`   | String  | No | 30	  | Buyer name 	| 
 |   `buyerTel`    | String  | No | 40	  | Buyer phone number (number only)  | 
 |  `buyerEmail`   | String  | No | 60	  | Buyer email | 
-|   `useEscrow`   | Boolean | No |  -	  | true: Escrow transaction / false: general transaction(default) | 
+|   `useEscrow`   | Boolean | No |  -	  | true: Escrow transaction / false: general transaction(default)<br>Not available with some `method` values, see [Payment methods](#payment-methods): `true` fails with [`U331`](../code/nicepay-code.md#api-response-code) | 
 |   `currency`    | String  | No |  3	  | Currency of `amount`<br>`KRW`: Korean won (default) / `USD`: US dollar / `CNY`: Chinese yuan<br>Upper case only. Before you use `USD` or `CNY`, see [Amounts and currencies](../info/nicepay-info-general.md#amounts-and-currencies) and [Accepting overseas customers](../info/nicepay-info-general.md#accepting-overseas-customers) | 
 |  `logoImgUrl`   | String  | No | 100	 | Logo Image of the merchant in full URL<br>  ex) https://youre.site.com/image/logo.jpg<br> *(pixel)*<br>- Mobile : width 50 X height 50<br>- PC : width 94 X height 25  | 
 |   `language`    | String  | No |  2	  | Language shown in the payment page<br> EN : English / CN : Chinese / KO : Korean (Default)| 
 | `returnCharSet` | String  | No | 10	  | Character set of the result page that sends the `returnUrl` callback: `utf-8` (default) or `euc-kr`<br>Keep `utf-8`. EUC-KR cannot represent many non-Korean characters, such as accented Latin letters (é, ñ) and simplified Chinese, in fields such as `buyerName` and `goodsName`<br>This value does not change the Create checkout response, which is always UTF-8, or the Bytes limits, which NicePay counts in UTF-8. A value other than `utf-8`, `euc-kr`, `UTF-8` or `EUC-KR` fails with [`U132`](../code/nicepay-code.md#api-response-code)	 | 
 |   `skinType`    | String  | No | 10	  | Skin Setting for Payment Page <br>red/green/purple/gray/dark | 
+
+<br>
+
+#### Payment methods
+
+The values of `method`. With `cardAndEasyPay`, the customer chooses a card or a wallet on the Hosted Payment Page, and the `payMethod` of the [callback](#payment-authorization-response-parameter) shows which one was used.
+
+| `method` | Payment method | Notes |
+|:---------|:---------------|:------|
+| `card` | Credit and debit cards | |
+| `cardBill` | Card recurring payment | Registers a card and returns a token (`bid`) |
+| `bank` | Bank transfer | |
+| `directCard` | Credit card | Opens the card company's authentication page directly, without the Hosted Payment Page. `cardCode` and `cardQuota` are required: without them, the request fails with [`U135`](../code/nicepay-code.md#api-response-code) |
+| `vbank` | Virtual account | |
+| `cellphone` | Mobile phone billing | `isDigital` is required |
+| `naverpayCard` | Naver Pay, card | Points excluded |
+| `naverpayPoint` | Naver Pay, points | |
+| `naverCardBill` | Naver Pay recurring payment, card | Returns a token (`bid`) |
+| `naverPointBill` | Naver Pay recurring payment, points | Returns a token (`bid`) |
+| `kakaopay` | Kakao Pay, card or money | |
+| `kakaopayCard` | Kakao Pay, card | |
+| `kakaopayMoney` | Kakao Pay, money | |
+| `kakaoBill` | Kakao Pay recurring payment | Returns a token (`bid`). `goodsName` is cut at 40 bytes |
+| `samsungpayCard` | Samsung Pay, card | |
+| `tosspay` | Toss Pay, card or money | |
+| `tosspayCard` | Toss Pay, card | |
+| `tosspayMoney` | Toss Pay, money | |
+| `tosspayBill` | Toss Pay recurring payment | Returns a token (`bid`). `goodsName` is cut at 40 bytes |
+| `payco` | PAYCO | |
+| `ssgpay` | SSGPAY | |
+| `cardAndEasyPay` | Cards and easy-pay wallets on one page | Cannot be sent with `cardCode` or `cardQuota`: fails with [`U332`](../code/nicepay-code.md#api-response-code) |
+
+Escrow is not available with `directCard`, `cardAndEasyPay`, `naverpayCard`, `naverpayPoint`, `kakaopay`, `kakaopayCard`, `kakaopayMoney`, `samsungpayCard`, `payco`, `ssgpay`, `tosspay`, `tosspayCard`, `tosspayMoney` or `tosspayBill`: `useEscrow: true` fails with [`U331`](../code/nicepay-code.md#api-response-code).
 
 <br>
 
@@ -146,8 +179,8 @@ Required: Yes = always send; No = optional; Conditional = send in the case state
 
 | Parameter     |   Type   |  Required   |  Bytes  | Description  |
 |:--------------|:--------:|:----------:|:-------:|:--------------|
-|  `cardQuota`    | String   | No | 100	   | Monthly Installment period configuration<br><br>[Common]<br>Limits the installment period that the customer can choose.<br><br>[Card+PAYCO+Naver Pay]<br>- can be configured independently<br>- list installment months with a differentiater ',' <br>- for transactions paid in full, it should be set as "00" <br>- can set installment periods in 2 digits (for 3 months, it should be set as '03')<br>Ex) cardQuota=03 <br>- Explanation : only shows 3 months in installment period.<br>Minimum amount for installments: KRW 50,000 or more. NicePay compares the number in `amount` with 50,000 and does not look at `currency`. <br><br>[KakaoPay, Samsung Pay, SSGPAY]<br> - unavailable to set by alone. Should always be set together with cardCode.<br> - Installment period should always be one value, cannot choose 2 values.  |
-| `cardCode`   | String | No | 100	 | Option to set specific card company<br><br>[Common]<br>Limits the cards that are available to use (Refer to the Card Company Codes)<br>- Can be configured independently <br><br>[Cards]<br>- list up the cards using differentiater ','<br>Ex1) cardCode=02<br>-> limits to only KB card (only KB card is shown in the payment page) <br>Ex2) cardCode=02,04<br>-> limits to KB and Samsung cards <br><br>[Wallets]<br>- Cannot be configured in multiple values<br>- Kakao Pay and PAYCO can set to use only cards.<br>Kakao Pay Money cannot be used for Kakao Pay, PAYCO Point cannot be used for PAYCO <br>  ex) cardCode = 06 (cannot configure multiple values)<br><br>Cards available for Wallets <br>- Samsung Pay : BC,KB,KEB Hana,Samsung,Shinhan,Hyundai,Lotte,Citi,NH,hana <br>- Kakao Pay: BC,KB,KEB Hana,Samsung,Shinhan,Hyundai,Lotte,Citi,NH,hana<br>- PAYCO : BC,KB,KEB-Hana,Samsung,Shinhan,Hyundai,Lotte,Citi,NH,hana,Hanmi,ShinsegaeHanmi,Suhyup,Shinhyup,Woori,Kwangju,Jeonbuk,Jeju,VISA,Master,JCB,Savings,UnionPay,KDB,Kakao Bank<br>- SSGPAY : BC,KB,KEB Hana,Samsung,Shinhan,Hyundai,Lotte,Citi,NH,hana,Jeonbuk,Kbank<br>- Naver Pay : BC,KB,KEB Hana,Samsung,Shinhan,Hyundai,Lotte,Citi,NH |
+|  `cardQuota`    | String   | No | 100	   | Monthly Installment period configuration<br><br>[Common]<br>Limits the installment period that the customer can choose.<br><br>[Card+PAYCO+Naver Pay]<br>- can be configured independently<br>- list installment months with a differentiater ',' <br>- for transactions paid in full, it should be set as "00" <br>- can set installment periods in 2 digits (for 3 months, it should be set as '03')<br>Ex) cardQuota=03 <br>- Explanation : only shows 3 months in installment period.<br>Minimum amount for installments: KRW 50,000 or more. NicePay compares the number in `amount` with 50,000 and does not look at `currency`. <br><br>[KakaoPay, Samsung Pay, SSGPAY]<br> - unavailable to set by alone. Should always be set together with cardCode.<br> - Installment period should always be one value, cannot choose 2 values.<br>Cannot be sent with `method` `cardAndEasyPay`: fails with [`U332`](../code/nicepay-code.md#api-response-code) |
+| `cardCode`   | String | No | 100	 | Option to set specific card company<br><br>[Common]<br>Limits the cards that are available to use (Refer to the Card Company Codes)<br>- Can be configured independently <br><br>[Cards]<br>- list up the cards using differentiater ','<br>Ex1) cardCode=02<br>-> limits to only KB card (only KB card is shown in the payment page) <br>Ex2) cardCode=02,04<br>-> limits to KB and Samsung cards <br><br>[Wallets]<br>- Cannot be configured in multiple values<br>- Kakao Pay and PAYCO can set to use only cards.<br>Kakao Pay Money cannot be used for Kakao Pay, PAYCO Point cannot be used for PAYCO <br>  ex) cardCode = 06 (cannot configure multiple values)<br><br>Cards available for Wallets <br>- Samsung Pay : BC,KB,KEB Hana,Samsung,Shinhan,Hyundai,Lotte,Citi,NH,hana <br>- Kakao Pay: BC,KB,KEB Hana,Samsung,Shinhan,Hyundai,Lotte,Citi,NH,hana<br>- PAYCO : BC,KB,KEB-Hana,Samsung,Shinhan,Hyundai,Lotte,Citi,NH,hana,Hanmi,ShinsegaeHanmi,Suhyup,Shinhyup,Woori,Kwangju,Jeonbuk,Jeju,VISA,Master,JCB,Savings,UnionPay,KDB,Kakao Bank<br>- SSGPAY : BC,KB,KEB Hana,Samsung,Shinhan,Hyundai,Lotte,Citi,NH,hana,Jeonbuk,Kbank<br>- Naver Pay : BC,KB,KEB Hana,Samsung,Shinhan,Hyundai,Lotte,Citi,NH<br>Cannot be sent with `method` `cardAndEasyPay`: fails with [`U332`](../code/nicepay-code.md#api-response-code) |
 | `cardShowOpt` | String | No | 50	  | Authentication method for card companies <br><br>can set the method by card <br>- 1:Ansim Click, 2:Simple Pay, 3:App Card <br>- Format: <code>cardCode:method</code>, with several entries joined by a pipe (<code>&#124;</code>)<br>ex) <code>08:3&#124;02:3</code><br>- Another format fails with [`U133`](../code/nicepay-code.md#api-response-code)<br>- available cards : 02(KB), 04(Samsung), 06(Shinhan), 07(Hyundai), 08(Lotte), 12(NH), 15(Woori) | 
 
 <br>
@@ -170,7 +203,7 @@ Required: Yes = always send; No = optional; Conditional = send in the case state
 
 | Parameter     |   Type   |  Required   |  Bytes  | Description  |
 |:--------------|:---------:|:----------:|:-------:|:--------------|
-| `isDigital` | Boolean | Conditional | 5 | false: content, true: physical<br>Required when `method` is `cellphone` |
+| `isDigital` | Boolean | Conditional | 5 | true: digital content, false: physical goods<br>Required when `method` is `cellphone` |
 
 <br>
 
@@ -246,7 +279,7 @@ Dates and times that NicePay returns are in Korea Standard Time (KST, UTC+9), fo
 | Parameter     |   Type   |  Required   |  Bytes  | Description  |
 |:--------------|:---------:|:----------:|:------:|:--------|
 | `success` | Boolean | Yes | | Whether payment is successful<br><br>`true` when `resultCode` is `0000`, otherwise `false` |
-| `authToken` | String | Yes | 40 | Authentication TOKEN<br><br>Authentication transaction Unique Key<br>- Can be used for communication with nicepay when authentication failed. |
+| `authToken` | String | Yes | 40 | Token of the customer's authentication on the Hosted Payment Page<br>No API in this manual takes it, so you do not need to store or send it |
 | `tid` | String | Yes | 30 | Transaction ID<br><br>Returned when authorization is successful.<br>*If authentication fails, the TID will not be returned.|
 | `orderId` | String | Yes | 64 | Your Unique order ID<br>*Not reusable<br>Find your order by this value|
 | `sessionId` | String | No | 256 | Checkout session ID<br>Not sent in every callback: find your order by `orderId` |
