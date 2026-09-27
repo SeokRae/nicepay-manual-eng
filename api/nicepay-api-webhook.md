@@ -443,7 +443,7 @@ Required: Yes = has a non-empty value in every response whose `resultCode` is `0
 |           | `managerEmail` | String | No | 255 | Stored and echoed back on lookup, but NOT the address NicePay emails on delivery failure; that notification goes to your merchant account's registered admin email instead<br>`null` if you did not send one |
 | `messageSource` | | String | Yes | | Always `nicepay` for this API |
 
-Related error codes: `U100`, `U111`, `U133`, `U333`, `U334`, `U335`, `U336`, `U337`, `U338`, `U700`, see [API Response code](../code/nicepay-code.md#api-response-code).
+Related error codes: `U100`, `U111`, `U133`, `U333`, `U334`, `U335`, `U336`, `U337`, `U338`, see [API Response code](../code/nicepay-code.md#api-response-code).
 
 <br><br>
 
@@ -497,7 +497,7 @@ This endpoint takes no request parameters beyond the `Authorization` header.
 |           | `managerEmail` | String | No | 255 | Stored and echoed back on lookup, but NOT the address NicePay emails on delivery failure; that notification goes to your merchant account's registered admin email instead<br>`null` if you did not send one |
 | `messageSource` | | String | Yes | | Always `nicepay` for this API |
 
-Related error codes: `U100`, `U111`, `U133`, `U333`, `U334`, `U335`, `U336`, `U337`, `U338`, `U700`, see [API Response code](../code/nicepay-code.md#api-response-code).
+Related error codes: `U100`, `U111`, `U133`, `U333`, `U334`, `U335`, `U336`, `U337`, `U338`, see [API Response code](../code/nicepay-code.md#api-response-code).
 
 
 <br><br>
@@ -546,7 +546,7 @@ Content-type: application/json;charset=utf-8
 |           | `managerEmail` | String | No | 255 | Stored and echoed back on lookup, but NOT the address NicePay emails on delivery failure; that notification goes to your merchant account's registered admin email instead<br>`null` if you did not send one |
 | `messageSource` | | String | Yes | | Always `nicepay` for this API |
 
-Related error codes: `U100`, `U111`, `U133`, `U333`, `U334`, `U335`, `U336`, `U337`, `U338`, `U700`, see [API Response code](../code/nicepay-code.md#api-response-code).
+Related error codes: `U100`, `U111`, `U133`, `U333`, `U334`, `U335`, `U336`, `U337`, `U338`, see [API Response code](../code/nicepay-code.md#api-response-code).
 
 <br><br>
 
@@ -597,4 +597,4 @@ Content-type: application/json;charset=utf-8
 |           | `managerEmail` | String | No | 255 | Stored and echoed back on lookup, but NOT the address NicePay emails on delivery failure; that notification goes to your merchant account's registered admin email instead<br>`null` if you did not send one |
 | `messageSource` | | String | Yes | | Always `nicepay` for this API |
 
-Related error codes: `U100`, `U111`, `U133`, `U333`, `U334`, `U335`, `U336`, `U337`, `U338`, `U700`, see [API Response code](../code/nicepay-code.md#api-response-code).
+Related error codes: `U100`, `U111`, `U133`, `U333`, `U334`, `U335`, `U336`, `U337`, `U338`, see [API Response code](../code/nicepay-code.md#api-response-code).
