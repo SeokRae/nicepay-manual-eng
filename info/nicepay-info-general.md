@@ -124,7 +124,7 @@ Every amount in a request is a whole number: `amount`, `taxFreeAmt`, `cancelAmt`
 
 NicePay sends the number in `amount` to the payment network as it is and does not convert it for the currency. This manual does not confirm whether a `USD` or `CNY` amount is in the main unit (dollars, yuan) or in the smallest unit (cents, fen). It also does not confirm in which currency a response shows the `amount` of such a payment. [Open an issue on this manual's repository](https://github.com/SeokRae/nicepay-manual-eng/issues) to confirm both before you send a payment in `USD` or `CNY`.
 
-- **Accepted values**: `currency` takes `KRW`, `USD` or `CNY`, in upper case. Another value fails with [`U132`](../code/nicepay-code.md#api-response-code).
+- **Accepted values**: `currency` takes `KRW`, `USD` or `CNY`, in upper case. Another value fails with [`U132`](../code/nicepay-code.md#code-u132).
 - **Checkout** (`POST /v1/checkout`): when you leave `currency` out, the payment is in `KRW`.
 - **Key-in** (`POST /v1/key-in/payments`): `currency` has no default. When you leave it out, the response `currency` is `null`. Send `KRW` for a payment in won.
 - **Recurring Payment**: `KRW` only. The request has no `currency` field, and the response `currency` is always `KRW`.
@@ -132,7 +132,7 @@ NicePay sends the number in `amount` to the payment network as it is and does no
 
 ### Tax breakdown
 
-`taxFreeAmt` is the tax-free part of `amount`, in the same unit. It must not be greater than `amount`: Checkout rejects a larger value with [`U327`](../code/nicepay-code.md#api-response-code), and Key-in and Recurring Payment reject it with [`U321`](../code/nicepay-code.md#api-response-code).
+`taxFreeAmt` is the tax-free part of `amount`, in the same unit. It must not be greater than `amount`: Checkout rejects a larger value with [`U327`](../code/nicepay-code.md#code-u327), and Key-in and Recurring Payment reject it with [`U321`](../code/nicepay-code.md#code-u321).
 
 NicePay computes the rest of the tax breakdown from `amount` and `taxFreeAmt` (0 when you leave it out). It uses the Korean VAT rate of 10% for every currency:
 
@@ -153,7 +153,7 @@ For a partial cancellation, NicePay applies the same formula to `cancelAmt` and 
 
 - **Payment methods for `USD` and `CNY`**: NicePay's API does not limit `currency` by payment method. The payment network decides, and it can reject the payment with [`A145`, `A146` or `A248`](../code/nicepay-code.md#api-response-code). This manual does not list the payment methods that accept `USD` or `CNY`. [Open an issue on this manual's repository](https://github.com/SeokRae/nicepay-manual-eng/issues) to confirm them for your merchant account.
 - **`currency` in responses**: only a payment by card or by easy-pay wallet can return a `currency` other than `KRW`. Virtual account, bank transfer and mobile phone payments always return `KRW`.
-- **Overseas-issued cards**: NicePay's API does not check which country issued a card. The payment network returns [`3051`](../code/nicepay-code.md#api-response-code) when your merchant account is not registered for overseas cards, and [`3053`](../code/nicepay-code.md#api-response-code) when it cannot verify an overseas card. [Open an issue on this manual's repository](https://github.com/SeokRae/nicepay-manual-eng/issues) to confirm whether your merchant account accepts overseas-issued cards.
+- **Overseas-issued cards**: NicePay's API does not check which country issued a card. The payment network returns [`3051`](../code/nicepay-code.md#code-3051) when your merchant account is not registered for overseas cards, and [`3053`](../code/nicepay-code.md#code-3053) when it cannot verify an overseas card. [Open an issue on this manual's repository](https://github.com/SeokRae/nicepay-manual-eng/issues) to confirm whether your merchant account accepts overseas-issued cards.
 - **Key-in and Recurring Payment**: when your merchant account requires them, `encData` carries the card holder's date of birth (`idNo`) and the first 2 digits of the card password (`cardPw`). See [encData Field Details](../api/nicepay-api-keyin.md#encdata-field-details). This manual does not confirm whether the payment network approves an overseas-issued card when your account requires these fields.
 - **Sandbox**: you cannot test `USD` or `CNY` in Sandbox. The Create checkout response shows the `currency` that you sent, but the payment result (`returnUrl` callback) and Transaction Status Inquiry always return `KRW`.
 
@@ -185,8 +185,8 @@ To parse a value:
 ### Dates in requests
 
 - **`ediDate`**: a timestamp that your Merchant Server creates for each request, for example `2023-03-24T16:55:00.000+0900`. NicePay uses it only as text inside `signData` and does not parse it, so its time zone does not change the result. Send `ediDate` whenever you send `signData`, and use exactly the same text in the request and in the `signData` hash. Write `signData` in lowercase hexadecimal, because some APIs compare it case-sensitively.
-- **Query strings**: in a `GET` request, send `ediDate` and `signData` as query parameters, and percent-encode them. The `+` in `+0900` must become `%2B`. An unencoded `+` reaches NicePay as a space, and the `signData` check then fails with [`U312`](../code/nicepay-code.md#api-response-code). See the example in [Transaction Status Inquiry (with tid:Transaction ID)](../api/nicepay-api-retrieve.md#transaction-status-inquiry-with-tidtransaction-id).
-- **`expireDate`** (Checkout): send UTC with `Z`, for example `2023-03-25T04:58:01Z`, or the response pattern with milliseconds and an offset without a colon, for example `2023-03-25T13:58:01.000+0900`. Other forms, such as an offset with a colon (`+09:00`) or no offset, fail with [`U322`](../code/nicepay-code.md#api-response-code).
-- **`vbankExpDate`** (Checkout, `method` `vbank`): send a date and a time in KST, as `yyyy-MM-ddTHH:mm`, for example `2023-03-25T23:59`. NicePay also accepts a date only (`2023-03-25`), but it then stores only the date, and this manual does not confirm the closing time on that day. A value in one of the `expireDate` forms also works. Other values fail with [`U330`](../code/nicepay-code.md#api-response-code).
+- **Query strings**: in a `GET` request, send `ediDate` and `signData` as query parameters, and percent-encode them. The `+` in `+0900` must become `%2B`. An unencoded `+` reaches NicePay as a space, and the `signData` check then fails with [`U312`](../code/nicepay-code.md#code-u312). See the example in [Transaction Status Inquiry (with tid:Transaction ID)](../api/nicepay-api-retrieve.md#transaction-status-inquiry-with-tidtransaction-id).
+- **`expireDate`** (Checkout): send UTC with `Z`, for example `2023-03-25T04:58:01Z`, or the response pattern with milliseconds and an offset without a colon, for example `2023-03-25T13:58:01.000+0900`. Other forms, such as an offset with a colon (`+09:00`) or no offset, fail with [`U322`](../code/nicepay-code.md#code-u322).
+- **`vbankExpDate`** (Checkout, `method` `vbank`): send a date and a time in KST, as `yyyy-MM-ddTHH:mm`, for example `2023-03-25T23:59`. NicePay also accepts a date only (`2023-03-25`), but it then stores only the date, and this manual does not confirm the closing time on that day. A value in one of the `expireDate` forms also works. Other values fail with [`U330`](../code/nicepay-code.md#code-u330).
 
 <br>

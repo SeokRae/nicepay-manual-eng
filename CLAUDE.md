@@ -57,6 +57,8 @@ Docs are heavily interlinked using relative paths + Markdown heading anchors (Gi
 grep -rn "anchor-text-to-check" --include="*.md" .
 ```
 
+**Response code links.** Each code in the API response code table carries an anchor on its first row, `<span id="code-u104">U104</span>` (lowercase id), so link a single code to its row: `[`U104`](../code/nicepay-code.md#code-u104)`. Give a new code row the same span. A link that names several codes, or the table as a whole, keeps `#api-response-code`. `api/nicepay-api-reconciliation.md` still links to `#api-response-code` because it is excluded from partial fixes.
+
 **Gotcha 1, absolute paths.** Always link with a relative path (`./foo.md` or `../foo.md`), never a site-root absolute path (`/foo.md`). `jekyll-relative-links` only rewrites relative-style Markdown links to `.html`, and an absolute path also skips the `/nicepay-manual-eng/` baseurl: the link 404s on the live site even though it looks fine in a raw GitHub file view or local Markdown preview. This exact mistake once broke every link in `api/nicepay-api-uri-list.md` and six links in `info/nicepay-info-sandbox.md`.
 
 **Gotcha 2, raw HTML anchors.** `jekyll-relative-links` rewrites only Markdown-syntax links (`[text](./foo.md)`). Raw HTML anchors, such as README's `<a class="resource-card" href="...">` cards, are passed through untouched, so those must point at the **rendered** path (`./info/foo.html`, `./code/nicepay-code.html#card-code`), never `.md`. A `.md` href still returns HTTP 200 on the live site (Pages serves the source file as `text/markdown`), so a status-code link check will not catch it. This broke the README card grid once.

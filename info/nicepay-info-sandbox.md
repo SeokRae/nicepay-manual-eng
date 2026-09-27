@@ -94,7 +94,7 @@ Use the same Sandbox test key shown in [Test key information](#test-key-informat
 
 ## Create a checkout
 
-Your Merchant Server creates `sessionId` (up to 256 bytes) and `orderId` (up to 64 bytes). Each must be unique for your merchant account, with no time limit: a used `orderId` fails with [`U112`](../code/nicepay-code.md#api-response-code), and a used `sessionId` fails with [`U324`](../code/nicepay-code.md#api-response-code), even when the earlier session expired or failed. Replace the example values below with your own. See [Hosted Payment Page Request Parameter](../api/nicepay-api-payment-window-url.md#hosted-payment-page-request-parameter).
+Your Merchant Server creates `sessionId` (up to 256 bytes) and `orderId` (up to 64 bytes). Each must be unique for your merchant account, with no time limit: a used `orderId` fails with [`U112`](../code/nicepay-code.md#code-u112), and a used `sessionId` fails with [`U324`](../code/nicepay-code.md#code-u324), even when the earlier session expired or failed. Replace the example values below with your own. See [Hosted Payment Page Request Parameter](../api/nicepay-api-payment-window-url.md#hosted-payment-page-request-parameter).
 
 <br>
 
@@ -618,7 +618,7 @@ Content-type: application/json;charset=utf-8
 
 ## Cancel
 
-In Sandbox, only full cancellation is possible. To cancel, leave `cancelAmt` out of the request. Sandbox treats any request that contains `cancelAmt` as a partial cancellation and rejects it, even when the value equals the full payment amount. The error is [`U128`](../code/nicepay-code.md#api-response-code) unless an earlier check fails first. Partial cancellation works only in Live. See `cancelAmt` in [Cancel Request parameter (with tid)](../api/nicepay-api-cancel.md#cancel-request-parameter-with-tid).
+In Sandbox, only full cancellation is possible. To cancel, leave `cancelAmt` out of the request. Sandbox treats any request that contains `cancelAmt` as a partial cancellation and rejects it, even when the value equals the full payment amount. The error is [`U128`](../code/nicepay-code.md#code-u128) unless an earlier check fails first. Partial cancellation works only in Live. See `cancelAmt` in [Cancel Request parameter (with tid)](../api/nicepay-api-cancel.md#cancel-request-parameter-with-tid).
 
 In Sandbox, the `orderId` in the cancel response is the `orderId` of the payment (`641d555b91ae6` below), not the `orderId` sent in the cancel request.
 
@@ -810,8 +810,8 @@ Content-type: application/json;charset=utf-8
 
 Recurring Payment works in Sandbox for card tokens. Call the endpoints below on `sandbox-api.nicepay.co.kr` with a Sandbox key, and encrypt `encData` with the Sandbox Secret key of that key. The request and response fields are the same as in [Recurring Payment](../api/nicepay-api-billing.md).
 
-1. **Register a token** with [`POST /v1/subscribe/regist`](../api/nicepay-api-billing.md#create-tokenbid-request-parameter). Sandbox decrypts `encData` and checks that the additional fields your merchant account requires are present and not empty, as in [encData Field Details](../api/nicepay-api-billing.md#encdata-field-details): a missing field fails with [`U317`](../code/nicepay-code.md#api-response-code), and `encData` that it cannot decrypt fails with [`F101`](../code/nicepay-code.md#api-response-code). Sandbox does not check the card number itself or whether the expiry date is in the future, and there is no list of test card numbers. It does not store the card you send: the response has a new `bid` and `cardCode` `04` whatever card you sent.
-2. **Charge the token** with [`POST /v1/subscribe/{bid}/payments`](../api/nicepay-api-billing.md#recurring-payment---authorization-request-parameter) and the `bid` from step 1. As in Live, a used `orderId` fails with [`U112`](../code/nicepay-code.md#api-response-code). An installment of more than one month (`cardQuota` greater than `1`) with an `amount` below 50,000 fails with [`3024`](../code/nicepay-code.md#api-response-code). The card fields in the response are the fixed Sandbox values in [Sandbox limitations](#sandbox-limitations).
-3. **Delete the token** with [`POST /v1/subscribe/{bid}/expire`](../api/nicepay-api-billing.md#delete-tokenbid-request-parameter). After that, a charge or a delete with the same `bid` fails with [`U309`](../code/nicepay-code.md#api-response-code).
+1. **Register a token** with [`POST /v1/subscribe/regist`](../api/nicepay-api-billing.md#create-tokenbid-request-parameter). Sandbox decrypts `encData` and checks that the additional fields your merchant account requires are present and not empty, as in [encData Field Details](../api/nicepay-api-billing.md#encdata-field-details): a missing field fails with [`U317`](../code/nicepay-code.md#code-u317), and `encData` that it cannot decrypt fails with [`F101`](../code/nicepay-code.md#code-f101). Sandbox does not check the card number itself or whether the expiry date is in the future, and there is no list of test card numbers. It does not store the card you send: the response has a new `bid` and `cardCode` `04` whatever card you sent.
+2. **Charge the token** with [`POST /v1/subscribe/{bid}/payments`](../api/nicepay-api-billing.md#recurring-payment---authorization-request-parameter) and the `bid` from step 1. As in Live, a used `orderId` fails with [`U112`](../code/nicepay-code.md#code-u112). An installment of more than one month (`cardQuota` greater than `1`) with an `amount` below 50,000 fails with [`3024`](../code/nicepay-code.md#code-3024). The card fields in the response are the fixed Sandbox values in [Sandbox limitations](#sandbox-limitations).
+3. **Delete the token** with [`POST /v1/subscribe/{bid}/expire`](../api/nicepay-api-billing.md#delete-tokenbid-request-parameter). After that, a charge or a delete with the same `bid` fails with [`U309`](../code/nicepay-code.md#code-u309).
 
 Sandbox cannot register Naver Pay, Kakao Pay or Toss Pay recurring tokens through Checkout.

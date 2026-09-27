@@ -39,7 +39,7 @@ Output:
 UzFfY2UxYmIxZWJlYmM0NGZlMWEzZjdjZWM5NzZjODNlYTc6MTNlOTY5YTc3YTA1NDU3OTkyNDJjY2MzOTE1MjQzZDM=
 ```
 
-Keep `-n`. Without it, `echo` adds a newline that becomes part of the encoded value, and the request fails with HTTP `401` and [`U104`](../code/nicepay-code.md#api-response-code).
+Keep `-n`. Without it, `echo` adds a newline that becomes part of the encoded value, and the request fails with HTTP `401` and [`U104`](../code/nicepay-code.md#code-u104).
 
 Set `Credentials` to `HTTP header` for HTTP authentication.
 ```bash
@@ -94,12 +94,12 @@ Authorization: Bearer dc51c8b13620519b8503bef6ee18f11370e8b349
 
 ### When authentication fails
 
-On every API except Access token, a failed Basic or Bearer authentication returns HTTP `401` with `resultCode` [`U104`](../code/nicepay-code.md#api-response-code). Check these points:
+On every API except Access token, a failed Basic or Bearer authentication returns HTTP `401` with `resultCode` [`U104`](../code/nicepay-code.md#code-u104). Check these points:
 
 1. The header is `Authorization: Basic <credentials>` or `Authorization: Bearer <token>`.
 2. The credentials were encoded without a trailing newline, see [Credentials Generation example](#credentials-generation-example).
 3. The key belongs to the environment you call: Sandbox keys work only on `sandbox-api.nicepay.co.kr`, and Live keys only on `api.nicepay.co.kr`.
 4. A Bearer token is used before its `expireAt`.
 
-The [Access token](../api/nicepay-api-access-token.md) API reports the cause with HTTP `401`: [`U101`](../code/nicepay-code.md#api-response-code) when the credentials are not valid Base64, [`U304`](../code/nicepay-code.md#api-response-code) when there are no credentials or no colon between the two keys, [`U117`](../code/nicepay-code.md#api-response-code) when one of the keys is empty, and [`U116`](../code/nicepay-code.md#api-response-code) when no client matches the key pair. It returns HTTP `403` with [`U103`](../code/nicepay-code.md#api-response-code) when the key cannot be used to issue a token.
+The [Access token](../api/nicepay-api-access-token.md) API reports the cause with HTTP `401`: [`U101`](../code/nicepay-code.md#code-u101) when the credentials are not valid Base64, [`U304`](../code/nicepay-code.md#code-u304) when there are no credentials or no colon between the two keys, [`U117`](../code/nicepay-code.md#code-u117) when one of the keys is empty, and [`U116`](../code/nicepay-code.md#code-u116) when no client matches the key pair. It returns HTTP `403` with [`U103`](../code/nicepay-code.md#code-u103) when the key cannot be used to issue a token.
 

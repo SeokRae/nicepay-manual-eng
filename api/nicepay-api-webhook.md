@@ -5,7 +5,7 @@ You can use Webhook to implement additional business logic by receiving API even
 - If you use a payment method such as virtual account that causes a time difference between virtual account creation and deposit time, webhook implementation is absolutely necessary.
 
 > **⚠️ Important:** Webhook registration, inquiry, delete and update work in [Sandbox](../info/nicepay-info-sandbox.md#sandbox-limitations) and in Live. Register Sandbox URLs with your own Sandbox key, not the public test key: everyone who reads this manual shares that key, so a change to it changes their settings too. URLs registered in Sandbox do not carry over to Live, so register them again with your Live key.  
-> When you register or update a webhook URL, NicePay first sends a test request to that URL, and your endpoint must answer it within 5 seconds. The request fails with [`U336`](../code/nicepay-code.md#api-response-code) if NicePay cannot reach the URL or gets no answer in time, `U337` if the response status is not `200`, and `U338` if the response body is not `OK`. The test request is not a real payment: answer it with HTTP `200` and `OK`, and do not apply it to an order.  
+> When you register or update a webhook URL, NicePay first sends a test request to that URL, and your endpoint must answer it within 5 seconds. The request fails with [`U336`](../code/nicepay-code.md#code-u336) if NicePay cannot reach the URL or gets no answer in time, `U337` if the response status is not `200`, and `U338` if the response body is not `OK`. The test request is not a real payment: answer it with HTTP `200` and `OK`, and do not apply it to an order.  
 > To test the payment event, make a Sandbox payment with a payment method that has a registered webhook URL. This manual has not confirmed that NicePay sends cancellation events in Sandbox, so to test both, make a small Live payment, then cancel it. NicePay sends a webhook for the payment and another for the cancellation.  
 
 <br>
@@ -483,7 +483,7 @@ This endpoint takes no request parameters beyond the `Authorization` header.
 |:----------|:----:|:------:|:-----------:|:-------:|:-------------|
 | `resultCode`|      | String | Yes         | 4       | 0000 : success / other failure |
 | `resultMsg` |      | String | Yes         | 100     | Result message |
-| `urls` | | Array | Yes | | All webhook URLs registered for your account, one element per payment method, in no fixed order<br>If none is registered, `resultCode` is [`U111`](../code/nicepay-code.md#api-response-code) and `urls` is an empty array |
+| `urls` | | Array | Yes | | All webhook URLs registered for your account, one element per payment method, in no fixed order<br>If none is registered, `resultCode` is [`U111`](../code/nicepay-code.md#code-u111) and `urls` is an empty array |
 |           | `method` | String | Yes | 20 | Payment method of this URL<br>card : credit and debit cards <br> bank : bank transfer <br> vbank : virtual account <br> cellphone : carrier billing<br>A URL registered with `all` is returned as four elements, one per method |
 |           | `url` | String | Yes | 200 | The URL of the webhook endpoint |
 |           | `managerEmail` | String | No | 255 | Stored and echoed back on lookup, but NOT the address NicePay emails on delivery failure; that notification goes to your merchant account's registered admin email instead<br>`null` if you did not send one |
