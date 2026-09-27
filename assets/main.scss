@@ -265,6 +265,30 @@ blockquote {
 // Previous / next page links and site footer
 // ---------------------------------------------------------------------------
 
+// In-page table of contents on long pages ("On this page"), collapsed by
+// default so it does not push the content down on a phone.
+.page-toc {
+  margin: 0 0 $spacing-unit;
+  padding: 8px 12px;
+  border: 1px solid $border-color-strong;
+  border-radius: 6px;
+
+  summary {
+    cursor: pointer;
+    font-weight: 600;
+
+    &:focus-visible {
+      outline: 2px solid $brand-color;
+      outline-offset: 2px;
+    }
+  }
+
+  ul {
+    margin-top: $spacing-unit / 2;
+    margin-bottom: 0;
+  }
+}
+
 .page-nav {
   display: flex;
   justify-content: space-between;

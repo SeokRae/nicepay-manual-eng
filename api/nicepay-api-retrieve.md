@@ -1,5 +1,14 @@
 # Transaction Status Inquiry
 
+<details class="page-toc" markdown="1">
+<summary>On this page</summary>
+
+* TOC
+{:toc}
+
+</details>
+
+
 This page covers these APIs. All of them are available in Sandbox, and the two card inquiries return dummy data there.
 
 - [Transaction Status Inquiry](#transaction-status-inquiry-with-tidtransaction-id): the full record of one payment, including its cancellations. Look it up by `tid` when you stored it. Use `orderId` when your server lost the payment result before it stored `tid`, and `sessionId` for a Checkout session.

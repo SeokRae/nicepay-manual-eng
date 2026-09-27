@@ -1,5 +1,14 @@
 # Response code
 
+<details class="page-toc" markdown="1">
+<summary>On this page</summary>
+
+* TOC
+{:toc}
+
+</details>
+
+
 <br>
 
 ## HTTP status code

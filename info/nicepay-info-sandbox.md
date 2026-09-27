@@ -1,4 +1,14 @@
 ## Sandbox
+{:.no_toc}
+
+<details class="page-toc" markdown="1">
+<summary>On this page</summary>
+
+* TOC
+{:toc}
+
+</details>
+
 
 Sandbox and Live have a difference in domain and Client ID.   
 Please use it after checking whether the issued Client ID is for Sandbox or Live.   

@@ -31,6 +31,10 @@ nav:
     pages:
       - code/nicepay-code.md
 
+# The in-page "On this page" lists on long pages list only ## and ### headings.
+kramdown:
+  toc_levels: "2..3"
+
 # Jekyll renders every Markdown file at the repo root, so CLAUDE.md (internal
 # contributor guidance, not merchant documentation) would otherwise be served
 # at /CLAUDE.html. Declaring `exclude` replaces Jekyll's default list rather
