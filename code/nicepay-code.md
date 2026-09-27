@@ -107,8 +107,12 @@ Some messages carry Korean payment-industry terms straight into the English colu
 
 - **Net cancel** (`망취소`, written as "network cancellation" in the table below): a cancellation that reverses a card authorization when the result of that authorization was not delivered. NicePay does not cancel a payment because your server timed out. NicePay sends a net cancel on its own only when its own processing fails during an authorization, and then returns `U504` (Checkout, Key-in) or `U503` (Recurring). Your server can request one with [Net cancel](../api/nicepay-api-cancel.md#net-cancel). See [Timeout Information](../info/nicepay-info-firewall-timeout.md#timeout-information) for what to do after a timeout. Codes `2020`, `P035`, `U503`, `U504`.
 - **CPID**: the identifier of the partner financial institution behind a bank transfer, virtual account, or mobile carrier payment. These codes mean your merchant account is not set up for that institution, not that your request was malformed. Codes `4126`, `4127`, `A303`, `M001`, `M002`.
-- **PKCS7**: the signed and encrypted message format used when a billkey is issued. Codes `F101`, `F103`, `F111`.
+- **PKCS7**: the signed and encrypted message format used when a token is issued. Codes `F101`, `F103`, `F111`.
 - **OCSP**: the certificate revocation check run as part of that verification. Code `F105`.
+- **KFTC** (`금결원`, `금융결제원`): the Korea Financial Telecommunications and Clearings Institute, which runs the interbank network behind bank transfers. Codes `4001`, `V602`.
+- **VAN**: a value-added network company that relays card transactions between NicePay and the card companies. Code `7010`.
+- **ARS**: authentication by an automated phone call. Codes `A150`, `A256`.
+- **ISP**: the card authentication app that BC Card and KB Kookmin Card use. Code `C001`.
 
 > **⚠️ Important:** If you receive a `resultCode` that isn't in this table, it's likely a payment network code not yet catalogued here. [Open an issue on this manual's repository](https://github.com/SeokRae/nicepay-manual-eng/issues) with the `tid`/`orderId` and the exact `resultCode` for identification.  
 
@@ -483,7 +487,7 @@ Some messages carry Korean payment-industry terms straight into the English colu
 | <span id="code-p024">P024</span> | <span lang="ko">날짜형식(ISO8601)이 아닙니다.</span>    | Invalid date format (ISO8601).        |
 | <span id="code-p025">P025</span> | <span lang="ko">트랜잭션 타입이 일치하지 않습니다.</span>      | Transaction type does not match.      |
 | <span id="code-p026">P026</span> | <span lang="ko">승인서버 요청 에러</span>        | Approval server request error.        |
-| <span id="code-p027">P027</span> | <span lang="ko">원격 실패(MCI)</span>     | Remote failure (MCI).    |
+| <span id="code-p027">P027</span> | <span lang="ko">원격 실패(MCI)</span>     | Remote failure.    |
 | <span id="code-p028">P028</span> | <span lang="ko">일시불 01 에러 (일시불은 00으로 설정)</span>   | Installment error for single payment 01 (set to 00 for single payment).  |
 | <span id="code-p029">P029</span> | <span lang="ko">해당 지불수단은 카드 지정, 할부 지정이 불가 합니다.</span>   | The payment method cannot be designated for card or installment.  |
 | <span id="code-p030">P030</span> | <span lang="ko">해당 지불수단은 카드 지정, 할부 지정이 필수 입니다.</span>   | Card and installment designation is required for this payment method.    |

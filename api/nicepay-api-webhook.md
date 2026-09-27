@@ -334,7 +334,7 @@ Same fields and rules as [Card information](./nicepay-api-retrieve.md#card-infor
 | `cashReceipts` | | Array | No | | Cash Receipt Issuance Information<br>-When the customer used Naverpay Points and Virtual Account, this value will be return.<br>-In case of partial cancellation, array will be more than 2 |
 | | `receiptTid` | String | Yes | 30 | Cash Receipt TID |
 | | `orgTid` | String | Yes | 30 | Related original approval/cancel transaction ID.<br>In case of partial cancellation, it is mapped with the original TID. |
-| | `status` | String | Yes | 20 | issueRequested : Issuance Requested <br>issueReqCancelled : Issuance Request cancelled<br>issued: Issuance completed by the National Tax Service <br>issueFailed: Issuance failed<br>cancelRequested: Cancellation requested <br>cancelReqCancelled: issuance Cancelled by the National Tax Service<br>cancelled: Cancellation completed <br>cancelFailed: Cancellation failed |
+| | `status` | String | Yes | 20 | issueRequested : Issuance Requested <br>issueReqCancelled : the issuance request was withdrawn before the National Tax Service received it<br>issued: Issuance completed by the National Tax Service <br>issueFailed: Issuance failed<br>cancelRequested: Cancellation requested <br>cancelReqCancelled: the cancellation request was withdrawn before the National Tax Service received it<br>cancelled: Cancellation completed <br>cancelFailed: Cancellation failed |
 | | `amount` | Int | Yes | 12 | Total amount of cash receipt issued |
 | | `taxFreeAmt` | Int | Yes | 12 | Tax-free amount of the cash receipt |
 | | `receiptType` | String | Yes | 20 | Cash Receipt Type<br>individual: For personal income deduction<br>company: For proof of business expenses |
