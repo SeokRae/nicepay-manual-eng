@@ -24,7 +24,7 @@ Sandbox differs from Live in these ways. [URI LIST](../api/nicepay-api-uri-list.
 - Every Sandbox payment is in KRW, whatever `currency` the request sends.
 - Key-in Payment is not provided. See [Key-in Payment](../api/nicepay-api-keyin.md).
 - Only full cancellation works. A request with `cancelAmt` fails, see [Cancel](#cancel).
-- Recurring Payment registers card tokens with `/v1/subscribe/regist` only. Naver Pay, Kakao Pay and Toss Pay recurring payments and the Bid Status Inquiry are not available. See [Recurring Payment in Sandbox](#recurring-payment-in-sandbox).
+- Recurring Payment registers card tokens with `/v1/subscribe/regist` only. Naver Pay, Kakao Pay and Toss Pay recurring payments are not available. See [Recurring Payment in Sandbox](#recurring-payment-in-sandbox).
 - The card event and interest-free installment inquiries return dummy data.
 - Transaction Search and Settlement are not available.
 
@@ -817,4 +817,4 @@ Recurring Payment works in Sandbox for card tokens. Call the endpoints below on 
 2. **Charge the token** with [`POST /v1/subscribe/{bid}/payments`](../api/nicepay-api-billing.md#recurring-payment---authorization-request-parameter) and the `bid` from step 1. As in Live, a used `orderId` fails with [`U112`](../code/nicepay-code.md#api-response-code). An installment of more than one month (`cardQuota` greater than `1`) with an `amount` below 50,000 fails with [`3024`](../code/nicepay-code.md#api-response-code). The card fields in the response are the fixed Sandbox values in [Sandbox limitations](#sandbox-limitations).
 3. **Delete the token** with [`POST /v1/subscribe/{bid}/expire`](../api/nicepay-api-billing.md#delete-tokenbid-request-parameter). After that, a charge or a delete with the same `bid` fails with [`U309`](../code/nicepay-code.md#api-response-code).
 
-The [Bid Status Inquiry](../api/nicepay-api-billing.md#bid-status-inquiry) does not work in Sandbox, and Sandbox cannot register Naver Pay, Kakao Pay or Toss Pay recurring tokens through Checkout.
+Sandbox cannot register Naver Pay, Kakao Pay or Toss Pay recurring tokens through Checkout.

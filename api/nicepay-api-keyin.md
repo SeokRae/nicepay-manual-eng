@@ -2,7 +2,7 @@
 
 Key-in (Manual Entry) payment lets you submit a card charge directly with card details you already hold (MOTO / manually entered card), without redirecting the customer through the Hosted Payment Page. You encrypt the card data server-side (the encryption key is derived from your SecretKey, which must never leave your server) and call this API directly; NicePay returns the final approval result synchronously in the response; there is no separate authorization callback.
 
-> **⚠️ Important:** Key-in is only available to merchants that NicePay has enabled for manual-entry payments. Without that, the call fails in one of two ways. [`U313`](../code/nicepay-code.md#api-response-code) means that your client key has no merchant ID for card payments without customer authentication. [`A128`](../code/nicepay-code.md#api-response-code) (`Not a key-in merchant`) means that the merchant ID exists but the payment network has not enabled it for Key-in.  
+> **⚠️ Important:** Key-in is only available to merchants that NicePay has enabled for manual-entry payments. Without that, the call fails with [`U313`](../code/nicepay-code.md#api-response-code) or [`A128`](../code/nicepay-code.md#api-response-code) (`Not a key-in merchant`).  
 > NicePay sets which card holder details `encData` must carry for your merchant account, see [encData Field Details](#encdata-field-details) below. You cannot choose them per request.  
 > Key-in Payment is not provided in [Sandbox](../info/nicepay-info-sandbox.md#base-url-information-for-sandbox-and-live); you can only test it against Live once your merchant account is enabled for manual-entry payments.  
 
@@ -80,9 +80,9 @@ Required: Yes = always send; No = optional; Conditional = send in the case state
 
 ### encData Field Details
 
-`encData` always carries `cardNo`, `expYear` and `expMonth`. NicePay sets which additional fields it must also carry for your merchant account: none, `cardPw`, `idNo`, or both `idNo` and `cardPw`. When your account requires none, NicePay does not send `idNo` or `cardPw` to the payment network, even if you include them.
+`encData` always carries `cardNo`, `expYear` and `expMonth`. NicePay sets which additional fields it must also carry for your merchant account: none, `cardPw`, `idNo`, or both `idNo` and `cardPw`. When your account requires none, NicePay ignores `idNo` and `cardPw` even if you include them.
 
-> **⚠️ Important:** NicePay checks only the fields that `encData` contains. When your account requires additional fields, a field other than `cardNo`, `expYear`, `expMonth` and the additional fields of your account fails the request with `U341`, for example `idNo` when your account requires only `cardPw`. An empty `cardNo`, `expYear` or `expMonth`, or an empty additional field of your account, also fails with `U341`. NicePay does not reject a missing field: it sends the payment to the payment network without it. Always include the additional fields of your account.  
+> **⚠️ Important:** NicePay checks only the fields that `encData` contains. When your account requires additional fields, a field other than `cardNo`, `expYear`, `expMonth` and the additional fields of your account fails the request with `U341`, for example `idNo` when your account requires only `cardPw`. An empty `cardNo`, `expYear` or `expMonth`, or an empty additional field of your account, also fails with `U341`. NicePay does not reject a missing field: the payment goes ahead without it. Always include the additional fields of your account.  
 > NicePay does not return this setting through the API. [Open an issue on this manual's repository](https://github.com/SeokRae/nicepay-manual-eng/issues) if you are not sure which additional fields your account requires.  
 
 | Parameter | Type | Required | Bytes | Description |
@@ -93,7 +93,7 @@ Required: Yes = always send; No = optional; Conditional = send in the case state
 | `idNo` | String | Conditional | 13 | Card holder's date of birth, 6 digits: YYMMDD (for example `800101` for 1 January 1980)<br>Corporate card: Korean business registration number, 10 digits<br>Required when NicePay has set your merchant account to require `idNo` |
 | `cardPw` | String | Conditional | 2 | First 2 digits of the 4-digit card password of a Korean card<br>Required when NicePay has set your merchant account to require `cardPw` |
 
-In the plain text, put `expMonth` directly after `expYear`, as in the example below. NicePay appends the `expMonth` value to the field in front of it, so another order corrupts the card number or the expiration date. The example contains both `idNo` and `cardPw`: leave out the fields that your merchant account does not require. For overseas-issued cards, see [Accepting overseas customers](../info/nicepay-info-general.md#accepting-overseas-customers).
+In the plain text, put `expMonth` directly after `expYear`, as in the example below. Another order can corrupt the card number or the expiration date. The example contains both `idNo` and `cardPw`: leave out the fields that your merchant account does not require. For overseas-issued cards, see [Accepting overseas customers](../info/nicepay-info-general.md#accepting-overseas-customers).
 
 <br>
 

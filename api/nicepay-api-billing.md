@@ -1,11 +1,10 @@
 ## Recurring Payment
 
-This page covers four APIs:
+This page covers three APIs:
 
 - [Create Token](#recurring-payment---create-token) (`POST /v1/subscribe/regist`): register a card once and receive a token (`bid`).
 - [Authorization](#recurring-payment---authorization) (`POST /v1/subscribe/{bid}/payments`): charge the token each time a payment is due.
 - [Delete Token](#delete-token) (`POST /v1/subscribe/{bid}/expire`): delete the token when the subscription ends.
-- [Bid Status Inquiry](#bid-status-inquiry) (`POST /v1/subscribe/{bid}/status`): check whether a Toss Pay token is still active.
 
 Create Token sends raw card details from your server. See [PCI-DSS Overview](../info/nicepay-info-pci-dss.md) for what that generally implies, and confirm the specific requirements for your account with NicePay. A token registered through Checkout with a billing `method` such as `cardBill` keeps card details off your server, see [Which Integration Should I Use?](../INTEGRATION-PATHS.md).
 
@@ -26,7 +25,7 @@ After that, if you pass the encrypted Token(bid) through the `/v1/subscribe/{bid
 - A [Client and Secret key](../info/nicepay-info-key.md) issued from the NicePay admin console
 - An `Authorization` header built from those keys, see [Basic and Bearer authentication](../info/nicepay-info-basic-token.md)
 - We recommend testing against the Sandbox first, then switching to Live once verified. See [Recurring Payment in Sandbox](../info/nicepay-info-sandbox.md#recurring-payment-in-sandbox) for what Sandbox checks and returns
-- A merchant ID for card payments without customer authentication on your client key, the same one that [Key-in Payment](./nicepay-api-keyin.md) uses. NicePay sets it up for your account. Without it, Create Token fails with [`U107`](../code/nicepay-code.md#api-response-code), although that code otherwise means that a transaction was not found, and Delete Token and Bid Status Inquiry fail with [`U313`](../code/nicepay-code.md#api-response-code)
+- Recurring Payment enabled for your client key. NicePay sets it up for your account. Without it, Create Token fails with [`U107`](../code/nicepay-code.md#api-response-code), although that code otherwise means that a transaction was not found, and Delete Token fails with [`U313`](../code/nicepay-code.md#api-response-code)
 
 <br>
 
@@ -153,7 +152,7 @@ Required: Yes = has a non-empty value in every response whose `resultCode` is `0
 | `status`     | String | Yes |   6   | issued: bid was created successfully<br>failed: `regist` call failed, see `resultCode` |
 
 > **⚠️ Important:** Even though NicePay allows multiple tokens per card, a `regist` call can still fail with [`F201`](../code/nicepay-code.md#api-response-code) ("card already registered", bill key issuance failed), returned as-is in `resultCode` with `status: failed`, no `bid`, and `messageSource: external`. That check happens on the card issuer/payment network side, not NicePay's, so the exact conditions that trigger it are not documented here; [open an issue on this manual's repository](https://github.com/SeokRae/nicepay-manual-eng/issues) if you hit it unexpectedly.  
-> `F201` is specific to card-based bill-key issuance (this API, and Checkout's `cardBill` method, see [Hosted Payment Page Request Parameter](./nicepay-api-payment-window-url.md#hosted-payment-page-request-parameter)); Recurring Payment enrolled through Naver Pay/Kakao Pay/Toss Pay checkout (`naverCardBill`/`naverPointBill`/`kakaoBill`/`tosspayBill`) goes through a separate corePG code family and is not affected by it.  
+> `F201` is specific to card-based bill-key issuance (this API, and Checkout's `cardBill` method, see [Hosted Payment Page Request Parameter](./nicepay-api-payment-window-url.md#hosted-payment-page-request-parameter)); Recurring Payment enrolled through Naver Pay/Kakao Pay/Toss Pay checkout (`naverCardBill`/`naverPointBill`/`kakaoBill`/`tosspayBill`) is not affected by it.  
 
 Related error codes: `A253`, `F101`, `F110`, `F115`, `F116`, `U107`, `U317`, see [API Response code](../code/nicepay-code.md#api-response-code).
 
@@ -390,78 +389,11 @@ Content-type: application/json
 | `tid` | String | Yes | 30 | NICEPAY transaction ID |
 | `orderId` | String | Yes | 64 | Your Unique order ID |
 | `bid`        | String | Yes  | 30   | Token |
-| `authDate`   | String | Yes | -    | ISO 8601 format<br>*Not returned only when the request fails local validation (e.g. missing `orderId`) before reaching NicePay; present regardless of whether the deletion itself succeeded or failed |
+| `authDate`   | String | Yes | -    | ISO 8601 format<br>*Not returned when the request fails validation, for example a missing `orderId`; present regardless of whether the deletion itself succeeded or failed |
 
-> **⚠️ Important:** Deleting a Token(bid) that is already deleted or does not exist returns [`U115`](../code/nicepay-code.md#api-response-code) ("Deleted BID"), not `0000`. NicePay normalizes the payment-network code behind it, so you get `U115` whether the token was a card billkey or an easy-pay (NaverPay/KakaoPay/TossPay) one. Treat `U115` as "already gone" rather than as a retryable failure.  
-> A successful card-billkey deletion always returns `0000`. You will not see [`F101`](../code/nicepay-code.md#api-response-code) here even though the payment network uses it for this case internally; on this API `F101` only ever means a signature/encryption verification failure.  
+> **⚠️ Important:** Deleting a Token(bid) that is already deleted or does not exist returns [`U115`](../code/nicepay-code.md#api-response-code) ("Deleted BID"), not `0000`. You get `U115` whether the token was a card billkey or an easy-pay (NaverPay/KakaoPay/TossPay) one. Treat `U115` as "already gone" rather than as a retryable failure.  
+> A successful card-billkey deletion always returns `0000`, never [`F101`](../code/nicepay-code.md#api-response-code). On this API `F101` only ever means a signature/encryption verification failure.  
 
 Related error codes: `U115`, `U313`, `A255`, see [API Response code](../code/nicepay-code.md#api-response-code).
-
-<br>
-
-## Bid Status Inquiry
-
-`Bid Status Inquiry` looks up whether an issued Token(bid) is currently active or has been suspended on the payment network side.  
-If you pass the registered billkey to the `/v1/subscribe/{bid}/status` API, NicePay returns its current status.
-
-> **⚠️ Important:** This API currently supports Toss Pay-issued tokens only (`method: tosspayBill`); any other `method` value is rejected with `U119`.  
-> This API does not work in [Sandbox](../info/nicepay-info-sandbox.md#sandbox-limitations), because Sandbox cannot issue Toss Pay tokens.  
-
-<br>
-
-### Bid Status Inquiry Example code
-
-```bash
-curl -X POST 'https://api.nicepay.co.kr/v1/subscribe/BIKYnicuntct2m2107272028532670/status' 
--H 'Content-Type: application/json' 
--H 'Authorization: Basic <credentials>' 
---data '{
-    "orderId": "your-order-id",
-    "method": "tosspayBill"
-}'
-```
-
-<br>
-
-### Bid Status Inquiry Request Parameter
-
-```bash
-POST /v1/subscribe/{bid}/status   
-HTTP/1.1  
-Host: api.nicepay.co.kr 
-Authorization: Basic <credentials> or Bearer <token>
-Content-type: application/json;charset=utf-8
-```
-
-| Parameter     | Type   | Required | Bytes | Description |
-|:--------------|:------:|:--------:|:------:|:-----------|
-| `orderId`       | String |  Yes       |  64   | Your unique order ID |
-| `method`        | String |  Yes       |  20   | Payment method the token was issued under<br>Currently only `tosspayBill` is supported |
-| `ediDate`       | String |     Conditional     |   -   | Request timestamp (ISO 8601) that your Merchant Server creates, see [Dates in requests](../info/nicepay-info-general.md#dates-in-requests)<br>Required when you send `signData` |
-| `signData`      | String |     No     |  256  | Forgery Verification Data<br>Rule : hex(sha256(orderId + bid +   ediDate + SecretKey))|
-| `returnCharSet` | String |     No     |  10   | `utf-8` (default) or `euc-kr`<br>Sets the charset in the `Content-Type` header of the response. Keep `utf-8` |
-
-<br>
-
-### Bid Status Inquiry Response Parameter
-
-```bash
-POST
-Content-type: application/json
-```
-
-| Parameter | Type | Required | Bytes | Description |
-|:----------|:----:|:--------:|:------:|:-----------|
-| `resultCode` | String | Yes | 4 | 0000 : success / other failure |
-| `resultMsg` | String | Yes | 100 | Result message |
-| `tid` | String | Yes | 30 | NICEPAY transaction ID |
-| `orderId` | String | Yes | 64 | Your Unique order ID |
-| `bid`        | String | Yes  | 30   | Token |
-| `bidStatus`  | String | No   | -    | Raw status value from the card network<br>0: in use, 1: suspended, 2: other (undefined by the card network)<br>*Not returned if the card network omits it |
-| `status`     | String | Yes  | -    | Interpreted status<br>active: `bidStatus` is 0<br>inactive: `bidStatus` is 1<br>unknown: `bidStatus` is 2, or not returned |
-
-<br>
-
-- Related error codes: `U100`, `U119`, `U309`, `U312`, `U313`, see [API Response code](../code/nicepay-code.md#api-response-code).
 
 <br>
