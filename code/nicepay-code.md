@@ -108,19 +108,17 @@ NicePay does not return `400`. Treat a `5xx` status, or a response without a JSO
 
 `U`-prefixed codes come from NicePay's API. Every other code (bare numbers, and `A`/`F`/`C`/`I`/`E`-prefixed codes) normally comes from NicePay's payment network. A few codes, including `0000`, `9999` and `F101`, can come from either, so the same code can carry a different message; the message shown below is the API's.
 
-A success reaches your server only as `0000`. The API converts the payment network's success codes in this table, such as `3001`, `4000`, `4100`, `A000`, `2001` and `2211`, into `0000`, so treat every other code as not successful.
+This table lists only the codes that the APIs in this manual return to your server. A success always comes as `0000`: the API converts the payment network's own success codes into `0000`, so treat every other code as not successful.
 
-A handful of codes are reused with unrelated meanings depending on which API returned them (for example `2011`, `2012`, `C002`); where that happens, the domain is called out in parentheses in the English message below, e.g. "(cancel)" vs "(general/DB error)". Match that to the API you called.
+Two codes, `2011` and `2012`, appear twice with unrelated meanings. Both meanings can occur, depending on the area that produced the code. The English message below names the area in parentheses, e.g. "(cancel)" vs "(general/DB error)". To tell them apart, match the area to the API you called, and read the `resultMsg` of the response: it carries the message of the meaning that applies.
 
 Some messages carry Korean payment-industry terms straight into the English column. What they mean:
 
-- **Net cancel** (`망취소`, written as "network cancellation" in the table below): a cancellation that reverses a card authorization when the result of that authorization was not delivered. NicePay does not cancel a payment because your server timed out. NicePay sends a net cancel on its own only when its own processing fails during an authorization, and then returns `U504` (Checkout, Key-in) or `U503` (Recurring). Your server can request one with [Net cancel](../api/nicepay-api-cancel.md#net-cancel). See [Timeout Information](../info/nicepay-info-firewall-timeout.md#timeout-information) for what to do after a timeout. Codes `2020`, `P035`, `U503`, `U504`.
+- **Net cancel** (`망취소`, written as "network cancellation" in the table below): a cancellation that reverses a card authorization when the result of that authorization was not delivered. NicePay does not cancel a payment because your server timed out. NicePay sends a net cancel on its own only when its own processing fails during an authorization, and then returns `U504` (Checkout, Key-in) or `U503` (Recurring). Your server can request one with [Net cancel](../api/nicepay-api-cancel.md#net-cancel). See [Timeout Information](../info/nicepay-info-firewall-timeout.md#timeout-information) for what to do after a timeout. Codes `2020`, `U503`, `U504`.
 - **CPID**: the identifier of the partner financial institution behind a bank transfer, virtual account, or mobile carrier payment. These codes mean your merchant account is not set up for that institution, not that your request was malformed. Codes `4126`, `4127`, `A303`, `M001`, `M002`.
 - **PKCS7**: the signed and encrypted message format used when a token is issued. Codes `F101`, `F103`, `F111`.
 - **OCSP**: the certificate revocation check run as part of that verification. Code `F105`.
-- **KFTC** (`금결원`, `금융결제원`): the Korea Financial Telecommunications and Clearings Institute, which runs the interbank network behind bank transfers. Codes `4001`, `V602`.
-- **VAN**: a value-added network company that relays card transactions between NicePay and the card companies. Code `7010`.
-- **ARS**: authentication by an automated phone call. Codes `A150`, `A256`.
+- **KFTC** (`금결원`, `금융결제원`): the Korea Financial Telecommunications and Clearings Institute, which runs the interbank network behind bank transfers. Code `4001`.
 - **ISP**: the card authentication app that BC Card and KB Kookmin Card use. Code `C001`.
 
 > **⚠️ Important:** If you receive a `resultCode` that isn't in this table, it's likely a payment network code not yet catalogued here. [Open an issue on this manual's repository](https://github.com/SeokRae/nicepay-manual-eng/issues) with the `tid`/`orderId` and the exact `resultCode` for identification.  
@@ -131,7 +129,6 @@ Some messages carry Korean payment-industry terms straight into the English colu
 |:------:|:---------------------|:----------------------|
 | <span id="code-0000">0000</span> | <span lang="ko">정상 처리되었습니다.</span> | Payment or transaction successful |
 | <span id="code-9999">9999</span> | <span lang="ko">일시적인 오류가 발생하였습니다.</span> | A temporary error occurred |
-| <span id="code-3001">3001</span> | <span lang="ko">카드 결제 성공</span>             | Card payment successful |
 | <span id="code-3011">3011</span> | <span lang="ko">카드번호 오류</span>              | Card number error |
 | <span id="code-3012">3012</span> | <span lang="ko">카드가맹점 정보 미확인</span>     | Unconfirmed card merchant information |
 | <span id="code-3013">3013</span> | <span lang="ko">카드 가맹점 개시 안됨</span>      | Card merchant not in service |
@@ -154,13 +151,9 @@ Some messages carry Korean payment-industry terms straight into the English colu
 | <span id="code-3057">3057</span> | <span lang="ko">인증 불가카드</span>      | Unauthorized Card |
 | <span id="code-3061">3061</span> | <span lang="ko">국민카드 인터넷안전결제 적용 가맹점</span>        | Kookmin Card internet safe payment affiliates |
 | <span id="code-3062">3062</span> | <span lang="ko">신용카드 승인번호 오류</span>     | Credit card approval number error |
-| <span id="code-3071">3071</span> | <span lang="ko">매입요청 가맹점 아님</span>       | Capture is not allowed |
-| <span id="code-3072">3072</span> | <span lang="ko">매입요청 TID 정보 불일치</span>   |  Transaction ID information inconsistency |
-| <span id="code-3073">3073</span> | <span lang="ko">기매입 거래</span>    | Transaction is captured already |
 | <span id="code-3081">3081</span> | <span lang="ko">카드 잔액 값 오류</span>      | Card balance error |
 | <span id="code-3091">3091</span> | <span lang="ko">제휴카드 사용불가 가맹점</span>   | This merchant does not accept partnership cards |
 | <span id="code-3095">3095</span> | <span lang="ko">카드사 실패 응답</span>   | Card issuers respond to failure |
-| <span id="code-4000">4000</span> | <span lang="ko">계좌이체 결제 성공</span>     | Bank Transfer succeed |   
 | <span id="code-4001">4001</span> | <span lang="ko">금결원오류응답</span> | Error response from KFTC |
 | <span id="code-4002">4002</span> | <span lang="ko">회원사 서비스 불가 은행</span>  | Not supported bank |
 | <span id="code-4003">4003</span> | <span lang="ko">출금일자 불일치</span> | Unmatched transfer date |
@@ -169,9 +162,6 @@ Some messages carry Korean payment-industry terms straight into the English colu
 | <span id="code-4006">4006</span> | <span lang="ko">회신 정보 불일치</span> | Unmatched responded data |
 | <span id="code-4007">4007</span> | <span lang="ko">계좌이체 승인번호 오류</span> | Bank Transfer authenticated number error |
 | <span id="code-4008">4008</span> | <span lang="ko">은행 시스템 서비스 중단</span> | Banking system service stopped |
-| <span id="code-4100">4100</span> | <span lang="ko">가상계좌 발급 성공</span> | Virtual account generating succeed |
-| <span id="code-4110">4110</span> | <span lang="ko">가상계좌 입금 성공</span> | Deposit to virtual account completed |
-| <span id="code-4120">4120</span> | <span lang="ko">가상계좌 과오납체크 등록 성공</span>  | Virtual account deposit amount registration success |
 | <span id="code-4101">4101</span> | <span lang="ko">가상계좌 최대거래금액 초과</span> | Maximum virtual account deposit amount exceeded |
 | <span id="code-4102">4102</span> | <span lang="ko">가상계좌 입금예정일 오류</span>   | Virtual account deposit due date error |
 | <span id="code-4103">4103</span> | <span lang="ko">가상계좌 입금예정시간 오류</span> | Virtual account deposit time error |
@@ -190,35 +180,10 @@ Some messages carry Korean payment-industry terms straight into the English colu
 | <span id="code-4117">4117</span> | <span lang="ko">가상계좌 발급 실패</span> | Failure to issue virtual account |
 | <span id="code-4118">4118</span> | <span lang="ko">계좌번호 사용중지 상태</span> | Virtual Account Number is suspended |
 | <span id="code-4119">4119</span> | <span lang="ko">가상계좌 채번내역 미존재 오류</span>  | Not issued virtual account |
-| <span id="code-4121">4121</span> | <span lang="ko">가상계좌 과오납체크 등록 실패</span>  | Virtual account deposit amount registration is failed |
-| <span id="code-4122">4122</span> | <span lang="ko">가상계좌 입금요청 금액 불일치 오류</span> | Virtual Account Deposit Request Amount Mismatch Error |
-| <span id="code-4123">4123</span> | <span lang="ko">가상계좌 채번취소(환불) 상태이므로 입금처리 실패</span>   | Deposit failed because refund requested |
-| <span id="code-4124">4124</span> | <span lang="ko">가상계좌 입금내역 기처리 완료</span>  | Virtual account deposit has already been processed |
 | <span id="code-4125">4125</span> | <span lang="ko">가상계좌 입금만료 제한 설정오류(기준정보)</span>  | This is a merchant that does not reflect the virtual account deposit expiration date setting option |
 | <span id="code-4126">4126</span> | <span lang="ko">가상계좌 CPID 설정 오류</span>    | Virtual account CPID setting error |
 | <span id="code-4127">4127</span> | <span lang="ko">가상계좌 CPID 미설정 오류</span>  | Virtual account CPID is not set |
-| <span id="code-4141">4141</span> | <span lang="ko">금액오류(1원 이하 이체불가)</span>    | Amount error (Greater than 1KRW is required) |
-| <span id="code-4142">4142</span> | <span lang="ko">가상계좌 과오납체크 미사용 가맹점</span>  | Virtual account deposit amount registration service is not available |
-| <span id="code-4143">4143</span> | <span lang="ko">가상계좌 과오납체크 미등록 오류</span>    | Virtual account deposit amount is not set |
 | <span id="code-4145">4145</span> | <span lang="ko">예금주명 수정이 불가능한 MID</span> | Account holder name is not changeable |
-| <span id="code-7001">7001</span> | <span lang="ko">현금영수증 처리 성공</span>   | Issuance of cash receipt successful |
-| <span id="code-7002">7002</span> | <span lang="ko">현금영수증 종류오류</span>    | cash receipt type error |
-| <span id="code-7003">7003</span> | <span lang="ko">현금영수증 중복발급</span>    | Cash receipts are issued already |
-| <span id="code-7004">7004</span> | <span lang="ko">현금영수증 취소오류</span>    | Cash receipt cancellation error |
-| <span id="code-7005">7005</span> | <span lang="ko">현금영수증 부가가치세 오류</span> | Cash Receipt VAT setting Error |
-| <span id="code-7006">7006</span> | <span lang="ko">현금영수증 최대개수 초과</span>   | Exceeds the maximum number of cash receipts |
-| <span id="code-7007">7007</span> | <span lang="ko">현금영수증 요청개수 입력 오류</span>  | Requested number of cash receipts error |
-| <span id="code-7008">7008</span> | <span lang="ko">현금영수증 서브몰 발행 미등록 업체</span> | Issuing cash receipt to submall is not available |
-| <span id="code-7009">7009</span> | <span lang="ko">현금영수증 처리 지불수단이 아닙니다</span> | Payment method setting error |
-| <span id="code-7010">7010</span> | <span lang="ko">VAN응답실패</span> | VAN response failed |
-| <span id="code-7011">7011</span> | <span lang="ko">현금영수증 미발행 요청입니다</span>  | Cash receipt issuance request value error |
-| <span id="code-7012">7012</span> | <span lang="ko">현금영수증 Identity 번호 오류</span>  | Cash Receipt ID number error |
-| <span id="code-7013">7013</span> | <span lang="ko">현금영수증 요청구분 값 오류(1:소득공제, 2:지출증빙)</span>  | Cash Receipt request type error |
-| <span id="code-7014">7014</span> | <span lang="ko">현금영수증 서브몰 사업자번호로 발행시 필수값 누락</span>  | Missing required value when issuing cash receipt for sub-mall |
-| <span id="code-7015">7015</span> | <span lang="ko">현금영수증 취소시 원승인번호 또는 원거래일자 누락</span>  | Missing original approval number or original transaction date |
-| <span id="code-7041">7041</span> | <span lang="ko">금액오류(0원 이하 발행불가)</span>    | Amount error (cannot be issued for KRW 0 or less) |
-| <span id="code-7042">7042</span> | <span lang="ko">현금영수증 최대금액 초과오류</span>   | Cash Receipt maximum amount exceeded |
-| <span id="code-a000">A000</span> | <span lang="ko">휴대폰결제 처리 성공</span>   | Phone bill payment processed successfully |
 | <span id="code-a001">A001</span> | <span lang="ko">휴대폰결제 처리 실패</span>   | Phone bill payment processing failed |
 | <span id="code-a002">A002</span> | <span lang="ko">필수입력값(거래키) 누락</span>    | Transcation key is missing |
 | <span id="code-a003">A003</span> | <span lang="ko">필수입력값(이통사구분) 누락</span>    | Mobile carrier value is missing |
@@ -232,7 +197,6 @@ Some messages carry Korean payment-industry terms straight into the English colu
 | <span id="code-a567">A567</span> | <span lang="ko">상품구분코드 설정 오류</span> | Product type code setting error |
 | <span id="code-a568">A568</span> | <span lang="ko">서비스구분코드 설정 오류</span>   | Service code setting error |
 | <span id="code-1534">1534</span> | <span lang="ko">부분취소 불가능 거래</span>      | Partial cancellation is not available for this transaction.   |
-| <span id="code-1615">1615</span> | <span lang="ko">거래금액 합계오류(공급가액,부가세,봉사료,면세금액 합계)</span>     | Total transaction amount error (sum of supply, VAT, service charge, and tax-exempt amount).  |
 | <span id="code-2000">2000</span> | <span lang="ko">DB오류</span> | DB Error | 
 | <span id="code-2011">2011</span> | <span lang="ko">CINO미존재</span> | CINO does not exist (general/DB error) |
 | <span id="code-2012">2012</span> | <span lang="ko">주문번호없음</span>   | No order number (general/DB error) |
@@ -244,7 +208,6 @@ Some messages carry Korean payment-industry terms straight into the English colu
 | <span id="code-2158">2158</span> | <span lang="ko">중복등록된입력방식</span> | Duplicated input method |
 | <span id="code-2159">2159</span> | <span lang="ko">해당은행장애</span>   | Requested bank error found |
 | <span id="code-2201">2201</span> | <span lang="ko">기승인존재</span> | Pre-approved transaction existence |
-| <span id="code-f100">F100</span> | <span lang="ko">빌키가 정상적으로 생성되었습니다.</span>  | Billkey has been created successfully |
 | <span id="code-f101">F101</span> | <span lang="ko">PKCS7 전자서명 및 암호화메시지 검증 실패.</span> | PKCS7 signature/encrypted-message verification failed (billing, key-in) |
 | <span id="code-f102">F102</span> | <span lang="ko">인증서 검증 오류</span>  | Certificate validation error |
 | <span id="code-f103">F103</span> | <span lang="ko">PKCS7 전자서명 검증 실패</span>  | PKCS7 digital signature verification failed |
@@ -263,39 +226,7 @@ Some messages carry Korean payment-industry terms straight into the English colu
 | <span id="code-f116">F116</span> | <span lang="ko">빌키 발급 불가 가맹점입니다.(해지)</span> | Can not issue billkey (Contract is terminated) |
 | <span id="code-f117">F117</span> | <span lang="ko">빌링 미사용 가맹점입니다</span>  | Billing service agreement required |
 | <span id="code-f118">F118</span> | <span lang="ko">해당카드는 사용이 불가능 합니다 타사카드를 이용해주세요</span>  | The card cannot be used Please use a another card |
-| <span id="code-f200">F200</span> | <span lang="ko">빌링 요청승인이 정상적으로 이루어졌습니다</span> | The billing request has been approved successfully |
 | <span id="code-f201">F201</span> | <span lang="ko">이미 등록된 카드 입니다(빌키발급실패)</span>   | This card has been registered already (failed to issue bill key) |
-| <span id="code-c000">C000</span> | <span lang="ko">에스크로배송등록 성공</span>  | Escrow delivery registration successful |
-| <span id="code-c002">C002</span> | <span lang="ko">에스크로 가맹점 아님</span>   | Not an Escrow Merchant (escrow delivery registration) |
-| <span id="code-c003">C003</span> | <span lang="ko">에스크로 거래만 배송등록 가능</span>  | Shipping register can be possible only for escrow transactions |
-| <span id="code-c004">C004</span> | <span lang="ko">에스크로결제 신청내역 미존재</span>   | Escrow payment history does not exist |
-| <span id="code-c005">C005</span> | <span lang="ko">에스크로배송등록 불가상태</span>  | Unable to Register Escrow Shipping |
-| <span id="code-c006">C006</span> | <span lang="ko">거래내역이 존재하지 않음</span>  | Transaction history does not exist |
-| <span id="code-c007">C007</span> | <span lang="ko">취소된 거래는 배송등록 불가</span>   | Canceled transactions, Can not be registered for delivery |
-| <span id="code-d000">D000</span> | <span lang="ko">에스크로구매결정 성공</span>  |  Escrow purchase decision successful |
-| <span id="code-d002">D002</span> | <span lang="ko">에스크로 가맹점 아님</span>   | Not an Escrow Merchant |
-| <span id="code-d003">D003</span> | <span lang="ko">에스크로 거래만 구매결정 가능</span>  | Only escrow transactions can make purchase decisions request |
-| <span id="code-d004">D004</span> | <span lang="ko">에스크로결제 신청내역 미존재</span>   | Escrow payment history does not exist | 
-| <span id="code-d005">D005</span> | <span lang="ko">에스크로구매결정 불가상태</span>  | Unable to update purchase decisions request for Escrow|
-| <span id="code-d006">D006</span> | <span lang="ko">거래내역이 존재하지 않음</span>  | Transaction history does not exist  |
-| <span id="code-d007">D007</span> | <span lang="ko">고객고유번호 미입력</span>   | Customer identification number is not entered |
-| <span id="code-d008">D008</span> | <span lang="ko">거래요청내역이 존재하지 않음</span>  | Transaction request history do not exist  |
-| <span id="code-d009">D009</span> | <span lang="ko">고객고유번호 검증 실패</span>   | Customer identification number verification failed |
-| <span id="code-d010">D010</span> | <span lang="ko">구매결정 이미 처리됨</span>  | Purchase decision already processed |
-| <span id="code-d011">D011</span> | <span lang="ko">취소된 거래는 구매결정 불가</span>   | Canceled transactions can not be make purchase decisions request |
-| <span id="code-e000">E000</span> | <span lang="ko">에스크로구매거절 성공</span>  | Escrow Purchase Refusal Success |
-| <span id="code-e002">E002</span> | <span lang="ko">에스크로 가맹점 아님</span>   |  Not an Escrow Merchant |
-| <span id="code-e003">E003</span> | <span lang="ko">에스크로 거래만 구매거절 가능</span>  | Only Escrow transactions can make Escrow Purchase Refusal |
-| <span id="code-e004">E004</span> | <span lang="ko">에스크로결제 신청내역 미존재</span>   | Escrow request history does not exist |
-| <span id="code-e005">E005</span> | <span lang="ko">에스크로구매거절 불가상태</span>  | Unable to refuse escrow purchase |
-| <span id="code-e006">E006</span> | <span lang="ko">거래내역이 존재하지 않음</span>  |  Transaction history does not exist |
-| <span id="code-e007">E007</span> | <span lang="ko">고객고유번호 미입력</span>   | Customer identification number is not entered |
-| <span id="code-e008">E008</span> | <span lang="ko">거래요청내역이 존재하지 않음</span>  | Transaction request is not found |
-| <span id="code-e009">E009</span> | <span lang="ko">고객고유번호 검증 실패</span>    | Customer identification number verification failed |
-| <span id="code-e010">E010</span> | <span lang="ko">구매거절 이미 처리됨</span>  | Escrow Purchase Refusal has been processed already |
-| <span id="code-e011">E011</span> | <span lang="ko">취소된 거래는 구매거절 불가</span>  | Canceled transactions can not make Escrow Purchase Refusal |
-| <span id="code-2001">2001</span> | <span lang="ko">취소 성공</span> | Cancellation successful |
-| <span id="code-2211">2211</span> | <span lang="ko">환불 성공 (2001과 함께 취소 성공 처리할 것)</span> | Refund successful. Handle it as a successful cancellation, like `2001` |
 | <span id="code-2003">2003</span> | <span lang="ko">취소 실패</span>  | Cancellation Failed |
 | <span id="code-2010">2010</span> | <span lang="ko">취소 요청금액 0원 이하</span> | Cancellation amount is KRW 0 or less |
 | 2011 | <span lang="ko">취소 금액 불일치</span>   | Cancellation amount discrepancy (cancel) |
@@ -337,9 +268,6 @@ Some messages carry Korean payment-industry terms straight into the English colu
 | <span id="code-a115">A115</span> | <span lang="ko">TID가 유효하지 않습니다</span>   | The TID is invalid |
 | <span id="code-a116">A116</span> | <span lang="ko">요청 금액이 올바르지 않습니다</span> | The requested amount is invalid |
 | <span id="code-a117">A117</span> | <span lang="ko">필수입력항목이 누락되었습니다</span> | Required input items are missing |
-| <span id="code-a118">A118</span> | <span lang="ko">조회 결과데이터 없음</span>   | No query result data | 
-| <span id="code-a119">A119</span> | <span lang="ko">일반 무이자 이벤트 조회 결과 없음</span>  | No query result for general interest-free event |
-| <span id="code-a120">A120</span> | <span lang="ko">부분 무이자 이벤트 조회 결과 없음</span>  | No query result for partial interest-free event |
 | <span id="code-a121">A121</span> | <span lang="ko">정의되지 않은 카드코드 입니다</span> |  Undefined card code |
 | <span id="code-a122">A122</span> | <span lang="ko">타 상점 거래 처리 불가(MID 불일치)</span> | Unable to process transaction for another store (MID mismatch) |
 | <span id="code-a123">A123</span> | <span lang="ko">거래금액 불일치(인증된 금액과 승인요청 금액 불일치)</span>    | Transaction amount mismatch (authenticated amount and approved request amount do not match)  |
@@ -354,7 +282,6 @@ Some messages carry Korean payment-industry terms straight into the English colu
 | <span id="code-a147">A147</span> | <span lang="ko">필드 길이가 초과되었습니다</span>    | The field length is over |
 | <span id="code-a148">A148</span> | <span lang="ko">빌링 승인은 별도 API 이용 바랍니다</span>    | Billing approval should be made through a separate API |
 | <span id="code-a149">A149</span> | <span lang="ko">빌링 승인만 가능한 API 입니다.(일반결제는 별도 API이용)</span>    | API for billing approval only |
-| <span id="code-a150">A150</span> | <span lang="ko">ARS 이용 가맹점이 아닙니다</span>    | Not an ARS merchant |
 | <span id="code-a201">A201</span> | <span lang="ko">PID 생성이 누락되었습니다</span> | PID generation is missing |
 | <span id="code-a202">A202</span> | <span lang="ko">결과코드 생성이 누락되었습니다</span> | Result code generation is missing |
 | <span id="code-a203">A203</span> | <span lang="ko">결과메시지 생성이 누락되었습니다</span>  | Result message generation is missing |
@@ -368,7 +295,6 @@ Some messages carry Korean payment-industry terms straight into the English colu
 | <span id="code-a215">A215</span> | <span lang="ko">해당하는 핸드폰거래가 없습니다</span>    | No corresponding phone bill transaction |
 | <span id="code-a216">A216</span> | <span lang="ko">해당하는 계좌이체거래가 없습니다</span>  | No corresponding bank transfer transaction |
 | <span id="code-a217">A217</span> | <span lang="ko">해당하는 가상계좌거래가 없습니다</span>  | No corresponding virtual account transaction |
-| <span id="code-a218">A218</span> | <span lang="ko">해당하는 전자상품권거래가 없습니다</span>    | No corresponding electronic gift certificate transaction |
 | <span id="code-a219">A219</span> | <span lang="ko">환율정보 설정 오류 입니다</span> |  Exchange rate information configuration error |
 | <span id="code-a220">A220</span> | <span lang="ko">설정된 환율 정보가 없습니다</span>   | No configured exchange rate information |
 | <span id="code-a221">A221</span> | <span lang="ko">노티 수신정보 없음</span>    | No notification receiving information |
@@ -393,9 +319,7 @@ Some messages carry Korean payment-industry terms straight into the English colu
 | <span id="code-a253">A253</span> | <span lang="ko">빌키(BID) 생성에 실패하였습니다.</span>   | Failed to generate BID |
 | <span id="code-a254">A254</span> | <span lang="ko">제휴사 응답전문이 유효하지 않습니다.</span>   | Invalid response message from partner |
 | <span id="code-a255">A255</span> | <span lang="ko">타 상점 빌키(BID) 삭제 불가.</span>   |  Unable to delete BID of another store | 
-| <span id="code-a256">A256</span> | <span lang="ko">ARS인증번호생성실패. 잠시후 재시도 바랍니다.</span>   | Failed to generate ARS authentication number. Please try again later |
 | <span id="code-a257">A257</span> | <span lang="ko">주문정보 저장에 실패하였습니다.</span>    | Failed to save order information |
-| <span id="code-a258">A258</span> | <span lang="ko">SMS 발송에 실패하였습니다.</span> | Failed to send SMS |
 | <span id="code-a299">A299</span> | <span lang="ko">API 지연처리 발생.</span> | API transaction delay occurred |
 | <span id="code-a300">A300</span> | <span lang="ko">기준정보 조회오류.</span> | Error occurred while querying information |
 | <span id="code-a301">A301</span> | <span lang="ko">가맹점키 조회 오류입니다.</span>  |  Error occurred while querying merchant key |
@@ -424,55 +348,7 @@ Some messages carry Korean payment-industry terms straight into the English colu
 | <span id="code-x002">X002</span> | <span lang="ko">서버로 소켓 연결 중 오류가 발생하였습니다</span> | An error occurred during socket connection to the server |
 | <span id="code-x003">X003</span> | <span lang="ko">전문 수신 중 오류가 발생하였습니다</span> | An error occurred while receiving the message |
 | <span id="code-x004">X004</span> | <span lang="ko">전문 송신 중 오류가 발생하였습니다</span> | An error occurred while sending the message |
-| <span id="code-v005">V005</span> | <span lang="ko">지원하지 않는 지불수단입니다</span> | This payment method is not supported |
-| <span id="code-v101">V101</span> | <span lang="ko">암호화 플래그 미설정 오류입니다</span> | Encryption flag is not set |
-| <span id="code-v102">V102</span> | <span lang="ko">서비스모드를 설정하지 않았습니다</span> | Service mode is not set |
-| <span id="code-v103">V103</span> | <span lang="ko">지불수단을 설정하지 않았습니다</span> | Payment methods is not set |
-| <span id="code-v104">V104</span> | <span lang="ko">상품개수 미설정 오류입니다</span> | Product number is not set |
-| <span id="code-v201">V201</span> | <span lang="ko">상점ID 미설정 오류입니다</span> | Merchant ID is not set |
-| <span id="code-v202">V202</span> | <span lang="ko">LicenseKey 미설정 오류입니다</span> | LicenseKey is not set |
-| <span id="code-v203">V203</span> | <span lang="ko">통화구분 미설정 오류입니다</span> | Currency type is not set |
-| <span id="code-v204">V204</span> | <span lang="ko">MID 미설정 오류입니다</span> | MID is not set |
-| <span id="code-v205">V205</span> | <span lang="ko">MallIP 미설정 오류입니다</span> | MallIP is not set |
-| <span id="code-v301">V301</span> | <span lang="ko">구매자이름 미설정 오류입니다</span> | Buyer name is not set |
-| <span id="code-v302">V302</span> | <span lang="ko">구매자인증번호 미설정 오류입니다</span> | Buyer verification number is not set |
-| <span id="code-v303">V303</span> | <span lang="ko">구매자연락처 미설정 오류입니다</span> | Buyer phone number is not set |
-| <span id="code-v304">V304</span> | <span lang="ko">구매자메일주소 미설정 오류입니다</span> | Buyer email address is not set |
-| <span id="code-v401">V401</span> | <span lang="ko">상품명 미설정 오류입니다</span> | Product name not set |
-| <span id="code-v402">V402</span> | <span lang="ko">상품금액 미설정 오류입니다</span> | Product amount is not set |
-| <span id="code-v501">V501</span> | <span lang="ko">카드형태 미설정 오류입니다</span> | Card type is not set |
-| <span id="code-v502">V502</span> | <span lang="ko">카드구분 미설정 오류입니다</span> | Card is not set |
-| <span id="code-v503">V503</span> | <span lang="ko">카드코드 미설정 오류입니다</span> | Card code is not set |
-| <span id="code-v504">V504</span> | <span lang="ko">카드번호 미설정 오류입니다</span> | Card number is not set |
-| <span id="code-v505">V505</span> | <span lang="ko">카드무이자여부 미설정 오류입니다</span> | Interest-free type is not set |
-| <span id="code-v506">V506</span> | <span lang="ko">카드인증구분 미설정 오류입니다</span> | Card authentication type is not set |
-| <span id="code-v507">V507</span> | <span lang="ko">카드형태 설정 오류입니다</span> | Card type setting |
-| <span id="code-v508">V508</span> | <span lang="ko">카드형태 허용하지 않는 값을 설정하였습니다</span> | Not allowed card type |
-| <span id="code-v509">V509</span> | <span lang="ko">카드구분 허용하지 않는 값을 설정하였습니다</span> | Not allowed card type |
-| <span id="code-v510">V510</span> | <span lang="ko">유효기간 미설정 오류입니다</span> | Expiration date is not set |
-| <span id="code-v511">V511</span> | <span lang="ko">유효기간 허용하지 않는 값을 설정하였습니다</span> | Not allowed expiration value |
-| <span id="code-v512">V512</span> | <span lang="ko">유효기간의 월 형태가 잘못 설정되었습니다</span> | Expiration month format |
-| <span id="code-v513">V513</span> | <span lang="ko">카드 비밀번호 미입력 오류입니다</span> | Card password is not entered |
-| <span id="code-v601">V601</span> | <span lang="ko">은행코드 미설정 오류입니다</span> | Bank code is not set |
-| <span id="code-v602">V602</span> | <span lang="ko">금융결제원 암호화 데이터 미설정 오류입니다</span> | KFTC encrypted data is not set |
-| <span id="code-v701">V701</span> | <span lang="ko">가상계좌입금만료일 미설정 오류입니다</span> | Virtual account deposit expiration date is not set |
-| <span id="code-va01">VA01</span> | <span lang="ko">거래KEY 미설정 오류입니다</span> | Transaction key is not set | 
-| <span id="code-va02">VA02</span> | <span lang="ko">이통사구분 미설정 오류입니다</span> | Carrier is not set |
-| <span id="code-va03">VA03</span> | <span lang="ko">SMS승인번호 미설정 오류입니다</span> | SMS authorization number not set |
-| <span id="code-va04">VA04</span> | <span lang="ko">업체TID 미설정 오류입니다</span> | TID is not set |
-| <span id="code-va05">VA05</span> | <span lang="ko">휴대폰번호 미설정 오류입니다</span> | Mobile number is not set |
-| <span id="code-va09">VA09</span> | <span lang="ko">고객고유번호(주민번호,사업자번호) 미설정 오류입니다</span> | Customer unique number (resident number, business number) not set |
-| <span id="code-va10">VA10</span> | <span lang="ko">ENCODE 업체TID 미설정   오류입니다</span> | ENCODE Company TID is not set |
-| <span id="code-vb02">VB02</span> | <span lang="ko">이통사구분 미설정 오류입니다</span> | Carrier is not set |
-| <span id="code-vb05">VB05</span> | <span lang="ko">휴대폰번호 미설정 오류입니다</span> | Phone number is not set |
-| <span id="code-vb09">VB09</span> | <span lang="ko">고객고유번호(주민번호,사업자번호) 미설정 오류입니다</span> | Customer unique number (resident number, business number) not set |
-| <span id="code-vb10">VB10</span> | <span lang="ko">고객 IP 미설정 오류입니다</span> | Customer IP is not configured |
-| <span id="code-v801">V801</span> | <span lang="ko">취소금액 미설정 오류입니다</span>  | Cancellation amount is not set |
-| <span id="code-v802">V802</span> | <span lang="ko">취소사유 미설정 오류입니다</span> | Cancel reason is not set |
-| <span id="code-v803">V803</span> | <span lang="ko">취소패스워드 미설정 오류입니다</span> | Cancel password is not set |
 | <span id="code-p001">P001</span> | <span lang="ko">클라이언트 아이디가 없습니다.</span>    | Missing Client ID       |
-| <span id="code-p002">P002</span> | <span lang="ko">토큰생성을 실패하였습니다.</span>       | Failed to Generate Token       |
-| <span id="code-p003">P003</span> | <span lang="ko">로그추적아이디 생성을 실패하였습니다.</span>   | Failed to Generate Log Trace ID       |
 | <span id="code-p004">P004</span> | <span lang="ko">SID가 생성되지 않았습니다.</span>       | SID not Generated       |
 | <span id="code-p005">P005</span> | <span lang="ko">해당되는 MID 정보가 없습니다.</span>    | No MID Information Found       |
 | <span id="code-p006">P006</span> | <span lang="ko">해당되는 GID 정보가 없습니다.</span>    | No GID Information Found       |
@@ -485,39 +361,23 @@ Some messages carry Korean payment-industry terms straight into the English colu
 | <span id="code-p013">P013</span> | <span lang="ko">파라미터 {}[{}]이 공급가액, 부가세, 봉사료, 비과세급액의 합과 동일하지 않습니다.</span> | Parameter {}[{}] does not match the sum of taxable supply, tax, service fee, and non-taxable amount |
 | <span id="code-p014">P014</span> | <span lang="ko">Mid [{}]에 해당 하는 merchant key 정보가 없습니다.</span>    | No merchant key information found for MID [{}]      |
 | <span id="code-p015">P015</span> | <span lang="ko">orderid {}가 이미 존재합니다.</span>    | Order ID {} already exists     |
-| <span id="code-p016">P016</span> | <span lang="ko">파라미터로 전달된 MID {}에 대한 사용이 불가 합니다.</span>   | The use of MID {} passed as a parameter is not available   |
-| <span id="code-p017">P017</span> | <span lang="ko">결제금액은 0원 결제가 불가합니다.</span>      | Payment of 0 won is not available     |
-| <span id="code-p018">P018</span> | <span lang="ko">인증 응답 토큰 데이터가 없습니다.</span>      | No authentication response token data        |
-| <span id="code-p019">P019</span> | <span lang="ko">요청된 인증 정보가 없습니다. Token [{}].</span>      | Authentication information requested does not exist. Token [{}].  |
-| <span id="code-p020">P020</span> | <span lang="ko">네이버페이 easyPayMethod 데이터 확인이 필요합니다.</span>    | Naver Pay easyPayMethod data needs to be checked.   |
-| <span id="code-p021">P021</span> | <span lang="ko">지원 카드가 아닙니다.</span>     | Unsupported card.       |
-| <span id="code-p022">P022</span> | <span lang="ko">카드와 할부가 동시에 설정되어야 합니다.</span>       | The card and installment should be set at the same time.   |
 | <span id="code-p023">P023</span> | <span lang="ko">간편결제는 [{}]와 함께 사용이 불가합니다.</span>     | Easy payment cannot be used with [{}].       |
 | <span id="code-p024">P024</span> | <span lang="ko">날짜형식(ISO8601)이 아닙니다.</span>    | Invalid date format (ISO8601).        |
 | <span id="code-p025">P025</span> | <span lang="ko">트랜잭션 타입이 일치하지 않습니다.</span>      | Transaction type does not match.      |
 | <span id="code-p026">P026</span> | <span lang="ko">승인서버 요청 에러</span>        | Approval server request error.        |
-| <span id="code-p027">P027</span> | <span lang="ko">원격 실패(MCI)</span>     | Remote failure.    |
-| <span id="code-p028">P028</span> | <span lang="ko">일시불 01 에러 (일시불은 00으로 설정)</span>   | Installment error for single payment 01 (set to 00 for single payment).  |
 | <span id="code-p029">P029</span> | <span lang="ko">해당 지불수단은 카드 지정, 할부 지정이 불가 합니다.</span>   | The payment method cannot be designated for card or installment.  |
 | <span id="code-p030">P030</span> | <span lang="ko">해당 지불수단은 카드 지정, 할부 지정이 필수 입니다.</span>   | Card and installment designation is required for this payment method.    |
 | <span id="code-p031">P031</span> | <span lang="ko">가상계좌 유효시간 지정 오류 입니다.</span>     | Error in specifying the virtual account validity period.   |
 | <span id="code-p032">P032</span> | <span lang="ko">다이렉트 및 간편결제는 에스크로 이용이 불가 합니다.</span>   | Direct and easy payment cannot be used with escrow.       |
 | <span id="code-p033">P033</span> | <span lang="ko">간편결제는 다중카드 선택이 불가합니다.</span>  | Multiple card selection is not allowed for easy payment.   |
 | <span id="code-p034">P034</span> | <span lang="ko">요청된 금액과 내역 금액이 일치하지 않습니다.</span>   | The requested amount and the transaction amount do not match.     |
-| <span id="code-p035">P035</span> | <span lang="ko">망취소 요청 오류 입니다.</span>  | Error in network cancellation request.       |
 | <span id="code-p036">P036</span> | <span lang="ko">면세금액이 결제금액을 초과할수 없습니다.</span>      | Tax-free amount cannot exceed the payment amount.   |
 | <span id="code-p037">P037</span> | <span lang="ko">5만원 미만인 경우 할부 지정이 불가 합니다.</span>     | Installment cannot be designated if the amount is less than 50,000 won.  |
 | <span id="code-p038">P038</span> | <span lang="ko">요청전문 검증오류 입니다.</span>       | Request message verification error.   |
-| <span id="code-p039">P039</span> | <span lang="ko">세션키는 필수 값입니다.</span>   | Session key is a required value.      |
-| <span id="code-p040">P040</span> | <span lang="ko">세션키에 해당하는 주문정보가 존재하지 않습니다.</span>      | There is no order information corresponding to the session key.   |
-| <span id="code-p041">P041</span> | <span lang="ko">세션키 길이가 잘못되었습니다.</span>    | Session key length is incorrect.      |
 | <span id="code-p042">P042</span> | <span lang="ko">이미 만료된 세션 아이디 입니다.</span>  | The session ID has already expired.   |
-| <span id="code-p043">P043</span> | <span lang="ko">유효하지 않은 세션 아이디 입니다.</span>      | Invalid session ID.     |
-| <span id="code-p044">P044</span> | <span lang="ko">승인 상태 수정에 실패하였습니다.</span>       | Failed to modify approval status.     |
 | <span id="code-p045">P045</span> | <span lang="ko">이미 처리된 거래건 입니다.</span> | Transaction has already been processed. |
 | <span id="code-p047">P047</span> | <span lang="ko">이미 처리된 상태[{0}]의 세션 아이디 입니다.</span> | Session ID in state [{0}] has already been processed. |
 | <span id="code-p049">P049</span> | <span lang="ko">결제 승인 처리 중입니다. 완료 후 결과를 확인해주세요.</span> | Payment authorization is in progress. Please check the result once it is completed. |
-| <span id="code-p101">P101</span> | <span lang="ko">DB 트랜잭션 실패</span>   | Database transaction failed.   |
 | <span id="code-p102">P102</span> | <span lang="ko">auth history 데이터 추가 실패하였습니다.</span>      | Failed to add authentication history data.   |
 | <span id="code-p103">P103</span> | <span lang="ko">log trace 데이터 추가 실패하였습니다.</span>   | Failed to add log trace data.         |
 | <span id="code-p091">P091</span> | <span lang="ko">결제 요청을 취소하였습니다.</span>      | Payment request has been canceled.    |
@@ -529,8 +389,6 @@ Some messages carry Korean payment-industry terms straight into the English colu
 | <span id="code-u105">U105</span> | <span lang="ko">필드 최대길이 초과[max:{0}, realLength:{1}]</span>    | Maximum field length exceeded [max: {0}, realLength: {1}].       |
 | <span id="code-u106">U106</span> | <span lang="ko">현금영수증 취소는 별도 API 이용 요망</span>    | Cash receipt cancellation requires a separate API usage.   |
 | <span id="code-u107">U107</span> | <span lang="ko">거래내역이 존재 하지 않습니다.</span>   | Transaction history does not exist.   |
-| <span id="code-u108">U108</span> | <span lang="ko">허가되지 않은 요청 입니다.</span>       | Unauthorized request.    |
-| <span id="code-u109">U109</span> | <span lang="ko">허용되지 않은 요청 입니다.</span>       | Request not allowed.    |
 | <span id="code-u110">U110</span> | <span lang="ko">지원하지 않는 지불수단 입니다.</span>   | Unsupported payment method.    |
 | <span id="code-u111">U111</span> | <span lang="ko">조회내용이 없습니다.</span>      | No query content.       |
 | <span id="code-u112">U112</span> | <span lang="ko">이미 사용된 OrderId 입니다.</span>      | OrderId already used.    |
@@ -539,7 +397,6 @@ Some messages carry Korean payment-industry terms straight into the English colu
 | <span id="code-u115">U115</span> | <span lang="ko">삭제 처리된 BID 입니다.</span>   | Deleted BID.     |
 | <span id="code-u116">U116</span> | <span lang="ko">사용자 정보가 존재하지 않습니다.</span>       | User information does not exist.      |
 | <span id="code-u117">U117</span> | <span lang="ko">사용자 비밀번호가 일치하지 않습니다.</span>    | User password is incorrect.    |
-| <span id="code-u118">U118</span> | <span lang="ko">이용 불가한 사용자 정보 입니다.</span>  | Unusable user information.     |
 | <span id="code-u119">U119</span> | <span lang="ko">지원하지 않는 지불수단입니다.</span>    | Unsupported payment method.    |
 | <span id="code-u120">U120</span> | <span lang="ko">TID가 유효하지 않습니다.</span>  | Invalid TID.     |
 | <span id="code-u121">U121</span> | <span lang="ko">인증 요청내역이 존재하지 않습니다.</span>      | Authentication request history does not exist.      |
@@ -547,10 +404,8 @@ Some messages carry Korean payment-industry terms straight into the English colu
 | <span id="code-u123">U123</span> | <span lang="ko">취소금액이 취소가능금액보다 큼.</span>  | Cancel amount is greater than cancelable amount.    |
 | <span id="code-u124">U124</span> | <span lang="ko">필드 길이가 잘못되었습니다.</span>      | Field length is incorrect.     |
 | <span id="code-u125">U125</span> | <span lang="ko">잘못된 요청 입니다.</span>       | Invalid request.        |
-| <span id="code-u126">U126</span> | <span lang="ko">orderId가 존재 하지 않습니다.</span>    | OrderId does not exist.        |
 | <span id="code-u127">U127</span> | <span lang="ko">요청 금액이 올바르지 않습니다.</span>   | Request amount is invalid.     |
 | <span id="code-u128">U128</span> | <span lang="ko">부분취소는 운영 환경에서 이용 가능(샌드박스는 부분취소 미제공)</span>     | Partial cancellation is only available in production environment (not supported in sandbox). |
-| <span id="code-u129">U129</span> | <span lang="ko">잘못된 요청 기간 입니다.</span>  | Invalid request period.        |
 | <span id="code-u130">U130</span> | <span lang="ko">허용된 Date형식이 아닙니다.</span>      | Invalid Date format.    |
 | <span id="code-u131">U131</span> | <span lang="ko">허용된 Data형식이 아닙니다.</span>      | Invalid Data format.    |
 | <span id="code-u132">U132</span> | <span lang="ko">허용된 옵션 내용이 아닙니다.[{0}]</span>      | Invalid option content. [{0}]         |
@@ -564,23 +419,9 @@ Some messages carry Korean payment-industry terms straight into the English colu
 | <span id="code-u141">U141</span> | <span lang="ko">해당 결제수단은 할부개월 수 복수설정이 불가합니다.</span>      | This payment method does not support setting multiple installment months.         |
 | <span id="code-u142">U142</span> | <span lang="ko">[{0}] 필드는 0이하의 값은 허용하지 않습니다.</span>      | The [{0}] field does not allow a value of 0 or less. Returned by Cancel for a `cancelAmt` of 0 or less         |
 | <span id="code-u143">U143</span> | <span lang="ko">[{0}] 결제수단에서는 [{1}] 필드 사용이 불가합니다.</span>      | The [{1}] field cannot be used with the [{0}] payment method.         |
-| <span id="code-u144">U144</span> | <span lang="ko">할부 개월 수는 최대 [{0}] 개월 입니다.</span>      | The maximum installment period is [{0}] months.         |
-| <span id="code-u145">U145</span> | <span lang="ko">[{0}] 결제수단에서는 해당 카드사 번호 사용이 불가합니다.</span>      | This card company code cannot be used with the [{0}] payment method.         |
-| <span id="code-u146">U146</span> | <span lang="ko">휴대폰 결제는 에스크로 이용이 불가 합니다.</span>      | Escrow is not available for mobile phone payments.         |
 | <span id="code-u147">U147</span> | <span lang="ko">허용되지 않은 트랜젝션 타입입니다.</span>      | This transaction type is not allowed.         |
-| <span id="code-u148">U148</span> | <span lang="ko">directReceiptType 선택 시, directReceiptNo는 필수 입니다.</span>      | directReceiptNo is required when directReceiptType is selected.         |
-| <span id="code-u149">U149</span> | <span lang="ko">유효하지 않은 카드사 번호입니다.</span>      | Invalid card company code.         |
-| <span id="code-u150">U150</span> | <span lang="ko">해당 결제수단에서 허용되지 않은 결제타입 입니다.</span>      | This billing type is not allowed for this payment method.         |
-| <span id="code-u151">U151</span> | <span lang="ko">가상계좌 만료일자(vbankExpDate)는 ISO 8601 형식이어야 합니다. 예: 2025-12-31 또는 2025-12-31T23:59:59</span>      | The virtual account expiration date (vbankExpDate) must be in ISO 8601 format. Ex) 2025-12-31 or 2025-12-31T23:59:59         |
-| <span id="code-u152">U152</span> | <span lang="ko">가상계좌 만료일자(vbankExpDate)는 현재 시간보다 미래여야 합니다.</span>      | The virtual account expiration date (vbankExpDate) must be later than the current time.         |
-| <span id="code-u153">U153</span> | <span lang="ko">가상계좌 만료일자(vbankExpDate) 형식이 올바르지 않습니다: [{0}]</span>      | The virtual account expiration date (vbankExpDate) format is invalid: [{0}]         |
-| <span id="code-u154">U154</span> | <span lang="ko">[{0}]에 공백 문자가 포함되어 있습니다. 공백 없이 입력해주세요.</span>      | [{0}] contains a whitespace character. Please enter it without spaces.         |
-| <span id="code-u301">U301</span> | <span lang="ko">ORDER_DATA 최대 길이 초과.</span>       | Exceeded maximum length of ORDER_DATA.       |
-| <span id="code-u302">U302</span> | <span lang="ko">응답전문 최대 길이 초과.</span>  | Exceeded maximum length of response message.       |
-| <span id="code-u303">U303</span> | <span lang="ko">API 지연처리 발생.</span>        | API delay occurred.     |
 | <span id="code-u304">U304</span> | <span lang="ko">BASIC AUTHENTICATION 실패</span>       | Failed to authenticate using BASIC authentication.  |
 | <span id="code-u305">U305</span> | <span lang="ko">BEARER AUTHENTICATION 실패</span>       | Failed to authenticate using BEARER authentication.       |
-| <span id="code-u306">U306</span> | <span lang="ko">전자서명 및 암호화메시지 검증 실패</span>      | Failed to verify electronic signature and encrypted message.     |
 | <span id="code-u307">U307</span> | <span lang="ko">인증정보 확인중 오류가 발생하였습니다.</span>  | An error occurred while verifying authentication information.     |
 | <span id="code-u308">U308</span> | Method Not Allowed.       | Method Not Allowed.     |
 | <span id="code-u309">U309</span> | <span lang="ko">발급되지 않은 BID 입니다.</span>       | BID not issued.         |
@@ -624,11 +465,9 @@ Some messages carry Korean payment-industry terms straight into the English colu
 | <span id="code-u504">U504</span> | <span lang="ko">결제에 실패하였습니다.(망취소 처리)</span>     | Payment has failed. (Network cancellation processing)      |
 | <span id="code-u506">U506</span> | <span lang="ko">DB 테이블 INSERT 오류발생.</span>       | Error occurred while inserting into DB table.       |
 | <span id="code-u507">U507</span> | <span lang="ko">DB 테이블 UPDATE 실패.</span>    | Failed to update DB table.     |
-| <span id="code-u508">U508</span> | <span lang="ko">서버로 소켓 연결 중 오류가 발생하였습니다.</span>     | Error occurred while connecting to server through socket.  |
 | <span id="code-u509">U509</span> | <span lang="ko">기준정보 조회 결과 2행 이상 오류</span>       | Error occurred while retrieving reference information.     |
-| <span id="code-u700">U700</span> | <span lang="ko">WEBHOOK 응답전문 최대 길이 초과.</span>       | Exceeded maximum length of webhook response.       |
 | <span id="code-c001">C001</span> | <span lang="ko">ISP 인증이 취소되었거나 실패하였습니다 다시 시도하여 주십시요</span> | ISP authentication has been cancelled or failed. Please try again.        |
-| C002 | <span lang="ko">카드사 인증 실패</span>    | Card company authentication failed (card authentication)            |
+| <span id="code-c002">C002</span> | <span lang="ko">카드사 인증 실패</span>    | Card company authentication failed (card authentication)            |
 | <span id="code-i001">I001</span> | <span lang="ko">서버와의 통신에 실패하였습니다 네트워크 환경을 확인하세요</span>     | Failed to communicate with the server. Please check the network environment.          |
 | <span id="code-i002">I002</span> | <span lang="ko">사용자가 결제를 취소하였습니다</span>           | The user has cancelled the payment.           |
 | <span id="code-i003">I003</span> | <span lang="ko">인증 성공한 거래로 재요청 되었습니다 결제가 정상적으로 이루어 지지 않았을 경우 가맹점 페이지로 가서 다시 결제하여 주십시요</span> | The transaction has been resubmitted as the authentication was successful. If the payment was not completed successfully, please go to the merchant page and try again. |
