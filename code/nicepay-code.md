@@ -16,8 +16,8 @@
 | HTTP status | Description |
 |:----------:|:-----------------------------------------------|
 | 200 | The request reached the API. Check `resultCode`: only `0000` is success, and most errors also come with `200` |
-| 401 | Authentication failed: [`U104`](#code-u104), or on the Access token API [`U101`](#code-u101), [`U116`](#code-u116), [`U117`](#code-u117) or [`U304`](#code-u304). Also [`U108`](#code-u108), unauthorized request. See [When authentication fails](../info/nicepay-info-basic-token.md#when-authentication-fails) |
-| 403 | Forbidden: [`U109`](#code-u109), or [`U103`](#code-u103) on the Access token API |
+| 401 | Authentication failed. `resultCode` names the cause: [`U101`](#code-u101), [`U102`](#code-u102), [`U103`](#code-u103), [`U104`](#code-u104), [`U116`](#code-u116), [`U304`](#code-u304), [`U305`](#code-u305) or [`U315`](#code-u315), and on the Access token API also [`U117`](#code-u117). See [When authentication fails](../info/nicepay-info-basic-token.md#when-authentication-fails) |
+| 403 | Forbidden: [`U103`](#code-u103) on the Access token API, when the key cannot be used to issue a token |
 | 404 | Not found: [`U107`](#code-u107) (no such transaction), [`U121`](#code-u121) (no such authentication request) or [`U316`](#code-u316) (invalid merchant settings) |
 | 405 | Method Not Allowed: [`U308`](#code-u308), the endpoint does not accept this HTTP method |
 
