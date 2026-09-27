@@ -108,7 +108,7 @@ Authorization: Basic <credentials>  or Bearer <token>
 Content-type: application/json;charset=utf-8
 ```
 
-`GET` requests have no body. Send `ediDate`, `signData` and `returnCharSet` as query parameters, and percent-encode each value. The `+` in the `ediDate` offset must become `%2B`: an unencoded `+` reaches NicePay as a space, and the `signData` check then fails with [`U312`](../code/nicepay-code.md#api-response-code). This is the same in Sandbox and Live. When you do not send `signData`, you can leave `ediDate` out too, as in [Check Transaction Status Example code](#check-transaction-status-example-code).
+`GET` requests have no body. Send `ediDate`, `signData` and `returnCharSet` as query parameters, and percent-encode each value. The `+` in the `ediDate` offset must become `%2B`: an unencoded `+` reaches NicePay as a space, and the `signData` check then fails with [`U312`](../code/nicepay-code.md#code-u312). This is the same in Sandbox and Live. When you do not send `signData`, you can leave `ediDate` out too, as in [Check Transaction Status Example code](#check-transaction-status-example-code).
 
 Example with the Sandbox test key from [Test key information](../info/nicepay-info-sandbox.md#test-key-information):
 

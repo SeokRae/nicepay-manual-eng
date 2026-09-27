@@ -54,7 +54,7 @@ curl --location 'https://sandbox-api.nicepay.co.kr/v1/checkout' \
 Replace these values before you run the command:
 
 - `returnUrl`: an address on your own server that the customer's browser can reach. `your-server.example` does not exist, so with it you never see the payment result of [Step 3](#step-3-receive-the-payment-result).
-- `sessionId` and `orderId`: new values on every run. Everyone who reads this guide shares the Sandbox test key, and a value that was already used with it fails with [`U324`](./code/nicepay-code.md#api-response-code) (`sessionId`) or [`U112`](./code/nicepay-code.md#api-response-code) (`orderId`).
+- `sessionId` and `orderId`: new values on every run. Everyone who reads this guide shares the Sandbox test key, and a value that was already used with it fails with [`U324`](./code/nicepay-code.md#code-u324) (`sessionId`) or [`U112`](./code/nicepay-code.md#code-u112) (`orderId`).
 
 > The `clientId`/`Authorization` above are the Sandbox test key from [Sandbox](./info/nicepay-info-sandbox.md#test-key-information). Once you switch to Live, use your Live key instead.
 

@@ -2,7 +2,7 @@
 
 Key-in (Manual Entry) payment lets you submit a card charge directly with card details you already hold (MOTO / manually entered card), without redirecting the customer through the Hosted Payment Page. You encrypt the card data server-side (the encryption key is derived from your SecretKey, which must never leave your server) and call this API directly; NicePay returns the final approval result synchronously in the response; there is no separate authorization callback.
 
-> **⚠️ Important:** Key-in is only available to merchants that NicePay has enabled for manual-entry payments. Without that, the call fails with [`U313`](../code/nicepay-code.md#api-response-code) or [`A128`](../code/nicepay-code.md#api-response-code) (`Not a key-in merchant`).  
+> **⚠️ Important:** Key-in is only available to merchants that NicePay has enabled for manual-entry payments. Without that, the call fails with [`U313`](../code/nicepay-code.md#code-u313) or [`A128`](../code/nicepay-code.md#code-a128) (`Not a key-in merchant`).  
 > NicePay sets which card holder details `encData` must carry for your merchant account, see [encData Field Details](#encdata-field-details) below. You cannot choose them per request.  
 > Key-in Payment is not provided in [Sandbox](../info/nicepay-info-sandbox.md#base-url-information-for-sandbox-and-live); you can only test it against Live once your merchant account is enabled for manual-entry payments.  
 
@@ -66,7 +66,7 @@ Required: Yes = always send; No = optional; Conditional = send in the case state
 | `buyerName` | String | No | 30 | Buyer name |
 | `buyerEmail` | String | No | 60 | Buyer email |
 | `buyerTel` | String | No | 40 | Buyer phone number (number only) |
-| `taxFreeAmt` | Int | No | 12 | Tax-free part of `amount`<br>Whole number with no decimal point, not greater than `amount`: a larger value fails with [`U321`](../code/nicepay-code.md#api-response-code). See [Tax breakdown](../info/nicepay-info-general.md#tax-breakdown) |
+| `taxFreeAmt` | Int | No | 12 | Tax-free part of `amount`<br>Whole number with no decimal point, not greater than `amount`: a larger value fails with [`U321`](../code/nicepay-code.md#code-u321). See [Tax breakdown](../info/nicepay-info-general.md#tax-breakdown) |
 | `supplyAmt` | Int | No | 12 | Supply amount, the pre-VAT portion of `amount`<br>Ignored on this API: NicePay computes it from `amount` and `taxFreeAmt`, see the note below |
 | `goodsVat` | Int | No | 12 | VAT portion of `amount`<br>Ignored on this API, see the note below |
 | `serviceAmt` | Int | No | 12 | Service charge portion of `amount`<br>Ignored on this API, see the note below |
