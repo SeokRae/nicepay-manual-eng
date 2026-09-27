@@ -223,9 +223,6 @@ messageSource=nicepay
 
 This sample verifies with the Sandbox Secret key in [Test key information](#test-key-information). See the worked example in [Verifying the payment result](../api/nicepay-api-payment-window-url.md#verifying-the-payment-result).
 
-Through the page below, you can easily check the flow when conducting a test  
-https://nicepaytest.link/checkout/sandbox-redirect.php  
-
 <br><br>
 
 ## Retrieve a checkout page
@@ -268,7 +265,7 @@ Response
   "tid": "UT0000104m00012303241646422011",
   "amount": 1004,
   "goodsName": "test",
-  "returnUrl": "https://nicepaytest.link/checkout/sandbox-response.php",
+  "returnUrl": "http://your-return-url.com",
   "status": "cancelled",
   "skinType": null,
   "taxFreeAmt": null,
