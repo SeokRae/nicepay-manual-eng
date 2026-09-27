@@ -6,6 +6,7 @@
 You can use this API to cancel and refund transactions for which payment (approval) has been completed.  
 Card payment will be canceled by sending `POST` data with tid (Transaction ID) to the cancel API `/v1/payments/{tid}/cancel`.  
 However, for cash transactions such as virtual accounts, refund account information must be passed to the cancel API.  
+To cancel a payment whose result your server could not confirm, use [Net cancel](#net-cancel).  
 
 <br>
 
@@ -235,5 +236,60 @@ Same fields and rules as [Card information](./nicepay-api-retrieve.md#card-infor
 | | `reason` | String | Yes | 100 | Cancellation reason |
 | | `receiptUrl` | String | Yes | 200 | <br>Receipt URL for user n |
 | | `couponAmt` | Int | No | 12 | Cancellation amount of coupon <br> *Optional|
+
+<br>
+
+<br><br>
+
+## Net cancel
+
+### Net cancel Over-view
+
+Use a net cancel when your Merchant Server cannot confirm the result of a payment, for example after a read timeout or a network error while it waits for the approval response or the `returnUrl` callback. NicePay finds the payment by the `orderId` that you sent with it and cancels the full amount, so you do not need the `tid`. For the steps after a timeout, see [Timeout Information](../info/nicepay-info-firewall-timeout.md#timeout-information).
+
+> **⚠️ Important:** A net cancel works only within 1 hour after the payment. A later one fails with [`2020`](../code/nicepay-code.md#api-response-code): cancel that payment with [Cancel](#cancel-request-parameter-with-tid) instead.  
+> To cancel a payment that you know succeeded, use [Cancel](#cancel-request-parameter-with-tid), not a net cancel.  
+> Net cancel is available in Sandbox and Live.  
+
+<br>
+
+### Net cancel example
+
+```bash
+curl --location 'https://sandbox-api.nicepay.co.kr/v1/payments/netcancel' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Basic UzFfY2UxYmIxZWJlYmM0NGZlMWEzZjdjZWM5NzZjODNlYTc6MTNlOTY5YTc3YTA1NDU3OTkyNDJjY2MzOTE1MjQzZDM=' \
+--data '{
+    "orderId" : "merchant-order-id"
+}'
+```
+
+<br>
+
+### Net cancel Request parameter
+
+```bash
+POST /v1/payments/netcancel  
+HTTP/1.1  
+Host: api.nicepay.co.kr 
+Authorization: Basic <credentials>  or Bearer <token>
+Content-type: application/json;charset=utf-8
+```
+
+| Parameter     | Type      | Required | Bytes | Description |
+|:--------------|:---------:|:--------:|:------:|:-----------|
+| `orderId`        | String    | Yes | 64    | The `orderId` of the payment to cancel |
+| `mallReserved`   | String    | No          | 500   | Spare field for store information delivery |
+| `ediDate`        | String    | Conditional | -     | Request timestamp (ISO 8601) that your Merchant Server creates, see [Dates in requests](../info/nicepay-info-general.md#dates-in-requests)<br>Required when you send `signData` |
+| `signData`       | String    | No          | 256   | Forgery Verification Data<br>Rule: hex(sha256(orderId + ediDate + SecretKey)) |
+| `returnCharSet`  | String    | No          | 10    | `utf-8` (default) or `euc-kr`<br>Sets the charset in the `Content-Type` header of the response. Keep `utf-8` |
+
+<br>
+
+### Net cancel Response parameter
+
+The response has the same fields as the Cancel response, see [Response parameter (for tid or sessionId cancel)](#response-parameter-for-tid-or-sessionid-cancel). `resultCode` is `0000` when NicePay cancelled the payment.
+
+Related error codes: `U100`, `U105`, `U106`, `U107`, `U312`, `2020`, see [API Response code](../code/nicepay-code.md#api-response-code). An `orderId` that matches no payment of your merchant account fails with `U107`.
 
 <br>

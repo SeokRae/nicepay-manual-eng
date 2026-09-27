@@ -15,6 +15,7 @@ The Sandbox column is the one list of Sandbox availability in this manual. An en
 | [AccessToken Generation](./nicepay-api-access-token.md)                  |      `POST`     |     `/v1/access-token`                |     Yes     |
 | [Cancel request with session id](./nicepay-api-cancel.md#cancel-request-parameter-with-sessionid)  |      `POST`     |     `/v1/payments/checkout/{sessionId}/cancel` | Full cancel only |
 | [Cancel request with tid](./nicepay-api-cancel.md#cancel-request-parameter-with-tid)  |      `POST`     |     `/v1/payments/{tid}/cancel`       | Full cancel only |
+| [Net cancel](./nicepay-api-cancel.md#net-cancel)  |      `POST`     |     `/v1/payments/netcancel`       | Yes |
 | [Transaction Status Inquiry-Authorization amount](./nicepay-api-retrieve.md#check-authorization-amount-request-parameter)              |       `POST`     |     `/v1/check-amount/{tid}`  |     Yes     |
 | [Transaction Status Inquiry-Transaction status](./nicepay-api-retrieve.md#transaction-status-inquiry-with-tidtransaction-id)  |       `GET`     |     `/v1/payments/{tid}`  |     Yes     |
 | [Transaction Status Inquiry-orderId](./nicepay-api-retrieve.md#transaction-status-inquiry-with-orderid)                  |       `GET`     |     `/v1/payments/find/{orderId}`     |     Yes     |
