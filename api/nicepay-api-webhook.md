@@ -29,7 +29,7 @@ You can use Webhook to implement additional business logic by receiving API even
 - When an event occurs, NicePay sends an HTTP `POST` with a JSON body to the URL registered for the payment method of the payment. The request comes from the webhook IP addresses in [Firewall Policy](../info/nicepay-info-firewall-timeout.md#firewall-policy): allow them in your firewall. The request has no authentication header, so verify each event with its `signature`, see [Verifying a webhook](#verifying-a-webhook).
 - Respond with HTTP status `200` and a response body of exactly `OK`. NicePay ignores case and leading or trailing whitespace, so `ok` also works. Any other status (including `201` and `204`), an empty body, or a longer body such as `{"result":"OK"}` counts as a failed delivery. Register the final URL of your endpoint, not one that redirects.
 - NicePay waits up to 5 seconds to connect and up to 15 seconds for your response. A slower response counts as a failed delivery. Store the event and respond with `OK` first, then run your business logic.
-- After a failed delivery, NicePay sends the event again on a one-minute schedule. For a URL registered with [Create a webhook](#create-a-webhook-), NicePay makes up to 10 attempts per event, including the first. After the last failed attempt, NicePay emails your account's registered admin address and stops sending that event.
+- After a failed delivery, NicePay sends the event again on a one-minute schedule. For a URL registered with [Create a webhook](#create-a-webhook-), NicePay makes up to 10 attempts per event, including the first. After the last failed attempt, NicePay emails your account's registered admin address and stops sending that event. Each attempt goes to the URL that was registered when the event happened: after you update the URL, the remaining attempts still go to the old URL, and after you delete it, they fail.
 - The same event can arrive more than once, even after your endpoint responded with `OK`. A resent event has the same body, including `ediDate` and `signature`, although the order of the keys can differ. One payment also produces several events with the same `tid`, see [Delivery of webhook](#delivery-of-webhook). Store each event once under the key `tid` + `status` + `cancelledTid`, not under `tid` alone.
 
 <br>
@@ -41,7 +41,7 @@ NicePay sends a webhook for each event below. The body is the same JSON as the A
 |:---|:---|:---|:---|
 | Payment approved (card, easy pay, bank transfer, mobile phone) | `paid` | `card`, `naverpay`, `kakaopay`, `payco`, `ssgpay`, `samsungpay`, `tosspay`, `bank` or `cellphone` | `cancelledTid` is `null` |
 | Virtual account issued | `ready` | `vbank` | The `vbank` object holds the account. The customer has not paid yet |
-| Virtual account deposit | `paid` | `vbank` | The customer paid into the account. The body is the [Transaction Status Inquiry](./nicepay-api-retrieve.md#transaction-status-inquiry-with-tidtransaction-id) response for the `tid` |
+| Virtual account deposit | `paid` | `vbank` | The customer paid into the account. The body is the [Transaction Status Inquiry](./nicepay-api-retrieve.md#transaction-status-inquiry-with-tidtransaction-id) response for the `tid`. If the payment is no longer `paid` when NicePay builds the event, for example because it was cancelled, the body still reports `status` `paid` and `cancels` `null`, and `balanceAmt` comes as a string |
 | Cancellation, full or partial | `cancelled` or `partialCancelled` | Same as the payment | `cancelledTid` holds the `tid` of the latest cancellation, and `cancels` lists every cancellation |
 
 A cancellation event can also arrive for a payment that you never saw as approved. When NicePay's own processing fails after an approval, NicePay cancels the payment (net cancel) and sends a cancellation event.
@@ -291,7 +291,7 @@ Required: Yes = has a non-empty value in every response whose `resultCode` is `0
 | `amount` | Int | Yes | 12 | Amount of the original payment, also in a cancellation event |
 | `balanceAmt` | Int | Yes | 12 | Remained balance for cancellation |
 | `goodsName` | String | Yes | 40 | Product name |
-| `mallReserved` | String | No | 500 | Spare field for store information delivery<br>It is recommended to use JSON string format.<br>However, double quotation marks (") cannot be used |
+| `mallReserved` | String | No | 500 | The `mallReserved` of the request that created the payment |
 | `useEscrow` | Boolean | Yes | - | Escrow transaction status<br> true: Escrow transaction |
 | `currency` | String | Yes | 3 | Approved currency<br>KRW: Korean Won, USD: USD, CNY: Yuan |
 | `channel` | String | No | 10 | pc:PC payment, mobile:mobile payment<br>['pc', 'mobile', 'null'] |
@@ -443,7 +443,7 @@ Required: Yes = has a non-empty value in every response whose `resultCode` is `0
 |           | `managerEmail` | String | No | 255 | Stored and echoed back on lookup, but NOT the address NicePay emails on delivery failure; that notification goes to your merchant account's registered admin email instead<br>`null` if you did not send one |
 | `messageSource` | | String | Yes | | Always `nicepay` for this API |
 
-Related error codes: `U100`, `U111`, `U133`, `U333`, `U334`, `U335`, `U336`, `U337`, `U338`, see [API Response code](../code/nicepay-code.md#api-response-code).
+Related error codes: `U100`, `U133`, `U333`, `U335`, `U336`, `U337`, `U338`, see [API Response code](../code/nicepay-code.md#api-response-code).
 
 <br><br>
 
@@ -497,7 +497,7 @@ This endpoint takes no request parameters beyond the `Authorization` header.
 |           | `managerEmail` | String | No | 255 | Stored and echoed back on lookup, but NOT the address NicePay emails on delivery failure; that notification goes to your merchant account's registered admin email instead<br>`null` if you did not send one |
 | `messageSource` | | String | Yes | | Always `nicepay` for this API |
 
-Related error codes: `U100`, `U111`, `U133`, `U333`, `U334`, `U335`, `U336`, `U337`, `U338`, see [API Response code](../code/nicepay-code.md#api-response-code).
+Related error codes: `U111`, see [API Response code](../code/nicepay-code.md#api-response-code).
 
 
 <br><br>
@@ -546,7 +546,7 @@ Content-type: application/json;charset=utf-8
 |           | `managerEmail` | String | No | 255 | Stored and echoed back on lookup, but NOT the address NicePay emails on delivery failure; that notification goes to your merchant account's registered admin email instead<br>`null` if you did not send one |
 | `messageSource` | | String | Yes | | Always `nicepay` for this API |
 
-Related error codes: `U100`, `U111`, `U133`, `U333`, `U334`, `U335`, `U336`, `U337`, `U338`, see [API Response code](../code/nicepay-code.md#api-response-code).
+Related error codes: `U100`, `U111`, `U133`, `U334`, see [API Response code](../code/nicepay-code.md#api-response-code).
 
 <br><br>
 
@@ -597,4 +597,4 @@ Content-type: application/json;charset=utf-8
 |           | `managerEmail` | String | No | 255 | Stored and echoed back on lookup, but NOT the address NicePay emails on delivery failure; that notification goes to your merchant account's registered admin email instead<br>`null` if you did not send one |
 | `messageSource` | | String | Yes | | Always `nicepay` for this API |
 
-Related error codes: `U100`, `U111`, `U133`, `U333`, `U334`, `U335`, `U336`, `U337`, `U338`, see [API Response code](../code/nicepay-code.md#api-response-code).
+Related error codes: `U100`, `U111`, `U133`, `U334`, `U336`, `U337`, `U338`, see [API Response code](../code/nicepay-code.md#api-response-code).
