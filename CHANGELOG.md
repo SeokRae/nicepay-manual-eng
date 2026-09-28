@@ -133,6 +133,8 @@ Between 18 and 24 September 2026, every page of this manual was checked against 
 - **A cancellation webhook keeps the original payment `amount`.** Not documented before. Match the event to the order by `tid`, and read `balanceAmt` and `cancels` for what was cancelled. See [Verifying a webhook](./api/nicepay-api-webhook.md#verifying-a-webhook).
 - **The Retrieve and Delete webhook curl examples end on the last header line.** The manual ended them with a backslash, so a shell waited for more input. Copy them again. See [Retrieve a webhook example code](./api/nicepay-api-webhook.md#retrieve-a-webhook-example-code).
 - **The `method` of Delete and Update webhook is the `{method}` in the URL.** The manual listed `method` as a request field without saying where it goes. NicePay ignores a `method` in the body of these two calls. See [Delete webhook Request Parameter](./api/nicepay-api-webhook.md#delete-webhook-request-parameter).
+- **A webhook retry goes to the URL that was registered when the event happened.** Not documented before. After you update a URL, pending retries still go to the old one, and after you delete it, they fail and the failure email follows. Keep the old endpoint answering until its pending events are done. See [Delivery of webhook](./api/nicepay-api-webhook.md#delivery-of-webhook).
+- **A deposit event for a payment that is no longer `paid` reports `status` `paid`, `cancels` `null` and `balanceAmt` as a string.** Not documented before. Parse `balanceAmt` as a number whether it comes as a number or a string, and confirm the payment with Transaction Status Inquiry. See [Delivery of webhook](./api/nicepay-api-webhook.md#delivery-of-webhook).
 
 #### Access token
 
