@@ -54,6 +54,7 @@ Between 18 and 24 September 2026, every page of this manual was checked against 
 - **`language` sets only the language of the Hosted Payment Page.** Not documented before. `resultMsg` and names such as `cardName` stay in Korean in every response and callback. See [Hosted Payment Page Request Parameter](./api/nicepay-api-payment-window-url.md#hosted-payment-page-request-parameter).
 - **`mallReserved` can carry a JSON string with double quotation marks, and the `returnUrl` callback returns it as you sent it.** The manual recommended JSON but said that double quotation marks cannot be used. Send JSON as it is, without replacing its quotation marks. See [Hosted Payment Page Request Parameter](./api/nicepay-api-payment-window-url.md#hosted-payment-page-request-parameter).
 - **In the callback, double quotation marks and pipes of `goodsName` arrive as `-`.** The manual said that `"` and `*` are not allowed in the callback `goodsName`. Nothing is rejected: compare `goodsName` with those two characters replaced. See [Payment Authorization Response Parameter](./api/nicepay-api-payment-window-url.md#payment-authorization-response-parameter).
+- **The callback carries the Recurring Payment token in `bid` when `method` is `cardBill`, `naverCardBill`, `naverPointBill`, `kakaoBill` or `tosspayBill`.** Not documented before. Store `bid` from the callback and charge it with Recurring Payment. See [Payment Authorization Response Parameter](./api/nicepay-api-payment-window-url.md#payment-authorization-response-parameter).
 
 #### Recurring Payment
 
