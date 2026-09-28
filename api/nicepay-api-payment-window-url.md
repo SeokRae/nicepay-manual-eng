@@ -318,14 +318,15 @@ Dates and times that NicePay returns are in Korea Standard Time (KST, UTC+9), fo
 | `issuedCashReceipt` | Boolean | Yes | - | Issuance of cash receipts<br><br>true: issued / false: not issued |
 | `receiptUrl` | String | No | 200 | Receipt URL |
 | `mallUserId` | String | No | 20 | Store User ID<br>Optional |
-| `cardCode` | String | No | 3 | Payment card issuer code |
-| `cardName` | String | No | 20 | Payment card issuer name |
+| `bid` | String | No | 30 | Token for Recurring Payment<br>Set when `method` is `cardBill`, `naverCardBill`, `naverPointBill`, `kakaoBill` or `tosspayBill`: charge it with [Recurring Payment - Authorization](./nicepay-api-billing.md#recurring-payment---authorization). Empty for other methods |
+| `cardCode` | String | No | 3 | Card company code, see [Card code](../code/nicepay-code.md#card-code) |
+| `cardName` | String | No | 20 | Card company name, in Korean whatever the `language` of the request, for example `삼성` |
 | `cardQuota` | Int | No | 3 | Installment Months<br><br>0: lump sum, 2:2 months, 3:3 months … |
 | `isInterestFree` | Boolean | No | - | Whether the merchant pays the customer's installment interest |
 | `cardType` | String | No | 6 | Card type<br>credit:credit card, check:debit |
 | `canPartCancel` | Boolean | No | - | Whether partial cancellation is possible<br>true: Possible, false: Impossible |
-| `acquCardCode` | String | No | 3 | Acquirer code |
-| `acquCardName` | String | No | 100 | Acquirer Name |
+| `acquCardCode` | String | No | 3 | Acquirer code, see [Card code](../code/nicepay-code.md#card-code) |
+| `acquCardName` | String | No | 100 | Acquirer name, in Korean |
 | `vbankCode` | String | No | 3 | Virtual account bank code to receive deposit |
 | `vbankName` | String | No | 20 | Virtual account bank name to receive deposit |
 | `vbankNumber` | String | No | 20 | Virtual account number to receive deposit |
