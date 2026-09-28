@@ -16,13 +16,13 @@ NicePay For Startups offers three integration paths. They're distinguished by **
       <th scope="row">Card details held by</th>
       <td>The customer, entered on NicePay's Hosted Payment Page</td>
       <td>The merchant (MOTO / manually entered)</td>
-      <td>The merchant, when your server registers the token with <code>/v1/subscribe/regist</code>. The customer, on NicePay's Hosted Payment Page, when the token is registered through Checkout with a billing <code>method</code> such as <code>cardBill</code>.</td>
+      <td>The merchant, when your server registers the token with <code>/v1/subscribe/regist</code></td>
     </tr>
     <tr>
       <th scope="row">Payment methods</th>
       <td>Cards, bank transfer, virtual accounts, mobile phone billing and Korean easy-pay wallets, chosen with <a href="./api/nicepay-api-payment-window-url.html#hosted-payment-page-request-parameter"><code>method</code></a></td>
       <td>Cards only</td>
-      <td>Cards registered with <code>/v1/subscribe/regist</code>. Cards and some easy-pay wallets registered through Checkout with a billing <code>method</code></td>
+      <td>Cards registered with <code>/v1/subscribe/regist</code></td>
     </tr>
     <tr>
       <th scope="row">Entry point</th>
@@ -52,7 +52,7 @@ NicePay For Startups offers three integration paths. They're distinguished by **
       <th scope="row">PCI scope for the merchant</th>
       <td>Minimal: your server never touches raw card numbers</td>
       <td>Full: your server receives and encrypts raw card data, see <a href="./info/nicepay-info-pci-dss.html">PCI-DSS Overview</a></td>
-      <td>Same as Key-in for the system that calls <code>/v1/subscribe/regist</code>. Same as Checkout when the card is registered through Checkout. Each charge sends only the token (<code>bid</code>).</td>
+      <td>Same as Key-in for the system that calls <code>/v1/subscribe/regist</code>. Each charge sends only the token (<code>bid</code>).</td>
     </tr>
     <tr>
       <th scope="row">Guide</th>

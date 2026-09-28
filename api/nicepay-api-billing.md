@@ -16,7 +16,7 @@ This page covers three APIs:
 - [Authorization](#recurring-payment---authorization) (`POST /v1/subscribe/{bid}/payments`): charge the token each time a payment is due.
 - [Delete Token](#delete-token) (`POST /v1/subscribe/{bid}/expire`): delete the token when the subscription ends.
 
-Create Token sends raw card details from your server. See [PCI-DSS Overview](../info/nicepay-info-pci-dss.md) for what that generally implies, and confirm the specific requirements for your account with NicePay. A token registered through Checkout with a billing `method` such as `cardBill` keeps card details off your server, see [Which Integration Should I Use?](../INTEGRATION-PATHS.md).
+Create Token sends raw card details from your server. See [PCI-DSS Overview](../info/nicepay-info-pci-dss.md) for what that generally implies, and confirm the specific requirements for your account with NicePay.
 
 <br>
 
@@ -204,7 +204,7 @@ Content-type: application/json;charset=utf-8
 | `orderId`         |  String  |   Yes   |   64   | Your unique order ID. It must differ from every `orderId` that your merchant account has used, including Key-in payments and partial cancellations.<br>After a declined charge (`status` `failed`), NicePay releases the `orderId`, so you can use it again |
 | `amount`          |   Int    |   Yes   |   12   | Payment amount in Korean won<br>Whole number with no decimal point. Recurring Payment accepts KRW only. See [Amounts and currencies](../info/nicepay-info-general.md#amounts-and-currencies) |
 | `goodsName`       |  String  |   Yes   |   40   | Product name  |
-| `method`          |  String  |   No   |   20   | Payment method the token was issued under<br>Leave empty for a card-issued token (default)<br>`naverCardBill` / `naverPointBill` / `kakaoBill` / `tosspayBill` for a token issued through the corresponding Easy Pay checkout |
+| `method`          |  String  |   No   |   20   | Payment method the token was issued under<br>Leave empty for a card-issued token (default)<br>`naverCardBill` / `naverPointBill` / `kakaoBill` / `tosspayBill` for a Naver Pay card, Naver Pay points, Kakao Pay or Toss Pay token |
 | `cardQuota`       |   Int    |   Conditional  |   2    | Installment Month<br>0: Pay in full amount, 2:2 months, 3:3 months …<br>Required when `method` is not `tosspayBill`; must be omitted when `method` is `tosspayBill` (rejected with `U143` otherwise) |
 | `useShopInterest` | Boolean  |   Conditional  |   -    | The store pays the installment interest of the customer<br>(currently, only false is available)<br>Required when `method` is not `tosspayBill`; must be omitted when `method` is `tosspayBill` (rejected with `U143` otherwise) |
 | `useCardPoint`    | Boolean  |   No   |   -    | Whether the card company's points may be used for this charge<br>`false`: not used (default) / `true`: used |
@@ -364,15 +364,14 @@ Content-type: application/json;charset=utf-8
 | `signData`      | String |     No     |  256  | Forgery Verification Data<br>Rule : hex(sha256(orderId + bid +   ediDate + SecretKey))|
 | `returnCharSet` | String |     No     |  10   | `utf-8` (default) or `euc-kr`<br>Sets the charset in the `Content-Type` header of the response. Keep `utf-8` |	
 
-Which `method` and `reason` to send depends on how the token was issued:
+Which `method` and `reason` to send depends on the token:
 
-| Token issued through | `method` to send | `reason` |
+| Token | `method` to send | `reason` |
 |:---|:---|:---|
-| `/v1/subscribe/regist` | Leave it out, or send `cardBill` | Not needed. NicePay does not forward it. |
-| Checkout with `method: cardBill` | Leave it out, or send `cardBill` | Not needed. NicePay does not forward it. |
-| Checkout with `method: naverCardBill` or `naverPointBill` | The same value | Required |
-| Checkout with `method: kakaoBill` | `kakaoBill` | Not needed. NicePay does not forward it. |
-| Checkout with `method: tosspayBill` | `tosspayBill` | Required. NicePay forwards the first 100 bytes to Toss Pay. |
+| Card token from `/v1/subscribe/regist` | Leave it out, or send `cardBill` | Not needed. NicePay does not forward it. |
+| Naver Pay card or points token | `naverCardBill` or `naverPointBill`, whichever the token was issued under | Required |
+| Kakao Pay token | `kakaoBill` | Not needed. NicePay does not forward it. |
+| Toss Pay token | `tosspayBill` | Required. NicePay forwards the first 100 bytes to Toss Pay. |
 
 <br>
 

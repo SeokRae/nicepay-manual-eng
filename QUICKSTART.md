@@ -192,7 +192,7 @@ Before your first Live payment, change these settings. Sandbox and Live share no
 3. **`returnUrl`**: point it at the Live address of your handler.
 4. **Firewall**: allow the Live domains and IP addresses, and the webhook source addresses, in [Firewall Policy](./info/nicepay-info-firewall-timeout.md#firewall-policy).
 5. **Webhooks**: register your webhook URLs again with the Live key, see [Create a webhook](./api/nicepay-api-webhook.md#create-a-webhook-). URLs registered in Sandbox do not carry over.
-6. **What Sandbox could not test**: partial cancellation, Key-in Payment, and Naver Pay, Kakao Pay and Toss Pay recurring payments work only in Live, see [Sandbox limitations](./info/nicepay-info-sandbox.md#sandbox-limitations). A Live test is a real payment, so cancel each one afterwards with [Cancel](./api/nicepay-api-cancel.md).
+6. **What Sandbox could not test**: partial cancellation and Key-in Payment work only in Live, see [Sandbox limitations](./info/nicepay-info-sandbox.md#sandbox-limitations). A Live test is a real payment, so cancel each one afterwards with [Cancel](./api/nicepay-api-cancel.md).
 
 <br><br>
 
