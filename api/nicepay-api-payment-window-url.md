@@ -128,7 +128,7 @@ Required: Yes = always send; No = optional; Conditional = send in the case state
 |    `orderId`    | String  |  Yes  | 64	  | Your unique order id<br> cannot reuse the orderid    | 
 |    `expireDate`    | String  | No | -	  | Expiration date and time of the session<br>Default: 1 day after NicePay creates the session, unless NicePay set a different default for your merchant account. The `expireDate` of the response shows the time that applies<br>Format: see [Dates in requests](../info/nicepay-info-general.md#dates-in-requests)  | 
 |    `amount`     | Int  	  |  Yes  | 12	  | Transaction amount<br>Whole number with no decimal point. See [Amounts and currencies](../info/nicepay-info-general.md#amounts-and-currencies) | 
-|   `goodsName`   | String  |  Yes  | 100	  | Product Name<br> - Double quotation marks (`"`) and pipes (<code>&#124;</code>) are replaced with `-`<br> - For `tosspayBill` and `kakaoBill`, anything past 40 bytes is cut off before the payment network sees it, with no error. Keep the name within 40 bytes (about 13 Korean characters in UTF-8) for those two methods. | 
+|   `goodsName`   | String  |  Yes  | 100	  | Product Name<br>Double quotation marks (`"`) and pipes (<code>&#124;</code>) are replaced with `-` | 
 |   `returnUrl`   | String  |  Yes  | 2500	 | url for Redirect after the authentication is processed | 
 | `mallReserved`  | String  | No | 500	 | Reserved field for the merchant<br>You can send a JSON string. The `returnUrl` callback returns the value as you sent it, double quotation marks included   | 
 |  `mallUserId`   | String  | No | 20	  | Buyer’s ID managed by the merchant  | 
@@ -151,29 +151,24 @@ The values of `method`. With `cardAndEasyPay`, the customer chooses a card or a 
 | `method` | Payment method | Notes |
 |:---------|:---------------|:------|
 | `card` | Credit and debit cards | |
-| `cardBill` | Card recurring payment | Registers a card and returns a token (`bid`) |
 | `bank` | Bank transfer | |
 | `directCard` | Credit card | Opens the card company's authentication page directly, without the Hosted Payment Page. `cardCode` and `cardQuota` are required: without them, the request fails with [`U135`](../code/nicepay-code.md#code-u135) |
 | `vbank` | Virtual account | |
 | `cellphone` | Mobile phone billing | `isDigital` is required |
 | `naverpayCard` | Naver Pay, card | Points excluded |
 | `naverpayPoint` | Naver Pay, points | |
-| `naverCardBill` | Naver Pay recurring payment, card | Returns a token (`bid`) |
-| `naverPointBill` | Naver Pay recurring payment, points | Returns a token (`bid`) |
 | `kakaopay` | Kakao Pay, card or money | |
 | `kakaopayCard` | Kakao Pay, card | |
 | `kakaopayMoney` | Kakao Pay, money | |
-| `kakaoBill` | Kakao Pay recurring payment | Returns a token (`bid`). `goodsName` is cut at 40 bytes |
 | `samsungpayCard` | Samsung Pay, card | |
 | `tosspay` | Toss Pay, card or money | |
 | `tosspayCard` | Toss Pay, card | |
 | `tosspayMoney` | Toss Pay, money | |
-| `tosspayBill` | Toss Pay recurring payment | Returns a token (`bid`). `goodsName` is cut at 40 bytes |
 | `payco` | PAYCO | |
 | `ssgpay` | SSGPAY | |
 | `cardAndEasyPay` | Cards and easy-pay wallets on one page | Cannot be sent with `cardCode` or `cardQuota`: fails with [`U332`](../code/nicepay-code.md#code-u332) |
 
-Escrow is not available with `directCard`, `cardAndEasyPay`, `naverpayCard`, `naverpayPoint`, `kakaopay`, `kakaopayCard`, `kakaopayMoney`, `samsungpayCard`, `payco`, `ssgpay`, `tosspay`, `tosspayCard`, `tosspayMoney` or `tosspayBill`: `useEscrow: true` fails with [`U331`](../code/nicepay-code.md#code-u331).
+Escrow is not available with `directCard`, `cardAndEasyPay`, `naverpayCard`, `naverpayPoint`, `kakaopay`, `kakaopayCard`, `kakaopayMoney`, `samsungpayCard`, `payco`, `ssgpay`, `tosspay`, `tosspayCard` or `tosspayMoney`: `useEscrow: true` fails with [`U331`](../code/nicepay-code.md#code-u331).
 
 The `payMethod` of the callback names what the customer actually paid with, not the `method` you sent: `card` for a card (including `directCard`), `bank`, `vbank` or `cellphone`, or the wallet: `naverpay`, `kakaopay`, `samsungpay`, `payco`, `ssgpay` or `tosspay`. With `cardAndEasyPay`, it is whichever the customer chose.
 
@@ -318,7 +313,6 @@ Dates and times that NicePay returns are in Korea Standard Time (KST, UTC+9), fo
 | `issuedCashReceipt` | Boolean | Yes | - | Issuance of cash receipts<br><br>true: issued / false: not issued |
 | `receiptUrl` | String | No | 200 | Receipt URL |
 | `mallUserId` | String | No | 20 | Store User ID<br>Optional |
-| `bid` | String | No | 30 | Token for Recurring Payment<br>Set when `method` is `cardBill`, `naverCardBill`, `naverPointBill`, `kakaoBill` or `tosspayBill`: charge it with [Recurring Payment - Authorization](./nicepay-api-billing.md#recurring-payment---authorization). Empty for other methods |
 | `cardCode` | String | No | 3 | Card company code, see [Card code](../code/nicepay-code.md#card-code) |
 | `cardName` | String | No | 20 | Card company name, in Korean whatever the `language` of the request, for example `삼성` |
 | `cardQuota` | Int | No | 3 | Installment Months<br><br>0: lump sum, 2:2 months, 3:3 months … |

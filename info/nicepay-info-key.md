@@ -24,7 +24,7 @@ When you issue a client key, you choose one of two approval models:
 - Client Authentication: NicePay approves the payment as soon as the customer completes authentication on the Hosted Payment Page.
 - Server Authentication: the Hosted Payment Page only authenticates the customer, and your Merchant Server then calls a separate approval API.
 
-The APIs in this manual use a **Client Authentication** key. Checkout works only with a Client Authentication key: with a Server Authentication key, Create checkout still returns a session, but the Hosted Payment Page rejects the customer with [`P025`](../code/nicepay-code.md#code-p025) (`tosspayBill` fails earlier, at Create checkout, with [`U147`](../code/nicepay-code.md#code-u147)). The separate approval API that a Server Authentication key needs is not part of this manual. Key-in Payment and Recurring Payment accept either key type.
+The APIs in this manual use a **Client Authentication** key. Checkout works only with a Client Authentication key: with a Server Authentication key, Create checkout still returns a session, but the Hosted Payment Page rejects the customer with [`P025`](../code/nicepay-code.md#code-p025). The separate approval API that a Server Authentication key needs is not part of this manual. Key-in Payment and Recurring Payment accept either key type.
 
 <br>
 

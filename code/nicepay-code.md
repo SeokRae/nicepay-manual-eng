@@ -418,7 +418,6 @@ Some messages carry Korean payment-industry terms straight into the English colu
 | <span id="code-u141">U141</span> | <span lang="ko">해당 결제수단은 할부개월 수 복수설정이 불가합니다.</span>      | This payment method does not support setting multiple installment months.         |
 | <span id="code-u142">U142</span> | <span lang="ko">[{0}] 필드는 0이하의 값은 허용하지 않습니다.</span>      | The [{0}] field does not allow a value of 0 or less. Returned by Cancel for a `cancelAmt` of 0 or less         |
 | <span id="code-u143">U143</span> | <span lang="ko">[{0}] 결제수단에서는 [{1}] 필드 사용이 불가합니다.</span>      | The [{1}] field cannot be used with the [{0}] payment method.         |
-| <span id="code-u147">U147</span> | <span lang="ko">허용되지 않은 트랜젝션 타입입니다.</span>      | This transaction type is not allowed.         |
 | <span id="code-u304">U304</span> | <span lang="ko">BASIC AUTHENTICATION 실패</span>       | Failed to authenticate using BASIC authentication.  |
 | <span id="code-u305">U305</span> | <span lang="ko">BEARER AUTHENTICATION 실패</span>       | Failed to authenticate using BEARER authentication.       |
 | <span id="code-u307">U307</span> | <span lang="ko">인증정보 확인중 오류가 발생하였습니다.</span>  | An error occurred while verifying authentication information.     |

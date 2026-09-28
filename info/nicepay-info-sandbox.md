@@ -34,7 +34,6 @@ Sandbox differs from Live in these ways. [API list](../api/nicepay-api-uri-list.
 - Every Sandbox payment is in KRW, whatever `currency` the request sends.
 - Key-in Payment is not provided. See [Key-in Payment](../api/nicepay-api-keyin.md).
 - Only full cancellation works. A request with `cancelAmt` fails, see [Cancel](#cancel).
-- Recurring Payment registers card tokens with `/v1/subscribe/regist` only. Naver Pay, Kakao Pay and Toss Pay recurring payments are not available. See [Recurring Payment in Sandbox](#recurring-payment-in-sandbox).
 - The card event and interest-free installment inquiries return dummy data.
 - Transaction Search and Settlement are not available.
 
@@ -816,5 +815,3 @@ Recurring Payment works in Sandbox for card tokens. Call the endpoints below on 
 1. **Register a token** with [`POST /v1/subscribe/regist`](../api/nicepay-api-billing.md#create-tokenbid-request-parameter). Sandbox decrypts `encData` and checks that the additional fields your merchant account requires are present and not empty, as in [encData Field Details](../api/nicepay-api-billing.md#encdata-field-details): a missing field fails with [`U317`](../code/nicepay-code.md#code-u317), and `encData` that it cannot decrypt fails with [`F101`](../code/nicepay-code.md#code-f101). Sandbox does not check the card number itself or whether the expiry date is in the future, and there is no list of test card numbers. It does not store the card you send: the response has a new `bid` and `cardCode` `04` whatever card you sent.
 2. **Charge the token** with [`POST /v1/subscribe/{bid}/payments`](../api/nicepay-api-billing.md#recurring-payment---authorization-request-parameter) and the `bid` from step 1. As in Live, a used `orderId` fails with [`U112`](../code/nicepay-code.md#code-u112). An installment of more than one month (`cardQuota` greater than `1`) with an `amount` below 50,000 fails with [`3024`](../code/nicepay-code.md#code-3024). The card fields in the response are the fixed Sandbox values in [Sandbox limitations](#sandbox-limitations).
 3. **Delete the token** with [`POST /v1/subscribe/{bid}/expire`](../api/nicepay-api-billing.md#delete-tokenbid-request-parameter). After that, a charge or a delete with the same `bid` fails with [`U309`](../code/nicepay-code.md#code-u309).
-
-Sandbox cannot register Naver Pay, Kakao Pay or Toss Pay recurring tokens through Checkout.
