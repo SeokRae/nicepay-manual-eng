@@ -32,7 +32,6 @@ Sandbox differs from Live in these ways. [API list](../api/nicepay-api-uri-list.
 
 - No payment reaches a card company or bank. NicePay simulates the approval and returns fixed values: card code `04`, card number `123412******1234`, lump-sum payment (`cardQuota` `0`), and approval number `000000`.
 - Every Sandbox payment is in KRW, whatever `currency` the request sends.
-- Key-in Payment is not provided. See [Key-in Payment](../api/nicepay-api-keyin.md).
 - Only full cancellation works. A request with `cancelAmt` fails, see [Cancel](#cancel).
 - The card event and interest-free installment inquiries return dummy data.
 - Transaction Search and Settlement are not available.

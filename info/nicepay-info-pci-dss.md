@@ -2,9 +2,9 @@
 
 **PCI-DSS** (Payment Card Industry Data Security Standard) is an international security standard maintained by the [PCI Security Standards Council](https://www.pcisecuritystandards.org/) (founded by Visa, Mastercard, American Express, Discover, and JCB). Any organization that stores, processes, or transmits cardholder data is contractually required by the card networks to comply with it, regardless of size or industry.
 
-This page is general background on the standard itself, not NicePay-specific guidance. It exists because [Key-in Payment](../api/nicepay-api-keyin.md) puts your own server in the path of raw card numbers, which is a meaningfully bigger compliance footprint than [Checkout](../api/nicepay-api-payment-window-url.md), where card data never reaches your server at all.
+This page is general background on the standard itself, not NicePay-specific guidance. It exists because [Recurring Payment - Create Token](../api/nicepay-api-billing.md#recurring-payment---create-token) puts your own server in the path of raw card numbers, which is a meaningfully bigger compliance footprint than [Checkout](../api/nicepay-api-payment-window-url.md), where card data never reaches your server at all.
 
-> **⚠️ Important:** The exact PCI-DSS level, SAQ type, and validation steps required for *your* integration with NicePay are determined by your merchant contract, not by this manual. [Open an issue on this manual's repository](https://github.com/SeokRae/nicepay-manual-eng/issues) if you'd like this page to link out to NicePay-specific guidance once it exists, or discuss requirements directly with NicePay when you contract for Key-in access.  
+> **⚠️ Important:** The exact PCI-DSS level, SAQ type, and validation steps required for *your* integration with NicePay are determined by your merchant contract, not by this manual. [Open an issue on this manual's repository](https://github.com/SeokRae/nicepay-manual-eng/issues) if you'd like this page to link out to NicePay-specific guidance once it exists.  
 
 <br>
 
@@ -15,7 +15,6 @@ This page is general background on the standard itself, not NicePay-specific gui
     <tr>
       <th scope="col">Aspect</th>
       <th scope="col">Checkout</th>
-      <th scope="col">Key-in Payment</th>
       <th scope="col">Recurring Payment</th>
     </tr>
   </thead>
@@ -23,14 +22,12 @@ This page is general background on the standard itself, not NicePay-specific gui
     <tr>
       <th scope="row">Does your server see the raw card number?</th>
       <td>No (entered on NicePay's Hosted Payment Page)</td>
-      <td>Yes (your server receives it and builds <code>encData</code>)</td>
-      <td>Yes, at registration, when your server calls <code>/v1/subscribe/regist</code> (your server builds <code>encData</code>, as in Key-in). Each charge sends only the token (<code>bid</code>).</td>
+      <td>Yes, at registration, when your server calls <code>/v1/subscribe/regist</code> (your server receives it and builds <code>encData</code>). Each charge sends only the token (<code>bid</code>).</td>
     </tr>
     <tr>
       <th scope="row">Rough PCI-DSS impact</th>
       <td>Lowest (comparable to a redirect-based SAQ A scenario)</td>
-      <td>Highest (comparable to a card-not-present SAQ D scenario)</td>
-      <td>Same as Key-in for the system that calls <code>/v1/subscribe/regist</code>.</td>
+      <td>Highest for the system that calls <code>/v1/subscribe/regist</code> (comparable to a card-not-present SAQ D scenario)</td>
     </tr>
   </tbody>
 </table>
@@ -64,7 +61,7 @@ Merchants who don't need a full on-site QSA assessment validate compliance with 
 | C | Card-present, using a payment application connected to the internet |
 | C-VT | Manually entering card data one transaction at a time into a virtual terminal, no electronic storage |
 | P2PE | Card-present, using a validated point-to-point encryption (P2PE) solution (formerly SAQ P2PE-HW) |
-| D | Everyone else, including merchants whose own servers receive, process, or store card data electronically (the typical bucket for a custom Key-in integration) |
+| D | Everyone else, including merchants whose own servers receive, process, or store card data electronically (the typical bucket for a server that calls `/v1/subscribe/regist`) |
 
 <br>
 
@@ -83,6 +80,6 @@ PCI DSS v4.0 has 12 requirements, grouped into 6 goals:
 
 ## Where to go next
 
-- Planning a Key-in integration? Start with [Key-in Payment](../api/nicepay-api-keyin.md) and its account-activation requirements.
+- Planning a Recurring Payment integration? Start with [Recurring Payment - Create Token](../api/nicepay-api-billing.md#recurring-payment---create-token).
 - Want to avoid this scope entirely? [Checkout](../api/nicepay-api-payment-window-url.md) keeps raw card data off your server. See [Which Integration Should I Use?](../INTEGRATION-PATHS.md).
 - Official standard documents and the full requirement list: [pcisecuritystandards.org](https://www.pcisecuritystandards.org/standards/).

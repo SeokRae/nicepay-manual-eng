@@ -24,7 +24,7 @@ When you issue a client key, you choose one of two approval models:
 - Client Authentication: NicePay approves the payment as soon as the customer completes authentication on the Hosted Payment Page.
 - Server Authentication: the Hosted Payment Page only authenticates the customer, and your Merchant Server then calls a separate approval API.
 
-The APIs in this manual use a **Client Authentication** key. Checkout works only with a Client Authentication key: with a Server Authentication key, Create checkout still returns a session, but the Hosted Payment Page rejects the customer with [`P025`](../code/nicepay-code.md#code-p025). The separate approval API that a Server Authentication key needs is not part of this manual. Key-in Payment and Recurring Payment accept either key type.
+The APIs in this manual use a **Client Authentication** key. Checkout works only with a Client Authentication key: with a Server Authentication key, Create checkout still returns a session, but the Hosted Payment Page rejects the customer with [`P025`](../code/nicepay-code.md#code-p025). The separate approval API that a Server Authentication key needs is not part of this manual. Recurring Payment accepts either key type.
 
 <br>
 
@@ -34,7 +34,7 @@ Your Merchant Server uses the secret key to:
 - build the `Authorization` header, see [Basic authentication](./nicepay-info-basic-token.md)
 - verify `signature` in the `returnUrl` callback and in API responses
 - build `signData` for the requests that take it
-- derive the key that encrypts `encData` for [Recurring Payment](../api/nicepay-api-billing.md) and [Key-in Payment](../api/nicepay-api-keyin.md)
+- derive the key that encrypts `encData` for [Recurring Payment](../api/nicepay-api-billing.md)
 
 Keep it on your server. Never put it in a web page, a mobile app, a code repository, or an issue on this manual's repository.
 

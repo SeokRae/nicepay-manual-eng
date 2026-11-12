@@ -21,7 +21,6 @@ nav:
       - api/nicepay-api-uri-list.md
       - api/nicepay-api-payment-window-url.md
       - api/nicepay-api-billing.md
-      - api/nicepay-api-keyin.md
       - api/nicepay-api-access-token.md
       - api/nicepay-api-retrieve.md
       - api/nicepay-api-cancel.md

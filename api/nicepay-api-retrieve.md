@@ -330,7 +330,7 @@ Send the parameters below as query parameters, and percent-encode each value, as
 | Parameter |   Type   |  Required   |  Bytes  | Description  |
 |:--------------|:----:|:-----:|:-----:|:--------|
 | `amount` | Int | Yes | 12 | payment amount |
-| `useAuth`     |  Boolean   | Yes |   -   | true : Checkout (Hosted Payment Page) <br> false : Recurring Payment or Key-in Payment  |
+| `useAuth`     |  Boolean   | Yes |   -   | true : Checkout (Hosted Payment Page) <br> false : Recurring Payment  |
 | `ediDate`    | String    | Conditional | -         | Request timestamp (ISO 8601) that your Merchant Server creates, see [Dates in requests](../info/nicepay-info-general.md#dates-in-requests)<br>Required when you send `signData` |
 | `mid`         |  String   | No |  10   | [Optional] Merchant ID separately contracted with Nice Payments |
 | `signData`    | String    | No | 256       | Forgery Verification Data<br>Generation rule: hex(sha256(ediDate + SecretKey)) |
@@ -396,7 +396,7 @@ Send the parameters below as query parameters, and percent-encode each value, as
 
 | Parameter     |   Type   |  Required   |  Bytes  | Description  |
 |:--------------|:---------:|:-----:|:------:|:--------|
-| `useAuth`     |  Boolean   | Yes |   -   | true : Checkout (Hosted Payment Page) <br> false : Recurring Payment or Key-in Payment  |
+| `useAuth`     |  Boolean   | Yes |   -   | true : Checkout (Hosted Payment Page) <br> false : Recurring Payment  |
 | `ediDate`  | String    | Conditional | -         | Request timestamp (ISO 8601) that your Merchant Server creates, see [Dates in requests](../info/nicepay-info-general.md#dates-in-requests)<br>Required when you send `signData` |
 | `mid`         |  String   | No |  10   | [Optional] Merchant ID separately contracted with Nice Payments |
 | `signData`    | String    | No | 256       | Forgery Verification Data<br>Generation rule: hex(sha256(ediDate + SecretKey)) |

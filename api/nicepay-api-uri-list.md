@@ -10,7 +10,6 @@ The Sandbox column is the one list of Sandbox availability in this manual. An en
 | [Create checkout](./nicepay-api-payment-window-url.md#hosted-payment-page-request-parameter) | `POST` | `/v1/checkout` | Yes |
 | [Retrieve checkout session](./nicepay-api-payment-window-url.md#retrieve-checkout-session-request-parameter) | `GET` | `/v1/checkout/{sessionId}` | Yes |
 | [Expire checkout session](./nicepay-api-payment-window-url.md#expire-checkout-session-request-parameter) | `POST` | `/v1/checkout/{sessionId}/expire` | Yes |
-| [Key-in Payment](./nicepay-api-keyin.md#key-in-payment-request-parameter) | `POST` | `/v1/key-in/payments` | No |
 | [Recurring Payment: Create Token](./nicepay-api-billing.md#create-tokenbid-request-parameter) | `POST` | `/v1/subscribe/regist` | Yes |
 | [Recurring Payment: Authorization](./nicepay-api-billing.md#recurring-payment---authorization-request-parameter) | `POST` | `/v1/subscribe/{bid}/payments` | Yes |
 | [Recurring Payment: Delete Token](./nicepay-api-billing.md#delete-tokenbid-request-parameter) | `POST` | `/v1/subscribe/{bid}/expire` | Yes |
