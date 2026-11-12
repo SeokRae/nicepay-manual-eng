@@ -123,13 +123,12 @@ NicePay sends the number in `amount` to the payment network as it is and does no
 
 - **Accepted values**: `currency` takes `KRW`, `USD` or `CNY`, in upper case. Another value fails with [`U132`](../code/nicepay-code.md#code-u132).
 - **Checkout** (`POST /v1/checkout`): when you leave `currency` out, the payment is in `KRW`.
-- **Key-in** (`POST /v1/key-in/payments`): `currency` has no default. When you leave it out, the response `currency` is `null`. Send `KRW` for a payment in won.
 - **Recurring Payment**: `KRW` only. The request has no `currency` field, and the response `currency` is always `KRW`.
 - **Cancel and Check Authorization Amount**: the request has no `currency` field. NicePay checks `cancelAmt` and the `amount` to check against the amount that it stores for the payment, which is the `amount` in its responses. Write them in the same unit as that `amount`.
 
 ### Tax breakdown
 
-`taxFreeAmt` is the tax-free part of `amount`, in the same unit. It must not be greater than `amount`: Checkout rejects a larger value with [`U327`](../code/nicepay-code.md#code-u327), and Key-in and Recurring Payment reject it with [`U321`](../code/nicepay-code.md#code-u321).
+`taxFreeAmt` is the tax-free part of `amount`, in the same unit. It must not be greater than `amount`: Checkout rejects a larger value with [`U327`](../code/nicepay-code.md#code-u327), and Recurring Payment rejects it with [`U321`](../code/nicepay-code.md#code-u321).
 
 NicePay computes the rest of the tax breakdown from `amount` and `taxFreeAmt` (0 when you leave it out). It uses the Korean VAT rate of 10% for every currency:
 
@@ -139,7 +138,7 @@ NicePay computes the rest of the tax breakdown from `amount` and `taxFreeAmt` (0
 
 For example, an `amount` of `1004` with no `taxFreeAmt` gives `supplyAmt` `913`, `goodsVat` `91` and `serviceAmt` `0`.
 
-Checkout has no `supplyAmt`, `goodsVat` or `serviceAmt` request field. Key-in, Recurring Payment and Cancel ignore these three fields when you send them.
+Checkout has no `supplyAmt`, `goodsVat` or `serviceAmt` request field. Recurring Payment and Cancel ignore these three fields when you send them.
 
 For a partial cancellation, NicePay applies the same formula to `cancelAmt` and the `taxFreeAmt` of the cancel request, with two exceptions:
 
@@ -151,7 +150,7 @@ For a partial cancellation, NicePay applies the same formula to `cancelAmt` and 
 - **Payment methods for `USD` and `CNY`**: NicePay's API does not limit `currency` by payment method. The payment network decides, and it can reject the payment with [`A145`, `A146` or `A248`](../code/nicepay-code.md#api-response-code). This manual does not list the payment methods that accept `USD` or `CNY`. [Open an issue on this manual's repository](https://github.com/SeokRae/nicepay-manual-eng/issues) to confirm them for your merchant account.
 - **`currency` in responses**: only a payment by card or by easy-pay wallet can return a `currency` other than `KRW`. Virtual account, bank transfer and mobile phone payments always return `KRW`.
 - **Overseas-issued cards**: NicePay's API does not check which country issued a card. The payment network returns [`3051`](../code/nicepay-code.md#code-3051) when your merchant account is not registered for overseas cards, and [`3053`](../code/nicepay-code.md#code-3053) when it cannot verify an overseas card. [Open an issue on this manual's repository](https://github.com/SeokRae/nicepay-manual-eng/issues) to confirm whether your merchant account accepts overseas-issued cards.
-- **Key-in and Recurring Payment**: when your merchant account requires them, `encData` carries the card holder's date of birth (`idNo`) and the first 2 digits of the card password (`cardPw`). See [encData Field Details](../api/nicepay-api-keyin.md#encdata-field-details). This manual does not confirm whether the payment network approves an overseas-issued card when your account requires these fields.
+- **Recurring Payment**: when your merchant account requires them, `encData` carries the card holder's date of birth (`idNo`) and the first 2 digits of the card password (`cardPw`). See [encData Field Details](../api/nicepay-api-billing.md#encdata-field-details). This manual does not confirm whether the payment network approves an overseas-issued card when your account requires these fields.
 - **Sandbox**: you cannot test `USD` or `CNY` in Sandbox. The Create checkout response shows the `currency` that you sent, but the payment result (`returnUrl` callback) and Transaction Status Inquiry always return `KRW`.
 
 <br>

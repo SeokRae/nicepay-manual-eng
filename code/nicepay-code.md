@@ -114,7 +114,7 @@ Two codes, `2011` and `2012`, appear twice with unrelated meanings. Both meaning
 
 Some messages carry Korean payment-industry terms straight into the English column. What they mean:
 
-- **Net cancel** (`망취소`, written as "network cancellation" in the table below): a cancellation that reverses a card authorization when the result of that authorization was not delivered. NicePay does not cancel a payment because your server timed out. NicePay sends a net cancel on its own only when its own processing fails during an authorization, and then returns `U504` (Checkout, Key-in) or `U503` (Recurring). Your server can request one with [Net cancel](../api/nicepay-api-cancel.md#net-cancel). See [Timeout Information](../info/nicepay-info-firewall-timeout.md#timeout-information) for what to do after a timeout. Codes `2020`, `U503`, `U504`.
+- **Net cancel** (`망취소`, written as "network cancellation" in the table below): a cancellation that reverses a card authorization when the result of that authorization was not delivered. NicePay does not cancel a payment because your server timed out. NicePay sends a net cancel on its own only when its own processing fails during an authorization, and then returns `U504` (Checkout) or `U503` (Recurring). Your server can request one with [Net cancel](../api/nicepay-api-cancel.md#net-cancel). See [Timeout Information](../info/nicepay-info-firewall-timeout.md#timeout-information) for what to do after a timeout. Codes `2020`, `U503`, `U504`.
 - **CPID**: the identifier of the partner financial institution behind a bank transfer, virtual account, or mobile carrier payment. These codes mean your merchant account is not set up for that institution, not that your request was malformed. Codes `4126`, `4127`, `A303`, `M001`, `M002`.
 - **PKCS7**: the signed and encrypted message format used when a token is issued. Codes `F101`, `F103`, `F111`.
 - **OCSP**: the certificate revocation check run as part of that verification. Code `F105`.
@@ -208,7 +208,7 @@ Some messages carry Korean payment-industry terms straight into the English colu
 | <span id="code-2158">2158</span> | <span lang="ko">중복등록된입력방식</span> | Duplicated input method |
 | <span id="code-2159">2159</span> | <span lang="ko">해당은행장애</span>   | Requested bank error found |
 | <span id="code-2201">2201</span> | <span lang="ko">기승인존재</span> | Pre-approved transaction existence |
-| <span id="code-f101">F101</span> | <span lang="ko">PKCS7 전자서명 및 암호화메시지 검증 실패.</span> | PKCS7 signature/encrypted-message verification failed (billing, key-in) |
+| <span id="code-f101">F101</span> | <span lang="ko">PKCS7 전자서명 및 암호화메시지 검증 실패.</span> | PKCS7 signature/encrypted-message verification failed (billing) |
 | <span id="code-f102">F102</span> | <span lang="ko">인증서 검증 오류</span>  | Certificate validation error |
 | <span id="code-f103">F103</span> | <span lang="ko">PKCS7 전자서명 검증 실패</span>  | PKCS7 digital signature verification failed |
 | <span id="code-f104">F104</span> | <span lang="ko">인증정보 확인중 오류가 발생하였습니다</span> | An error occurred while verifying authentication information |
@@ -274,7 +274,6 @@ Some messages carry Korean payment-industry terms straight into the English colu
 | <span id="code-a125">A125</span> | <span lang="ko">BID가 유효하지 않습니다</span>   | The BID is invalid |
 | <span id="code-a126">A126</span> | <span lang="ko">이미 삭제된 빌키이거나 존재하지 않은 빌키입니다</span>    | The bill key has already been deleted or does not exist |
 | <span id="code-a127">A127</span> | <span lang="ko">주문번호 중복 오류</span> |  Order number duplication error |
-| <span id="code-a128">A128</span> | <span lang="ko">키인 가맹점 아닙니다</span>  |  Not a key-in merchant | 
 | <span id="code-a144">A144</span> | <span lang="ko">가맹점 결과 통보에 실패하였습니다</span> | Failed to notify merchant result |
 | <span id="code-a145">A145</span> | <span lang="ko">외화 결제는 결제수단 지정하여 이용 가능 합니다</span>  | Foreign currency payment is available by specifying a payment method |
 | <span id="code-a146">A146</span> | <span lang="ko">외화 결제 불가한 결제수단 입니다</span>  | Payment method not available for foreign currency payment |
@@ -452,8 +451,6 @@ Some messages carry Korean payment-industry terms straight into the English colu
 | <span id="code-u337">U337</span> | <span lang="ko">HTTP 상태 코드가 정상(200)이 아닙니다.</span> | The HTTP status code is not 200 |
 | <span id="code-u338">U338</span> | <span lang="ko">응답 페이지 Body 부분은 OK 문자만 허용됩니다.</span> | Only the 'OK' string is allowed in the response body. |
 | <span id="code-u339">U339</span> | <span lang="ko">[{0}] 필드는 0이하의 값은 허용하지 않습니다.</span> | The [{0}] field does not allow a value of 0 or less. Returned by Create checkout for a `vbankValidHours` of 0 or less |
-| <span id="code-u340">U340</span> | <span lang="ko">KeyIn 결제정보 암호화 데이터 복호화오류</span> | Failed to decrypt the Key-in payment encryption data. |
-| <span id="code-u341">U341</span> | <span lang="ko">KeyIn 결제정보 암호화 데이터 검증 오류</span> | Key-in payment encryption data verification error. |
 | <span id="code-u343">U343</span> | <span lang="ko">가맹점 옵션값 조회 실패.</span> | Failed to retrieve the merchant option value. |
 | <span id="code-u344">U344</span> | <span lang="ko">해당 결제 수단 OpenType : Redirect 불가</span> | Redirect is not available as the OpenType for this payment method. |
 | <span id="code-u345">U345</span> | <span lang="ko">BID가 유효하지 않습니다.</span> | The BID is not valid. |

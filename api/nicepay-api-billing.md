@@ -100,7 +100,12 @@ Required: Yes = always send; No = optional; Conditional = send in the case state
 
 ### encData Field Details
 
-NicePay checks `encData` against the additional fields that your merchant account requires, with the same rules as Key-in, see [Key-in encData Field Details](./nicepay-api-keyin.md#encdata-field-details). On this API, a failed check returns [`U317`](../code/nicepay-code.md#code-u317) instead of `U341`, in Sandbox and in Live, and `encData` that NicePay cannot decrypt returns [`F101`](../code/nicepay-code.md#code-f101). The encryption examples below contain both `idNo` and `cardPw`: leave out the fields that your merchant account does not require. For overseas-issued cards, see [Accepting overseas customers](../info/nicepay-info-general.md#accepting-overseas-customers).
+`encData` always carries `cardNo`, `expYear` and `expMonth`. NicePay sets which additional fields it must also carry for your merchant account: none, `cardPw`, `idNo`, or both `idNo` and `cardPw`. When your account requires none, NicePay ignores `idNo` and `cardPw` even if you include them.
+
+> **⚠️ Important:** NicePay checks only the fields that `encData` contains. When your account requires additional fields, a field other than `cardNo`, `expYear`, `expMonth` and the additional fields of your account fails the request with [`U317`](../code/nicepay-code.md#code-u317), for example `idNo` when your account requires only `cardPw`. An empty `cardNo`, `expYear` or `expMonth`, or an empty additional field of your account, also fails with `U317`. NicePay does not reject a missing field: the request goes ahead without it. Always include the additional fields of your account.  
+> This check works the same in Sandbox and in Live. NicePay does not return this setting through the API. [Open an issue on this manual's repository](https://github.com/SeokRae/nicepay-manual-eng/issues) if you are not sure which additional fields your account requires.  
+
+`encData` that NicePay cannot decrypt returns [`F101`](../code/nicepay-code.md#code-f101). The encryption examples below contain both `idNo` and `cardPw`: leave out the fields that your merchant account does not require. For overseas-issued cards, see [Accepting overseas customers](../info/nicepay-info-general.md#accepting-overseas-customers).
 
 | Parameter     | Type      | Required | Bytes | Description |
 |:--------------|:--------:|:-----:|:------:|:---------------|
@@ -201,7 +206,7 @@ Content-type: application/json;charset=utf-8
 
 | Parameter     | Type      | Required | Bytes | Description |
 |:--------------|:---------:|:--------:|:------:|:-----------|
-| `orderId`         |  String  |   Yes   |   64   | Your unique order ID. It must differ from every `orderId` that your merchant account has used, including Key-in payments and partial cancellations.<br>After a declined charge (`status` `failed`), NicePay releases the `orderId`, so you can use it again |
+| `orderId`         |  String  |   Yes   |   64   | Your unique order ID. It must differ from every `orderId` that your merchant account has used, including partial cancellations.<br>After a declined charge (`status` `failed`), NicePay releases the `orderId`, so you can use it again |
 | `amount`          |   Int    |   Yes   |   12   | Payment amount in Korean won<br>Whole number with no decimal point. Recurring Payment accepts KRW only. See [Amounts and currencies](../info/nicepay-info-general.md#amounts-and-currencies) |
 | `goodsName`       |  String  |   Yes   |   40   | Product name  |
 | `method`          |  String  |   No   |   20   | Payment method the token was issued under<br>Leave empty for a card-issued token (default)<br>`naverCardBill` / `naverPointBill` / `kakaoBill` / `tosspayBill` for a Naver Pay card, Naver Pay points, Kakao Pay or Toss Pay token |

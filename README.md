@@ -11,7 +11,7 @@ Reading this on GitHub? Open the guide at [seokrae.github.io/nicepay-manual-eng]
 
 ## Quick guide
 
-New to NicePay For Startups? NicePay is a Korean payment gateway. You sign up for NicePay For Startups on the [admin console](https://start.nicepay.co.kr/merchant/login/main.do) and take your keys from there, see [Client and Secret key](./info/nicepay-info-key.md). The API has three integration paths. Checkout takes cards, bank transfer, virtual accounts, mobile phone billing and Korean easy-pay wallets through its `method` parameter. Key-in Payment charges cards, and Recurring Payment charges a card or easy-pay wallet registered once as a token. Not sure which fits your service? See **[Which Integration Should I Use?](./INTEGRATION-PATHS.md)**.
+New to NicePay For Startups? NicePay is a Korean payment gateway. You sign up for NicePay For Startups on the [admin console](https://start.nicepay.co.kr/merchant/login/main.do) and take your keys from there, see [Client and Secret key](./info/nicepay-info-key.md). The API has two integration paths. Checkout takes cards, bank transfer, virtual accounts, mobile phone billing and Korean easy-pay wallets through its `method` parameter. Recurring Payment charges a card or easy-pay wallet registered once as a token. Not sure which fits your service? See **[Which Integration Should I Use?](./INTEGRATION-PATHS.md)**.
 
 Already know you want a standard hosted checkout? Start here: **[Quick Start Guide](./QUICKSTART.md)** (create your first Checkout session and receive a test payment result in about 10 minutes).
 
@@ -39,7 +39,6 @@ This is a technical document that includes information about the API.
   <a class="resource-card" href="./api/nicepay-api-uri-list.html">API list</a>
   <a class="resource-card" href="./api/nicepay-api-payment-window-url.html">Checkout</a>
   <a class="resource-card" href="./api/nicepay-api-billing.html">Recurring Payment</a>
-  <a class="resource-card" href="./api/nicepay-api-keyin.html">Key-in Payment</a>
   <a class="resource-card" href="./api/nicepay-api-access-token.html">Access token</a>
   <a class="resource-card" href="./api/nicepay-api-retrieve.html">Transaction Status Inquiry</a>
   <a class="resource-card" href="./api/nicepay-api-cancel.html">Cancel</a>

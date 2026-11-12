@@ -48,7 +48,7 @@ A cancellation event can also arrive for a payment that you never saw as approve
 
 Each event goes to the URL registered for the payment method:
 
-- `card`: card and easy pay payments, whatever country issued the card, Key-in payments, Recurring Payment charges, and their cancellations
+- `card`: card and easy pay payments, whatever country issued the card, Recurring Payment charges, and their cancellations
 - `bank`: bank transfer payments and their cancellations
 - `vbank`: virtual account issued, deposit and cancellation events
 - `cellphone`: mobile phone payments and their cancellations
@@ -58,7 +58,6 @@ A URL registered with `all` receives all of them.
 By integration:
 
 - **Checkout**: NicePay sends the payment event, or the virtual account issued event, as soon as it approves the payment. The event can arrive before the `returnUrl` callback.
-- **Key-in**: NicePay sends a payment event after an approved Key-in payment. Its body has the fields of [Key-in Payment Response Parameter](./nicepay-api-keyin.md#key-in-payment-response-parameter): `status` is `paid`, and there is no `payMethod` or `cancelledTid`.
 - **Recurring Payment**: NicePay sends a payment event after an approved charge with `/v1/subscribe/{bid}/payments`. Its body also has `bid`. Registering or deleting a token sends no webhook.
 
 Every event other than the Checkout events above, including cancellations and virtual account deposits, can arrive up to about a minute after it happens.
@@ -265,8 +264,6 @@ Example: a card payment made through Checkout. It is signed with the example Sec
   "messageSource": "nicepay"
 }
 ```
-
-A webhook for a Key-in payment has the fields of [Key-in Payment Response Parameter](./nicepay-api-keyin.md#key-in-payment-response-parameter) instead of the table below.
 
 Dates and times that NicePay returns are in Korea Standard Time (KST, UTC+9), for example `2023-03-24T14:04:16.982+0900`. See [Dates in responses](../info/nicepay-info-general.md#dates-in-responses) for how to parse them.
 
